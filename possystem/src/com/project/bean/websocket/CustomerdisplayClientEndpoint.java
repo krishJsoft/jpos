@@ -64,7 +64,7 @@ public class CustomerdisplayClientEndpoint {
 		   try {
 			   CustomerdisplayMessageModel msg=new CustomerdisplayMessageModel();
 			   msg=message;
-				session.getBasicRemote().sendObject(msg);
+				//session.getBasicRemote().sendObject(msg);
 				
 			} catch (Exception e) {
 				e.printStackTrace();

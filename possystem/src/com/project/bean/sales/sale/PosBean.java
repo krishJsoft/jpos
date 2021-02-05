@@ -3862,7 +3862,7 @@ KitchenorderremarksbreakdownModel obj=new KitchenorderremarksbreakdownModel();
 		if(loginBean.getLogdetail().getRoleName().equalsIgnoreCase("waiter")) {
 			// do nothing
 		}else {
-			clientEndpoint.sendMessage(message);	
+			//clientEndpoint.sendMessage(message);	
 		}
 		
 	}
