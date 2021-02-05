@@ -4,8 +4,7 @@ package com.project.bean.admin;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -22,6 +21,7 @@ import javax.faces.event.ActionEvent;
 import javax.faces.model.SelectItem;
 
 import org.apache.commons.lang.time.DateUtils;
+import org.joda.time.LocalDate;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.model.chart.Axis;
 import org.primefaces.model.chart.AxisType;
@@ -50,10 +50,10 @@ import com.project.util.DateUtil;
 public class ChartView implements Serializable{
 	
 	//private List<performance> staffPerformance;
-	private int salesYear=LocalDate.now().getYear();
-	private int quarterlySalesYear=LocalDate.now().getYear();
-	private int staffPerformanceYear=LocalDate.now().getYear();
-	private int staffPerformanceMonth=LocalDate.now().getMonthValue()-1;
+	private int salesYear=new Date().getYear();
+	private int quarterlySalesYear=new Date().getYear();
+	private int staffPerformanceYear=new Date().getYear();
+	private int staffPerformanceMonth=new Date().getMonth()-1;
 	private Date dateFrom;
 	private Date dateTo;
 	private String buttonClick;
@@ -458,7 +458,7 @@ public class ChartView implements Serializable{
 	}
 	
 	public void quartelySalesChart() {
-		int year=LocalDate.now().getYear();
+		int year=new Date().getYear();
 		quartelySalesModel = new PieChartModel();
 		quartelySalesModel.setExtender("pieExtender");
 		
@@ -592,7 +592,7 @@ public class ChartView implements Serializable{
 	public void monthlySalesChart() {
 	  lineModel.setTitle("MONTHLY SALES");
 	  
-	  int year=LocalDate.now().getYear();
+	  int year=new Date().getYear();
 	  int monthNo=0;
 	  try {
 		  BigDecimal maxVal=new BigDecimal("0.00"); 
@@ -640,6 +640,9 @@ public class ChartView implements Serializable{
 				//SimpleDateFormat sdFrom=new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
 				LocalDate monthBegin = LocalDate.now().withDayOfMonth(1);
 				LocalDate monthEnd =  LocalDate.now().plusMonths(1).withDayOfMonth(1).minusDays(1);
+				
+				
+				
 				int days=monthEnd.getDayOfMonth();
 				
 			//	dateFrom=.valueOf(monthBegin.toString());

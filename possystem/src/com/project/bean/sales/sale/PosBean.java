@@ -1625,7 +1625,7 @@ public class PosBean {
 				
 				item.setTaxAmount(taxAmt);		
 				item.setUnitPricetax(item.getUnitPrice());
-				this.priceQty.replace(item.getSno(), item.getUnitPrice());
+				this.priceQty.put(item.getSno(), item.getUnitPrice());
 
 				
 				int qtyLatest=item.getQuantity().intValue();
@@ -4007,7 +4007,7 @@ KitchenorderremarksbreakdownModel obj=new KitchenorderremarksbreakdownModel();
 				
 				item.setTaxAmount(taxAmt);		
 				item.setUnitPricetax(item.getUnitPrice());
-				this.priceQty.replace(item.getSno(), item.getUnitPrice());
+				this.priceQty.put(item.getSno(), item.getUnitPrice());
 
 				
 				int qtyLatest=item.getQuantity().intValue();

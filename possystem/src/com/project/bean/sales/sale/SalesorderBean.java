@@ -1,7 +1,6 @@
 package com.project.bean.sales.sale;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -98,7 +97,7 @@ public class SalesorderBean {
 	private String grnNo;
 	private String quotationNo;
 	private Integer salesOrderId;	
-	private Integer annualSalesItemSummaryYear=LocalDate.now().getYear();
+	private Integer annualSalesItemSummaryYear= new Date().getYear();
 	
     BigDecimal totalAmount =new BigDecimal(0.00);
     BigDecimal totalTaxAmount =new BigDecimal(0.00);
