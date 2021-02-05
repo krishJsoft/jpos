@@ -1,0 +1,47 @@
+package com.alpha.bo.interfaces;
+
+import java.util.List;
+
+
+import com.alpha.hq.model.Function;
+import com.alpha.hq.model.Role;
+import com.alpha.model.datamodel.MasterFunctionModel;
+import com.alpha.model.datamodel.RoleModel;
+import com.alpha.model.datamodel.RolePrivilegesModel;
+
+public interface RoleBO {
+
+	void save(Role role);
+
+	void update(Role role);
+
+	boolean findRoleNameExits(String roleName);
+
+	List<Role> findByRoleListAll();
+
+	List<Function> findbyRoleModuleListAll();
+
+	Role get(Integer id);
+
+	List<Role> findByRolesingleList(Integer id);
+
+	List<Role> searchList(Integer id);
+
+	void save(RoleModel rm, String loginName); // for save(Role role)
+
+	void update(RoleModel rm); // for update(Role role)
+
+	void delete(Integer id);
+
+	List<RoleModel> getAllRoles(); // for findByRoleListAll()
+
+	List<RolePrivilegesModel> getAllPrivilagesInfo(); // for
+														// findbyRoleModuleListAll()
+	
+	List<MasterFunctionModel> getAllMasterPrivilagesInfo(); // for
+	// findbyRoleModuleListAll()
+	
+
+	RoleModel getRoleInfo(Integer roleId); // for get(Integer id)
+
+}

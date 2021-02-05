@@ -1,0 +1,121 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+
+	<h:form id="listaDespatchForm">
+		<p:outputPanel id="despatchPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="despatchPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Add/Edit Admin Despatch">
+
+
+				<h:panelGrid id="addeditdespatchgrid" columns="5" border="0"
+					width="60%"
+					columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['adespatch.label.despatchType']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="despatchType"
+						value="#{adminDespatchBean.adespatch.despatchType}" maxlength="45"
+						size="25" />
+					<p:message for="despatchType" styleClass="fieldError" />
+
+					<h:outputText value="*" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['adespatch.label.specification']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea id="specification"
+						value="#{adminDespatchBean.adespatch.specification}" rows="4"
+						cols="40" />
+					<p:message for="specification" styleClass="fieldError" />
+
+
+					<h:outputText value="*" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['adespatch.label.unitPrice']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="unitPrice"
+						value="#{adminDespatchBean.adespatch.unitPrice}"
+						styleClass="logintxtnumberFormat" maxlength="25" size="25"
+						onkeypress='return validate(event)' />
+					<p:message for="unitPrice" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+
+
+				</h:panelGrid>
+
+				<br />
+
+
+				<table align="center" width="100%" border="0">
+					<tr>
+						<td align="center"><p:commandButton value="Save"
+								action="#{adminDespatchBean.saveDespatch}"
+								update="despatchPanel"
+								rendered="#{adminDespatchBean.action!='update'}" /> 
+								
+								<p:commandButton
+								value="Update" update="despatchPanel"
+								rendered="#{adminDespatchBean.action=='update'}"
+								action="#{adminDespatchBean.updateDespatch}" />
+								
+								 <p:commandButton rendered="#{adminDespatchBean.action!='update'}"
+								value="Reset" action="#{adminDespatchBean.resetDespatch}"
+								update="addeditdespatchgrid" /> 
+								
+								<p:commandButton value="Reset"
+								actionListener="#{adminDespatchBean.editDespatch}" update="despatchPanel"
+								rendered="#{adminDespatchBean.action=='update'}">
+								<f:attribute name="despatchId" value="#{adminDespatchBean.adespatch.despatchId}" />
+								</p:commandButton>
+				
+								
+								<p:commandButton value="Cancel"
+								action="#{adminDespatchBean.listDespatch}" ajax="false"
+								update="addeditdespatchgrid" /></td>
+					</tr>
+
+
+				</table>
+
+
+
+				<br />
+
+			</p:panel>
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

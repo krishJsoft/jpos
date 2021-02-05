@@ -1,0 +1,619 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditInvoiceForm">
+		<p:outputPanel id="invoicePanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="invoicePanel" /></td>
+				</tr>
+			</table>
+
+
+			<h:panelGrid id="invoicegrid" columns="6" border="0" width="70%"
+				rendered="#{branchInvoiceBean.action=='update'}"
+				styleClass="bgcolor" cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText value="Branch /Customer Name" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText
+					value="#{branchInvoiceBean.branchinvoice.branch.branchName}"
+					rendered="#{branchInvoiceBean.branchinvoice.invoiceType=='1'}"
+					styleClass="logintxttable" />
+				<h:outputText
+					value="#{branchInvoiceBean.branchinvoice.customer.customerName}"
+					rendered="#{branchInvoiceBean.branchinvoice.invoiceType=='2'}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="Generated User" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{branchInvoiceBean.branchinvoice.createdBy}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="Created Date" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{branchInvoiceBean.branchinvoice.createdDate}"
+					styleClass="logintxttable">
+					<f:convertDateTime pattern="dd-MMM-yyyy " />
+				</h:outputText>
+
+				<h:outputText value="Sales Order No" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText
+					value="#{branchInvoiceBean.branchinvoice.salesOrderNo}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="Invoice No" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{branchInvoiceBean.branchinvoice.invoiceNo}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+
+				<h:outputText value="#{app['purchaseorder.status.neworderlable']}"
+					rendered="#{branchInvoiceBean.branchinvoice.status==app['branchinvoice.status.newordervalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['purchaseorder.status.processedlable']}"
+					rendered="#{branchInvoiceBean.branchinvoice.status==app['branchinvoice.status.processedvalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['purchaseorder.status.orderedlable']}"
+					rendered="#{branchInvoiceBean.branchinvoice.status==app['branchinvoice.status.orderedvalue']}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="Total Amount (RM)" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{branchInvoiceBean.branchinvoice.totalAmount}"
+					styleClass="logintxttable" />
+			</h:panelGrid>
+
+
+
+			<p:panelGrid style="width:99%" id="productinvoicePanel"
+				styleClass="mypanel">
+				<f:facet name="header">
+					<p:row
+						rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}">
+						<p:column style="width:15%;">Branch/Customer</p:column>
+						<p:column style="width:85%;">Product Details</p:column>
+					</p:row>
+
+					<p:row
+						rendered="#{loginBean.branch.branchtype==app['project.type.branch.value']}">
+						<p:column style="width:15%;">Customer</p:column>
+						<p:column style="width:85%;">Product Details</p:column>
+					</p:row>
+
+				</f:facet>
+
+				<p:row>
+					<p:column style="width:15%;" styleClass="columnwidthc">
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							rendered="#{branchInvoiceBean.branchinvoice.invoiceType=='1'}"
+							styleClass="borderlessGrid" cellpadding="3" id="quotationgrid1"
+							cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.branch.branchName}"
+								styleClass="logintxt" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.branch.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.branch.city}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.branch.state} - #{branchInvoiceBean.branchinvoice.branch.postCode}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value=" #{branchInvoiceBean.branchinvoice.branch.phoneNo}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							rendered="#{branchInvoiceBean.branchinvoice.invoiceType=='2'}"
+							styleClass="borderlessGrid" cellpadding="3" id="quotationgrid2"
+							cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.customer.customerName}"
+								styleClass="logintxt" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.customer.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.customer.city}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.customer.state} - #{customerInvoiceBean.customerinvoice.customer.postCode}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value=" #{branchInvoiceBean.branchinvoice.customer.phoneNo}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+
+
+					</p:column>
+
+
+					<p:column style="width:85%;">
+						<p:dataTable id="productTable" var="product" scrollable="false"
+							paginator="true" paginatorPosition="top"
+							rowsPerPageTemplate="5,10,15,25,50,100" rows="5"
+							scrollHeight="200" rowIndexVar="productrow" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}"
+							value="#{branchInvoiceBean.branchinvoice.branchinvoicebreakdowns}"
+							style="width:100%;">
+
+
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column style="width:8%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Product Code" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:12%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Product Name" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:6%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="UOM" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:7%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Total Quantity" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+
+									<p:column style="width:7%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Unit Price(RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:7%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Discount (RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:6%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Tax (%)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:7%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Tax" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+
+
+									<p:column style="width:7%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Sub Total (RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+								</p:row>
+							</p:columnGroup>
+
+
+							<p:column style="width:8%;" styleClass="columnwidth">
+								<h:outputText value="#{product.productCode}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:12%;" styleClass="columnwidth">
+								<h:outputText value="#{product.productName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:5%;" styleClass="columnwidth">
+								<h:outputText value="#{product.uom}" styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:6%;" styleClass="columnwidthn">
+								<h:outputText value="#{product.quantity}" size="6" id="quantity"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+
+							<p:column width="6%" styleClass="columnwidthn">
+								<h:outputText value="#{product.unitPrice}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+							<p:column width="6%" styleClass="columnwidthn">
+								<h:outputText value="#{product.discountAmount}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="width:5%;" styleClass="columnwidthn">
+								<h:outputText value="#{product.taxCode}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:7%;" styleClass="columnwidthn">
+								<h:outputText value="#{product.taxAmount}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+
+							<p:column width="7%" styleClass="columnwidthn">
+								<h:outputText value="#{product.subTotal}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+							<p:columnGroup type="footer">
+								<p:row>
+									<p:column colspan="8" footerText="Product Total Amount (RM)"
+										style="text-align:right" />
+									<p:column
+										footerText="#{branchInvoiceBean.branchinvoice.invoiceAmount}"
+										style="text-align:right" />
+								</p:row>
+								<p:row>
+									<p:column colspan="8" footerText="Tax Amount (RM)"
+										style="text-align:right" />
+									<p:column footerText="#{branchInvoiceBean.branchinvoice.tax}"
+										style="text-align:right" />
+								</p:row>
+
+								<p:row>
+									<p:column colspan="8" footerText="Dispatch Amount (RM)"
+										style="text-align:right" />
+									<p:column
+										footerText="#{branchInvoiceBean.branchinvoice.invoicedispatch.despatchAmount}"
+										style="text-align:right" />
+								</p:row>
+
+								<p:row>
+									<p:column colspan="8" footerText="Total Amount (RM)"
+										style="text-align:right" />
+									<p:column
+										footerText="#{branchInvoiceBean.branchinvoice.totalAmount}"
+										style="text-align:right" />
+								</p:row>
+
+							</p:columnGroup>
+
+						</p:dataTable>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+			<p:panelGrid style="width:99%" styleClass="mypanel">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="width:50%;">Tax and Shipping Info</p:column>
+						<p:column style="width:50%;">Despatch Info</p:column>
+					</p:row>
+				</f:facet>
+				<p:row>
+					<p:column style="width:50%;" styleClass="alignTop">
+
+						<h:panelGrid columns="5" border="0" width="100%"
+							styleClass="borderlessGrid"
+							columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.pricingCurrency']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:selectOneMenu id="pricingCurrency"
+								value="#{branchInvoiceBean.branchinvoice.invoicetaxship.pricingCurrency}"
+								style="width:160px; text-align:left;">
+								<f:selectItem itemLabel="MYR" itemValue="MYR" />
+							</p:selectOneMenu>
+							<p:message for="pricingCurrency" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.recipient']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="recipient"
+								value="#{branchInvoiceBean.branchinvoice.invoicetaxship.recipient}"
+								maxlength="25" size="25" />
+							<p:message for="recipient" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.address']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputTextarea rows="3" cols="25" id="address"
+								value="#{branchInvoiceBean.branchinvoice.invoicetaxship.address}" />
+							<p:message for="address" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.city']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="city"
+								value="#{branchInvoiceBean.branchinvoice.invoicetaxship.city}"
+								maxlength="25" size="25" />
+							<p:message for="city" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.state']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="state"
+								value="#{branchInvoiceBean.branchinvoice.invoicetaxship.state}"
+								maxlength="25" size="25" />
+							<p:message for="state" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.country']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="country"
+								value="#{branchInvoiceBean.branchinvoice.invoicetaxship.country}"
+								maxlength="25" size="25" />
+							<p:message for="country" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.postCode']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="postCode"
+								value="#{branchInvoiceBean.branchinvoice.invoicetaxship.postCode}"
+								maxlength="25" size="25" />
+							<p:message for="postCode" styleClass="fieldError" />
+
+						</h:panelGrid>
+
+					</p:column>
+
+
+					<p:column style="width:50%;" styleClass="alignTop">
+
+
+						<h:panelGrid columns="5" border="0" width="100%"
+							styleClass="borderlessGrid"
+							columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="Despatch" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:selectOneMenu id="despatch"
+								value="#{branchInvoiceBean.branchinvoice.invoicedispatch.dispatch}"
+								style="width:160px; text-align:left;">
+								<f:selectItem itemLabel="Select Despatch" itemValue="0" />
+								<f:selectItems value="#{adminDespatchBean.adespatchList}"
+									var="des" itemLabel="#{des.despatchType}"
+									itemValue="#{des.despatchId}" />
+								<p:ajax update="despatchAmount,productTable" event="change"
+									listener="#{branchInvoiceBean.selectDespatch}"></p:ajax>
+							</p:selectOneMenu>
+							<p:message for="despatch" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.dispatchDate']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:calendar navigator="true" id="dispatchDate" size="25"
+								value="#{branchInvoiceBean.branchinvoice.invoicedispatch.dispatchDate}"
+								pattern="dd/MMM/yyyy" />
+							<p:message for="dispatchDate" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.despatchAmount']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="despatchAmount"
+								styleClass="logintxtnumberFormat"
+								onkeypress='return validate(event)'
+								value="#{branchInvoiceBean.branchinvoice.invoicedispatch.despatchAmount}"
+								maxlength="25" size="25">
+								<p:ajax update="productTable" event="blur"
+									listener="#{branchInvoiceBean.calculateInvoiceAmount}"></p:ajax>
+							</p:inputText>
+							<p:message for="despatchAmount" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.remarks']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputTextarea rows="3" cols="25" id="remarks"
+								value="#{branchInvoiceBean.branchinvoice.invoicedispatch.remarks}" />
+							<p:message for="remarks" styleClass="fieldError" />
+							
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.recipientName']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="deliveryPerson"
+								value="#{branchInvoiceBean.branchinvoice.invoicedispatch.deliveryPerson}"
+								maxlength="25" size="25" />
+							<p:message for="deliveryPerson" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.consignmentNo']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="consignmentNo"
+								value="#{branchInvoiceBean.branchinvoice.invoicedispatch.consignmentNo}"
+								maxlength="25" size="25" />
+							<p:message for="consignmentNo" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.courierCompany']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="courierCompany"
+								value="#{branchInvoiceBean.branchinvoice.invoicedispatch.courierCompany}"
+								maxlength="100" size="25" />
+							<p:message for="courierCompany" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.transportType']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="transportType"
+								value="#{branchInvoiceBean.branchinvoice.invoicedispatch.transportType}"
+								maxlength="25" size="25" />
+							<p:message for="transportType" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.vehicleNo']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="vehicleNo"
+								value="#{branchInvoiceBean.branchinvoice.invoicedispatch.vehicleNo}"
+								maxlength="25" size="25" />
+							<p:message for="vehicleNo" styleClass="fieldError" />
+
+						</h:panelGrid>
+
+					</p:column>
+				</p:row>
+
+				<f:facet name="footer">
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton value="Save" ajax="true"
+								rendered="#{branchInvoiceBean.action!='update'}"
+								oncomplete="PF('invoicecreateDig').show()" update="invoicePanel" />
+
+
+							<p:commandButton value="Update" ajax="true"
+								rendered="#{branchInvoiceBean.action=='update'}"
+								oncomplete="PF('invoicecreateDig').show()" update="invoicePanel" />
+
+							<p:commandButton value="Reset" ajax="true"
+								rendered="#{branchInvoiceBean.action=='update'}"
+								actionListener="#{branchInvoiceBean.editInvoice}"
+								update="invoicePanel">
+								<f:attribute name="invoice"
+									value="#{branchInvoiceBean.branchinvoice}" />
+							</p:commandButton>
+
+							<p:commandButton value="Cancel" ajax="false"
+								action="#{branchInvoiceBean.listInvoice}" update="invoicePanel" />
+						</p:column>
+					</p:row>
+
+
+				</f:facet>
+
+			</p:panelGrid>
+
+
+		</p:outputPanel>
+
+
+
+
+		<p:dialog id="modalDialogInvoiceCreate" showEffect="fade"
+			hideEffect="fade" header="Branch Invoice Create Confirmation"
+			resizable="false" widgetVar="invoicecreateDig" modal="true"
+			height="150" width="400">
+
+			<br></br>
+
+			<p:panel id="deliverycreate">
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText
+						value="Are you sure you want to create this {Branch / Customer } Invoice?  "
+						styleClass="logintxttable" />
+
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+					<p:commandButton value="Create Branch Invoice" ajax="true"
+						oncomplete="PF('invoicecreateDig').hide()"
+						rendered="#{loginBean.functionList.contains('Add Branches Invoices') and branchInvoiceBean.action!='update'}"
+						action="#{branchInvoiceBean.saveInvoice}"
+						update="addEditInvoiceForm">
+					</p:commandButton>
+
+					<p:commandButton value="Update Branch Invoice" ajax="true"
+						oncomplete="PF('invoicecreateDig').hide()"
+						rendered="#{loginBean.functionList.contains('Edit Branches Invoices') and branchInvoiceBean.action=='update' }"
+						action="#{branchInvoiceBean.updateInvoice}"
+						update="addEditInvoiceForm">
+					</p:commandButton>
+
+
+					<p:commandButton value="Cancel" oncomplete="PF('invoicecreateDig').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

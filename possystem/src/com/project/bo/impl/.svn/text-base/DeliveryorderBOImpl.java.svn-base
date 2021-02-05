@@ -1,0 +1,447 @@
+package com.alpha.bo.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.IDeliveryorderBO;
+import com.alpha.bo.interfaces.IPurchaseOrderBO;
+import com.alpha.dao.interfaces.IBranchDAO;
+import com.alpha.dao.interfaces.ICommonListDAO;
+import com.alpha.dao.interfaces.IDeliveryorderDAO;
+import com.alpha.dao.interfaces.IProductDAO;
+import com.alpha.dao.interfaces.IPurchaseOrderDAO;
+import com.alpha.dao.interfaces.IPurchaserequestDAO;
+import com.alpha.hq.model.Autonum;
+import com.alpha.hq.model.Branch;
+import com.alpha.hq.model.Deliveryorder;
+import com.alpha.hq.model.Deliveryorderbreakdown;
+import com.alpha.hq.model.Product;
+import com.alpha.hq.model.Purchaseorder;
+import com.alpha.hq.model.Purchaseorderbreakdown;
+import com.alpha.hq.model.Supplier;
+import com.alpha.model.datamodel.purchase.PurchaseorderModel;
+import com.alpha.model.datamodel.purchase.PurchaseorderbreakdownsModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestBranchModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestbreakdownModel;
+import com.alpha.model.datamodel.stock.DeliveryorderModel;
+import com.alpha.model.datamodel.stock.DeliveryorderbreakdownModel;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 15 Aug 2013
+ */
+
+@Service("deliveryOrderBO")
+public class DeliveryorderBOImpl implements IDeliveryorderBO {
+	
+	public static Logger log = LoggerFactory.getLogger(DeliveryorderBOImpl.class);
+
+	@Resource(name = "deliveryOrderRepository")
+	private IDeliveryorderDAO deliveryOrderRepository;
+	
+	@Resource(name = "purchaseRequestRepository")
+	private IPurchaserequestDAO purchaseRequestRepository;	
+	
+	@Resource(name = "commonListRepository")
+	private ICommonListDAO commonListRepository;
+	
+	@Resource(name = "branchRepository")
+	private IBranchDAO branchRepository;	
+	
+	@Resource(name = "productRepository")
+	private IProductDAO productRepository;
+	
+	@Resource(name = "purchaseOrderBO")
+	private IPurchaseOrderBO purchaseOrderBO;
+	
+	@Override
+	public List<DeliveryorderModel> findByDeliveryorderListAll()
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getDeliveryorderCount(String deliveryOrderNo,
+			Integer supplierId, Date dateFrom, Date dateTo, String status)
+			throws Exception {
+		try {
+			return deliveryOrderRepository.getDeliveryorderCount(deliveryOrderNo, supplierId, dateFrom, dateTo, status);
+		} catch (Exception e) {
+			log.info("Error in getDeliveryorderCount of DeliveryorderBOImpl "+ e.toString());
+			throw e;
+		}
+	}
+
+	
+	@Override
+	public List<DeliveryorderModel> getDeliveryorderList(
+			String deliveryOrderNo, Integer supplierId, Date dateFrom,
+			Date dateTo, String status, int start, int howMany)
+			throws Exception {
+		List<DeliveryorderModel> deliveryorderObjList = new ArrayList<DeliveryorderModel>();
+		List<DeliveryorderbreakdownModel> deliveryorderbreakdownList = new ArrayList<DeliveryorderbreakdownModel>();
+		DeliveryorderbreakdownModel data=null;
+	try {
+	List<Deliveryorder> deliveryorderList = deliveryOrderRepository.getDeliveryorderList(deliveryOrderNo, supplierId, dateFrom, dateTo, status, start, howMany);
+
+	for (Deliveryorder deliveryorder : deliveryorderList) {
+		
+		DeliveryorderModel deliveryeorderObj = new DeliveryorderModel();
+		
+		deliveryeorderObj.setCreatedBy(deliveryorder.getCreatedBy());
+		deliveryeorderObj.setCreatedDate(deliveryorder.getCreatedDate());
+		deliveryeorderObj.setDeliveryOrderId(deliveryorder.getDeliveryOrderId());
+		deliveryeorderObj.setDeliveryOrderNo(deliveryorder.getDeliveryOrderNo());
+		deliveryeorderObj.setLastModifiedDate(deliveryorder.getLastModifiedDate());
+		deliveryeorderObj.setPurchaseOrderDate(deliveryorder.getPurchaseOrderDate());
+		deliveryeorderObj.setPurchaseOrderNo(deliveryorder.getPurchaseOrderNo());
+		deliveryeorderObj.setRemarks(deliveryorder.getRemarks());
+		deliveryeorderObj.setStatus(deliveryorder.getStatus());
+		deliveryeorderObj.setTotalAmount(deliveryorder.getTotalAmount());		
+		deliveryeorderObj.setSupplierId(deliveryorder.getSupplier().getSupplierId());
+		deliveryeorderObj.setCompanyName(deliveryorder.getSupplier().getCompanyName());
+		
+		deliveryorderObjList.add(deliveryeorderObj);
+	}
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getDeliveryorderList of DeliveryorderBOImpl "+ e.toString());
+		throw e;
+	}
+	return deliveryorderObjList;
+	}
+
+	
+	@Override
+	public DeliveryorderModel getDeliveryorderDetails(Integer deliveryOrderId)
+			throws Exception {
+			DeliveryorderModel deliveryeorderObj = new DeliveryorderModel();		
+			List<DeliveryorderbreakdownModel> deliveryorderbreakdownList = new ArrayList<DeliveryorderbreakdownModel>();		
+		try {
+			Deliveryorder deliveryorder = deliveryOrderRepository.getDeliveryorderDetails(deliveryOrderId);						
+				deliveryeorderObj.setCreatedBy(deliveryorder.getCreatedBy());
+				deliveryeorderObj.setCreatedDate(deliveryorder.getCreatedDate());
+				deliveryeorderObj.setDeliveryOrderId(deliveryorder.getDeliveryOrderId());
+				deliveryeorderObj.setDeliveryOrderNo(deliveryorder.getDeliveryOrderNo());
+				deliveryeorderObj.setLastModifiedDate(deliveryorder.getLastModifiedDate());
+				deliveryeorderObj.setPurchaseOrderDate(deliveryorder.getPurchaseOrderDate());
+				deliveryeorderObj.setPurchaseOrderNo(deliveryorder.getPurchaseOrderNo());
+				deliveryeorderObj.setRemarks(deliveryorder.getRemarks());
+				deliveryeorderObj.setStatus(deliveryorder.getStatus());
+				deliveryeorderObj.setTotalAmount(deliveryorder.getTotalAmount());		
+				deliveryeorderObj.setSupplierId(deliveryorder.getSupplier().getSupplierId());
+				deliveryeorderObj.setCompanyName(deliveryorder.getSupplier().getCompanyName());	
+				
+				deliveryorderbreakdownList = new ArrayList<DeliveryorderbreakdownModel>();		
+				
+				for(Deliveryorderbreakdown tempdata :deliveryorder.getDeliveryorderbreakdowns() )
+				{
+					DeliveryorderbreakdownModel data=new DeliveryorderbreakdownModel();
+								
+					data.setDiscount(tempdata.getDiscount());
+					data.setDiscountAmount(tempdata.getDiscountAmount());							
+					data.setProductId(tempdata.getProduct().getProductId());						
+					data.setProductName(tempdata.getProduct().getProductName());	
+					data.setUomName(tempdata.getProduct().getUom());
+					data.setQuantity(tempdata.getQuantity());			
+					data.setSubTotal(tempdata.getSubTotal());
+					data.setUnitPrice(tempdata.getUnitPrice());	
+					data.setExpDate(tempdata.getExpDate());				
+				
+					deliveryorderbreakdownList.add(data);			
+				}				
+				deliveryeorderObj.setDeliveryorderbreakdowns(deliveryorderbreakdownList);
+				
+			}
+			catch(Exception e)
+			{
+				log.info("Error in getDeliveryorderDetails of DeliveryorderBOImpl "+ e.toString());
+				throw e;
+			}
+			return deliveryeorderObj;
+	}	
+	
+
+	
+	@Override
+	public DeliveryorderModel getDeliveryorderMasterDetails(
+			Integer deliveryOrderId) throws Exception {
+		DeliveryorderModel deliveryeorderObj = new DeliveryorderModel();			
+		try {
+			Deliveryorder deliveryorder = deliveryOrderRepository.getDeliveryorderMasterDetails(deliveryOrderId);						
+				deliveryeorderObj.setCreatedBy(deliveryorder.getCreatedBy());
+				deliveryeorderObj.setCreatedDate(deliveryorder.getCreatedDate());
+				deliveryeorderObj.setDeliveryOrderId(deliveryorder.getDeliveryOrderId());
+				deliveryeorderObj.setDeliveryOrderNo(deliveryorder.getDeliveryOrderNo());
+				deliveryeorderObj.setLastModifiedDate(deliveryorder.getLastModifiedDate());
+				deliveryeorderObj.setPurchaseOrderDate(deliveryorder.getPurchaseOrderDate());
+				deliveryeorderObj.setPurchaseOrderNo(deliveryorder.getPurchaseOrderNo());
+				deliveryeorderObj.setRemarks(deliveryorder.getRemarks());
+				deliveryeorderObj.setStatus(deliveryorder.getStatus());
+				deliveryeorderObj.setTotalAmount(deliveryorder.getTotalAmount());		
+				deliveryeorderObj.setSupplierId(deliveryorder.getSupplier().getSupplierId());
+				deliveryeorderObj.setCompanyName(deliveryorder.getSupplier().getCompanyName());			
+			}
+			catch(Exception e)
+			{
+				log.info("Error in getDeliveryorderDetails of DeliveryorderBOImpl "+ e.toString());
+				throw e;
+			}
+			return deliveryeorderObj;
+	}
+
+	
+	
+	
+	@Transactional
+	@Override
+	public boolean createNewDeliveryorder(DeliveryorderModel deliveryorder,PurchaseorderModel purchaseorderModel)
+			throws Exception {
+		List<Deliveryorderbreakdown> deliveryorderbreakdownList = new ArrayList<Deliveryorderbreakdown>();		
+		boolean saveSuccess = false;
+		Deliveryorder deliveryeorderObj = new Deliveryorder();		
+		
+	try {
+		Autonum autoNum = commonListRepository.getAutonumDetail();
+		
+		Supplier supplier = new Supplier();		
+		supplier.setSupplierId(deliveryorder.getSupplierId());				
+		deliveryeorderObj.setSupplier(supplier);		
+		
+		deliveryeorderObj.setCreatedBy(deliveryorder.getCreatedBy());
+		deliveryeorderObj.setCreatedDate(deliveryorder.getCreatedDate());
+		deliveryeorderObj.setDeliveryOrderNo(deliveryorder.getDeliveryOrderNo());
+		deliveryeorderObj.setLastModifiedDate(deliveryorder.getLastModifiedDate());
+		deliveryeorderObj.setPurchaseOrderDate(deliveryorder.getPurchaseOrderDate());
+		deliveryeorderObj.setPurchaseOrderNo(deliveryorder.getPurchaseOrderNo());
+		deliveryeorderObj.setRemarks(deliveryorder.getRemarks());
+		deliveryeorderObj.setStatus(deliveryorder.getStatus());
+		deliveryeorderObj.setTotalAmount(deliveryorder.getTotalAmount());			
+		
+		deliveryeorderObj.setDeliveryOrderNo("DO".concat(String.valueOf(StringUtils.leftPad(autoNum.getDeliveryOrder() + "", 15, "0"))));	
+			
+		deliveryorderbreakdownList = new ArrayList<Deliveryorderbreakdown>();		
+		
+		for(DeliveryorderbreakdownModel tempdata :deliveryorder.getDeliveryorderbreakdowns() )
+		{
+			Deliveryorderbreakdown data=new Deliveryorderbreakdown();
+						
+			data.setDiscount(tempdata.getDiscount());
+			data.setDiscountAmount(tempdata.getDiscountAmount());
+			
+			Product productTemp = new Product();			
+			productTemp.setProductId(tempdata.getProductId());
+			productTemp.setProductName(tempdata.getProductName());
+			data.setProduct(productTemp);			
+			
+			data.setProductName(tempdata.getProductName());			
+			data.setDeliveryorder(deliveryeorderObj);
+			data.setQuantity(tempdata.getQuantity());			
+			data.setSubTotal(tempdata.getSubTotal());
+			data.setUnitPrice(tempdata.getUnitPrice());	
+			data.setExpDate(tempdata.getExpDate());
+			data.setCreatedDate(new Date());
+			Product product=productRepository.getProductDetails(tempdata.getProductId());
+			data.setQuantityBefore(product.getQuantityonHand());
+			data.setQuantityAfter(product.getQuantityonHand()+tempdata.getQuantity());			
+			product.setQuantityonHand(product.getQuantityonHand()+tempdata.getQuantity());
+			productRepository.updateProduct(product); // Update Product Stock
+			
+		
+			deliveryorderbreakdownList.add(data);			
+		}				
+		deliveryeorderObj.setDeliveryorderbreakdowns(deliveryorderbreakdownList);
+		
+		autoNum.setDeliveryOrder(autoNum.getDeliveryOrder()+1);
+		autoNum=commonListRepository.updateAutonumDetail(autoNum);		
+		saveSuccess=deliveryOrderRepository.createNewDeliveryorder(deliveryeorderObj);	
+		
+		if(saveSuccess)
+		{
+			purchaseOrderBO.updatePurchaseorder(purchaseorderModel);
+		}
+	}
+	catch(Exception e)
+	{
+		log.info("Error in createNewDeliveryorder of DeliveryorderBOImpl "+ e.toString());
+		throw e;
+	}
+	return saveSuccess;
+	}
+
+	@Transactional
+	@Override
+	public boolean updateDeliveryorder(DeliveryorderModel deliveryorder)
+			throws Exception {
+		List<Deliveryorderbreakdown> deliveryorderbreakdownList = new ArrayList<Deliveryorderbreakdown>();		
+		boolean saveSuccess = false;
+		Deliveryorder deliveryeorderObj = null;	
+		
+	try {		
+		deliveryeorderObj=deliveryOrderRepository.getDeliveryorderDetails(deliveryorder.getDeliveryOrderId());
+		
+		deliveryeorderObj.setCreatedBy(deliveryorder.getCreatedBy());
+		deliveryeorderObj.setCreatedDate(deliveryorder.getCreatedDate());
+		deliveryeorderObj.setDeliveryOrderNo(deliveryorder.getDeliveryOrderNo());
+		deliveryeorderObj.setLastModifiedDate(deliveryorder.getLastModifiedDate());
+		deliveryeorderObj.setPurchaseOrderDate(deliveryorder.getPurchaseOrderDate());
+		deliveryeorderObj.setPurchaseOrderNo(deliveryorder.getPurchaseOrderNo());
+		deliveryeorderObj.setRemarks(deliveryorder.getRemarks());
+		deliveryeorderObj.setStatus(deliveryorder.getStatus());
+		deliveryeorderObj.setTotalAmount(deliveryorder.getTotalAmount());			
+			
+		deliveryorderbreakdownList = new ArrayList<Deliveryorderbreakdown>();		
+		
+		Iterator<Deliveryorderbreakdown> deliveryItr = deliveryeorderObj.getDeliveryorderbreakdowns().iterator();
+		
+		for(DeliveryorderbreakdownModel tempdata :deliveryorder.getDeliveryorderbreakdowns() )
+		{
+			Deliveryorderbreakdown data=null;		
+			if (deliveryItr.hasNext()) {
+				data = (Deliveryorderbreakdown) deliveryItr.next();
+				}
+			else {
+				data = new Deliveryorderbreakdown();				
+				}			
+			data.setDiscount(tempdata.getDiscount());
+			data.setDiscountAmount(tempdata.getDiscountAmount());
+			
+			Product productTemp = new Product();			
+			productTemp.setProductId(tempdata.getProductId());
+			productTemp.setProductName(tempdata.getProductName());
+			data.setProduct(productTemp);			
+			
+			data.setProductName(tempdata.getProductName());			
+			data.setDeliveryorder(deliveryeorderObj);
+			data.setQuantity(tempdata.getQuantity());			
+			data.setSubTotal(tempdata.getSubTotal());
+			data.setUnitPrice(tempdata.getUnitPrice());				
+			
+			//Product product=productRepository.getProductDetails(tempdata.getProductId());
+			//data.setQuantityBefore(product.getQuantityonHand());
+			//data.setQuantityAfter(product.getQuantityonHand()+tempdata.getQuantity());			
+			//product.setQuantityonHand(product.getQuantityonHand()+tempdata.getQuantity());
+			//productRepository.updateProduct(product); // Update Product Stock
+			
+			deliveryorderbreakdownList.add(data);			
+		}				
+		deliveryeorderObj.setDeliveryorderbreakdowns(deliveryorderbreakdownList);			
+		saveSuccess=deliveryOrderRepository.updateDeliveryorder(deliveryeorderObj);	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in createNewDeliveryorder of DeliveryorderBOImpl "+ e.toString());
+		throw e;
+	}
+	return saveSuccess;
+	}
+
+	@Override
+	public boolean deleteDeliveryorder(DeliveryorderModel deliveryOrder)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<DeliveryorderbreakdownModel> getDeliveryorderbreakdownList(
+			Integer supplier, Integer deliveryOrderId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DeliveryorderbreakdownModel> getDeliveryorderbreakdownSupplierList(
+			Integer deliveryOrderId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deleteDeliveryorderbreakdown(
+			DeliveryorderbreakdownModel deliveryorderbreakdown)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+	
+	
+	
+	@Transactional
+	@Override
+	public boolean approveDeliveryorder(DeliveryorderModel deliveryorder)
+			throws Exception {
+		boolean updateSuccess = false;	
+		Deliveryorder deliveryorderobj=null;			
+		try {						
+			deliveryorderobj = deliveryOrderRepository.getDeliveryorderDetails(deliveryorder.getDeliveryOrderId());
+			deliveryorderobj.setStatus(deliveryorder.getStatus());			
+			
+			updateSuccess=deliveryOrderRepository.updateDeliveryorder(deliveryorderobj);			
+			}
+		catch (Exception e) {
+			log.info("Error in approveDeliveryorder DeliveryorderBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	}
+
+	@Override
+	public List<DeliveryorderbreakdownModel> getDeliveryorderbreakdownList(Date dateFrom, Date dateTo, int start, int howMany)	throws Exception {
+	
+		List<DeliveryorderbreakdownModel> deliveryorderbreakdownList = new ArrayList<DeliveryorderbreakdownModel>();			
+		try {				
+		for(Deliveryorderbreakdown tempdata :deliveryOrderRepository.getDeliveryorderbreakdownList(dateFrom, dateTo, start, howMany) )
+		{
+			DeliveryorderbreakdownModel data=new DeliveryorderbreakdownModel();						
+			data.setDiscount(tempdata.getDiscount());
+			data.setDiscountAmount(tempdata.getDiscountAmount());							
+			data.setProductId(tempdata.getProduct().getProductId());						
+			data.setProductName(tempdata.getProduct().getProductName());	
+			data.setUomName(tempdata.getProduct().getUom());
+			data.setQuantity(tempdata.getQuantity());			
+			data.setSubTotal(tempdata.getSubTotal());
+			data.setUnitPrice(tempdata.getUnitPrice());	
+			data.setExpDate(tempdata.getExpDate());				
+			data.setCreatedDate(tempdata.getCreatedDate());
+			data.setQuantityAfter(tempdata.getQuantityAfter());
+			data.setQuantityBefore(tempdata.getQuantityBefore());
+			deliveryorderbreakdownList.add(data);			
+		}					
+		}
+		catch (Exception e) {
+			log.info("Error in getDeliveryorderbreakdownList DeliveryorderBOImpl " + e);
+			throw e;
+		}
+		return deliveryorderbreakdownList;
+	}
+
+	@Override
+	public int getDeliveryorderbreakdownCount(Date dateFrom, Date dateTo)
+			throws Exception {
+		try {
+			return deliveryOrderRepository.getDeliveryorderbreakdownCount(dateFrom, dateTo);
+		} catch (Exception e) {
+			log.info("Error in getDeliveryorderbreakdownCount of DeliveryorderBOImpl "+ e.toString());
+			throw e;
+		}
+	}
+
+	
+	
+
+
+}

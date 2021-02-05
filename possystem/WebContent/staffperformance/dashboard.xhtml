@@ -1,0 +1,62 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui">
+<h:head>
+<script type="text/javascript">
+function ext1() {
+    this.cfg.axes.xaxis.tickOptions = {
+        formatString : '%d'
+    };
+    this.cfg.axes.xaxis.tickInterval = "20";
+    this.cfg.legend= {
+            show: true,
+            location: 's',
+            placement: 'outsideGrid'
+        };
+}
+
+
+</script>
+
+	<style>
+		.staffPerformancePanelGrid{
+			width:100%;
+			height:100vh;
+			background:red;
+		}
+		.categoryGraph{
+			width:60%;
+			background:yellow;
+		}
+		.staffDetail{
+			width:60%;
+			text-align:center;
+			background:blue;
+		}
+	</style>
+	
+	
+</h:head>
+<h:form>
+	<h:panelGrid columns="2" 
+	styleClass="staffPerformancePanelGrid" columnClasses="categoryGraph,staffDetail"
+	
+	>
+		<h:column  >
+			<p:chart type="bar" model="#{staffPerformanceChartBean.horizontalBarModel}" 
+			extender="ext1"
+			style="height:300px" responsive="true" />
+		</h:column>
+		
+		<h:column>
+			<p:commandButton value="B" action="#{staffPerformanceBean.fetchTopSalesStaff}"/>
+			<h:outputText value="#{staffPerformanceBean.topStaff.firstName}" />
+			<p:poll interval="3"  />
+		</h:column>	
+	</h:panelGrid>
+</h:form>
+</ui:composition>

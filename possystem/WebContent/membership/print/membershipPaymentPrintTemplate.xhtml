@@ -1,0 +1,271 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog header="Membership Payment Detail" resizable="false"
+		widgetVar="memberPaymentprintDig" modal="false" height="480" width="330px">
+
+
+	
+		<h:panelGrid style="width:295px;" 
+			id="printrequestitem2">
+
+			<p:row >
+				<p:column style="width:100%;" styleClass="alignTop">
+					
+						
+					
+					<table align="center" width="100%" border="0" style="border-collapse: collapse">
+					
+						<tr style="border:0">
+							<td valign="bottom" height="1">
+								<h:outputText value="#{salesorderBean.salesorder.salesOrderNo}" style="font-size:8px;font-style:italic" styleClass="reporttxt" />
+								
+							</td>
+							<td  align="right" valign="bottom" height="1">
+								<h:outputText value="#{membershipPaymentBean.todayDate}" style="font-size:8px;font-style:italic" styleClass="reporttxt">
+									<f:convertDateTime pattern="dd-MM-yyyy HH:mm:ss" />
+								</h:outputText>
+							</td>
+						</tr>
+						<tr >
+							<td width="10%" style="border-top:1px solid black;border-bottom:1px solid black" rowspan="2">
+								<h:graphicImage style="filter: grayscale(100%);"  value="/images/companylogo.jpg" width="35"/>
+							</td>
+							
+							<td align="center" colspan="2" width="90%" style="border-top:1px solid black">
+								<font size="2" color="black">#{loginBean.branch.branchName}</font>
+							</td>
+						</tr>
+
+						<tr>
+							<td align="center" colspan="2" style="border-bottom:1px solid black;" class="reporttxt">#{loginBean.branch.address}
+								, #{loginBean.branch.country}</td>
+						</tr>
+
+					</table>
+
+
+				</p:column>
+			</p:row>
+			<p:row>
+				<table align="center">
+					<tr>
+						<td align="center">
+							<h:outputText value="PAYMENT DETAILS" styleClass="login" style="font-weight: bold;"/>
+						</td>
+					</tr>
+				</table>
+			</p:row>
+			
+			<p:row>
+				<table>
+					<tr>
+						<td>
+							<h:outputText value="ADDED DURATION"  style="font-weight: bold;font-size:12px" ></h:outputText>
+						</td>
+							
+						<td>
+							<h:outputText value=":"  style="font-weight: bold;font-size:12px" ></h:outputText>
+						</td>
+						
+						<td>
+							<h:outputText value="#{membershipPaymentBean.paymentDurationAdded}"  style="font-size:12px;" ></h:outputText>	
+						</td>
+						
+					</tr>
+					<tr>
+						
+						<td>
+							<h:outputText value="AMMOUNT ( RM )"  style="font-weight: bold;font-size:12px" ></h:outputText>
+						</td>
+							
+						<td>
+							<h:outputText value=":"  style="font-weight: bold;font-size:12px" ></h:outputText>
+						</td>
+						
+						<td>
+							<h:outputText value="#{membershipPaymentBean.paymentAmount}"  style="font-size:12px" ></h:outputText>	
+						</td>
+						
+					</tr>
+				</table>
+			</p:row>
+			
+			
+			<p:row>
+				<table align="center">
+					<tr>
+						<td align="center">
+							<h:outputText value="MEMBERSHIP DETAILS" styleClass="login" style="font-weight: bold;"/>
+						</td>
+					</tr>
+				</table>
+			</p:row>
+			
+			
+			<p:row>	
+			<table>	
+				<tr>
+					<td>
+						<h:outputText value="NAME"  style="font-weight: bold;font-size:12px" ></h:outputText>
+					</td>
+					<td>
+						<h:outputText value=":" style="font-weight: bold;font-size:12px" />	
+					</td>
+					<td>
+						<h:outputText value="#{membershipPaymentBean.memberName}"
+							style="font-size:12px" />
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+						<h:outputText value="IDENTIFICATION NUMBER"  style="font-weight: bold;font-size:12px" ></h:outputText>
+					</td>
+						
+					<td>
+						<h:outputText value=":" style="font-weight: bold;font-size:12px" />
+					</td>
+						
+					<td>
+						<h:outputText value="#{membershipPaymentBean.memberIdentificationNumber}"
+							style="font-size:12px" />
+					</td>
+					
+				</tr>
+				
+				<tr>
+					<td>
+						<h:outputText value="CONTACT NO" style="font-weight: bold;font-size:12px" ></h:outputText>
+					</td>
+						
+					<td>
+						<h:outputText value=":" style="font-weight: bold;font-size:12px" />
+					</td>
+						
+					<td>
+						<h:outputText value="#{membershipPaymentBean.memberContactNo}"
+							style="font-size:12px" />
+					</td>
+					
+				</tr>
+				
+				<tr>
+					<td>
+						<h:outputText value="REGISTERED DATE" style="font-weight: bold;font-size:12px" ></h:outputText>
+					</td>
+						
+					<td>
+						<h:outputText value=":" style="font-weight: bold;font-size:12px" />
+					</td>
+						
+					<td>
+						<h:outputText value="#{membershipPaymentBean.memberCreatedDate}"
+							style="font-size:12px" >
+							<f:convertDateTime type="date" pattern="dd MMM yyyy"/>
+							</h:outputText>
+					</td>
+					
+				</tr>
+				
+				<tr>
+					<td>
+						<h:outputText value="EXPIRED DATE"  style="font-weight: bold;font-size:12px" ></h:outputText>
+					</td>
+						
+					<td>
+						<h:outputText value=":" style="font-weight: bold;font-size:12px" />
+					</td>
+						
+					<td>
+						<h:outputText value="#{membershipPaymentBean.memberExpiryDate}"
+							style="font-size:12px" >
+							<f:convertDateTime type="date" pattern="dd MMM yyyy"/>
+						</h:outputText>
+					</td>
+					
+				</tr>
+				
+			</table>
+				
+			</p:row>
+
+
+			<p:row >
+				<p:column border="1px" style="width:100%;" styleClass="logintxtnumberFormat">
+					<center>
+						<h:graphicImage   value="/images/greeting.png" width="25" height="20"/>
+							
+							<h:outputText style="font-weight:bold;font-size:10px;font-style:italic" value="INBAME SULGA ELLORUM VAZHGA" />
+							
+						<h:graphicImage  value="/images/greeting.png" width="25" height="20"/>
+					</center>
+					
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<table style="width:100%;border-top:1px solid black;">
+					<tr>
+					
+						<td align="left">
+							<i>
+								<h:outputText style="font-size:10px" value="JSOFTSOLUTION SDN BHD" />
+							</i>
+						</td>
+						<td align="right">
+							<i>
+								
+								<h:outputText style="font-size:10px" value="012-550 9210" />
+								
+							</i>
+							
+						</td>
+					</tr>
+				</table>
+			</p:row>
+
+
+
+
+
+		</h:panelGrid>
+
+
+		<br></br>
+		
+		<f:facet name="footer">
+			<h:panelGrid columns="3" style="float:left"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+				<p:commandButton value="Print"
+
+					oncomplete="PF('memberPaymentprintDig').hide()" >
+					<p:printer target="printrequestitem2" />
+				</p:commandButton>
+
+				<p:commandButton value="Close"
+				
+					oncomplete="PF('memberPaymentprintDig').hide()" />
+
+			</h:panelGrid>
+		</f:facet>
+
+
+
+
+	</p:dialog>
+
+
+
+
+
+
+</ui:composition>

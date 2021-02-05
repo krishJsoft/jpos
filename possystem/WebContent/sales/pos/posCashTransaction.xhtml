@@ -1,0 +1,272 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="cashTransactionListForm">
+		<p:outputPanel id="posPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="posPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel"
+				header="Search POS Cash Transaction List">
+				<h:panelGrid id="cashTransactionListGrid" columns="10" border="0"
+					width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{posOptionBean.dateFrom}" pattern="dd/MM/yyyy HH:mm:ss a" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{posOptionBean.dateTo}" pattern="dd/MM/yyyy HH:mm:ss a" />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Terminal No" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="counterId" style="width:160px; float :left;"
+						value="#{posOptionBean.counterId}" styleClass="inputCombo">
+						<f:selectItem itemValue="" itemLabel="Select Terminal"></f:selectItem>
+						<f:selectItems value="#{commonListBean.selectTerminalList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="counterId" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" style="width:160px; float :left;"
+						value="#{posOptionBean.transactionStatus}" styleClass="inputCombo">
+						<f:selectItem itemValue="0" itemLabel="Select Status"></f:selectItem>
+						<f:selectItem itemValue="1" itemLabel="New"></f:selectItem>
+						<f:selectItem itemValue="2" itemLabel="Approved"></f:selectItem>
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{posOptionBean.getPoscashtransactionSupList}"
+							update="posPanel" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{posOptionBean.resetCashcollection}" update="posPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+				<br />
+
+				<p:dataTable id="salesTable" var="sales" rowIndexVar="row"
+					scrollable="false"
+					value="#{posOptionBean.poscashtransactionListObj}"
+					paginatorPosition="top" style="width:100%;" scrollHeight="340"
+					paginator="true" rows="10"
+					rowsPerPageTemplate="5,10,15,25,50,100,250,500"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+					<p:column style="width:10%;" styleClass="columnwidth"
+						sortBy="#{sales.lastupdatedDate}">
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:outputText value="#{sales.lastupdatedDate}"
+							styleClass="logintxttable">
+							    <f:convertDateTime pattern="dd MMM yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column style="width:10%;" styleClass="columnwidth"
+						sortBy="#{sales.lastupdatedDate}">
+						<f:facet name="header">
+							<h:outputText value="Time" />
+						</f:facet>
+						<h:outputText value="#{sales.lastupdatedDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="hh:mm:ss a" />
+						</h:outputText>
+					</p:column>
+
+					<p:column style="width:15%;" styleClass="columnwidth"
+						sortBy="#{sales.lastupdatedBy}">
+						<f:facet name="header">
+							<h:outputText value="Terminal User" />
+						</f:facet>
+						<h:outputText value="#{sales.lastupdatedBy}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column style="width:15%;" styleClass="columnwidth"
+						sortBy="#{sales.approvedBy}">
+						<f:facet name="header">
+							<h:outputText value="Approved By" />
+						</f:facet>
+						<h:outputText value="#{sales.approvedBy}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column style="width:15%;" styleClass="columnwidth"
+						sortBy="#{sales.counterNo}">
+						<f:facet name="header">
+							<h:outputText value="Terminal" />
+						</f:facet>
+						<h:outputText value="#{sales.counterNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width:8%;" styleClass="columnwidth"
+						sortBy="#{sales.type}">
+						<f:facet name="header">
+							<h:outputText value="Transaction Type" />
+						</f:facet>
+						<h:outputText value="Cash In" rendered="#{sales.type=='1'}"
+							styleClass="logintxttable" />
+						<h:outputText value="Cash Out" rendered="#{sales.type=='0'}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width:8%;" styleClass="columnwidth"
+						sortBy="#{sales.status}">
+						<f:facet name="header">
+							<h:outputText value="Counter Status" />
+						</f:facet>
+						<h:outputText value="Open" rendered="#{sales.status=='1'}"
+							styleClass="logintxttable" />
+						<h:outputText value="Closed" rendered="#{sales.status=='0'}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column style="width:8%;" styleClass="columnwidth"
+						sortBy="#{sales.transactionStatus}">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText value="New"
+							rendered="#{sales.transactionStatus=='1'}"
+							styleClass="logintxttable" />
+						<h:outputText value="Approved"
+							rendered="#{sales.transactionStatus=='2'}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;"
+						sortBy="#{sales.creditamount}">
+						<f:facet name="header">
+							<h:outputText value="Sum (RM) " />
+						</f:facet>
+						<h:outputText value="#{sales.creditamount}"
+							rendered="#{sales.type=='1'}" styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+						<h:outputText value="#{sales.debitAmount}"
+							rendered="#{sales.type=='0'}" styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+
+					</p:column>
+
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						
+						<p:commandButton style="background:#E32526;border:none;color:white" 
+						 	value="Approve"   
+						 	ajax="true" oncomplete="PF('cashcollectionProcessDig').show()"
+						 	update=":cashTransactionListForm:cashapprove"
+			           		rendered="#{sales.transactionStatus=='1'}"
+							actionListener="#{posOptionBean.approveCashTransaction}">
+							<f:attribute name="cashid" value="#{sales.cashid}" />
+			           	</p:commandButton>
+						
+					</p:column>
+
+
+
+				</p:dataTable>
+
+				<br />
+				<p:commandButton value="Cash In" oncomplete="PF('cashinout').show();"
+					id="cashin"
+					update=":cashTransactionListForm:posPanel,:cashTransactionListForm:collection"
+					action="#{posOptionBean.resetPosTransaction}" ajax="true">
+				</p:commandButton>
+			</p:panel>
+
+
+
+			<p:dialog id="modalDialogCashApprove" showEffect="fade"
+				hideEffect="fade" header="Cash Collection Approve Confirmation"
+				resizable="false" widgetVar="cashcollectionProcessDig" modal="true"
+				height="140" width="400">
+
+				<br></br>
+
+				<p:panel id="cashapprove">
+
+					<h:panelGrid columns="1" border="0" width="90%"
+						styleClass="bgcolor" cellpadding="3" cellspacing="3"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="Are you sure you want to approve Transaction?"
+							styleClass="logintxttable" />
+					</h:panelGrid>
+
+					<br></br>
+
+					<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+						columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+						<p:commandButton value="Approve" ajax="true"
+							update=":cashTransactionListForm:posPanel"
+							oncomplete="PF('cashcollectionProcessDig').hide();"
+							action="#{posOptionBean.approveCashTransactionConfirm}">
+						</p:commandButton>
+						<p:commandButton value="Cancel"
+							onclick="PF('cashcollectionProcessDig').hide()" />
+
+					</h:panelGrid>
+				</p:panel>
+
+			</p:dialog>
+
+
+
+
+		</p:outputPanel>
+
+		<ui:include src="/sales/pos/poscashin.xhtml" />
+
+	</h:form>
+
+	<script type="text/javascript">  
+    function handleCashInRequest(xhr, status, args) {  
+        if(!args.validity) {  
+            PF('cashinout').jq.effect("shake", { times:5 }, 100);  
+        }   
+        else {  
+            PF('cashinout').hide();  
+            $('#cashin').fadeOut();  
+        }  
+    }  
+</script>
+
+</ui:composition>
+
+

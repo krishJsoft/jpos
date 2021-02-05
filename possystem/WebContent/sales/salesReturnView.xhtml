@@ -1,0 +1,241 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+	<p:dialog id="modalDialogSalesOrder" header="Sales Return Details"
+		resizable="false" widgetVar="salesDig" modal="true" height="510"
+		width="90%">
+
+
+		<br></br>
+
+
+		<p:panel id="requestitem" styleClass="mytabpanel">
+
+
+			<h:panelGrid columns="2" border="0" width="90%" styleClass="alignTop"
+				id="requestgrid" cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<p:panel header="Customer Details" style="width:350px;"
+					styleClass="alignTop"
+					rendered="#{salesreturnBean.salesreturn.salesorder.salesType!='1'}">
+					<h:panelGrid columns="1" border="0" width="90%" cellpadding="3"
+						cellspacing="3"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.customer.customerName} , #{salesreturnBean.salesreturn.salesorder.customer.identificationCompanyRegNo}"
+							styleClass="logintxt" />
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.customer.address}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.customer.city}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.customer.state} - #{salesreturnBean.salesreturn.salesorder.customer.postCode}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value=" #{salesreturnBean.salesreturn.salesorder.customer.phoneNo}"
+							styleClass="logintxttable" />
+
+					</h:panelGrid>
+				</p:panel>
+
+				<p:panel header="Branch Details " style="width:350px;"
+					styleClass="alignTop"
+					rendered="#{salesreturnBean.salesreturn.salesorder.salesType=='1'}">
+					<h:panelGrid columns="1" border="0" width="90%" cellpadding="3"
+						cellspacing="3"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.branch.branchName}"
+							styleClass="logintxt" />
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.branch.address}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.branch.city}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.branch.state}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.branch.postCode}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value="#{salesreturnBean.salesreturn.salesorder.branch.phoneNo}"
+							styleClass="logintxttable" />
+					</h:panelGrid>
+
+				</p:panel>
+
+				<p:panel header="Return Details" style="width:450px;"
+					styleClass="alignTop">
+					<h:panelGrid columns="3" border="0" width="90%" cellpadding="3"
+						cellspacing="3"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="Return Date" />
+						<h:outputText value=":" />
+						<h:outputText value="#{salesreturnBean.salesreturn.returndate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+
+						<h:outputText value="Sales Order No" />
+						<h:outputText value=":" />
+						<h:outputText value="#{salesreturnBean.salesreturn.salesOrderNo}"
+							styleClass="logintxttable">
+						</h:outputText>
+
+
+						<h:outputText value="Sales Status" />
+						<h:outputText value=":" />
+						<h:outputText value="#{app['return.status.neworderlable']}"
+							rendered="#{salesreturnBean.salesreturn.status==app['return.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.processedlable']}"
+							rendered="#{salesreturnBean.salesreturn.status==app['return.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.orderedlable']}"
+							rendered="#{salesreturnBean.salesreturn.status==app['return.status.orderedvalue']}"
+							styleClass="logintxttable" />
+
+						<h:outputText value="Supplier Status" />
+						<h:outputText value=":" />
+						<h:outputText value="#{app['return.status.neworderlable']}"
+							rendered="#{salesreturnBean.salesreturn.status==app['return.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.processedlable']}"
+							rendered="#{salesreturnBean.salesreturn.status==app['return.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.orderedlable']}"
+							rendered="#{salesreturnBean.salesreturn.status==app['return.status.orderedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.paidlable']}"
+							rendered="#{salesreturnBean.salesreturn.status==app['return.status.paidvalue']}"
+							styleClass="logintxttable" />
+					</h:panelGrid>
+				</p:panel>
+			</h:panelGrid>
+
+
+
+
+
+
+			<br></br>
+			<br></br>
+
+			<p:dataTable id="salesTable" var="product" rowIndexVar="productrow"
+				scrollable="true" value="#{salesreturnBean.salesreturn.salesreturn}"
+				style="width:100%;" scrollHeight="180" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}"> 
+
+
+				<p:column style="width:10%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="Product Code" />
+					</f:facet>
+					<h:outputText
+						value="#{product.salesorderbreakdownmodel.productCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column style="width:25%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="Product Name" />
+					</f:facet>
+					<h:outputText
+						value="#{product.salesorderbreakdownmodel.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:5%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="UOM" />
+					</f:facet>
+					<h:outputText value="#{product.salesorderbreakdownmodel.uom}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:7%;">
+					<f:facet name="header">
+						<h:outputText value="Batch No " />
+					</f:facet>
+					<h:outputText value="#{product.salesorderbreakdownmodel.batchNo}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:9%;">
+					<f:facet name="header">
+						<h:outputText value="Expiry Date " />
+					</f:facet>
+					<h:outputText value="#{product.salesorderbreakdownmodel.expDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</p:column>
+
+
+
+				<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+					<f:facet name="header">
+						<h:outputText value="Return Quantity " />
+					</f:facet>
+					<h:outputText value="#{product.returnQuantity}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:15%;">
+					<f:facet name="header">
+						<h:outputText value="Supplier " />
+					</f:facet>
+					<h:outputText
+						value="#{product.salesorderbreakdownmodel.supplier.supplierName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Close" onclick="salesDig.hide()" />
+
+
+
+		</h:panelGrid>
+
+
+
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

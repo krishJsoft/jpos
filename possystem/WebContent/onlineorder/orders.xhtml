@@ -1,0 +1,110 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:form id="orderlistForm">
+	<p:panel styleClass="mypanel"   >
+	
+		<p:dataTable id="onlineOrderListdataTable" var="order" rowIndexVar="row"
+		scrollable="true" scrollHeight="420"
+		value="#{onlineOrderBean.orderList}" paginator="true"
+		rows="10" style="width: 100%" 
+		rowsPerPageTemplate="5,10,15,25,50,100"
+		rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"  >
+		<p:ajax event="sort" skipChildren="false" />
+			<p:column id="modelHeader" width="3%">
+				<f:facet name="header">
+					<h:outputText value="#{des['common.table.header.no']}" />
+				</f:facet>
+				<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="8%">
+				<f:facet name="header">
+					<h:outputText value="Order No" />
+				</f:facet>
+				<h:outputText value="#{order.quotationNo}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%" sortBy="#{order.customer.customerName}">
+				<f:facet name="header">
+					<h:outputText value="Customer Name" />
+				</f:facet>
+				<h:outputText value="#{order.customer.customerName}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%" sortBy="#{order.deliveryAddress}">
+				<f:facet name="header">
+					<h:outputText value="Delivery address" />
+				</f:facet>
+				<h:outputText value="#{order.deliveryAddress}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%" sortBy="#{order.ordertype}">
+				<f:facet name="header">
+					<h:outputText value="Type" />
+				</f:facet>
+				<h:outputText value="#{order.ordertype}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="5%" sortBy="#{order.status}">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				
+				<h:outputText
+					value="#{app['deliveryorder.status.neworderlable']}"
+					rendered="#{order.status==app['deliveryorder.status.newordervalue']}"
+					styleClass="logintxttable" />
+					
+				<h:outputText
+					value="#{app['deliveryorder.status.processedlable']}"
+					rendered="#{order.status==app['deliveryorder.status.processedvalue']}"
+					styleClass="logintxttable" />
+					
+				<h:outputText
+					value="#{app['deliveryorder.status.orderedlable']}"
+					rendered="#{order.status==app['deliveryorder.status.orderedvalue']}"
+					styleClass="logintxttable" />
+					
+				<h:outputText
+					value="#{app['deliveryorder.status.closedlable']}"
+					rendered="#{order.status==app['deliveryorder.status.closedvalue']}"
+					styleClass="logintxttable" />
+				
+				<h:outputText
+					value="#{app['deliveryorder.status.cancelledlable']}"
+					rendered="#{order.status==app['deliveryorder.status.cancelledvalue']}"
+					styleClass="logintxttable" />
+				
+			</p:column>
+			
+			<p:column style="width: 7%;text-align:center;">
+				<f:facet name="header">Action</f:facet>
+				<p:menuButton value="Options">
+
+					<p:menuitem value="View" styleClass="logintxttable"
+						oncomplete="PF('orderDetaildlg').show()"
+						update="orderlistForm:orderDetaildlg"
+						actionListener="#{onlineOrderBean.vieworderdetails}">
+						>
+						<f:attribute name="order" value="#{order}" />
+						
+					</p:menuitem>
+				</p:menuButton>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+	
+			
+	<ui:include src="/onlineorder/dlgs/orderdetaildlg.xhtml" />
+	
+</h:form>
+
+
+
+</ui:composition>
+
+

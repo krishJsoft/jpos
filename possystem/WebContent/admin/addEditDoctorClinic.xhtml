@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditDoctorForm">
+		<p:outputPanel id="doctorPanel">
+		
+		<p:panel  styleClass="mytabpanel" header="Add/Edit DoctorClinic">  
+		
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="doctorPanel" /></td>
+				</tr>
+			</table>
+
+
+			
+			
+			<p:wizard widgetVar="wiz"  id="tabView" showStepStatus="true"
+            flowListener="#{doctorClinicBean.onFlowProcess}">
+				
+				
+				<p:tab title="Doctor Information" id="step1"  titleStyleClass="logintxt">
+					<ui:include src="/admin/doctorStep1.xhtml" />
+				</p:tab>
+
+				
+				<p:tab title="Clinic Information" id="step2" titleStyleClass="logintxt">
+					<ui:include src="/admin/doctorStep2.xhtml" />
+				</p:tab>
+
+				
+			</p:wizard>
+				
+			</p:panel>
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

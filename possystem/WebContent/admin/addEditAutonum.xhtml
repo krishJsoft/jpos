@@ -1,0 +1,194 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="newAutonumForm">
+		<p:outputPanel id="pageContentPanel">
+
+			<p:panel styleClass="mypanel" header="Add/Edit System AutoNumber"
+				id="autonumPanel">
+
+				<table align="center" width="100%" border="0">
+					<tr>
+						<td align="center"><p:message for="autonumPanel" /></td>
+					</tr>
+				</table>
+
+
+
+				<h:panelGrid id="newautonumgrid" columns="5" border="0"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="Purchase Request" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+
+					<h:panelGrid columns="2" border="0">
+						<p:inputText id="purchaseRequestFormat"
+							value="#{systemAutonumBean.autonum.purchaseRequestFormat}"
+							maxlength="3" size="5" />
+						<p:inputText id="purchaseRequest" onkeypress='return validate(event)'
+							styleClass="logintxtnumberFormat"
+							value="#{systemAutonumBean.autonum.purchaseRequest}"
+							maxlength="10" size="15" />
+					</h:panelGrid>
+					<p:message for="purchaseRequest" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="Purchase Order" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:panelGrid columns="2" border="0">
+						<p:inputText id="purchaceOrderFormat"
+							value="#{systemAutonumBean.autonum.purchaceOrderFormat}"
+							maxlength="3" size="5" />
+						<p:inputText id="purchaceOrder" styleClass="logintxtnumberFormat" onkeypress='return validate(event)'
+							value="#{systemAutonumBean.autonum.purchaceOrder}" maxlength="10"
+							size="15" />
+					</h:panelGrid>
+					<p:message for="purchaceOrder" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="Delivery" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:panelGrid columns="2" border="0">
+						<p:inputText id="deliveryOrderFormat"
+							value="#{systemAutonumBean.autonum.deliveryOrderFormat}"
+							maxlength="3" size="5" />
+						<p:inputText id="deliveryOrder" styleClass="logintxtnumberFormat" onkeypress='return validate(event)'
+							value="#{systemAutonumBean.autonum.deliveryOrder}" maxlength="10"
+							size="15" />
+					</h:panelGrid>
+					<p:message for="deliveryOrder" styleClass="fieldError" />
+
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="Quotation" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:panelGrid columns="2" border="0">
+						<p:inputText id="Quotation"
+							value="#{systemAutonumBean.autonum.quoteNoFormat}" maxlength="3"
+							size="5" />
+						<p:inputText id="quoteNo" styleClass="logintxtnumberFormat" onkeypress='return validate(event)'
+							value="#{systemAutonumBean.autonum.quoteNo}" maxlength="10"
+							size="15" />
+					</h:panelGrid>
+					<p:message for="quoteNo" styleClass="fieldError" />
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="Sales Order" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:panelGrid columns="2" border="0">
+						<p:inputText id="salesOrderFormat"
+							value="#{systemAutonumBean.autonum.salesOrderFormat}"
+							maxlength="3" size="5" />
+						<p:inputText id="salesOrder" styleClass="logintxtnumberFormat" onkeypress='return validate(event)'
+							value="#{systemAutonumBean.autonum.salesOrder}" maxlength="3"
+							size="15" />
+					</h:panelGrid>
+					<p:message for="salesOrder" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="Invoice" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:panelGrid columns="2" border="0">
+						<p:inputText id="Invoice"
+							value="#{systemAutonumBean.autonum.invoiceNoFormat}"
+							maxlength="3" size="5" />
+						<p:inputText id="invoiceNo" styleClass="logintxtnumberFormat" onkeypress='return validate(event)'
+							value="#{systemAutonumBean.autonum.invoiceNo}" maxlength="10" 
+							size="15" />
+					</h:panelGrid>
+					<p:message for="Invoice" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="Collection" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:panelGrid columns="2" border="0">
+						<p:inputText id="collectionNo"
+							value="#{systemAutonumBean.autonum.collectionFormat}"
+							maxlength="3" size="5" />
+						<p:inputText id="collectionFormat"
+							styleClass="logintxtnumberFormat" onkeypress='return validate(event)'
+							value="#{systemAutonumBean.autonum.collectionNo}" maxlength="10"
+							size="15" />
+					</h:panelGrid>
+					<p:message for="collectionNo" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="Settlement" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:panelGrid columns="2" border="0">
+						<p:inputText id="paymentFormat"
+							value="#{systemAutonumBean.autonum.paymentFormat}" maxlength="3"
+							size="5" />
+						<p:inputText id="despatch" styleClass="logintxtnumberFormat" onkeypress='return validate(event)'
+							value="#{systemAutonumBean.autonum.paymentNo}" maxlength="10"
+							size="15" />
+					</h:panelGrid>
+					<p:message for="paymentFormat" styleClass="fieldError" />
+
+
+				
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid id="newautobuttongrid" columns="3" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+
+						<p:commandButton value="Update"
+							action="#{systemAutonumBean.updateAutonum()}" ajax="false"
+							update="newautonumgrid" />
+
+						<p:commandButton value="Reset" ajax="false"
+							action="#{systemAutonumBean.getAutonumModel}"
+							update="newautonumgrid" />
+
+
+
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+
+
+
+			</p:panel>
+
+
+
+
+
+
+
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

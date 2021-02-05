@@ -1,0 +1,152 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addRoleForm">
+
+		<p:panel id="addRole" styleClass="mypanel" header="View Roles">
+
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="addRole" /></td>
+				</tr>
+			</table>
+			
+			<h:panelGrid id="searchbranchstaffgrid" columns="10" border="0"
+					width="50%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['addRole.label.rolename']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="roleName"
+						value="#{roleBean.roleId}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Role Name" itemValue="0" />
+						<f:selectItems value="#{commonListBean.selectRoleList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="roleName" styleClass="fieldError" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid id="newstaffgrid" columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="false"
+							action="#{roleBean.searchRole}"
+							update="addRoleForm" />
+
+
+						<p:commandButton value="Reset" ajax="false"
+							action="#{roleBean.resetSearchRole}"
+							update="addRoleForm" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+			<br />
+			<br />
+
+			<p:dataTable id="roledataTable" var="roleList" rowIndexVar="row"
+				value="#{roleBean.roleInfoList}" paginator="true" rows="7"
+				style="width:100%" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+
+
+				<p:column style="width:50px">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxt"
+						style="valign:top;" />
+				</p:column>
+
+				<p:column sortBy="#{roleList.roleName}">
+					<f:facet name="header">
+						<h:outputText value="#{msg['addRole.label.rolename']}" />
+					</f:facet>
+					<h:outputText value="#{roleList.roleName}"
+						styleClass="logintxttable" style="valign:top;" />
+				</p:column>
+
+				<p:column styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['addRole.label.roledescription']}" />
+					</f:facet>
+					<h:outputText value="#{roleList.roleDescription}"
+						styleClass="logintxttable" style="valign:top;" />
+				</p:column>
+
+				<p:column rendered="#{roleList.roleName != 'administrator'}">
+					<f:facet name="header">
+						<h:outputText value="#{msg['common.action.name']}" />
+					</f:facet>
+
+
+					<p:menuButton value="Options"  >
+						<p:menuitem value="#{msg['common.edit']}"  styleClass="logintxttable"  
+						ajax="false"
+						actionListener="#{roleBean.onClick_Edit}" 
+						reRender="succMsg" >
+							<f:attribute value="#{roleList.roleId}" name="editrole" />
+						</p:menuitem>
+
+						<p:menuitem value="#{msg['common.Privileges']}" styleClass="logintxttable"  
+						ajax="false"
+						actionListener="#{roleBean.onClick_Privilages}" 
+						reRender="succMsg" >
+						<f:attribute value="#{roleList.roleId}" name="editrolepri" />
+						</p:menuitem>
+
+						<p:menuitem immediate="true" 
+							value="Delete" ajax="true" async="true"
+							styleClass="logintxttable" 
+							update="addRoleForm" 
+							actionListener="#{roleBean.deleteRole}">
+							<p:confirm message="Are you sure want to delete role #{roleList.roleName} ?" icon="ui-icon-alert" />
+							<f:attribute name="deleterole" value="#{roleList.roleId}" />
+						</p:menuitem>
+					</p:menuButton>
+				</p:column>
+
+			</p:dataTable>
+			<br/>
+
+
+			<p:commandButton value="Add New Role" action="#{roleBean.addNewRole()}"
+				ajax="false" styleClass="loginText" />
+		</p:panel>
+
+		<br />
+		<a4j:outputPanel id="succMsg" ajaxRendered="true">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><h:outputText
+							value="#{roleBean.successMessage}" styleClass="fieldSuccess" /></td>
+				</tr>
+			</table>
+		</a4j:outputPanel>
+		<br />
+
+		<p:confirmDialog global="true" >
+		<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		</p:confirmDialog>
+	</h:form>
+
+
+</ui:composition>

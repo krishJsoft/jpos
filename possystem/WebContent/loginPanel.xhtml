@@ -1,0 +1,193 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:h="http://java.sun.com/jsf/html"
+	>
+<style>
+
+.loginInputPanel{
+	width:90%;
+	background:#422c8d;
+	border-spacing: 8px;
+}
+
+.loginInputPanel td{
+	//border:1px solid white;
+	text-align:center;
+	padding:0;
+	margin:0;
+}
+.loginInputPanel td:nth-child(1),.loginInputPanel td:nth-child(2),.loginInputPanel td:nth-child(3){
+	width:33%;
+}
+
+.inputLoginPanel-inputPasswordField{
+	width:100%;
+	font-size:2em;
+	text-align:center;
+	border-radius:25px 25px 0 0;
+	
+}
+
+.inputLoginPanel-keyButton{
+	width:100%;
+	font-size:3em;
+	background:black;
+	color:white;
+	border:0;
+	border-radius:25px;
+}
+
+.inputLoginPanel-keyButton:active{
+	font-size:2.5em;
+}
+
+.inputLoginPanel-loginButton{
+	font-family: Impact, Charcoal, sans-serif;
+	width:100%;
+	font-size:3em;
+	color:#dafaf6;
+	background:#72cb31;
+	border:0;
+}
+.inputLoginPanel-loginButton:active {
+  	color:white;
+    background:black;
+    font-size:2.5em;
+}
+
+</style>
+<table class="loginInputPanel">
+	<tr >
+		<td colspan="3" valign="top" >
+			<p:password 
+				placeholder="&#x26BF; Password &#x26BF;" 
+				styleClass="inputLoginPanel-inputPasswordField" 
+				value="#{loginBean.password}"
+			/>
+
+			<p:selectOneMenu 
+				value="#{loginBean.branchId}"
+				style="width:230px; text-align:left;visibility: hidden;"
+				styleClass="form-control hide_search"
+				>
+				
+				<f:selectItem itemLabel="LOCAL" itemValue="2" />
+			</p:selectOneMenu>
+			
+		</td>
+	</tr>
+	<tr>
+		<td >
+			<button type="button" class="inputLoginPanel-keyButton" data-key="1" >1</button>
+		</td>
+		
+		<td>
+			<button type="button" class="inputLoginPanel-keyButton" data-key="2">2</button>
+		</td>
+		
+		<td>
+			<button type="button" class="inputLoginPanel-keyButton" data-key="3">3</button>
+		</td>
+	</tr>
+	
+	<tr>
+		<td >
+			<button type="button" class="inputLoginPanel-keyButton" data-key="4" >4</button>
+		</td>
+		
+		<td>
+			<button type="button" class="inputLoginPanel-keyButton" data-key="5">5</button>
+		</td>
+		
+		<td>
+			<button type="button" class="inputLoginPanel-keyButton" data-key="6">6</button>
+		</td>
+	</tr>
+	
+	<tr>
+		<td>
+			<button type="button" class="inputLoginPanel-keyButton" data-key="7" >7</button>
+		</td>
+		
+		<td>
+			<button type="button" class="inputLoginPanel-keyButton" data-key="8" >8</button>
+		</td>
+		
+		<td>
+			<button type="button" class="inputLoginPanel-keyButton" data-key="9" >9</button>
+		</td>
+		
+	</tr>
+	
+	<tr>
+		<td >
+			<button type="button" class="inputLoginPanel-keyButton" data-key="del" >&#8592;</button>
+		</td>
+		
+		<td>
+			<button type="button" class="inputLoginPanel-keyButton" data-key="0" >0</button>
+		</td>
+		
+		<td>
+			<button type="button" class="inputLoginPanel-keyButton" data-key="clear" >&#9746;</button>
+		</td>
+	</tr>
+	
+	<tr>
+		
+		<td colspan="3">
+			<h:commandButton value="LOGIN" 
+				styleClass="inputLoginPanel-loginButton" 
+				onclick="getScreenSize()"
+				action="#{loginBean.login}"
+			/>
+		</td>
+		
+	</tr>
+	
+	<tr>
+		<td valign="top" colspan="3">
+		
+			<p:selectOneMenu 
+				id="posTerminalList"
+				value="#{loginBean.posCounterId}"
+				style="text-align:left;"
+			>
+				<f:selectItem itemValue="1" itemLabel="Counter A" />
+			</p:selectOneMenu>
+			
+		</td>
+	</tr>
+</table>
+
+  
+<script>
+
+$(".inputLoginPanel-keyButton").click(function () {
+	keyValue= $(this).data('key');
+	if(keyValue=="clear"){
+		$(".inputLoginPanel-inputPasswordField").val("");
+		
+	}else if(keyValue=="del"){
+		$(".inputLoginPanel-inputPasswordField").val($(".inputLoginPanel-inputPasswordField").val().slice(0, -1));
+
+	}else{
+		$(".inputLoginPanel-inputPasswordField").val(function() {
+	        return this.value + keyValue;
+	    });	
+	}
+	
+});
+
+</script>
+
+</ui:composition>
+
+
+
+
+
+

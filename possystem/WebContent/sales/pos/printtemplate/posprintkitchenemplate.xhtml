@@ -1,0 +1,72 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog header="Order Detail" resizable="false"
+		widgetVar="kitchenprintdlg" modal="false" height="480" width="330px">
+		<p:panelGrid style="width:295px;" 
+			id="printkitchenbill" >
+
+			<p:row>
+				<p:column style="width:100%;">
+					<p:dataTable
+						value="#{posBean.salesorder.salesorderbreakdowns}" style="width:100%"
+						var="pos" styleClass="borderless"
+						headerClass="order-table-header"
+						rowClasses="order-table-odd-row,order-table-even-row">
+
+						<p:column style="width:60%">
+							<f:facet name="header">Item</f:facet>
+							<h:outputText value="#{pos.productName}"
+								styleClass="reporttxt"></h:outputText>
+						</p:column>
+						<p:column style="width:20%;text-align:center" >
+							<f:facet name="header">Qty</f:facet>
+							<h:outputText value="#{posBean.itemcountQty[pos.sno]}" styleClass="reporttxt">
+								<f:convertNumber pattern="#0" />
+							</h:outputText>
+						</p:column>
+
+					</p:dataTable>
+
+				</p:column>
+			</p:row>
+
+		</p:panelGrid>
+		<br></br>
+		<f:facet name="footer">
+			<h:panelGrid columns="3" style="float:left"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+				<p:commandButton value="Print"
+					oncomplete="PF('kitchenprintdlg').hide();" >
+					<p:printer target="printkitchenbill" />
+				</p:commandButton>
+
+				<p:commandButton value="Close"
+					oncomplete="PF('kitchenprintdlg').hide();" />
+
+			</h:panelGrid>
+		</f:facet>
+
+
+
+
+	</p:dialog>
+
+
+<style>
+window.onload = function() {
+		  window.print();
+		};
+	
+</style>
+
+
+</ui:composition>

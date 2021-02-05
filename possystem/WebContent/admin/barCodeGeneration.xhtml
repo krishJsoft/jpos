@@ -1,0 +1,197 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head />
+	<h:form id="barcodeForm">
+		<p:outputPanel width="100%" id="barcodegridoutPanel">
+
+
+
+			<p:panel styleClass="limitedHeightDiv">
+
+
+				<p:layout
+					style="min-width:400px;min-height:#{loginBean.screenHeight}px;"
+					id="layout">
+
+					<p:layoutUnit position="center" header="Sales Return Detail">
+
+
+						<p:focus id="focusid" context="barcodegridoutPanel" />
+
+						<table align="center" width="50%" border="0">
+							<tr>
+								<td align="left" valign="top"><p:messages id="messages"
+										showDetail="true" autoUpdate="true" /></td>
+							</tr>
+						</table>
+
+
+						<br></br>
+
+
+						<table align="center" width="70%" border="0">
+							<tr>
+
+								<td width="40%" valign="top"><p:panel
+										header="BarCode Generation"
+										style="width:410px; height:260px; align:center">
+
+
+										<h:panelGrid id="barcodegrid" columns="4" border="0"
+											columnClasses="columnLeft width-10px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px , columnLeft width-280px,columnLeft">
+
+											<h:outputText value="Product Name"
+												styleClass="input01barcode" />
+											<p:selectOneMenu id="productTypeName"
+												value="#{dynamicImageController.productTypeName}">
+												<f:selectItems
+													value="#{dynamicImageController.selectProductTypeList}" />
+											</p:selectOneMenu>
+											<h:outputText value="" />
+											<h:outputText value="" />
+
+
+											<h:outputText value="Amount" styleClass="input01barcode" />
+											<p:inputText id="barinput"
+												value="#{dynamicImageController.barcodeinput}"
+												requiredMessage="Value is Required" label="BarCode"
+												maxlength="6" onkeypress="return onlyNumbers(event);"
+												size="40" styleClass="textwidth">
+											</p:inputText>
+											<h:outputText value="" />
+											<h:outputText value="" />
+
+
+
+
+											<h:outputText value="" />
+
+
+											<h:panelGrid id="barcodeprintgrid" columns="2" border="0"
+												lumnClasses="columnLeft width-10px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px , columnLeft width-280px,columnLeft">
+
+												<p:commandButton value="Generate" type="submit" ajax="false"
+													actionListener="#{dynamicImageController.generatebarCodeList}"
+													update="barcodeForm,focusid,barcodeForm"
+													styleClass="buttonwidth" />
+
+												<p:commandButton value="Reset"
+													actionListener="#{dynamicImageController.clearBarCodeList}"
+													update="barcodeForm" styleClass="buttonwidth">
+													<f:attribute name="key" value="c" />
+												</p:commandButton>
+
+											</h:panelGrid>
+
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+											<h:outputText value="" />
+
+											<h:outputText value="#{dynamicImageController.serialNo}"
+												styleClass="barcodeValue" />
+
+										</h:panelGrid>
+									</p:panel></td>
+								<td width="30%" valign="top" align="right"><p:panel
+										header="" styleClass="bgcolor"
+										style="width:410px; height:260px; align:center;">
+										<h:panelGrid id="keyboardgrid" columns="3" border="0"
+											styleClass="bgcolor"
+											columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+											<p:commandButton value="1" onclick="return enterValue('1');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="1" />
+											</p:commandButton>
+											<p:commandButton value="2" onclick="return enterValue('2');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="2" />
+											</p:commandButton>
+											<p:commandButton value="3" onclick="return enterValue('3');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="3" />
+											</p:commandButton>
+											<p:commandButton value="4" onclick="return enterValue('4');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="4" />
+											</p:commandButton>
+											<p:commandButton value="5" onclick="return enterValue('5');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="5" />
+											</p:commandButton>
+											<p:commandButton value="6" onclick="return enterValue('6');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="6" />
+											</p:commandButton>
+											<p:commandButton value="7" onclick="return enterValue('7');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="7" />
+											</p:commandButton>
+											<p:commandButton value="8" onclick="return enterValue('8');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="8" />
+											</p:commandButton>
+											<p:commandButton value="9" onclick="return enterValue('9');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="9" />
+											</p:commandButton>
+											<p:commandButton value="0" onclick="return enterValue('0');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="0" />
+											</p:commandButton>
+											<p:commandButton value="." onclick="return enterValue('.');"
+												type="button" styleClass="buttonwidth" immediate="true"
+												ajax="true" async="true">
+												<f:attribute name="key" value="." />
+											</p:commandButton>
+											<p:commandButton value="Clear" icon="ui-icon-print"
+												actionListener="#{dynamicImageController.clearBarCodeList}"
+												update="barcodeForm" styleClass="buttonwidth">
+												<f:attribute name="key" value="c" />
+											</p:commandButton>
+										</h:panelGrid>
+
+
+									</p:panel></td>
+							</tr>
+						</table>
+						<br></br>
+						</p:layoutUnit>
+						</p:layout>
+						
+			</p:panel>
+		</p:outputPanel>
+	</h:form>
+</ui:composition>
+
+

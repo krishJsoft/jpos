@@ -1,0 +1,204 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://www.eclipse.org/birt/taglibs/birt.tld"
+	xmlns:birt="urn:jsptld:/WEB-INF/tlds/birt.tld"
+	>
+	
+
+<script type="text/javascript">
+
+function chartSalesLineExtender(){
+	
+}
+function chartExtender() {
+	var translator = new Array("January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+	this.cfg.grid = {             
+	        background: 'transparent',
+	         gridLineColor: 'grey',
+	         drawBorder: false,
+	         shadow:false,
+	    };
+    
+	//this.cfg.axes.xaxis.tickOptions.showGridline = false;
+
+	
+	//this.cfg.axes.yaxis.tickOptions.showGridline = false;
+	this.cfg.axes.xaxis.tickOptions.textColor = 'green';
+	//this.cfg.axes.xaxis.tickOptions.formatString  = '%H:%M:%S';
+	//<![CDATA[
+	//for( var i=0;i<12;i++){
+	//	this.cfg.axes.xaxis.ticks=[[1,'Jan'],[2,'Feb'],[3,'Mar'],[4,'Apr']
+		//,[5,'May'],[6,'Jun'],[7,'Jul'],[8,'Aug'],[9,'Sep'],[10,'Oct'],[11,'Nov'],[12,'Dec']];
+	//}
+	 //]]>
+
+ 	this.cfg.seriesDefaults = {
+	            pointLabels: {show: true}
+        };
+ 	this.cfg.legend = {
+			  show:false
+	}
+ 	
+}
+
+function pieExtender(){
+	//this.cfg.seriesDefaults.rendererOptions.showDataLabels=true;
+	this.cfg.seriesDefaults.rendererOptions.dataLabelFormatString = '%.4s%%';
+    this.cfg.seriesDefaults.rendererOptions.dataLabelThreshold = 0;
+    this.cfg.grid = {             
+	        background: 'transparent',
+	         
+	    };
+    
+    this.cfg.title={text:'QUARTERLY SALES'};
+    
+	this.cfg.legend = {
+			  show:true,
+	            location:'e',
+	            marginTop: '15px'
+	}
+	
+	
+}
+
+function weeklyTopItem() {
+	this.cfg.grid = {             
+	        background: 'transparent',
+	         gridLineColor: 'grey',
+	         drawBorder: false,
+	         shadow:false,
+	    };
+  
+}
+function staffPerformanceExtender(){
+	this.cfg.grid = {             
+      	background: 'transparent',
+     	gridLineColor: 'grey',
+     	drawBorder: false,
+       	shadow:false,
+    };
+	this.cfg.axes.yaxis.tickOptions.formatString = "%d";
+	this.cfg.legend = {
+			  show:false,
+	};
+}
+</script>
+<style type="text/CSS">
+.jqplot-title{
+    color:blue;
+   
+}
+.jqplot-xaxis{
+    color: #eeccaa; 
+}
+.jqplot-yaxis{
+    color: green;
+}
+.chartSelection-button{
+	width:10%;
+}
+#quarterSalesChart .jqplot-point-label {
+  border: 1.5px solid #aaaaaa;
+  padding: 1px 3px;
+  background-color: #eeccdd;
+}
+
+.hasDatepicker{
+display:none;
+}
+</style>
+
+ 
+			<p:panel id="lineChartPanel" >
+				<h:form>
+				<center> 
+			   	<p:chart id="lineChartSales" widgetVar="chart" type="line" model="#{chartView.lineModel}"  style="height:400px;width:100%;" 
+			   		responsive="true"  
+			   	/>
+			 <ui:remove>
+					<p:commandButton  value="Export" icon="ui-icon-extlink" />
+			</ui:remove>
+					<p:selectOneMenu id="salesyear" value="#{chartView.salesYear}"
+						style="width:180px; text-align:left;" >
+						<p:ajax listener="#{chartView.monthlySalesChart}" update="lineChartSales" />
+						<f:selectItems value="#{commonListBean.yearList}"></f:selectItems>
+					</p:selectOneMenu>
+					
+					<ui:remove>
+					<p:commandButton styleClass="chartSelection-button"
+					actionListener="#{chartView.lineModel}" value="Monthly" update="lineChartSales">
+						<f:attribute name="salesModelType" value="Monthly" />
+					</p:commandButton>
+					</ui:remove>
+					<ui:remove>
+					<p:commandButton styleClass="chartSelection-button"
+					actionListener="#{chartView.lineModel}" value="Daily" update="lineChartSales">
+						<f:attribute name="salesModelType" value="Daily" />
+					</p:commandButton>
+					</ui:remove>
+				
+				</center>
+				
+				
+				</h:form>
+			</p:panel>
+	
+	
+			<p:panel id="pieChartPanel">
+				<h:form>
+				<center>
+					<p:chart id="quarterSalesChart" type="pie" model="#{chartView.quartelySalesModel}"  style="height:400px;width:100%;"/>
+					<p:selectOneMenu id="salesyear" value="#{chartView.quarterlySalesYear}"
+						style="width:180px; text-align:left;" >
+						<p:ajax listener="#{chartView.quartelySalesChart}" update="quarterSalesChart" />
+						<f:selectItems value="#{commonListBean.yearList}"></f:selectItems>
+					</p:selectOneMenu>
+				
+				</center>
+				</h:form>
+			</p:panel>
+			
+
+			<p:panel id="barChartStackedWeeklyTopSales">
+				<h:form id="weeklyTopSalesForm">
+				<center>
+					<p:chart id="weeklyTopSales" type="bar" model="#{chartView.weeklyTopSalesModel}" style="height:400px;width:100%;"/>
+					<p:calendar id="weeklyTopSalesCalendar"  showOn="button" >
+            			<p:ajax event="dateSelect" listener="#{chartView.onDateSelectWeeklyTopItem}" update="weeklyTopSales" />
+        			</p:calendar>
+				</center>
+				</h:form>
+			</p:panel>
+			  
+					
+			<p:panel id="lineChartStaffPerformance">
+				<h:form>
+				<center>
+					<p:chart id="monthlyStaffPerformance" type="line" model="#{chartView.staffPerformanceModel}" 
+					style="height:400px;width:100%;"/>
+				
+					<p:selectOneMenu value ="#{chartView.staffId}"> 
+						<f:selectItems value="#{chartView.staffList}" />
+							
+					</p:selectOneMenu>
+					<p:selectOneMenu  value="#{chartView.staffPerformanceYear}"
+						style="width:180px; text-align:left;" >
+						<f:selectItems value="#{commonListBean.yearList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:selectOneMenu  value="#{chartView.staffPerformanceMonth}"
+						style="width:180px; text-align:left;" >
+						<f:selectItems value="#{commonListBean.monthList}"></f:selectItems>
+					</p:selectOneMenu>
+					<br/>
+					<p:commandButton value="RESULT" action="#{chartView.monthlyStaffPerformance}" update="monthlyStaffPerformance" />
+				</center>
+				</h:form>
+				
+			</p:panel>
+
+</ui:composition>
+
+

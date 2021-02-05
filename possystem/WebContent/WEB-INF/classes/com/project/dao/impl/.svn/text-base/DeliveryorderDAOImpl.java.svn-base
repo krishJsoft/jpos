@@ -1,0 +1,341 @@
+package com.alpha.dao.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import com.alpha.dao.interfaces.IDeliveryorderDAO;
+import com.alpha.hq.model.Deliveryorder;
+import com.alpha.hq.model.Deliveryorderbreakdown;
+import com.alpha.hq.model.Purchaseorder;
+
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 15 Aug 2013
+ */
+
+@Repository("deliveryOrderRepository")
+public class DeliveryorderDAOImpl implements IDeliveryorderDAO {
+	
+	public static Logger log = LoggerFactory.getLogger(DeliveryorderDAOImpl.class);
+	long l = 0;
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+	public EntityManager getEm() {
+		return em;
+	}
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}	
+	
+	@Override
+	public List<Deliveryorder> findByDeliveryorderListAll() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getDeliveryorderCount(String deliveryOrderNo,
+			Integer supplierId, Date dateFrom, Date dateTo, String status)
+			throws Exception {
+		int countResult = 0;
+		try {
+			
+			StringBuilder buf = new StringBuilder(
+					"SELECT COUNT(p) FROM Deliveryorder p   WHERE 1 = 1 ");
+
+			if ((dateFrom != null) && (dateFrom != null)) {
+				buf.append("  AND p.createdDate between  :dateFrom and :dateTo   ");
+			}							
+					
+			if (deliveryOrderNo != null && deliveryOrderNo != "" && (!deliveryOrderNo.equalsIgnoreCase("0")) && (!deliveryOrderNo.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.deliveryOrderNo =:deliveryOrderNo ");
+			}
+			
+			if (supplierId !=null && supplierId !=0) {
+				buf.append(" AND p.supplier.supplierId =  :supplierId  ");
+			}		
+			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.status =:status ");
+			}
+			
+			Query query = em.createQuery(buf.toString());
+
+			if ((dateFrom != null) && (dateTo != null))
+			{
+				query.setParameter("dateFrom", dateFrom);
+				query.setParameter("dateTo", dateTo);
+			}
+			if (supplierId !=null && supplierId !=0) 
+			{
+				query.setParameter("supplierId", supplierId);
+			}	
+			
+			if (deliveryOrderNo != null && deliveryOrderNo != "" && (!deliveryOrderNo.equalsIgnoreCase("0")) && (!deliveryOrderNo.equalsIgnoreCase(""))) 
+			{
+				query.setParameter("deliveryOrderNo", deliveryOrderNo);
+			}			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase("")))  
+			{
+				query.setParameter("status", status);
+			}			
+			
+			Number cResults = (Number) query.getSingleResult();
+			countResult = Integer.parseInt(String.valueOf(cResults));
+			}		
+			catch (Exception e) {
+			log.info("Error in getDeliveryorderCount of DeliveryorderDAOImpl "
+					+ e.toString());
+			throw e;
+		} 
+
+		return countResult;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Deliveryorder> getDeliveryorderList(String deliveryOrderNo,
+			Integer supplierId, Date dateFrom, Date dateTo, String status,
+			int start, int howMany) throws Exception {
+		List<Deliveryorder> data = null;
+		try {			
+		StringBuilder buf = new StringBuilder(
+				"select t from Deliveryorder t inner join fetch t.supplier s  WHERE 1 = 1 ");
+
+		if ((dateFrom != null) && (dateFrom != null)) {
+			buf.append("  AND t.createdDate between  :dateFrom and :dateTo   ");
+		}		
+		if (supplierId !=null && supplierId !=0) {
+			buf.append(" AND s.supplierId =  :supplierId  ");
+		}				
+		if (deliveryOrderNo != null && deliveryOrderNo != "" && (!deliveryOrderNo.equalsIgnoreCase("0")) && (!deliveryOrderNo.equalsIgnoreCase(""))) 
+		{
+			buf.append(" AND  t.deliveryOrderNo =:deliveryOrderNo ");
+		}		
+		if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase(""))) 
+		{
+			buf.append(" AND  t.status =:status ");
+		}
+		
+		Query query = em.createQuery(buf.toString());
+
+		if ((dateFrom != null) && (dateTo != null))
+		{
+			query.setParameter("dateFrom", dateFrom);
+			query.setParameter("dateTo", dateTo);
+		}		
+		if (deliveryOrderNo != null && deliveryOrderNo != "" && (!deliveryOrderNo.equalsIgnoreCase("0")) && (!deliveryOrderNo.equalsIgnoreCase(""))) 
+		{
+			query.setParameter("deliveryOrderNo", deliveryOrderNo);
+		}			
+		if (supplierId !=null && supplierId !=0) 
+		{
+			query.setParameter("supplierId", supplierId);
+		}		
+		if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase("")))  
+		{
+			query.setParameter("status", status);
+		}			
+
+		query.setFirstResult(start);
+		query.setMaxResults(howMany);
+		data = query.getResultList();
+		}	
+		catch (Exception e) {
+		log.info("Error in getDeliveryorderList of DeliveryorderDAOImpl "
+				+ e.toString());
+		throw e;
+	} 	
+	return data;
+	}
+
+	@Override
+	public Deliveryorder getDeliveryorderMasterDetails(Integer deliveryOrderId)
+			throws Exception {
+		Deliveryorder retData = null;
+		String sqlQuery = "select t from Deliveryorder t inner join fetch t.supplier  WHERE t.deliveryOrderId = :deliveryOrderId ";
+		try {
+			retData = (Deliveryorder) em.createQuery(sqlQuery).setParameter("deliveryOrderId", deliveryOrderId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getDeliveryorderDetails DeliveryorderDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+	
+	@Override
+	public Deliveryorder getDeliveryorderDetails(Integer deliveryOrderId)
+			throws Exception {
+		Deliveryorder retData = null;
+		String sqlQuery = "select t from Deliveryorder t inner join fetch t.deliveryorderbreakdowns dob inner join fetch dob.product inner join fetch t.supplier  WHERE t.deliveryOrderId = :deliveryOrderId ";
+		try {
+			retData = (Deliveryorder) em.createQuery(sqlQuery).setParameter("deliveryOrderId", deliveryOrderId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getDeliveryorderDetails DeliveryorderDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+	
+
+	@Override
+	public boolean createNewDeliveryorder(Deliveryorder deliveryOrder)
+			throws Exception {
+		try {
+			em.persist(deliveryOrder);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewDeliveryorder DeliveryorderDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updateDeliveryorder(Deliveryorder deliveryOrder)
+			throws Exception {
+		try {
+			em.merge(deliveryOrder);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updateDeliveryorder DeliveryorderDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deleteDeliveryorder(Deliveryorder deliveryOrder)
+			throws Exception {
+		try {
+			em.remove(deliveryOrder);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteDeliveryorder DeliveryorderDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Deliveryorderbreakdown> getDeliveryorderbreakdownList(
+			Integer supplierId, Integer deliveryOrderId) throws Exception {
+		List<Deliveryorderbreakdown> purchaseorder=null;
+		String sqlQuery="select t from Deliveryorderbreakdown t  inner join fetch t.product inner join fetch t.deliveryorder  po inner join fetch po.supplier s   WHERE po.deliveryOrderId=:deliveryOrderId and s.supplierId=:supplierId";
+		try {			
+			Query query = em.createQuery(sqlQuery).setParameter("deliveryOrderId", deliveryOrderId).setParameter("supplierId", supplierId);
+			purchaseorder=query.getResultList();
+			
+			} catch (Exception e) {
+				log.info("Error in getDeliveryorderbreakdownList DeliveryorderDAOImpl " + e);
+				throw e;
+			}
+			return purchaseorder;
+	}
+
+	@Override
+	public List<Deliveryorderbreakdown> getDeliveryorderbreakdownSupplierList(
+			Integer deliveryOrderId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deleteDeliveryorderbreakdown(
+			Deliveryorderbreakdown deliveryorderbreakdown) throws Exception {
+		try {
+			em.remove(deliveryorderbreakdown);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteDeliveryorderbreakdown DeliveryorderDAOImpl " + e);
+			throw e;
+		}
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Deliveryorderbreakdown> getDeliveryorderbreakdownList(
+			Date dateFrom, Date dateTo,int start, int howMany) throws Exception {
+		List<Deliveryorderbreakdown> purchaseorder=null;
+		
+		try {			
+			StringBuilder buf = new StringBuilder("select t from Deliveryorderbreakdown t inner join fetch t.product WHERE 1 = 1");
+
+			if ((dateFrom != null) && (dateFrom != null)) {
+				buf.append("  AND t.createdDate between  :dateFrom and :dateTo   ");
+			}					
+			Query query = em.createQuery(buf.toString());
+			
+			if ((dateFrom != null) && (dateTo != null))
+			{
+				query.setParameter("dateFrom", dateFrom);
+				query.setParameter("dateTo", dateTo);
+			}		
+			
+			query.setFirstResult(start);
+			query.setMaxResults(howMany);
+			purchaseorder = query.getResultList();
+			
+			} catch (Exception e) {
+				log.info("Error in getDeliveryorderbreakdownList DeliveryorderDAOImpl " + e);
+				throw e;
+			}
+			return purchaseorder;
+	}
+	
+	
+	@Override
+	public int getDeliveryorderbreakdownCount(Date dateFrom, Date dateTo)
+			throws Exception {
+		int countResult = 0;
+		try {
+			
+			StringBuilder buf = new StringBuilder("SELECT COUNT(p) FROM Deliveryorderbreakdown p  WHERE 1 = 1 ");
+
+			if ((dateFrom != null) && (dateFrom != null)) {
+				buf.append("  AND p.createdDate between  :dateFrom and :dateTo   ");
+			}				
+			Query query = em.createQuery(buf.toString());
+			if ((dateFrom != null) && (dateTo != null))
+			{
+				query.setParameter("dateFrom", dateFrom);
+				query.setParameter("dateTo", dateTo);
+			}			
+			
+			Number cResults = (Number) query.getSingleResult();
+			countResult = Integer.parseInt(String.valueOf(cResults));
+			}		
+			catch (Exception e) {
+			log.info("Error in getDeliveryorderbreakdownCount of DeliveryorderDAOImpl "
+					+ e.toString());
+			throw e;
+		} 
+
+		return countResult;
+	}
+
+}

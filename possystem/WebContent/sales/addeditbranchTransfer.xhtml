@@ -1,0 +1,266 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head />
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesListPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesListPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Add/Edit Branch Sales">
+
+				<h:panelGrid id="quotationGrid" columns="10" border="0" width="80%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['purchaseorder.label.branchname']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="branchId" value="#{branchtransferBean.branchId}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Branch" itemValue="0" />
+						<f:selectItems value="#{commonListBean.branchotherQty}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="branchId" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.remarks']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="3" cols="25" id="remarks"
+						value="#{branchtransferBean.branchtransfer.remarks}" />
+					<p:message for="remarks" styleClass="fieldError" />
+
+
+				</h:panelGrid>
+				<br />
+
+
+				<p:panelGrid style="width:99%" id="quotationProductGrid"
+					styleClass="alignTop">
+					<f:facet name="header">
+						<p:row>
+							<p:column style="width:15%;">Add Product</p:column>
+							<p:column style="width:85%;">Products Details</p:column>
+						</p:row>
+					</f:facet>
+
+					<p:row>
+						<p:column style="width:15%;" styleClass="columnwidthc">
+
+							<h:panelGrid id="quotationAddGrid" columns="1" border="0"
+								styleClass="borderlessGrid" width="100%"
+								columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+								<h:panelGrid columns="2">
+
+
+									<h:outputText
+										value="#{msg['purchaserequest.label.productName']}"
+										styleClass="logintxt"></h:outputText>
+								</h:panelGrid>
+
+								<p:autoComplete id="productCode" maxResults="500" size="20"
+									converter="productNameConverter" maxlength="15"
+									minQueryLength="3" dropdown="false" scrollHeight="250"
+									queryDelay="2" disabled="#{branchtransferBean.productCodedisable}"
+									value="#{branchtransferBean.product}"
+									completeMethod="#{commonListBean.getAllProductListByName}"
+									var="p" itemLabel="#{p.productName}" itemValue="#{p}">
+									<p:column>  
+                   					 #{p.productName}   -#{p.barcode} - #{p.uom}
+                			</p:column>
+								</p:autoComplete>
+
+
+								<h:outputText value="#{msg['quotation.label.itemCount']}"
+									styleClass="logintxt"></h:outputText>
+
+								<p:inputText id="itemCount" value="#{branchtransferBean.itemCount}"
+									maxlength="15" size="20" />
+
+								<h:panelGrid columns="2" border="0" styleClass="borderlessGrid"
+									columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+									<p:commandButton value="Add" ajax="true"
+										update="quotationAddGrid,dataTable"
+										action="#{branchtransferBean.addSalesItem}" />
+								</h:panelGrid>
+
+							</h:panelGrid>
+
+						</p:column>
+
+
+						<p:column style="width:85%;">
+
+							<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+								scrollable="true" scrollHeight="230"
+								value="#{branchtransferBean.branchtransferbreakdowns}"
+								paginator="false" rows="500" style="width: 100%"
+								rowsPerPageTemplate="5,10,15">
+
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column style="width:8%;height:27px;"
+											styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Code" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:20%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Name" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="UOM" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+										
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+										<p:column style="width:3%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+											</f:facet>
+										</p:column>
+									</p:row>
+								</p:columnGroup>
+
+
+								<p:column width="10%" styleClass="columnwidth"
+									style="width:8%;height:15px;">
+									<h:outputText value="#{sales.productCode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="20%" styleClass="columnwidth">
+									<h:outputText value="#{sales.productName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidth">
+									<h:outputText value="#{sales.uomName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{sales.quantity}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								
+
+								<p:column width="3%" styleClass="columnwidth">
+									<p:commandLink value="" styleClass="ui-icon ui-icon-trash"
+										title="Remove" actionListener="#{branchtransferBean.removeItem}"
+										oncomplete="salesItemdeleteDig.show()">
+										<f:attribute name="branchsalesId" value="#{row}" />
+									</p:commandLink>
+								</p:column>
+
+
+							</p:dataTable>
+						</p:column>
+					</p:row>
+
+					<f:facet name="footer">
+						<p:row>
+							<p:column style="width:100%;" colspan="2">
+								<p:commandButton value="Save" ajax="false"
+									action="#{branchtransferBean.saveSales}"
+									update="salesListPanel"
+									rendered="#{branchtransferBean.itemaction!='update'}" />
+
+								<p:commandButton value="Reset" ajax="true"
+									action="#{branchtransferBean.resetSales}"
+									update="salesListPanel"
+									rendered="#{branchtransferBean.itemaction!='update'}" />
+
+								<p:commandButton value="Update" ajax="false"
+									action="#{branchtransferBean.updateSales}"
+									update="salesListPanel"
+									rendered="#{branchtransferBean.itemaction=='update'}" />
+
+								<p:commandButton value="Reset" ajax="true"
+									action="#{branchtransferBean.loadSales}"
+									update="salesListPanel"
+									rendered="#{branchtransferBean.itemaction=='update'}" />
+
+								<p:commandButton value="Cancel" ajax="false"
+									action="#{branchtransferBean.listSales}"
+									update="salesListPanel" />
+							</p:column>
+						</p:row>
+					</f:facet>
+
+
+				</p:panelGrid>
+
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		
+	<p:dialog id="modelsalesitemdelete" showEffect="fade"
+		hideEffect="fade" header="Sales Item Delete Confirmation"
+		resizable="false" widgetVar="salesItemdeleteDig" modal="true"
+		height="100" width="360">
+
+		<br></br>
+
+		<p:panel id="salesitemdelete">
+
+			<h:panelGrid columns="1" border="0" width="100%" styleClass="bgcolor"
+				cellpadding="1" cellspacing="1"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+				<h:outputText
+					value="Are you sure you want to delete this item? "
+					styleClass="logintxttable" />
+			</h:panelGrid>
+
+			<br></br>
+
+			<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+				
+				<p:commandButton value="Yes" ajax="true" update="salesListPanel" oncomplete="salesItemdeleteDig.hide()"
+					action="#{branchtransferBean.removeItemConfirm}">
+				</p:commandButton>
+				<p:commandButton value="No"
+					onclick="salesItemdeleteDig.hide()" />
+
+			</h:panelGrid>
+		</p:panel>
+
+	</p:dialog>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

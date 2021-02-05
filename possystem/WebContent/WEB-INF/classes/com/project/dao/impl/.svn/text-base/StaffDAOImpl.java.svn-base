@@ -1,0 +1,158 @@
+package com.alpha.dao.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import com.alpha.dao.interfaces.IStaffDAO;
+import com.alpha.hq.model.Branch;
+import com.alpha.hq.model.Branchstaffmember;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 17 June 2013
+ * 
+ */
+
+@Repository("staffRepository")
+public class StaffDAOImpl implements IStaffDAO {
+	
+	public static Logger log = LoggerFactory.getLogger(StaffDAOImpl.class);
+	long l = 0;
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+	public EntityManager getEm() {
+		return em;
+	}
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+	
+	@Override
+	public boolean createNewStaff(Branchstaffmember staff) throws Exception {
+		try {
+			em.persist(staff);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewStaff StaffDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updateStaff(Branchstaffmember staff) throws Exception {
+		try {
+			em.merge(staff);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updateStaff StaffDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deleteStaff(Branchstaffmember staff) throws Exception {
+		try {
+			em.remove(staff);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteStaff StaffDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Branchstaffmember> findByStaffList(Integer branchId,
+			String identificationNumber, Integer roleId, String Status) throws Exception {
+		List<Branchstaffmember> branchstaffmember=null;
+		StringBuilder buf = new StringBuilder("SELECT b FROM Branchstaffmember b inner join fetch b.branch br inner join fetch b.department d inner join fetch b.role r WHERE 1 = 1 ");
+				
+		try {
+			
+		if (branchId !=null && branchId !=0) {
+			buf.append(" AND br.branchId =  :branchId  ");
+		}	
+		if (identificationNumber !=null && (!identificationNumber.equalsIgnoreCase(""))) {
+			buf.append(" And b.identificationNumber = :identificationNumber ");
+		}		
+		if (roleId !=null && roleId !=0) {
+			buf.append(" AND r.roleId = :roleId  ");
+		}		
+		if (Status !=null && (!Status.equalsIgnoreCase(""))) {
+			buf.append(" And b.status = :status ");
+		}		
+		
+		buf.append(" order by b.firstName");
+		
+		Query query = em.createQuery(buf.toString());		
+		
+		if (branchId !=null && branchId !=0) {
+			query.setParameter("branchId", branchId);
+		}		
+		if (identificationNumber !=null && (!identificationNumber.equalsIgnoreCase(""))) {
+			query.setParameter("identificationNumber", identificationNumber);
+		}			
+		if (roleId !=null && roleId !=0) {
+			query.setParameter("roleId", roleId);
+		}			
+		if (Status !=null && (!Status.equalsIgnoreCase(""))) {
+			query.setParameter("status", Status);
+		}		 
+		branchstaffmember=query.getResultList();
+		
+		} catch (Exception e) {
+			log.info("Error in findByStaffList StaffDAOImpl " + e);
+			throw e;
+		}
+		return branchstaffmember;
+	}
+
+	@Override
+	public Branchstaffmember getBranchstaffmemberDetails(Integer staffId)
+			throws Exception {
+		Branchstaffmember retData = null;
+		String sqlQuery = "select t from Branchstaffmember t inner join fetch t.branch inner join fetch t.department  inner join fetch t.role  WHERE t.staffId = :staffId ";
+		try {
+			retData = (Branchstaffmember) em.createQuery(sqlQuery).setParameter("staffId", staffId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getBranchstaffmemberDetails StaffDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+	@Override
+	public boolean findStaffIcExites(String identificationNumber) throws Exception {
+		boolean exits = true;
+		try {
+			String hslQuery = "from Branchstaffmember p where p.identificationNumber = :identificationNumber";
+			Query query = em.createQuery(hslQuery).setParameter("identificationNumber", identificationNumber);
+			@SuppressWarnings("unchecked")
+			List<Branchstaffmember> identificationNumberExits = query.getResultList();
+			if (identificationNumberExits.isEmpty()) {
+				exits = false;
+			}
+		} catch (Exception e) {
+			log.info("Error in findStaffIcExites StaffDAOImpl " + e);
+			throw e;
+		}
+		return exits;
+	}
+
+}

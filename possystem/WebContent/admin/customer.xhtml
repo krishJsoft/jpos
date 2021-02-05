@@ -1,0 +1,240 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditCustomerForm">
+		<p:outputPanel id="customerPanel">
+			<p:message for="customerPanel" />
+			<p:panel styleClass="mypanel" header="Search Customer">
+
+
+				<h:panelGrid id="searchcustomergrid" columns="10" border="0"
+					width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText
+						value="#{msg['customer.label.identificationCompanyRegNo']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="identificationCompanyRegNo"
+						value="#{customerBean.identificationCompanyRegNo}" maxlength="15"
+						size="25" />
+					<p:message for="identificationCompanyRegNo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Customer Name" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="customerName" value="#{customerBean.customerName}"
+						maxlength="15" size="25" />
+					<p:message for="customerName" styleClass="fieldError" />
+					
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Loyalty Code" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="loyaltyCardCode" value="#{customerBean.loyaltyCardCode}"
+						maxlength="15" size="25" />
+					<p:message for="loyaltyCardCode" styleClass="fieldError" />
+					
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" value="#{customerBean.status}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Status" itemValue="" />
+						<f:selectItem itemLabel="Active" itemValue="1" />
+						<f:selectItem itemLabel="InActive" itemValue="0" />
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{customerBean.searchCustomer}" update="customerPanel" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{customerBean.resetSearchCustomer}"
+							update="customerPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="customer" rowIndexVar="row"
+					lazy="true" value="#{customerBean.customerModel}"
+					first="#{customerBean.first}" 
+					paginator="true" rows="10" style="width: 100%"
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+					
+					<p:ajax event="page" listener="#{customerBean.onPageChange}" />
+
+					<p:column id="modelHeader" width="3%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{customer.customerName}" width="10%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['customer.label.customerName']}" />
+						</f:facet>
+						<h:outputText value="#{customer.customerName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column sortBy="#{customer.loyaltyCardCode}"
+						width="10%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText
+								value="#{msg['customer.label.loyaltyCardCode']}"
+								styleClass="tableheader" />
+						</f:facet>
+						<h:outputText value="#{customer.loyaltyCardCode}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{customer.address}" width="15%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Address" />
+						</f:facet>
+						<h:outputText value="#{customer.address}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{customer.city}" width="10%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="City" />
+						</f:facet>
+						<h:outputText value="#{customer.city}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{customer.state}" width="7%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="State" />
+						</f:facet>
+						<h:outputText value="#{customer.state}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column width="15%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Email" />
+						</f:facet>
+						<h:outputText value="#{customer.emailAddress}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column width="6%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Contact No" />
+						</f:facet>
+						<h:outputText value="#{customer.phoneNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column width="10%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Contact Person" />
+						</f:facet>
+						<h:outputText value="#{customer.contactPerson}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+
+					<p:column sortBy="#{customer.status}" width="5%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+
+						<h:outputText value="Active" rendered="#{customer.status=='1'}"
+							styleClass="logintxttable" />
+						<h:outputText value="InActive" rendered="#{customer.status=='0'}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column width="5%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Available Points" />
+						</f:facet>
+						<h:outputText value="#{customer.availablePoints}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+
+					<p:column width="10%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<h:commandLink value="Edit" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('Edit Customer')}"
+							actionListener="#{customerBean.editCustomer}">
+							<f:attribute name="customerId" value="#{customer.customerId}" />
+						</h:commandLink>
+
+						<h:graphicImage value="resources/images/cal_forward.gif"
+							rendered="#{loginBean.functionList.contains('View Customer')}" />
+
+						<p:commandLink value="View" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('View Customer')}"
+							actionListener="#{customerBean.viewCustomer}"
+							oncomplete="PF('branchDig').show()"
+							update=":addEditCustomerForm:customerDashboard">
+							<f:attribute name="customerId" value="#{customer.customerId}" />
+						</p:commandLink>
+
+						<h:graphicImage value="resources/images/cal_forward.gif"
+							rendered="#{loginBean.functionList.contains('View Customer')}" />
+
+						<p:commandLink value="Print" styleClass="logintxttable" ajax="false"
+							rendered="#{loginBean.functionList.contains('View Customer')}"
+							actionListener="#{customerBean.printCustomer}">
+							<f:attribute name="customerId" value="#{customer.customerId}" />
+						</p:commandLink>
+
+					</p:column>
+
+				</p:dataTable>
+
+
+				<table align="center" width="100%">
+					<tr>
+						<td align="left"><p:commandButton value="Add New Customer"
+								ajax="false" action="#{customerBean.newCustomer}" /></td>
+					</tr>
+
+
+				</table>
+
+			</p:panel>
+
+		</p:outputPanel>
+
+		<ui:include src="/admin/customerdashboard/customerdashboard.xhtml" />
+
+
+	</h:form>
+</ui:composition>
+
+

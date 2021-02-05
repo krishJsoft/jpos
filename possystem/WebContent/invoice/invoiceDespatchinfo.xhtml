@@ -1,0 +1,175 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel>
+
+		<br></br>
+
+
+		<h:panelGrid columns="5" border="0" width="50%"
+			styleClass="borderlessGrid"
+			columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText
+				value="#{msg['customerinvoice.taxship.dispatchDate']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:calendar navigator="true" id="dispatchDate" size="25"
+				value="#{customerInvoiceBean.customerinvoice.invoicedispatch.dispatchDate}"
+				pattern="dd/MMM/yyyy" />
+			<p:message for="dispatchDate" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText
+				value="#{msg['customerinvoice.taxship.despatchAmount']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="despatchAmount"
+				value="#{customerInvoiceBean.customerinvoice.invoicedispatch.despatchAmount}"
+				maxlength="25" size="25" />
+			<p:message for="despatchAmount" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customerinvoice.taxship.remarks']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputTextarea rows="3" cols="25" id="remarks"
+				value="#{customerInvoiceBean.customerinvoice.invoicedispatch.remarks}" />
+			<p:message for="remarks" styleClass="fieldError" />
+
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customerinvoice.taxship.taxingScheme']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="type"
+				value="#{customerInvoiceBean.customerinvoice.invoicedispatch.type}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Type" itemValue="" />
+				<f:selectItem itemLabel="By Hand" itemValue="By Hand" />
+				<f:selectItem itemLabel="Courier" itemValue="Courier" />
+				<f:selectItem itemLabel="Transport" itemValue="Transport" />				
+				<p:ajax update="servicetype" event="change"></p:ajax>				
+			</p:selectOneMenu>
+			<p:message for="type" styleClass="fieldError" />
+
+		</h:panelGrid>
+
+
+
+		<br></br>
+
+		<h:panelGrid columns="1" border="0" width="100%" id="servicetype"
+			styleClass="borderlessGrid">
+
+			<p:fieldset legend="By Hand Service Info" id="byhandservice"
+				rendered="#{customerInvoiceBean.customerinvoice.invoicedispatch.type=='By Hand'}">
+
+				<h:panelGrid columns="5" border="0" width="50%"
+					styleClass="borderlessGrid"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['customerinvoice.taxship.recipientName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="deliveryPerson"
+						value="#{customerInvoiceBean.customerinvoice.invoicedispatch.deliveryPerson}"
+						maxlength="25" size="25" />
+					<p:message for="deliveryPerson" styleClass="fieldError" />
+
+				</h:panelGrid>
+
+				<br></br>
+
+			</p:fieldset>
+
+			
+
+			<p:fieldset legend="Courier Service Info" id="courierservice"
+				rendered="#{customerInvoiceBean.customerinvoice.invoicedispatch.type=='Courier'}">
+
+				<h:panelGrid columns="5" border="0" width="60%"
+					styleClass="borderlessGrid"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText
+						value="#{msg['customerinvoice.taxship.consignmentNo']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="consignmentNo"
+						value="#{customerInvoiceBean.customerinvoice.invoicedispatch.consignmentNo}"
+						maxlength="25" size="25" />
+					<p:message for="consignmentNo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText
+						value="#{msg['customerinvoice.taxship.courierCompany']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="courierCompany"
+						value="#{customerInvoiceBean.customerinvoice.invoicedispatch.courierCompany}"
+						maxlength="100" size="35" />
+					<p:message for="courierCompany" styleClass="fieldError" />
+
+
+				</h:panelGrid>
+
+				<br></br>
+
+			</p:fieldset>
+
+
+
+			<p:fieldset legend="Transport Service Info" id="transportservice"
+				rendered="#{customerInvoiceBean.customerinvoice.invoicedispatch.type=='Transport'}">
+
+				<h:panelGrid columns="5" border="0" width="50%"
+					styleClass="borderlessGrid"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText
+						value="#{msg['customerinvoice.taxship.transportType']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="transportType"
+						value="#{customerInvoiceBean.customerinvoice.invoicedispatch.transportType}"
+						maxlength="25" size="25" />
+					<p:message for="transportType" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['customerinvoice.taxship.vehicleNo']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="vehicleNo"
+						value="#{customerInvoiceBean.customerinvoice.invoicedispatch.vehicleNo}"
+						maxlength="25" size="25" />
+					<p:message for="vehicleNo" styleClass="fieldError" />
+
+
+				</h:panelGrid>
+
+				<br></br>
+
+			</p:fieldset>
+
+		</h:panelGrid>
+
+	</p:outputPanel>
+
+</ui:composition>
+
+

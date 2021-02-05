@@ -1,0 +1,147 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui">
+
+		<p:panelGrid id="generalSettingGrid"  border="0" styleClass="borderlessGrid"
+				width="60%"
+			columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+			<p:row>
+				<p:column>
+				
+					<h:outputText value="SYSTEM TYPE"
+					styleClass="logintxt"></h:outputText>
+				</p:column>
+				
+				<p:column>
+					<h:outputText value=":" />
+				</p:column>
+				
+				<p:column>
+					<p:selectOneMenu id="systemType" 
+					value="#{systemSettingBean.systemConfig.systemType.typeId}" 
+					style="width:160px; text-align:left;" >
+	               		<p:ajax listener="#{systemSettingBean.onChangeSystemType}" update="systemSetting"/>
+						<f:selectItems value="#{commonListBean.systemType}" />
+					</p:selectOneMenu>
+				</p:column>
+				
+			</p:row>
+			
+				<p:column>
+					<h:outputText value="KITCHEN ORDER "
+					styleClass="logintxt"></h:outputText>
+				
+				</p:column>
+				
+				<p:column>
+					<h:outputText value=":" />
+				</p:column>
+				
+				<p:column>
+					<p:inputSwitch value="#{systemSettingBean.systemConfig.kitchenOrder}" >
+					<p:ajax listener="#{systemSettingBean.onKitchenOrder}" update="systemSetting" />
+					</p:inputSwitch>
+				</p:column>
+			
+			<p:row rendered="#{systemSettingBean.systemConfig.systemType.kitchenOrderType=='BEFORE PAYMENT'}">
+				<p:column>
+				<h:outputText value="MOBILE ORDER"
+					styleClass="logintxt" ></h:outputText>
+				</p:column>
+				
+				<p:column>
+					<h:outputText value=":" />
+				</p:column>
+				
+				<p:column>
+				
+					<p:inputSwitch value="#{systemSettingBean.systemConfig.mobileKitchenOrder}" />
+				</p:column>
+			</p:row>
+			
+			<p:row rendered="#{systemSettingBean.systemConfig.systemType.kitchenOrderType=='BEFORE PAYMENT'}">
+				<p:column>
+					<h:outputText value="TERMINAL ORDER"
+					styleClass="logintxt"></h:outputText>				
+				</p:column>
+				
+				<p:column>
+					<h:outputText value=":" />
+				</p:column>
+				
+				<p:column>
+					<p:inputSwitch value="#{systemSettingBean.systemConfig.terminalKitchenOrder}" />
+				</p:column>
+			</p:row>
+			
+			<p:row >
+				<p:column>
+					<h:outputText value="CASHIER TERMINAL ORDER"
+					styleClass="logintxt"></h:outputText>
+				</p:column>
+				
+				<p:column>
+					<h:outputText value=":" />
+				</p:column>
+				
+				<p:column>
+					<p:inputSwitch value="#{systemSettingBean.systemConfig.cashierKitchenOrder}" disabled="#{systemSettingBean.systemConfig.systemType.kitchenOrderType=='AFTER PAYMENT'}"/>
+				</p:column>
+			</p:row>
+			
+			<p:row rendered="#{systemSettingBean.systemConfig.systemType.kitchenOrderType=='BEFORE PAYMENT'}">
+			
+				<p:column>
+					<h:outputText value="BILL PRINTER"
+					styleClass="logintxt"></h:outputText>
+				</p:column>
+				
+				<p:column>
+					<h:outputText value=":" />
+				</p:column>
+				
+				<p:column>
+					<p:inputSwitch value="#{systemSettingBean.systemConfig.billPrinter}" />
+				</p:column>
+				
+			</p:row>
+			
+			<p:row rendered="#{systemSettingBean.systemConfig.systemType.hasPaxNo=='true'}">
+			
+				<p:column>
+					<h:outputText value="PAX OPTION"
+					styleClass="logintxt"></h:outputText>
+				</p:column>
+				
+				<p:column>
+					<h:outputText value=":" />
+				</p:column>
+				
+				<p:column>
+					<p:inputSwitch value="#{systemSettingBean.systemConfig.paxNo}" />
+				</p:column>
+				
+			</p:row>
+			
+			<p:row>
+				<p:column>
+					<h:outputText value="" />
+				</p:column>
+				
+				<p:column>
+					<h:outputText value="" />
+				</p:column>
+				
+				<p:column>
+					<p:commandButton value="UPDATE" action="#{systemSettingBean.updateSystemConfiguration}">
+					</p:commandButton>
+				</p:column>
+			</p:row>
+				
+			</p:panelGrid>
+		
+</ui:composition>

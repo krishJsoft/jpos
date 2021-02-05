@@ -1,0 +1,57 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog showEffect="blind"
+		hideEffect="blind" header="DISCOUNT RATE"
+		resizable="false" widgetVar="discrateDlg" modal="true"
+		height="130" width="360">
+		<h:panelGrid columns="3" 
+		columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+			<h:outputText value="RATE" />
+			<h:outputText value=":" />
+			<p:selectOneMenu style="width:160px;text-align:left;" value="#{posBean.discountRateId}">
+				<f:selectItem itemLabel="0" itemValue="0"></f:selectItem>
+				<f:selectItems value="#{commonListBean.discountRate}"></f:selectItems>
+			</p:selectOneMenu>
+			
+			<h:outputText value="REMARKS" />
+			<h:outputText value=":" />
+			<p:selectOneMenu style="width:160px; text-align:left;" value="#{posBean.discountRemarkId}">
+				<f:selectItems value="#{commonListBean.discountRemark}"></f:selectItems>
+			</p:selectOneMenu>
+			
+		</h:panelGrid>
+		
+		
+		<h:panelGrid columns="3" 
+		columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px"
+		>
+		<p:commandButton value="SAVE" 
+			styleClass="itembuttonsmall"
+			update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+			oncomplete="PF('discrateDlg').hide()"
+			action="#{posBean.modifyDiscountRate}"
+			style="width:100px; height:30px; background:#66ff99">
+		</p:commandButton>
+	
+		<p:commandButton value="CANCEL" 
+			oncomplete="PF('discrateDlg').hide()"
+			styleClass="itembuttonsmall" 
+			style="width:100px; height:30px; background:#ffffcc" />
+		
+		
+		</h:panelGrid>
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

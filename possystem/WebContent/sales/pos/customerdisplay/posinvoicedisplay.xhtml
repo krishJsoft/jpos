@@ -1,0 +1,291 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	>
+<h:head>
+<title>
+	CUSTOMER DISPLAY
+</title>
+<style>
+
+	tr{
+		//border:1px solid red;
+	}
+	td{
+		//border:1px solid green;
+	}
+	
+</style>
+<h:outputScript>
+//<![CDATA[ 
+	function startTime() {
+	    var today = new Date();
+	    var y = today.getFullYear();
+		var M = today.getMonth() + 1;
+		var d = today.getDate();
+	    var h = today.getHours();
+	    var m = today.getMinutes();
+	    var s = today.getSeconds();
+	 	var ampm = h >= 12 ? 'PM' : 'AM';
+	 	h = h % 12;
+  		h = h ? h : 12;
+	 	
+	    if( m < 10){
+	 	   m="0"+m;
+	    }
+	    
+	    document.getElementById('dateTime').innerHTML =
+	    d + "/" + M +"/" + y +" "+ h + ":" + m + ":" + s + " "+ampm;
+	    var t = setTimeout(startTime, 500);
+	}
+//]]>
+</h:outputScript>
+</h:head>
+<script type="text/javascript">
+      var host = "ws://localhost:8080/possystem/hello";
+      var wSocket = new WebSocket(host);
+      var browserSupport = ("WebSocket" in window) ? true : false;
+      
+      // called  body onLoad()
+      function initializeReception()
+      {
+        if (browserSupport)
+        {
+          wSocket.onopen = function()
+          {
+            alert(" Web Socket is connected, sending data");
+            wSocket.send("ping");
+          };
+        }
+        else
+        {
+          // The browser doesn't support WebSocket
+          alert("WebSocket is NOT supported by your Browser!");
+        }
+      }
+      
+      // called when a message is received
+      wSocket.onmessage = function(event)
+      {
+        var received_msg = event.data;
+        alert("onmessage");
+        document.getElementById('headerForm:serverMsg').value = received_msg;
+      };
+      
+      // called when socket closes
+      wSocket.onclose = function()
+      {
+        // websocket is closed.
+        alert("Connection is closed...");
+      };
+    </script>
+<h:body onload="startTime()">
+<h:form id="posinvoiceform" >
+	<h:panelGroup >
+	<table border="1" style="width:100%;height:100%;border-collapse:collapse;position:fixed;top:0;left:0" cellspacing="0" cellpadding="0">
+		<tr>
+			<td  >
+				
+			</td>
+			<td rowspan="3" style="width:50%;background:#E32526">
+				<table border="1" style="width:100%;height:100%;border-collapse: collapse;" cellspacing="0" cellpadding="0" >
+						
+					<tr>
+						<td valign="top" style="text-align:center;height:15%;color:black;">
+							<h:graphicImage value="/images/prettylogo.jpg" height="100px" width="120px"
+								style="border-radius:50%;text-align:left"/>
+								<div id="dateTime" style="vertical-align: text-top;"></div>
+								 
+						</td>
+					</tr>
+					
+					<tr>
+						<td valign="top" style="text-align:center;height:10%;color:yellow;" >
+							<h:outputText value="#{loginBean.logdetail.branchName}" 
+								style="font-size:20px;font-weight: bold;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+								'Helvetica Neue', Arial, sans-serif;"
+								/>
+								<br/>
+								<h:outputText value="(PRETTYS FOOD CORNER)" 
+								style="font-size:13px;font-weight: bold;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+								'Helvetica Neue', Arial, sans-serif;"
+								/>
+								<br/><br/>
+								<h:outputText value="#{loginBean.branch.address}
+								, #{loginBean.branch.country}" 
+								style="font-size:12px;font-weight: bold;font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+								'Helvetica Neue', Arial, sans-serif;"
+								/>
+						</td>
+					</tr>
+					
+					<tr>
+						<td>
+							
+						</td>
+					</tr>
+					<tr>
+						<td valign="bottom" style="text-align:right;height:5%;color:white;">
+								<!-- <h:outputText value="POWERED BY " style=" font: bold 12px Georgia, serif;"/>
+								<h:outputText value="JSOFT SOLUTION SDN BHD" style=" font: italic  15px Georgia, serif;"/>
+							-->
+						</td>
+					</tr>
+					
+				</table>
+				
+				
+			</td>
+		</tr>
+		
+		
+		<tr>
+			<td valign="top" style="border-bottom:1px solid black">
+			<div  >
+			<p:dataTable id="posinvoiceDataTable" var="pos" rowIndexVar="row"
+				scrollable="true" scrollHeight="510"
+				rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+				value="#{posBean.salesorderbreakdowns}"
+				rows="500" style="width: 100%" >
+
+				<p:columnGroup type="header">
+					<p:row>
+
+						<p:column style="width:5%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="NO" styleClass="columnwidth" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:74%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="ITEM NAME" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:8%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="QTY" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+						<p:column style="width:12%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="PRICE" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+					</p:row>
+				</p:columnGroup>
+			
+				<p:column id="modelHeader" styleClass="columnwidth">
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+			
+				<p:column styleClass="columnwidth" style="width:55%;">
+					<h:outputText value="#{pos.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+				
+				<p:column styleClass="logintxtnumberFormat" style="width:15%;text-align:center">
+					<h:outputText value="#{posBean.itemcountQty[pos.sno]}" size="8"
+						styleClass="logintxtnumberFormat"
+						readonly="true"
+						>
+					<f:convertNumber pattern="#0" />
+					</h:outputText>
+				</p:column>
+			
+				<p:column styleClass="logintxtnumberFormat" style="width:15%;text-align:right" >
+					<h:outputText value="#{pos.subTotal}" size="8"
+						styleClass="logintxtnumberFormat"  >
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+			</p:dataTable>
+			</div>
+			</td>
+
+		</tr>	
+		<tr>
+			<td align="right"  >
+				<table style="border-collapse: collapse;" cellspacing="0" cellpadding="0">
+					<tr style="border-bottom:1px solid black">
+						<td >
+							<h:outputText value="TOTAL" style="font-size:35px;font-weight:bold" />
+						</td>
+						<td width="5%" style="text-align:center">
+							<h:outputText value=":" style="font-size:35px;font-weight:bold" />
+						</td>
+						<td align="right" width="30%">
+							<h:outputText  value="#{posBean.totalAmount}"
+								id="posinvoiceTotalAmount"
+								size="8"
+								style="color:red;font-size:35px;text-align:right;font-weight:bold"
+								
+							>
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>			
+						</td>
+					</tr>
+					
+					<tr style="border-bottom:1px solid black">
+						<td >
+							<h:outputText value="PAID AMMOUNT" style="font-size:17px;font-weight:bold" />
+						</td>
+						<td width="5%" style="text-align:center">
+							<h:outputText value=":" style="font-size:17px;font-weight:bold" />
+						</td>
+						<td align="right" width="30%">
+							<h:outputText  value="#{posBean.receivedAmount}"
+								id="posinvoiceAmountPaid"
+								size="8"
+								style="color:blue;font-size:17px;text-align:right;font-weight:bold"
+								
+							>
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+						</td>
+					</tr>
+					
+					<tr >
+						<td >
+							<h:outputText value="BALANCE" style="font-size:17px;font-weight:bold" />
+						</td>
+						<td width="5%" style="text-align:center">
+							<h:outputText value=":" style="font-size:17px;font-weight:bold" />
+						</td>
+						<td align="right" width="30%" >
+							<p:fragment id="posinvoiceBalance">
+							
+								<h:outputText  value="#{posBean.balanceAmount}"
+									
+									size="8"
+									style="color:green;font-size:17px;text-align:right;font-weight:bold"
+									rendered="#{posBean.balanceAmount>=0}"
+								>
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+								<h:outputText  value="#{posBean.balanceAmount}"
+									size="8"
+									style="color:red;font-size:17px;text-align:right;font-weight:bold"
+									rendered="#{posBean.balanceAmount lt 0}"
+								>
+								</h:outputText>
+							</p:fragment>
+						</td>
+					</tr>
+				</table>
+				
+			</td>
+		</tr>
+	</table>
+		
+	</h:panelGroup>
+	
+	
+</h:form>
+</h:body>
+</ui:composition>

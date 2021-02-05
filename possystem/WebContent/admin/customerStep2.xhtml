@@ -1,0 +1,217 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head />
+	<p:outputPanel id="step1pane2">
+
+		<h:panelGrid id="addeditcustomergridstpe2" columns="10" width="100%"
+			columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.branchName']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="branchName"
+				value="#{customerBean.customer.branchId}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Branch" itemValue="0" />
+				<f:selectItems value="#{commonListBean.selectBranchList}"></f:selectItems>
+			</p:selectOneMenu>
+			<p:message for="branchName" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.pricingCurrency']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="pricingCurrency"
+				value="#{customerBean.customer.pricingCurrency}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Pricing Currency" itemValue="" />
+				<f:selectItem itemLabel="MYR" itemValue="MYR" />
+			</p:selectOneMenu>
+			<p:message for="pricingCurrency" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.salesRep']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="salesRep" value="#{customerBean.customer.salesRep}"
+				maxlength="50" size="25" />
+			<p:message for="salesRep" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.discount']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="discount" value="#{customerBean.customer.discount}"
+				styleClass="logintxtnumberFormat" maxlength="25" size="25"
+				onkeypress='return validate(event)' />
+			<p:message for="discount" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.deliveryMethod']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="deliveryMethod"
+				value="#{customerBean.customer.deliveryMethod}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Delivery Method" itemValue="" />
+				<f:selectItem itemLabel="Walk-in" itemValue="Walk-in" />
+				<f:selectItem itemLabel="Online" itemValue="Online" />
+			</p:selectOneMenu>
+			<p:message for="deliveryMethod" styleClass="fieldError" />
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.paymentTerm']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="paymentTerm"
+				value="#{customerBean.customer.paymentTerm}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Payment Term" itemValue="" />
+			</p:selectOneMenu>
+			<p:message for="paymentTerm" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.paymentMethod']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="paymentMethod"
+				value="#{customerBean.customer.paymentMethod}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Payment Method" itemValue="" />
+				<f:selectItem itemLabel="Cash" itemValue="Cash" />
+				<f:selectItem itemLabel="Cheque" itemValue="Cheque" />
+				<f:selectItem itemLabel="Credit Card" itemValue="Credit Card" />
+			</p:selectOneMenu>
+			<p:message for="paymentMethod" styleClass="fieldError" />
+
+			
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.lastRedemptionDate']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:calendar navigator="true" id="lastRedemptionDate" size="25"
+				value="#{customerBean.customer.lastRedemptionDate}"
+				pattern="dd/MM/yyyy" />
+			<p:message for="lastRedemptionDate" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.availablePoints']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="availablePoints" styleClass="logintxtnumberFormat"
+				onkeypress='return validate(event)'
+				value="#{customerBean.customer.availablePoints}" maxlength="25"
+				size="25" />
+			<p:message for="availablePoints" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['customer.label.notifyBy']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="notifyBy"
+				value="#{customerBean.customer.notifyBy}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Notify By" itemValue="0" />
+				<f:selectItem itemLabel="Email" itemValue="1" />
+				<f:selectItem itemLabel="SMS" itemValue="2" />
+			</p:selectOneMenu>
+			<p:message for="notifyBy" styleClass="fieldError" />
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['branch.label.Status']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="status" value="#{customerBean.customer.status}"
+				styleClass="inputCombo" style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Active" itemValue="1" />
+				<f:selectItem itemLabel="InActive" itemValue="0" />
+			</p:selectOneMenu>
+			<p:message for="status" styleClass="fieldError" />
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="Add Photo" styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:fileUpload fileUploadListener="#{customerBean.upload}"
+				id="photoUpload" mode="advanced" update="addEditCustomerForm,imagePanle" auto="false"
+				sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+			<p:message for="photoUpload" styleClass="fieldError" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:panelGrid id="imagePanle" columns="1">
+				<p:graphicImage height="100" width="100"
+					value="/photo/customer/#{customerBean.customer.photoName}" />
+			</h:panelGrid>
+			<h:outputText value="" />
+
+
+
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:panelGrid columns="3">
+
+
+				<p:commandButton value="Save" action="#{customerBean.saveCustomer}"
+					update="customerPanel" rendered="#{customerBean.action!='update'}" />
+
+				<p:commandButton value="Update"
+					action="#{customerBean.updateCustomer}" update="customerPanel"
+					rendered="#{customerBean.action=='update'}" />
+
+				<p:commandButton value="Reset" action="#{customerBean.resetStep2}"
+					update="addeditcustomergridstpe2"
+					rendered="#{customerBean.action!='update'}" />
+
+				<p:commandButton value="Reset"
+					actionListener="#{customerBean.editCustomer}"
+					update="customerPanel" rendered="#{customerBean.action=='update'}">
+					<f:attribute name="customerId"
+						value="#{customerBean.customer.customerId}" />
+				</p:commandButton>
+
+				<p:commandButton value="Cancel" ajax="false"
+					action="#{customerBean.listCustomer}"
+					update="addeditcustomergridstpe2" />
+			</h:panelGrid>
+
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+
+		</h:panelGrid>
+
+
+
+
+
+
+	</p:outputPanel>
+
+
+</ui:composition>
+
+

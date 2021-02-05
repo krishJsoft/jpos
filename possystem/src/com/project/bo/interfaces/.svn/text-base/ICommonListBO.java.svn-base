@@ -1,0 +1,44 @@
+package com.alpha.bo.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Department;
+import com.alpha.hq.model.Designation;
+
+import com.alpha.hq.model.Autonum;
+import com.alpha.hq.model.Function;
+import com.alpha.hq.model.Rolefunctionlink;
+import com.alpha.model.datamodel.DepartmentModel;
+
+import com.alpha.model.datamodel.DesignationModel;
+import com.alpha.model.datamodel.FunctionModel;
+import com.alpha.model.datamodel.ModuleModel;
+import com.alpha.model.datamodel.RolefunctionlinkModel;
+
+public interface ICommonListBO {
+
+	public List<DepartmentModel> getDepartmentList(Integer departmentId) throws Exception;
+
+	public List<DepartmentModel> getDepartmentList() throws Exception;
+	
+	public List<DesignationModel> getDesignationList() throws Exception;
+
+	public List<ModuleModel> getModuleList() throws Exception;
+
+	public List<FunctionModel> getFunctionList(Integer moduleId)
+			throws Exception;
+
+	public List<FunctionModel> getFunctionList() throws Exception;
+
+	public List<RolefunctionlinkModel> getRolefunctionlinkList(Integer roleId)
+			throws Exception;
+	
+	public DepartmentModel getDepartment(Integer departmentId)  throws Exception;
+	
+	public void saveDepartment(DepartmentModel depObj)  throws Exception;
+	
+	public void updateDepartment(DepartmentModel depObj)  throws Exception;
+	
+	public void deleteDepartment(DepartmentModel depObj)  throws Exception;
+	
+}

@@ -1,0 +1,123 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+	<h:head>
+
+		<style>
+.category-selection {
+	height: 100%;
+	width: 100%;
+}
+
+.category-selection td {
+	vertical-align: top;
+	background: #f4f6f9;
+}
+
+.category-selection tr>td:nth-child(1) {
+	width: 8vw;
+}
+
+.mainCategoryButton {
+	width: 12vw;
+	height: 10vh;
+	background: #E32526;
+	color: white;
+	font-weight: bold;
+}
+
+.mainCategoryButton:focus {
+	background: blue;
+}
+
+.subItemButton {
+	width: 10vw;
+	height: 10vh;
+}
+
+.productButton {
+	width: 15vw;
+	height: 15vh;
+}
+
+.ui-paginator-prev, .ui-paginator-next, .ui-paginator-first,
+	.ui-paginator-last {
+	width: 5vw;
+	height: 7vh;
+}
+</style>
+	</h:head>
+	<body>
+		<table class="category-selection">
+			<tr>
+
+				<td style="height: 98%; background: #1B006A;" rowspan="2">
+					<div style="height: 100%; overflow: auto;">
+						<p:dataGrid id="mainCategorySelectionDataGrid" var="category"
+							rowIndexVar="row" rows="100" columns="1" layout="grid"
+							paginator="true" paginatorPosition="top"
+							paginatorTemplate="{PreviousPageLink} {NextPageLink}"
+							value="#{productCategoryBean.productcategoriesList}"
+							style="text-align:center">
+							<p:commandButton value="#{category.name}"
+								styleClass="mainCategoryButton"
+								actionListener="#{posBean.selectCategoryMenu}"
+								update="terminalOrderForm:subCategorySelectionDataGrid,terminalOrderForm:productSelectionDataGrid">
+								<f:attribute name="productcat" value="#{category}" />
+							</p:commandButton>
+						</p:dataGrid>
+					</div>
+
+				</td>
+				<td
+					style="height: 5%; width: 85%; text-align: center; background: #1B006A">
+					<ui:include
+						src="/terminalOrder/sales/keyboard/productSearchByCodeKybd.xhtml" />
+				</td>
+
+			</tr>
+
+			<tr>
+				<td style="height: 90%">
+					<div style="height: 100%; overflow: auto;">
+						<p:dataGrid id="subCategorySelectionDataGrid" var="category"
+							rowIndexVar="row" scrollable="true" rows="10" columns="6"
+							emptyMessage="Please Select a product"
+							value="#{productCategoryBean.childCategoryList}" layout="grid"
+							paginator="#{orderBean.subContentView=='categoryList'? 'true' : 'false'}"
+							paginatorPosition="bottom"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
+							<p:commandButton value="#{category.name}"
+								style="background:#138F99;color:white;"
+								actionListener="#{posBean.selectCategoryMenu}"
+								update="terminalOrderForm:subCategorySelectionDataGrid,terminalOrderForm:productSelectionDataGrid">
+								<f:attribute name="productcat" value="#{category}" />
+							</p:commandButton>
+						</p:dataGrid>
+
+						<p:dataGrid id="productSelectionDataGrid" var="pos"
+							rowIndexVar="row" rows="16" columns="4" emptyMessage=""
+							value="#{productBean.productAll}" layout="grid"
+							paginator="#{orderBean.subContentView=='productList'? 'true' : 'false'}"
+							paginatorPosition="top"
+							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
+							<p:commandButton
+								value="#{pos.productName}"
+								actionListener="#{orderBean.selectProduct(pos)}"
+								style="background:orange;color:white;"
+								rendered="#{orderBean.subContentView=='productList'}"
+								update="terminalOrderForm:orderListDataTable">
+							</p:commandButton>
+
+
+						</p:dataGrid>
+					</div>
+
+				</td>
+			</tr>
+		</table>
+	</body>
+</ui:composition>

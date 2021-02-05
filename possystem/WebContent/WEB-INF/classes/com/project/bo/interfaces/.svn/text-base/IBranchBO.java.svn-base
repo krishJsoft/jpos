@@ -1,0 +1,36 @@
+package com.alpha.bo.interfaces;
+
+import java.util.List;
+
+import com.alpha.model.datamodel.BranchModel;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 17 June 2013
+ * 
+ */
+
+public interface IBranchBO {
+
+	
+	public boolean createNewBranch(BranchModel branch) throws Exception;
+
+	public boolean updateBranch(BranchModel branch) throws Exception;
+
+	public boolean deleteBranch(BranchModel branch) throws Exception;
+	
+	public List<BranchModel> findByBranchList(Integer branchId,String cityName,String stateName,String Status) throws Exception;
+	
+	public BranchModel getBranchDetailsByName(String branchName) throws Exception;
+	
+	public BranchModel getBranchDetails(Integer branchId) throws Exception;
+	
+    public boolean findBranchNameExites(String branchName) throws Exception;
+	
+	public boolean findBranchCodeExites(String branchCode) throws Exception;
+	
+	
+
+	
+}

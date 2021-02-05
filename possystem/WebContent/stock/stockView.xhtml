@@ -1,0 +1,235 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogProduct" header="Product Stock Detail"
+		resizable="false" widgetVar="productDig" modal="true" height="490"
+		width="900">
+
+
+		<br></br>
+
+
+		<p:panel id="productviewPanel">
+			<h:panelGrid id="productdiggrid" columns="6" border="0" width="100%"
+				styleClass="bgcolor" cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText value="#{msg['product.label.productName']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.productName}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="#{msg['product.label.brandName']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.brandName}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="#{msg['product.label.categoryName']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.categoryName}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.categoryName']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.categoryName}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="#{msg['product.label.uom']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.uom}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.quantityonHand']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.quantityonHand}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText
+					value="#{msg['product.label.normalPrice']} #{app['common.currency']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.normalPrice}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText
+					value="#{msg['product.label.purchasePrice']} #{app['common.currency']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.purchasePrice}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="Product Code" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.barcode}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="#{msg['product.label.reorderPoint']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.reorderPoint}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.reorderQuantity']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.reorderQuantity}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.height']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.height}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.width']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.width}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.length']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.length}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="#{msg['product.label.weight']}" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.weight}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="Active"
+					rendered="#{productBean.product.status=='1'}"
+					styleClass="logintxttable" />
+				<h:outputText value="InActive"
+					rendered="#{productBean.product.status=='0'}"
+					styleClass="logintxttable" />
+
+
+
+			</h:panelGrid>
+
+
+
+			<br />
+
+			<p:fieldset legend="Suppliers" toggleable="true" toggleSpeed="500">
+
+				<p:dataTable id="dataTableview" var="supplier" rowIndexVar="row"
+					rendered="#{productBean.product.supplierlist.size()!=0}"
+					scrollable="true" scrollHeight="160" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+					value="#{productBean.product.supplierlist}" paginator="false"
+					rows="20" style="width: 100%" rowsPerPageTemplate="5,10,15">
+
+					<p:column id="modelHeader" styleClass="columnwidth" width="10%">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" />
+					</p:column>
+
+					<p:column sortBy="#{supplier.supplierName}"
+						styleClass="columnwidth" width="20%">
+						<f:facet name="header">
+							<h:outputText value="Supplier Name" />
+						</f:facet>
+						<h:outputText value="#{supplier.supplierName}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column sortBy="#{supplier.purchasePrice}"
+						styleClass="logintxtnumberFormat" width="10%">
+						<f:facet name="header">
+							<h:outputText value="Supplier Price" />
+						</f:facet>
+						<h:outputText value="#{supplier.purchasePrice}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column 
+						styleClass="columnwidth" width="30%">
+						<f:facet name="header">
+							<h:outputText value="Supplier Address" />
+						</f:facet>
+						<h:outputText value="#{supplier.supplierAddress}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+
+				</p:dataTable>
+			</p:fieldset>
+
+			<p:fieldset legend="Delivery Batch List" toggleable="true"
+				toggleSpeed="500">
+
+				<p:dataTable id="batchtable" var="batch" scrollable="true"
+					style="width: 100%" scrollHeight="150" scrollRows="30"
+					rowIndexVar="row" value="#{productBean.product.productbatchList}"
+					rendered="#{productBean.product.productbatchList!=null and productBean.product.productbatchList.size()!=0}"
+					rows="10" paginator="false" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+					<p:column headerText="Batch Quantity" width="10%"
+						styleClass="logintxtnumberFormat">
+						<h:outputText value="#{batch.quantity}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column headerText="Batch No" width="30%">
+						<h:outputText value="#{batch.batchNo}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column headerText="Expiry Date" width="20%">
+						<h:outputText value="#{batch.expairyDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+
+
+				</p:dataTable>
+			</p:fieldset>
+
+
+		</p:panel>
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:right"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Close" onclick="PF('productDig').hide()" />
+
+
+		</h:panelGrid>
+
+
+
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

@@ -1,0 +1,189 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditMembershipForm">
+	<p:outputPanel id="addEditMembershipPanel">
+		<p:message for="addEditMembershipPanel" />
+		<p:panel styleClass="mypanel" header="ADD EDIT MEMBERSHIP" rendered="#{loginBean.functionList.contains('Membership Register Add') or loginBean.functionList.contains('Membership Register Edit')}">
+			<h:panelGrid id="addeditcustomergrid" columns="10" width="100%"
+			columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+			
+			
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+				
+				<h:outputLabel  value="#{msg['membership.label.name']}" styleClass="logintxt" />
+				<h:outputText value=":" />
+				<h:inputText id="memberName" value="#{membershipBean.membership.name}" />
+				<p:message for="memberName" styleClass="fieldError" />
+				
+				
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+				<h:outputLabel value="#{msg['membership.label.identificationNumber']}" styleClass="logintxt" />
+				<h:outputText value=":" />
+				<h:inputText id="identificationNumber" value="#{membershipBean.membership.identificationNumber}" />
+				<p:message for="identificationNumber" styleClass="fieldError" />
+				
+				<ui:remove>
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+				<h:outputLabel value="#{msg['membership.label.gender']}" styleClass="logintxt" />
+				<h:outputText value=":" />
+				<p:selectOneMenu value="#{membershipBean.membership.gender}">
+				  <f:selectItem itemLabel="MALE" itemValue="male" />
+				  <f:selectItem itemLabel="FEMALE" itemValue="female" />
+				</p:selectOneMenu>
+				<h:outputText value="" />
+				</ui:remove>
+				
+				<ui:remove>
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+				<h:outputLabel value="#{msg['membership.label.address']}" styleClass="logintxt" />
+				<h:outputText value=":" />
+				<h:inputText id="address" value="#{membershipBean.membership.address}" />
+				<p:message for="address" styleClass="fieldError" />
+				</ui:remove>
+				
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+				<h:outputLabel value="#{msg['membership.label.contact']}" styleClass="logintxt" />
+				<h:outputText value=":" />
+				<h:inputText id="contactNo" value="#{membershipBean.membership.contactNo}" />
+				<p:message for="contactNo" styleClass="fieldError" />
+				
+				<ui:remove>	
+				<h:outputText value="" />
+				<h:outputLabel value="#{msg['membership.label.email']}" styleClass="logintxt" />
+				<h:outputText value=":" />
+				<h:inputText id="email" value="#{membershipBean.membership.emailAddress}" />
+				<p:message for="email" styleClass="fieldError" />
+				</ui:remove>
+				
+				<ui:remove>
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			 	<h:outputLabel value = "#{msg['membership.label.userName']}" styleClass="logintxt" />
+				<h:outputText value=":" />
+				<h:inputText id="userName" value="#{membershipBean.membership.userName}" />
+				<p:message for="userName" styleClass="fieldError" />
+   				</ui:remove>
+   					
+				<h:outputText value="" rendered="#{membershipBean.action=='update'}"/>
+   				<h:outputLabel value="#{msg['membership.label.status']}" styleClass="logintxt" rendered="#{membershipBean.action=='update'}"/>
+				<h:outputText value=":" rendered="#{membershipBean.action=='update'}"/>
+				<p:selectOneMenu value="#{membershipBean.membership.status}" rendered="#{membershipBean.action=='update'}">
+				  <f:selectItem itemLabel="Active" itemValue="1" />
+				  <f:selectItem itemLabel="Inactive" itemValue="0" />
+				</p:selectOneMenu>
+				<h:outputText value="" rendered="#{membershipBean.action=='update'}"/>
+			</h:panelGrid>
+			
+			
+			<center>
+				<p:commandButton value="SAVE"
+				update="addEditMembershipForm,:#{p:component('mambershipPaymentForm')}"
+				action="#{membershipBean.createNewMember}"
+				 rendered="#{membershipBean.action!='update' and loginBean.functionList.contains('Membership Register Add')}"
+				>
+				</p:commandButton>
+				<p:commandButton value="UPDATE"
+				update="addEditMembershipForm"
+				action="#{membershipBean.updateMember}"
+				rendered="#{membershipBean.action=='update'}"
+				
+				>
+		
+				</p:commandButton>
+				<p:commandButton 
+				update="addEditMembershipForm"
+				action="#{membershipBean.reset}"
+				rendered="#{membershipBean.action!='update'}"
+				value="RESET">
+				</p:commandButton>
+				
+				<p:commandButton 
+				update="addEditMembershipForm"
+				action="#{membershipBean.reset}"
+				rendered="#{membershipBean.action=='update'}"
+				value="CANCEL">
+				</p:commandButton>
+			</center>
+			
+				
+					
+		</p:panel>
+		
+	</p:outputPanel>
+		<p:dataTable id="membershipListTable" var="member" rowIndexVar="row"
+		reflow="true" value="#{membershipBean.membershipList}" 
+		paginator="true" rows="10" style="width: 100%"
+		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		rowsPerPageTemplate="10,20,30"
+		>
+			<p:column id="modelHeader" width="3%">
+					<f:facet name="header">
+						<h:outputText value="No" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="20%">
+				<f:facet name="header">
+					<h:outputText value="Name" />
+				</f:facet>
+				<h:outputText value="#{member.name}"
+					styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="12%">
+				<f:facet name="header">
+					<h:outputText value="Identification Number" />
+				</f:facet>
+				<h:outputText value="#{member.identificationNumber}"
+					styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="Expiration Date" />
+				</f:facet>
+				<h:outputText value="#{member.expirationDate}"
+						styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				<h:outputText value="#{member.status ==1 ? 'Active' : 'Inactive'}"
+					styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%" rendered="#{loginBean.functionList.contains('Membership Register Edit')}">
+				<f:facet name="header">
+					<h:outputText value="ACTION" />
+				</f:facet>
+		
+				<p:menuButton value="Options">
+
+					<p:menuitem ajax="true" value="Edit"
+						update=":#{p:component('addEditMembershipForm')}"
+							actionListener="#{membershipBean.editMember}">
+						<f:attribute name="membershipId" value="#{member.id}" />
+					</p:menuitem>
+				</p:menuButton>
+					
+			</p:column>
+			
+		</p:dataTable>
+					<ui:include src="/membership/print/memberPrintTemplate.xhtml" />		
+		
+	</h:form>
+</ui:composition>
+
+

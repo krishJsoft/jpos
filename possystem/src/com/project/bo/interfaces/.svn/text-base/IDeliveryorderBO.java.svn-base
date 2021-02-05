@@ -1,0 +1,43 @@
+package com.alpha.bo.interfaces;
+
+import java.util.Date;
+import java.util.List;
+
+import com.alpha.hq.model.Deliveryorderbreakdown;
+import com.alpha.model.datamodel.purchase.PurchaseorderModel;
+import com.alpha.model.datamodel.stock.DeliveryorderModel;
+import com.alpha.model.datamodel.stock.DeliveryorderbreakdownModel;
+
+public interface IDeliveryorderBO {
+
+	
+	public List<DeliveryorderModel> findByDeliveryorderListAll() throws Exception;
+
+	public int getDeliveryorderCount(String deliveryOrderNo,Integer supplierId, Date dateFrom,Date dateTo, String status) throws Exception;
+
+	public List<DeliveryorderModel> getDeliveryorderList(String deliveryOrderNo,Integer supplierId, Date dateFrom,Date dateTo, String status, int start, int howMany)
+			throws Exception;		
+	
+	public DeliveryorderModel getDeliveryorderDetails(Integer deliveryOrderId) throws Exception;
+	
+	public DeliveryorderModel getDeliveryorderMasterDetails(Integer deliveryOrderId) throws Exception;
+
+	public boolean createNewDeliveryorder(DeliveryorderModel deliveryOrder,PurchaseorderModel purchaseorderModel) throws Exception;
+
+	public boolean updateDeliveryorder(DeliveryorderModel deliveryOrder) throws Exception;
+	
+	public boolean deleteDeliveryorder(DeliveryorderModel deliveryOrder) throws Exception;
+	
+	public List<DeliveryorderbreakdownModel> getDeliveryorderbreakdownList(Integer supplier,Integer deliveryOrderId)	throws Exception;	
+
+	public List<DeliveryorderbreakdownModel> getDeliveryorderbreakdownSupplierList(Integer deliveryOrderId) throws Exception;
+	
+	public boolean deleteDeliveryorderbreakdown(DeliveryorderbreakdownModel deliveryorderbreakdown) throws Exception;	
+	
+	public boolean approveDeliveryorder(DeliveryorderModel deliveryOrder) throws Exception;
+	
+	public List<DeliveryorderbreakdownModel> getDeliveryorderbreakdownList(Date dateFrom,Date dateTo,int start, int howMany) throws Exception;
+	
+	public int getDeliveryorderbreakdownCount(Date dateFrom,Date dateTo) throws Exception;
+	
+}

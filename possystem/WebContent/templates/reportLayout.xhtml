@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+
+<f:loadBundle var="app" basename="META-INF/app-config" />
+<f:loadBundle var="msg" basename="META-INF/MessagesResources" />
+<f:loadBundle var="err" basename="META-INF/ErrorsResources" />
+<f:loadBundle var="des" basename="META-INF/DesignResources" />
+
+<h:head>
+	<title>Permai Clinic</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+</h:head>
+<h:body>
+	<h:form id="permaiHomeForm">
+		<ui:insert name="content1">
+
+		</ui:insert>
+		<ui:insert name="content2">
+		</ui:insert>
+
+
+
+		<div id="footer">
+			<p>
+				All Rights. Version 1.0<br />
+			</p>
+
+		</div>
+
+	</h:form>
+</h:body>
+</html>

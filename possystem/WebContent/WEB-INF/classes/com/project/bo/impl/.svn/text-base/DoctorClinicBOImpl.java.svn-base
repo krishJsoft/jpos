@@ -1,0 +1,228 @@
+package com.alpha.bo.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.annotation.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.IDoctorClinicBO;
+import com.alpha.dao.interfaces.IDoctorClinicDAO;
+import com.alpha.hq.model.Doctorclinic;
+import com.alpha.model.datamodel.DoctorclinicModel;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 17 June 2013
+ * 
+ */
+
+@Service("doctorBO")
+public class DoctorClinicBOImpl implements IDoctorClinicBO {
+	
+	public static Logger log = LoggerFactory.getLogger(DoctorClinicBOImpl.class);
+
+	@Resource(name = "doctorRepository")
+	private IDoctorClinicDAO doctorRepository;
+	
+	@Transactional
+	@Override
+	public boolean createNewDoctorclinic(DoctorclinicModel dclinic)
+			throws Exception {
+		boolean saveSuccess = false;
+		Doctorclinic dclinicObj = new Doctorclinic();
+		try {
+			
+			dclinicObj.setAddress(dclinic.getAddress());
+			dclinicObj.setCity(dclinic.getCity());
+			dclinicObj.setClinicAddress(dclinic.getClinicAddress());
+			dclinicObj.setClinicCity(dclinic.getClinicCity());
+			dclinicObj.setClinicCountry(dclinic.getClinicCountry());
+			dclinicObj.setClinicFaxNo(dclinic.getClinicFaxNo());
+			dclinicObj.setClinicName(dclinic.getClinicName());
+			dclinicObj.setClinicPhoneNo(dclinic.getClinicPhoneNo());
+			dclinicObj.setClinicPostCode(dclinic.getClinicPostCode());
+			dclinicObj.setClinicRegNo(dclinic.getClinicRegNo());
+			dclinicObj.setClinicState(dclinic.getClinicState());
+			dclinicObj.setCommission(dclinic.getCommission());
+			dclinicObj.setCommissionFrom(dclinic.getCommissionFrom());
+			dclinicObj.setCommissionTo(dclinic.getCommissionTo());
+			dclinicObj.setCountry(dclinic.getCountry());
+			dclinicObj.setDoctorName(dclinic.getDoctorName());
+			dclinicObj.setIdentificationNumber(dclinic.getIdentificationNumber());
+			dclinicObj.setMobileNo(dclinic.getMobileNo());
+			dclinicObj.setPostcode(dclinic.getPostcode());
+			dclinicObj.setState(dclinic.getPostcode());			
+			dclinicObj.setStatus(dclinic.getStatus());
+			
+			saveSuccess = doctorRepository.createNewDoctorclinic(dclinicObj);
+		}
+
+		catch (Exception e) {
+			log.info("Error in createNewDoctorclinic DoctorClinicBOImpl " + e);
+			throw e;
+		}
+		return saveSuccess;
+	
+	}
+
+	@Transactional
+	@Override
+	public boolean updateDoctorclinic(DoctorclinicModel dclinic)
+			throws Exception {
+		boolean updateSuccess = false;
+		Doctorclinic dclinicObj = doctorRepository.getDoctorclinicDetails(dclinic.getDoctorClinicId());
+		
+		try {
+			
+			dclinicObj.setAddress(dclinic.getAddress());
+			dclinicObj.setCity(dclinic.getCity());
+			dclinicObj.setClinicAddress(dclinic.getClinicAddress());
+			dclinicObj.setClinicCity(dclinic.getClinicCity());
+			dclinicObj.setClinicCountry(dclinic.getClinicCountry());
+			dclinicObj.setClinicFaxNo(dclinic.getClinicFaxNo());
+			dclinicObj.setClinicName(dclinic.getClinicName());
+			dclinicObj.setClinicPhoneNo(dclinic.getClinicPhoneNo());
+			dclinicObj.setClinicPostCode(dclinic.getClinicPostCode());
+			dclinicObj.setClinicRegNo(dclinic.getClinicRegNo());
+			dclinicObj.setClinicState(dclinic.getClinicState());
+			dclinicObj.setCommission(dclinic.getCommission());
+			dclinicObj.setCommissionFrom(dclinic.getCommissionFrom());
+			dclinicObj.setCommissionTo(dclinic.getCommissionTo());
+			dclinicObj.setCountry(dclinic.getCountry());
+			dclinicObj.setDoctorName(dclinic.getDoctorName());
+			dclinicObj.setIdentificationNumber(dclinic.getIdentificationNumber());
+			dclinicObj.setMobileNo(dclinic.getMobileNo());
+			dclinicObj.setPostcode(dclinic.getPostcode());
+			dclinicObj.setState(dclinic.getPostcode());
+			dclinicObj.setStatus(dclinic.getStatus());
+			
+			updateSuccess = doctorRepository.updateDoctorclinic(dclinicObj);			
+		}
+
+		catch (Exception e) {
+			log.info("Error in updateDoctorclinic DoctorClinicBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	
+	}
+
+	@Override
+	public boolean deleteDoctorclinic(DoctorclinicModel dclinic)
+			throws Exception {
+		boolean deleteSuccess = false;		
+		try {
+			Doctorclinic dclinicObj = doctorRepository.getDoctorclinicDetails(dclinic.getDoctorClinicId());		
+			deleteSuccess = doctorRepository.deleteDoctorclinic(dclinicObj);			
+			}
+		catch (Exception e) {
+			log.info("Error in deleteDoctorclinic DoctorClinicBOImpl " + e);
+			throw e;
+		}
+		return deleteSuccess;
+	}
+
+	@Override
+	public List<DoctorclinicModel> findByDoctorclinicList(
+			String identificationNumber, String clinicName, String status)
+			throws Exception {
+		 List<DoctorclinicModel> doctorObjList = new ArrayList<DoctorclinicModel>();	
+		   List<Doctorclinic> doctorList = new ArrayList<Doctorclinic>();
+		try {			
+			doctorList = doctorRepository.findByDoctorclinicList(identificationNumber, clinicName, status);
+			
+			for (Doctorclinic dclinic : doctorList) {				
+				DoctorclinicModel dclinicObj = new DoctorclinicModel();	
+				dclinicObj.setAddress(dclinic.getAddress());
+				dclinicObj.setCity(dclinic.getCity());
+				dclinicObj.setClinicAddress(dclinic.getClinicAddress());
+				dclinicObj.setClinicCity(dclinic.getClinicCity());
+				dclinicObj.setClinicCountry(dclinic.getClinicCountry());
+				dclinicObj.setClinicFaxNo(dclinic.getClinicFaxNo());
+				dclinicObj.setClinicName(dclinic.getClinicName());
+				dclinicObj.setClinicPhoneNo(dclinic.getClinicPhoneNo());
+				dclinicObj.setClinicPostCode(dclinic.getClinicPostCode());
+				dclinicObj.setClinicRegNo(dclinic.getClinicRegNo());
+				dclinicObj.setClinicState(dclinic.getClinicState());
+				dclinicObj.setCommission(dclinic.getCommission());
+				dclinicObj.setCommissionFrom(dclinic.getCommissionFrom());
+				dclinicObj.setCommissionTo(dclinic.getCommissionTo());
+				dclinicObj.setCountry(dclinic.getCountry());
+				dclinicObj.setDoctorName(dclinic.getDoctorName());
+				dclinicObj.setIdentificationNumber(dclinic.getIdentificationNumber());
+				dclinicObj.setIdentificationOldNumber(dclinic.getIdentificationNumber());
+				dclinicObj.setMobileNo(dclinic.getMobileNo());
+				dclinicObj.setPostcode(dclinic.getPostcode());
+				dclinicObj.setState(dclinic.getPostcode());					
+				dclinicObj.setDoctorClinicId(dclinic.getDoctorClinicId());
+				dclinicObj.setStatus(dclinic.getStatus());
+				
+				doctorObjList.add(dclinicObj);
+			}
+		}
+		catch (Exception e) {
+			log.info("Error in findByDoctorclinicList DoctorClinicBOImpl " + e);
+			throw e;
+		}
+		return doctorObjList;
+	}
+
+	@Override
+	public DoctorclinicModel getDoctorclinicDetails(Integer doctorClinicId)
+			throws Exception {
+			DoctorclinicModel dclinicObj = new DoctorclinicModel();	
+			
+			try {			
+				Doctorclinic dclinic  = doctorRepository.getDoctorclinicDetails(doctorClinicId);
+				
+				dclinicObj.setAddress(dclinic.getAddress());
+				dclinicObj.setCity(dclinic.getCity());
+				dclinicObj.setClinicAddress(dclinic.getClinicAddress());
+				dclinicObj.setClinicCity(dclinic.getClinicCity());
+				dclinicObj.setClinicCountry(dclinic.getClinicCountry());
+				dclinicObj.setClinicFaxNo(dclinic.getClinicFaxNo());
+				dclinicObj.setClinicName(dclinic.getClinicName());
+				dclinicObj.setClinicPhoneNo(dclinic.getClinicPhoneNo());
+				dclinicObj.setClinicPostCode(dclinic.getClinicPostCode());
+				dclinicObj.setClinicRegNo(dclinic.getClinicRegNo());
+				dclinicObj.setClinicState(dclinic.getClinicState());
+				dclinicObj.setCommission(dclinic.getCommission());
+				dclinicObj.setCommissionFrom(dclinic.getCommissionFrom());
+				dclinicObj.setCommissionTo(dclinic.getCommissionTo());
+				dclinicObj.setCountry(dclinic.getCountry());
+				dclinicObj.setDoctorName(dclinic.getDoctorName());
+				dclinicObj.setIdentificationNumber(dclinic.getIdentificationNumber());
+				dclinicObj.setIdentificationOldNumber(dclinic.getIdentificationNumber());
+				dclinicObj.setMobileNo(dclinic.getMobileNo());
+				dclinicObj.setPostcode(dclinic.getPostcode());
+				dclinicObj.setState(dclinic.getPostcode());					
+				dclinicObj.setDoctorClinicId(dclinic.getDoctorClinicId());
+				dclinicObj.setStatus(dclinic.getStatus());
+				
+			}
+			catch (Exception e) {
+				log.info("Error in getDoctorclinicDetails DoctorClinicBOImpl " + e);
+				throw e;
+			}
+			return dclinicObj;
+	}
+
+	@Override
+	public boolean findDoctorIcExites(String identificationNumber)
+			throws Exception {
+		boolean exists = false;		
+		try {
+			exists = doctorRepository.findDoctorIcExites(identificationNumber);
+		}
+		catch (Exception e) {
+			log.info("Error in findDoctorIcExites DoctorClinicBOImpl " + e);
+			throw e;
+		}
+		return exists;	
+	}
+
+}

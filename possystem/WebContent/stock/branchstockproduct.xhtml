@@ -1,0 +1,260 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="listProductForm">
+		<p:outputPanel id="productPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="productPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Product's Stock">
+
+
+				<h:panelGrid id="searchproductgrid" columns="10" border="0"
+					width="40%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+			
+					<h:panelGrid columns="3">					
+					<h:outputText value="#{msg['purchaserequest.label.productCode']}"
+							styleClass="logintxt"></h:outputText>							
+					<p:inputText id="barcode" value="#{productBean.product.barcode}"
+						maxlength="45" size="25" />
+						<p:commandButton id="productBtn" icon="ui-icon-search"  type="button" onclick="PF('overproduct').show();"
+							style="height:22px;" update="productPanel1" />					
+					</h:panelGrid>
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{productBean.searchBranchStockProduct}"
+							update="productPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="product" rowIndexVar="row"
+					value="#{productBean.productstocklist}" paginator="true" rows="50"
+					style="width: 100%" rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+					<p:column id="modelHeader" width="3%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column styleClass="columnwidth" width="15%">
+						<f:facet name="header">
+							<h:outputText value="Branch Name" />
+						</f:facet>
+						<h:outputText value="#{product.branch.branchName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column styleClass="columnwidth" width="10%">
+						<f:facet name="header">
+							<h:outputText value="Branch Code" />
+						</f:facet>
+						<h:outputText value="#{product.branch.branchCode}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column styleClass="logintxtnumberFormat" width="7%"
+						sortBy="#{product.quantityonHand}">
+						<f:facet name="header">
+							<h:outputText value="Quantity on Hand" />
+						</f:facet>
+						<h:outputText value="#{product.quantityonHand}"
+							styleClass="fieldSuccess" />
+					</p:column>
+
+					<p:column styleClass="columnwidth" width="20%">
+						<f:facet name="header">
+							<h:outputText value="Address" />
+						</f:facet>
+						<h:outputText value="#{product.branch.address}"
+							styleClass="logintxttable" />
+
+					</p:column>
+
+					<p:column styleClass="columnwidth" width="10%">
+						<f:facet name="header">
+							<h:outputText value="Phone" />
+						</f:facet>
+						<h:outputText value="#{product.branch.phoneNo}"
+							styleClass="logintxttable" />
+
+					</p:column>
+
+
+					<p:column styleClass="columnwidth" width="10%">
+						<f:facet name="header">
+							<h:outputText value="Post Code" />
+						</f:facet>
+						<h:outputText value="#{product.branch.postCode}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+
+
+
+
+
+				</p:dataTable>
+
+			</p:panel>
+
+		</p:outputPanel>
+		
+		<p:overlayPanel id="productSearchPanel" for="productBtn"
+			hideEffect="fade" widgetVar="overproduct" showCloseIcon="true"
+			style="width:70%;" dynamic="true">
+			<h:panelGroup id="productPanel1" stateless="true">
+
+				
+
+
+					<h:panelGrid id="searchproductgrid1" columns="25" border="0"
+						width="100%"
+						columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Product Code " styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="pbarcode" value="#{productBean.barcode}"
+							maxlength="45" size="15" />
+						<p:message for="pbarcode" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Product Name " styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="pproductName" value="#{productBean.productName}"
+							maxlength="200" size="20" />
+						<p:message for="pproductName" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Brand Name " styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="brandName" value="#{productBean.brandName}"
+							maxlength="200" size="20" />
+						<p:message for="brandName" styleClass="fieldError" />
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.categoryName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:panelGrid columns="2" border="0">
+							<p:commandLink id="categoryBtn" value="Select" oncomplete="PF('overp').show();" />
+						</h:panelGrid>
+						<h:outputText value="" />
+
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:panelGrid columns="2" border="0"
+							columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+							<p:commandButton ajax="true" icon="ui-icon-search"
+								style="height:22px;" action="#{productBean.searchProduct}"
+								update="productPanel1" />
+						</h:panelGrid>
+						<h:outputText value="" />
+
+					</h:panelGrid>
+
+					<p:dataTable id="productdataTable" var="product" rowIndexVar="row"
+						paginatorPosition="top" lazy="true"
+						value="#{productBean.productModel}" scrollable="true"
+						first="#{productBean.first}" scrollHeight="200"
+						selectionMode="single" paginator="true" rows="10"
+						style="width:100%" rowsPerPageTemplate="10,15,25,50,100,250,500"
+						rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+						<p:ajax event="page" listener="#{productBean.onPageChange}" />
+
+						<p:ajax event="rowSelect" listener="#{productBean.selectProduct}"
+							oncomplete="PF('overproduct').hide()" update=":listProductForm:productPanel" >
+							<f:attribute name="product" value="#{product}" />
+						</p:ajax>
+
+
+
+						<p:column sortBy="#{product.barcode}" styleClass="columnwidth"
+							width="8%">
+							<f:facet name="header">
+								<h:outputText value="Product Code" />
+							</f:facet>
+							<h:outputText value="#{product.barcode}"
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column sortBy="#{product.productName}" styleClass="columnwidth"
+							width="20%">
+							<f:facet name="header">
+								<h:outputText value="Product Name" />
+							</f:facet>
+							<h:outputText value="#{product.productName}"
+								styleClass="logintxttable" />
+						</p:column>
+
+
+
+
+						<p:column sortBy="#{product.brandName}" styleClass="columnwidth"
+							width="10%">
+							<f:facet name="header">
+								<h:outputText value="Brand" />
+							</f:facet>
+							<h:outputText value="#{product.brandName}"
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column sortBy="#{product.categoryName}"
+							styleClass="columnwidth" width="10%">
+							<f:facet name="header">
+								<h:outputText value="Category" />
+							</f:facet>
+							<h:outputText value="#{product.categoryName}"
+								styleClass="logintxttable" />
+						</p:column>
+
+
+						<p:column width="4%">
+							<f:facet name="header">
+								<h:outputText value="UOM Type" />
+							</f:facet>
+							<h:outputText value="#{product.uom}" styleClass="logintxttable" />
+						</p:column>
+
+
+					</p:dataTable>				
+
+			</h:panelGroup>			
+
+		</p:overlayPanel>				
+		
+		<ui:include src="/admin/categoryOverlayout.xhtml" />
+	</h:form>
+
+
+
+</ui:composition>
+
+

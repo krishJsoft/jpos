@@ -1,0 +1,156 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	>
+<style>
+	.searchOrderPanel td:nth-child(3){
+		text-align:right;	
+	}
+	.searchOrderPanel{
+		
+		width:100%;
+	}
+	.searchOrderPanel td{
+		
+		border-style: hidden !important;	
+	}
+	.orderSearchButton{
+		font-size:150%;
+		width:100%;
+		font-weight:bold;
+		height:100%;
+	}
+	.ui-button.orderSearchButton{
+		background:#1F618D;
+		color:white;
+	}
+	.keypad-key {
+	    font-size: 3em !important;
+	    width: 120px !important;
+	}
+</style>
+<h:form id="viewAllOrderForm" style="z-index:-22">
+	<p:panelGrid   styleClass="searchOrderPanel ">
+		<p:row>
+			<p:column>
+			<h:outputText value="TABLE NO." style="width:40%;font-size:100%"/>
+			</p:column>
+			<p:column>
+				<c:choose>
+					<c:when  test="${fn:containsIgnoreCase(request.getHeader('User-Agent'), 'Android')=='false'}">
+		    			<p:keyboard 
+		    			value="#{posBean.tableName}" 
+		    			onfocus="this.select();" 
+	    				layout="custom" layoutTemplate="123,456,789,0-back" 
+		    			/>
+		      		</c:when >
+		      		
+		      		<c:otherwise>
+		      			<p:inputText value="#{posBean.tableName}" style="width:30%;font-size:100%"/>
+		      		</c:otherwise> 
+		      		
+		      	</c:choose>
+			
+			
+			
+			</p:column>
+			<p:column rowspan="2">
+			<p:commandButton value="SEARCH" ajax="false" icon="fa fa-search" styleClass="orderSearchButton"
+				action="#{posBean.getKitchenOrders}"
+				
+				>
+			</p:commandButton>
+			</p:column>
+		</p:row>
+		<p:row>
+		
+			<p:column>
+			<h:outputText value="CARD NO" style="width:40%;font-size:100%"/>
+			</p:column>
+			<p:column>
+			<c:choose>
+					<c:when  test="${fn:containsIgnoreCase(request.getHeader('User-Agent'), 'Android')=='false'}">
+		    			<p:keyboard 
+		    			value="#{posBean.cardNo}" 
+		    			onfocus="this.select();" 
+	    				layout="custom" layoutTemplate="123,456,789,0-back" 
+		    			/>
+		      		</c:when >
+		      		
+		      		<c:otherwise>
+						<p:inputText value="#{posBean.cardNo}" style="width:30%;font-size:100%" />
+		      		</c:otherwise> 
+		      		
+		      	</c:choose>
+			</p:column>
+			
+		</p:row>
+	</p:panelGrid>
+	<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+		scrollable="true" lazy="false" first="#{salesorderBean.first}"
+		scrollHeight="590" value="#{posBean.kitchedOrder}"
+		paginator="false" rows="100" style="width: 100%"
+		rowsPerPageTemplate="5,10,15,25,50,100"
+		rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+		<p:ajax event="page" listener="#{salesorderBean.onPageChange}" />
+
+		<p:column id="modelHeader" style="width: 10%;">
+			<f:facet name="header">
+				<h:outputText value="NO" />
+			</f:facet>
+			<h:outputText value="#{row + 1}" styleClass="logintxttable"
+				style="height:25px;" />
+		</p:column>
+
+		<p:column style="width:20%;text-align:center">
+			<f:facet name="header">
+				<h:outputText value="TABLE NO." />
+			</f:facet>
+			<h:outputText value="#{sales.tableName}"
+				styleClass="logintxttable" />
+		</p:column>
+
+		<p:column style="text">
+			<f:facet name="header">
+				<h:outputText value="CARD NO" />
+				
+			</f:facet>
+			<h:outputText value="#{sales.cardNo}" styleClass="logintxttable" />
+			
+		</p:column>
+
+		<p:column style="width: 15%;">
+			<f:facet name="header">ACTION</f:facet>
+
+			<p:commandButton value="VIEW"
+				actionListener="#{orderBean.mobileViewKitchenOrderList}">
+				<f:attribute name="sales" value="#{sales}" />
+			</p:commandButton>
+
+
+
+		</p:column>
+
+	</p:dataTable>
+	<p:panelGrid style="width:100%">
+		<p:row>
+			<p:column>
+				<h:outputText value=" " />
+			</p:column>
+			
+		</p:row>
+	</p:panelGrid>
+	<ui:include src="/mobileVersionUI/sales/contentFooter.xhtml" />
+	
+</h:form>
+
+
+</ui:composition>
+
+

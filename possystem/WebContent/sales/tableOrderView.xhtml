@@ -1,0 +1,178 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogSalesOrder" header="Sales Order Detail"
+		resizable="false" widgetVar="salesDig" modal="false" height="90%"
+		width="70%">
+
+
+		<br></br>
+
+
+		<p:panel id="requestitem" styleClass="mytabpanel">
+
+
+			<h:panelGrid id="requestgrid" columns="6" border="0" width="90%"
+				styleClass="bgcolor" cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText value="User"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{orderBean.salesorder.createdBy}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="Created Date"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{orderBean.salesorder.createdDate}"
+					styleClass="logintxttable">
+					<f:convertDateTime pattern="dd-MMM-yyyy " />
+				</h:outputText>
+
+				<h:outputText value="Sales Order No"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{orderBean.salesorder.salesOrderNo}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="Status"></h:outputText>
+				<h:outputText value=":" />
+
+				<h:outputText value="#{app['salesorder.status.neworderlable']}"
+					rendered="#{orderBean.salesorder.status==app['salesorder.status.newordervalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['salesorder.status.processedlable']}"
+					rendered="#{orderBean.salesorder.status==app['salesorder.status.processedvalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['salesorder.status.orderedlable']}"
+					rendered="#{orderBean.salesorder.status==app['salesorder.status.orderedvalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['salesorder.status.paidlable']}"
+					rendered="#{orderBean.salesorder.status==app['salesorder.status.paidvalue']}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="Total Amount(RM)"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{orderBean.salesorder.totalAmount}"
+					styleClass="logintxttable" />
+					
+					<h:outputText value="Total Tax(RM)"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{orderBean.salesorder.totalTax}"
+					styleClass="logintxttable" />
+
+
+
+			</h:panelGrid>
+
+
+			<br></br>			
+
+			<p:dataTable id="salesTable" var="product" rowIndexVar="productrow"
+				scrollable="true" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}"
+				value="#{orderBean.salesorder.salesorderbreakdowns}"
+				style="width:100%;" scrollHeight="250">
+
+
+				<p:column style="width:10%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="Product Code" />
+					</f:facet>
+					<h:outputText value="#{product.productCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column style="width:25%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="Product Name" />
+					</f:facet>
+					<h:outputText value="#{product.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+			
+
+
+				<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+					<f:facet name="header">
+						<h:outputText value="Quantity " />
+					</f:facet>
+					<h:outputText value="#{product.quantity}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+					<f:facet name="header">
+						<h:outputText value="Unit Price(RM)" />
+					</f:facet>
+					<h:outputText value="#{product.unitPrice}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+					<f:facet name="header">
+						<h:outputText value="Tax (%)" />
+					</f:facet>
+					<h:outputText value="#{product.taxCode}"
+						styleClass="logintxttable" >
+						<f:convertNumber pattern="#0" />
+					</h:outputText>
+				</p:column>
+
+				<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+					<f:facet name="header">
+						<h:outputText value="Tax (RM)" />
+					</f:facet>
+					<h:outputText value="#{product.taxAmount}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+					<f:facet name="header">
+						<h:outputText value="SubTotal(RM)" />
+					</f:facet>
+					<h:outputText value="#{product.subTotal}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Close" oncomplete="PF('salesDig').hide()" />
+
+
+
+		</h:panelGrid>
+
+
+
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

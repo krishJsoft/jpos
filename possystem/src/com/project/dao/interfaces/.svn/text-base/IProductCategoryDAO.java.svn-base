@@ -1,0 +1,45 @@
+package com.alpha.dao.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Kategoriler;
+import com.alpha.hq.model.Productcategory;
+import com.alpha.hq.model.Uomtype;
+
+public interface IProductCategoryDAO {
+
+	
+	public boolean createNewProductcategory(Productcategory pcategory) throws Exception;
+
+	public boolean updateProductcategory(Productcategory pcategory) throws Exception;
+
+	public boolean deleteProductcategory(Productcategory pcategory) throws Exception;
+	
+	public List<Productcategory> findByProductcategoryList(Integer categoryId,String Status) throws Exception;
+	
+	public List<Productcategory> findByProductcategoryChildList(Integer parentCategoryId,String Status) throws Exception;
+	
+	public Productcategory getProductcategoryDetails(Integer categoryId) throws Exception;
+	
+    public boolean findCategoryExites(Integer categoryId ,Integer parentCategoryId, String categoryName) throws Exception;
+    
+	public List<Kategoriler> findAll();
+	public Kategoriler findByKategoriId(Integer kategoriId);
+	public List<Kategoriler> findByKategoriAdi(Integer kategoriAdi);
+	public List<Kategoriler> findByKatUstId(Integer katUstId);
+
+    
+	public boolean createNewUom(Uomtype uom) throws Exception;
+
+	public boolean updateUom(Uomtype uom) throws Exception;
+
+	public boolean deleteUom(Uomtype uom) throws Exception;
+	
+	public List<Uomtype> findByUomtypeList(String UOMName) throws Exception;
+	
+    public boolean findUomtypeExites( String UOMName) throws Exception;
+    
+	public Uomtype getUomtypeDetails(Integer UOMId) throws Exception;
+
+    
+}

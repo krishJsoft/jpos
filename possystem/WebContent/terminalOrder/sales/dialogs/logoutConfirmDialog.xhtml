@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:confirmDialog global="false"
+	 	widgetVar="logoutCOnfirmOrderListDlg" 
+	 	closable="false"
+		severity="info"
+		message="Are you sure want to log out ?" 
+		>
+		<p:commandButton value="YES"
+       		icon="ui-icon-check" 
+       		oncomplete="PF('logoutCOnfirmOrderListDlg').hide()"
+       		action="#{projectHome.userLogout}"
+       		ajax="false"
+        />	
+		<p:commandButton value="NO"
+			oncomplete="PF('logoutCOnfirmOrderListDlg').hide()"
+		/>
+        	
+    </p:confirmDialog>
+	
+</ui:composition>

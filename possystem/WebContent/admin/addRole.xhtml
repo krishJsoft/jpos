@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:r="http://richfaces.org/rich"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="addRoleForm">
+
+		<p:panel id="addRole" styleClass="mypanel" header="Add/Edit Role">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="addRole" /></td>
+				</tr>
+			</table>
+			<br />
+
+			<h:panelGrid id="newRolegrid" columns="5" border="0"
+				columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+				<h:outputText value="#{msg['common.asterisk']}"
+					styleClass="mandatory_text" />
+				<h:outputText value="#{msg['addRole.label.rolename']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="roleName" value="#{roleBean.roleInfo.roleName}"
+					maxlength="30" size="30" />
+				<h:message for="roleName" styleClass="fieldError" />
+
+				<h:outputText value="#{msg['common.asterisk']}"
+					styleClass="mandatory_text" />
+				<h:outputText value="#{msg['addRole.label.roledescription']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputTextarea id="roleDescript"
+					value="#{roleBean.roleInfo.roleDescription}" rows="4" cols="40" />
+				<h:message for="roleDescript" styleClass="fieldError" />
+
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:panelGrid id="addareaSubmit" columns="3">
+					<p:commandButton action="#{roleBean.saveRole}" value="Save"
+						update="addRole" rendered="#{roleBean.roleAction!='update'}">
+					</p:commandButton>
+
+					<p:commandButton action="#{roleBean.updateRole}" value="Update"
+						update="addRole" rendered="#{roleBean.roleAction=='update'}">
+					</p:commandButton>
+
+					<p:commandButton value="Reset" action="#{roleBean.resetRole}"
+						update="newRolegrid" ajax="false" rendered="#{roleBean.roleAction!='update'}"/>
+						
+						<p:commandButton value="Reset"
+					actionListener="#{roleBean.onClick_Edit}" update="addRole"
+					rendered="#{roleBean.roleAction=='update'}">
+					<f:attribute name="editrole" value="#{roleBean.roleInfo.roleId}" />
+				   </p:commandButton>
+				   
+					<p:commandButton value="Cancel" action="#{roleBean.cancelRole}"
+						update="newRolegrid" ajax="false"></p:commandButton>
+				</h:panelGrid>
+				<h:outputText value="" />
+
+
+			</h:panelGrid>
+			
+		
+
+		</p:panel>
+
+	</h:form>
+</ui:composition>

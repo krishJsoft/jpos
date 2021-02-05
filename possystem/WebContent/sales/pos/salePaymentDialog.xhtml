@@ -1,0 +1,663 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogPayment" header="Sales Payment Confirmation"
+		widgetVar="payment" modal="true" height="450" width="900">
+
+
+<p:ajax event="close" update="addEditPosForm:focus" />
+
+		<p:outputPanel id="salespaymenterrorPanel">
+			<p:message for="salespaymenterrorPanel" />
+
+
+
+			<h:panelGrid columns="2" id="paymentgridMaster"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+				<p:panel
+					style="width:310px; height:350px; align:center;background-image: url('images/contentpagebg.jpg');background-repeat: repeat-x;">
+
+
+					<h:panelGrid columns="5" border="0" width="100%"
+						styleClass="borderlessGrid"
+						columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Payment Type" styleClass="logintxt"></h:outputText>
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<p:selectOneMenu id="type"
+							value="#{posBean.salesorder.paymentType}"
+							style="width:160px; text-align:left;">
+							<f:selectItem itemLabel="Select Type" itemValue="" />
+							<f:selectItem itemLabel="Cash" itemValue="Cash" />
+							<f:selectItem itemLabel="Card" itemValue="Card" />
+							<f:selectItem itemLabel="Cheque" itemValue="Cheque" />
+							<f:selectItem itemLabel="Voucher" itemValue="Voucher" />
+							<f:selectItem itemLabel="Loyalty" itemValue="Loyalty" />
+							<f:selectItem itemLabel="Grab Pay" itemValue="GrabPay" />
+							<p:ajax update="paymentgridMaster" event="change"></p:ajax>
+						</p:selectOneMenu>
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<p:message for="type" styleClass="fieldError" />
+
+
+					</h:panelGrid>
+
+
+					<br></br>
+
+
+					<h:panelGrid id="keyboardgrid" columns="2" border="0"
+						rendered="#{posBean.salesorder.paymentType=='Cash'}"
+						styleClass="bgcolor"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+					<p:commandLink style="width: 110px; "
+					actionListener="#{posBean.addSalesAmountItem}" 
+					update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+					oncomplete="focusOnSalesPanel('#{pos.categoryId}')"  
+					>
+						<h:graphicImage value="/images/100.jpg" width="100px" height="50px"/>
+						<f:param name="id" value="100.00" />
+					</p:commandLink>
+
+					<p:commandLink style="width: 110px; "
+					actionListener="#{posBean.addSalesAmountItem}" 
+					update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+					oncomplete="focusOnSalesPanel('#{pos.categoryId}')"  
+					>
+						<h:graphicImage value="/images/50.jpg" width="100px" height="50px"/>
+						<f:param name="id" value="50.00" />
+					</p:commandLink>
+
+					<p:commandLink style="width: 110px; "
+					actionListener="#{posBean.addSalesAmountItem}" 
+					update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+					oncomplete="focusOnSalesPanel('#{pos.categoryId}')"  
+					>
+						<h:graphicImage value="/images/20.jpg" width="100px" height="50px"/>
+						<f:param name="id" value="20.00" />
+					</p:commandLink>
+					
+					<p:commandLink style="width: 110px; "
+					actionListener="#{posBean.addSalesAmountItem}" 
+					update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+					oncomplete="focusOnSalesPanel('#{pos.categoryId}')"  
+					>
+						<h:graphicImage value="/images/10.jpg" width="100px" height="50px"/>
+						<f:param name="id" value="10.00" />
+					</p:commandLink>
+					
+					<p:commandLink style="width: 110px; "
+					actionListener="#{posBean.addSalesAmountItem}" 
+					update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+					oncomplete="focusOnSalesPanel('#{pos.categoryId}')"  
+					>
+						<h:graphicImage value="/images/5.jpg" width="100px" height="50px"/>
+						<f:param name="id" value="5.00" />
+					</p:commandLink>
+					
+					<p:commandLink style="width: 110px; "
+					actionListener="#{posBean.addSalesAmountItem}" 
+					update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+					oncomplete="focusOnSalesPanel('#{pos.categoryId}')"  
+					>
+						<h:graphicImage value="/images/1.jpg" width="100px" height="50px"/>
+						<f:param name="id" value="1.00" />
+					</p:commandLink>
+			
+
+						<p:commandButton value="0.50" styleClass="itembutton"
+							update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+							actionListener="#{posBean.addSalesAmountItem}"
+							style="width:100px; height:40px; font-size: 15px;background:#E32526" 
+							ajax="true">
+							<f:param name="id" value="0.50" />
+						</p:commandButton>
+
+						<p:commandButton value="0.20" id="a9" styleClass="itembutton"
+							update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+							actionListener="#{posBean.addSalesAmountItem}"
+							style="width:100px; height:40px;font-size: 15px; background:#E32526" 
+							ajax="true">
+							<f:param name="id" value="0.20" />
+						</p:commandButton>
+
+						<p:commandButton value="0.10" styleClass="itembutton"
+							update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+							actionListener="#{posBean.addSalesAmountItem}"
+							style="width:100px; height:40px;font-size: 15px;background:#E32526 " 
+							ajax="true">
+							<f:param name="id" value="0.10" />
+						</p:commandButton>
+
+
+
+						<p:commandButton value="0.05" id="a11" styleClass="itembutton"
+							update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid"
+							actionListener="#{posBean.addSalesAmountItem}"
+							style="width:100px; height:40px;font-size: 15px;background:#E32526 " 
+							ajax="true">
+							<f:param name="id" value="0.05" />
+						</p:commandButton>
+
+
+					</h:panelGrid>
+
+					<h:panelGrid id="keyboardgrid1" columns="1" border="0"
+						rendered="#{posBean.salesorder.paymentType=='Cash'}"
+						styleClass="bgcolor"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="Cash" styleClass="logintxt"></h:outputText>
+						<p:inputText value="#{posBean.paymentModel.amount}" maxlength="15"
+							style="width:200px; height:30px;font-size: 15px; " id="a111"
+							onkeypress='return validate(event)'
+							styleClass="logintxtnumberFormat" size="35">
+							<p:ajax update="a111" process="@this" event="change" />
+							<p:ajax event="blur" listener="#{posBean.addCashDirectPayment}"
+								update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm,keyboardgrid" />
+						</p:inputText>
+
+
+					</h:panelGrid>
+
+
+					<h:panelGrid id="card" columns="5" border="0"
+						rendered="#{posBean.salesorder.paymentType=='Card'}"
+						styleClass="bgcolor"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Amount" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.amount}" maxlength="15"
+							id="amount1" size="15">
+							<p:ajax update="amount1" process="@this" event="change" />
+						</p:inputText>
+						<p:message for="amount1" styleClass="fieldError" />
+
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Card Type" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:selectOneMenu id="cardtype"
+							value="#{posBean.paymentModel.cardType}"
+							style="width:160px; text-align:left;">
+							<f:selectItem itemLabel="Select Type" itemValue="" />
+							<f:selectItem itemLabel="MASTER" itemValue="MASTER" />
+							<f:selectItem itemLabel="VISA" itemValue="VISA" />
+							<f:selectItem itemLabel="DEBIT" itemValue="DEBIT" />
+							<f:selectItem itemLabel="CHARGE" itemValue="CHARGE" />
+						</p:selectOneMenu>
+						<p:message for="cardtype" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Card No" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+								<p:inputMask
+							id="cardNo" size="15"
+							value="#{posBean.paymentModel.cardNo}"  mask="9999">
+							<p:ajax update="cardNo" process="@this" event="change" />
+						</p:inputMask>
+						
+						<p:message for="cardNo" styleClass="fieldError" />
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Expiry Date" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:calendar navigator="true" id="expdate" size="15"
+							value="#{posBean.paymentModel.expdate}" pattern="MM/yyyy" />
+						<p:message for="expdate" styleClass="fieldError" />
+						
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Approval Code" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						
+						<p:inputText value="#{posBean.paymentModel.referenceNo}" maxlength="15"
+							id="approvalCode" size="15">
+							<p:ajax update="approvalCode" process="@this" event="change" />
+						</p:inputText>
+						<p:message for="approvalCode" styleClass="fieldError" />
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<p:commandButton value="Add" styleClass="itembutton"
+							update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm"
+							action="#{posBean.addCardPayment}"
+							style="width:80px; height:23px; " immediate="true" ajax="true"
+							async="true">
+						</p:commandButton>
+						<h:outputText value="" />
+
+					</h:panelGrid>
+
+<h:panelGrid id="GrabPay" columns="5" border="0"
+						rendered="#{posBean.salesorder.paymentType=='GrabPay'}"
+						styleClass="bgcolor"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Amount" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.amount}" maxlength="15"
+							id="amount5" size="15">
+							<p:ajax update="amount5" process="@this" event="change" />
+						</p:inputText>
+						<p:message for="amount5" styleClass="fieldError" />
+
+ 
+
+					
+
+						 <h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="References No" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.referenceNo}"
+							maxlength="20" id="referenceNo1" size="20">
+							<p:ajax update="referenceNo" process="@this" event="change" />
+						</p:inputText>
+						<p:message for="referenceNo" styleClass="fieldError" />
+		
+						<p:commandButton value="Add" styleClass="itembutton"
+							update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm"
+							action="#{posBean.addGrabPayment}"
+							style="width:80px; height:23px; " immediate="true" ajax="true"
+							async="true">
+						</p:commandButton>
+						<h:outputText value="" />
+
+					</h:panelGrid>
+
+
+					<h:panelGrid id="cheque" columns="5" border="0"
+						rendered="#{posBean.salesorder.paymentType=='Cheque'}"
+						styleClass="bgcolor"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Amount" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.amount}" maxlength="15"
+							id="amount" size="15">
+							<p:ajax update="amount" process="@this" event="change" />
+						</p:inputText>
+						<p:message for="amount" styleClass="fieldError" />
+
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Cheque No" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.referenceNo}"
+							maxlength="20" id="chequeNo" size="25">
+							<p:ajax update="chequeNo" process="@this" event="change" />
+						</p:inputText>
+						<p:message for="chequeNo" styleClass="fieldError" />
+
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Bank Name" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.bankName}"
+							maxlength="100" id="bankName" size="25">
+							<p:ajax update="bankName" process="@this" event="change" />
+						</p:inputText>
+						<p:message for="bankName" styleClass="fieldError" />
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<p:commandButton value="Add" styleClass="itembutton"
+							update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm"
+							action="#{posBean.addChequePayment}"
+							style="width:80px; height:23px; " immediate="true" ajax="true"
+							async="true">
+						</p:commandButton>
+						<h:outputText value="" />
+
+					</h:panelGrid>
+
+
+
+					<h:panelGrid id="voucher" columns="5" border="0"
+						rendered="#{posBean.salesorder.paymentType=='Voucher'}"
+						styleClass="bgcolor"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Amount" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.amount}" maxlength="15"
+							id="amount2" size="15">
+							<p:ajax update="amount2" process="@this" event="change" />
+						</p:inputText>
+						<p:message for="amount2" styleClass="fieldError" />
+
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Voucher No" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.referenceNo}"
+							maxlength="20" id="voucherNo" size="25">
+							<p:ajax update="voucherNo" process="@this" event="change" />
+						</p:inputText>
+						<p:message for="voucherNo" styleClass="fieldError" />
+
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<p:commandButton value="Add" styleClass="itembutton"
+							update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm"
+							action="#{posBean.addVoucherPayment}"
+							style="width:80px; height:23px; " immediate="true" ajax="true"
+							async="true">
+						</p:commandButton>
+						<h:outputText value="" />
+
+					</h:panelGrid>
+
+
+					<h:panelGrid id="loyalty" columns="5" border="0"
+						rendered="#{posBean.salesorder.paymentType=='Loyalty'}"
+						styleClass="bgcolor"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Available Consume Points"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{posBean.customer.availablePoints}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value="" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Consume Points" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.consumePoints}"
+							maxlength="20" id="consumePoints" size="25">
+							<p:ajax event="blur" listener="#{posBean.checkLoyaltyPayment}"
+								update="loyalty" />
+						</p:inputText>
+						<p:message for="consumePoints" styleClass="fieldError" />
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Amount" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText value="#{posBean.paymentModel.amount}" maxlength="15"
+							id="amount3" size="15">
+							<p:ajax update="amount3" process="@this" event="change" />
+							<p:ajax event="blur"
+								listener="#{posBean.checkLoyaltyCashPayment}" update="loyalty" />
+						</p:inputText>
+						<p:message for="amount3" styleClass="fieldError" />
+
+
+
+
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<p:commandButton value="Add" styleClass="itembutton"
+							update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm"
+							action="#{posBean.addLoyaltyPayment}"
+							style="width:80px; height:23px; " immediate="true" ajax="true"
+							async="true">
+						</p:commandButton>
+						<h:outputText value="" />
+
+					</h:panelGrid>
+
+
+				</p:panel>
+
+
+				<p:panel
+					style="width:550px; height:350px; align:center;background-image: url('images/contentpagebg.jpg');background-repeat: repeat-x;">
+
+					<h:panelGrid columns="3" id="paymentgrid"
+						columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+						
+						<h:outputText value="DISCOUNT" />
+						
+						<h:outputText value=":" />
+						
+						<h:panelGrid columns="2">
+						
+						<h:outputText value="#{posBean.discountRate}%" />
+						<p:commandButton id="discBtn"
+							styleClass="itembuttonsmall1" 
+							style=" height:30px; background:#E32526"
+							oncomplete="PF('discrateDlg').show();" value="CHANGE RATE"/>
+						
+						</h:panelGrid>
+						
+						<h:outputText value="Total Amount (RM)" />
+						<h:outputText value=":" />
+						<h:inputText value="#{posBean.totalAmount}" disabled="true"
+							size="10" styleClass="totalValue"
+							style="color:#035E62;font-size:18px;text-align:right;">
+							<f:convertNumber pattern="#0.00" />
+						</h:inputText>
+
+						<h:outputText value="Received Amount (RM)" />
+						<h:outputText value=":" />
+						<h:inputText value="#{posBean.receivedAmount}" disabled="true"
+							size="10" styleClass="totalValue"
+							style="color:#035E62;font-size:18px;text-align:right;">
+							<f:convertNumber pattern="#0.00" />
+						</h:inputText>
+
+						<h:outputText value="Balance Amount (RM)" />
+						<h:outputText value=":" />
+						<h:inputText value="#{posBean.balanceAmount}" disabled="true"
+							size="10" styleClass="totalValue"
+							style="color:#035E62;font-size:18px;text-align:right;">
+							<f:convertNumber pattern="#0.00" />
+						</h:inputText>
+
+					</h:panelGrid>
+
+					<p:outputPanel id="paymentList">
+						<p:dataTable id="salespaymentDataTable" scrollable="true"
+							scrollHeight="160" value="#{posBean.paymentCollectionModel}"
+							var="sales" rowIndexVar="row" rows="30"
+							rowStyleClass="#{row mod 2 == 0 ? 'even-row' : 'odd-row'}">
+
+							<p:column style="width: 10%;">
+								<f:facet name="header">SNo</f:facet>
+								<h:outputText value="#{row+1}" styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width: 10%;" styleClass="logintxtnumberFormat">
+								<f:facet name="header">Payment Type </f:facet>
+								<h:outputText value="#{sales.amountType}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column style="width: 10%;" styleClass="logintxtnumberFormat">
+								<f:facet name="header">Qty</f:facet>
+								<h:outputText value="#{sales.quantity}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width: 30%;" styleClass="logintxtnumberFormat">
+								<f:facet name="header">Total Amount</f:facet>
+								<h:outputText value="#{sales.subTotal}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width: 15%;" styleClass="columnwidth">
+								<f:facet name="header">Action</f:facet>
+								<p:commandButton value="Remove"
+									update=":addEditPosForm:paymentList,:addEditPosForm:paymentgrid,:addEditPosForm:paymentbuttonconfirm"
+									process=":addEditPosForm:paymentList,:addEditPosForm:paymentgrid,:addEditPosForm:paymentbuttonconfirm"
+									action="#{posBean.removeSalesPaymentItem}">
+									<p:collector value="#{sales}"
+										removeFrom="#{posBean.paymentCollectionModel}" />
+								</p:commandButton>
+							</p:column>
+
+
+						</p:dataTable>
+
+
+
+
+
+					</p:outputPanel>
+
+				</p:panel>
+
+
+
+				<br></br>
+				<br></br>
+				<br></br>
+				<h:panelGrid columns="23" id="paymentbuttonconfirm"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+					<p:commandButton value="Confirm" ajax="true"
+						styleClass="itembuttonsmall"
+						update=":addEditPosForm:posPanel,:addEditPosForm:cardOptionGrid,:addEditPosForm:salesButtonsPanel,:addEditPosForm:salesOrderId, :addEditPosForm:printrequestitem"
+						style="width:100px; height:30px; background:#66ff99"
+					    oncomplete="handlePos(xhr, status, args)"
+	
+						action="#{posBean.savePOS}">
+					
+					</p:commandButton>
+<ui:remove>
+executePrint('addEditPosForm:testopencashdrawer')
+</ui:remove>
+					<p:commandButton value="Open cash drawer2"
+						styleClass="itembuttonsmall1" 
+						style="width:200px; height:30px; background:#E32526"
+						ajax="true" async="true">
+						<p:confirm header="Confirmation" message="Are you sure want to cancel this transaction ? " icon="ui-icon-alert"/>
+						<p:printer target="testopencashdrawer1" />
+					</p:commandButton>
+
+
+
+					<p:commandButton value="Reset" styleClass="itembuttonsmall"
+						update="paymentgrid,salespaymentDataTable,paymentbuttonconfirm"
+						style="width:100px; height:30px; background:#e6f7ff"
+						action="#{posBean.paymentresetSales}" />
+
+					<p:commandButton value="Cancel" onclick="PF('payment').hide()"
+						styleClass="itembuttonsmall" 
+						style="width:100px; height:30px; background:#ffffcc"  />
+
+
+				</h:panelGrid>
+
+			</h:panelGrid>
+			
+			<p:panelGrid style="align:center" id="testopencashdrawer1">
+			</p:panelGrid>
+			<p:panelGrid style="align:center" >
+			
+			<p:commandLink action="#{posBean.loadPaymentType('card','VISA')}" update="paymentgridMaster">
+				<h:graphicImage  library="images" name="visa.png" width="55"/>
+			</p:commandLink>
+			
+			<p:commandLink action="#{posBean.loadPaymentType('card','MASTER')}" update="paymentgridMaster">
+				<h:graphicImage  library="images" name="masterCard.png" width="55"/>
+			</p:commandLink>
+			
+			<p:commandLink action="#{posBean.loadPaymentType('card','DEBIT')}" update="paymentgridMaster">
+				<h:graphicImage  library="images" name="meps.jpg" width="55"/>
+			</p:commandLink>
+			
+			<ui:remove>
+			<p:commandLink>
+				<h:graphicImage  library="images" name="touchNgo.jpg" width="55"/>
+			</p:commandLink>
+			</ui:remove>
+			</p:panelGrid>
+			
+		</p:outputPanel>
+
+	</p:dialog>
+
+<p:confirmDialog global="true">
+<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+</p:confirmDialog>
+ 
+
+
+
+</ui:composition>

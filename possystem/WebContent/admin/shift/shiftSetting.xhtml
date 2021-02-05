@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://www.eclipse.org/birt/taglibs/birt.tld"
+	xmlns:birt="urn:jsptld:/WEB-INF/tlds/birt.tld">
+
+
+	<h:form id="shiftSettingForm">
+
+	<p:panel styleClass="mypanel" header="Shift"
+				id="shiftPanel">
+	<p:panelGrid id="createShiftGrid" columns="5"
+	width="100%" styleClass="borderlessGrid"
+	columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+	
+		<h:outputText value="#{msg['common.mantetary.symbol']}"
+		styleClass="mandatory_text" />
+		<h:outputText value="#{msg['shift.label.shiftName']}"></h:outputText>
+		<h:outputText value=":" />
+		<p:inputText id="shiftName" value="#{shiftBean.shift.shiftName}" />
+		<p:message for="shiftName" styleClass="fieldError" />
+		
+		<h:outputText value="#{msg['common.mantetary.symbol']}"
+			styleClass="mandatory_text" />
+		<h:outputText value="#{msg['shift.label.shiftStart']}"/>
+		<h:outputText value=":" />
+		<p:inputMask id="timeIn" size="25" 
+			value="#{shiftBean.timeIn}" 
+			placeholder="__:__ _M"
+			mask="99:99 aM"
+			>
+		</p:inputMask>
+		<p:message for="timeIn" styleClass="fieldError" />
+          	
+		<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+		<h:outputText value="#{msg['shift.label.shiftEnd']}"/>
+		<h:outputText value=":" />
+		<p:inputMask id="timeOut" size="25" 
+			value="#{shiftBean.timeOut}" 
+			placeholder="__:__ _M"
+			mask="99:99 aM"
+			>		
+		</p:inputMask>
+		<p:message for="timeOut" styleClass="fieldError" />
+	
+		<h:outputText value="" />
+		<h:outputText value="" />
+		<h:outputText value="" />
+		<p:commandButton value="SAVE"
+		action="#{shiftBean.createNewShift}"
+		rendered="#{shiftBean.action!='update'}"
+		update="shiftSettingForm:createShiftGrid,shiftSettingForm:shiftListTable"/>
+		
+		<p:commandButton value="UPDATE"
+		action="#{shiftBean.updateShift}"
+		rendered="#{shiftBean.action=='update'}"
+		update="shiftSettingForm:createShiftGrid,shiftSettingForm:shiftListTable"/>
+		</p:panelGrid>
+	
+	
+
+	
+		<p:dataTable id="shiftListTable" var="shift" rowIndexVar="row"
+			reflow="true" value="#{shiftBean.shiftList}"
+			paginator="true" rows="10" style="width: 100%"
+			paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+			rowsPerPageTemplate="5,10,15">
+			<p:column id="modelHeader" width="5%">
+				<f:facet name="header">
+					<h:outputText value="No" />
+				</f:facet>
+				<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="15%">
+				<f:facet name="header">
+					<h:outputText value="SHIFT NAME" />
+				</f:facet>
+				<h:outputText value="#{shift.shiftName}"
+					styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="SHIFT START" />
+				</f:facet>
+				<h:outputText value="#{shift.timein}"
+					styleClass="logintxttable" >
+					<f:convertDateTime type="time"/>
+				</h:outputText>
+			</p:column>
+	
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="SHIFT END" />
+				</f:facet>
+				<h:outputText value="#{shift.timeout}"
+					styleClass="logintxttable" >
+					<f:convertDateTime type="time"/>
+				</h:outputText>
+			</p:column>
+			<p:column  width="10%">
+			<f:facet name="header">
+				<h:outputText value="ACTION" />
+			</f:facet>
+	
+			<p:menuButton value="Options">
+
+				<p:menuitem ajax="true" value="Edit"
+					actionListener="#{shiftBean.editShift}"
+					update="shiftSettingForm:createShiftGrid">
+					<f:attribute name="shiftId" value="#{shift.shiftID}" />
+				</p:menuitem>
+				<ui:remove>
+				<p:menuitem ajax="true" value="Delete"
+					actionListener="#{shiftBean.deleteShift}"
+					update="shiftSettingForm:createShiftGrid" >
+					<f:attribute name="shiftId" value="#{shift.shiftID}" />
+					 <p:confirm header="Confirmation" message="Remove #{shift.shiftName} ?" icon="ui-icon-alert" />
+				</p:menuitem>
+				</ui:remove>
+			</p:menuButton>
+			 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+			        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+			    </p:confirmDialog>
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+</h:form>
+
+</ui:composition>
+
+

@@ -1,0 +1,156 @@
+package com.alpha.dao.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import com.alpha.dao.interfaces.IDoctorClinicDAO;
+import com.alpha.hq.model.Branchstaffmember;
+import com.alpha.hq.model.Doctorclinic;
+
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 4 july 2013
+ * 
+ */
+
+@Repository("doctorRepository")
+public class DoctorClinicDAOImpl implements IDoctorClinicDAO {
+	
+	public static Logger log = LoggerFactory.getLogger(DoctorClinicDAOImpl.class);
+	long l = 0;
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+	public EntityManager getEm() {
+		return em;
+	}
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+	
+	@Override
+	public boolean createNewDoctorclinic(Doctorclinic dclinic) throws Exception {
+		try {
+			em.persist(dclinic);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewDoctorclinic DoctorClinicDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updateDoctorclinic(Doctorclinic dclinic) throws Exception {
+		try {
+			em.merge(dclinic);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updateDoctorclinic DoctorClinicDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deleteDoctorclinic(Doctorclinic dclinic) throws Exception {
+		try {
+			em.remove(dclinic);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteDoctorclinic DoctorClinicDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Doctorclinic> findByDoctorclinicList(
+			String identificationNumber, String clinicName, String status)
+			throws Exception {
+		List<Doctorclinic> doctorclinic=null;
+		StringBuilder buf = new StringBuilder("SELECT b FROM Doctorclinic b  WHERE 1 = 1 ");
+				
+		try {			
+		
+		if (identificationNumber !=null && (!identificationNumber.equalsIgnoreCase(""))) {
+			buf.append(" And b.identificationNumber = :identificationNumber ");
+		}		
+		if (clinicName !=null && (!clinicName.equalsIgnoreCase(""))) {
+			buf.append(" And b.clinicName = :clinicName ");
+		}	
+		if (status !=null && (!status.equalsIgnoreCase(""))) {
+			buf.append(" And b.status = :status ");
+		}		
+		
+		buf.append(" order by b.clinicName");
+		
+		Query query = em.createQuery(buf.toString());		
+			
+		if (identificationNumber !=null && (!identificationNumber.equalsIgnoreCase(""))) {
+			query.setParameter("identificationNumber", identificationNumber);
+		}			
+		if (clinicName !=null && (!clinicName.equalsIgnoreCase(""))) {
+			query.setParameter("clinicName", clinicName);
+		}			
+		if (status !=null && (!status.equalsIgnoreCase(""))) {
+			query.setParameter("status", status);
+		}		 
+		doctorclinic=query.getResultList();
+		
+		} catch (Exception e) {
+			log.info("Error in findByDoctorclinicList DoctorClinicDAOImpl " + e);
+			throw e;
+		}
+		return doctorclinic;
+	}
+
+	@Override
+	public Doctorclinic getDoctorclinicDetails(Integer doctorClinicId)
+			throws Exception {
+		Doctorclinic retData = null;
+		String sqlQuery = "select t from Doctorclinic t  WHERE t.doctorClinicId = :doctorClinicId ";
+		try {
+			retData = (Doctorclinic) em.createQuery(sqlQuery).setParameter("doctorClinicId", doctorClinicId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getDoctorclinicDetails DoctorClinicDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+	@Override
+	public boolean findDoctorIcExites(String identificationNumber)
+			throws Exception {
+		boolean exits = true;
+		try {
+			String hslQuery = "from Doctorclinic p where p.identificationNumber = :identificationNumber";
+			Query query = em.createQuery(hslQuery).setParameter("identificationNumber", identificationNumber);
+			@SuppressWarnings("unchecked")
+			List<Doctorclinic> identificationNumberExits = query.getResultList();
+			if (identificationNumberExits.isEmpty()) {
+				exits = false;
+			}
+		} catch (Exception e) {
+			log.info("Error in findDoctorIcExites DoctorClinicDAOImpl " + e);
+			throw e;
+		}
+		return exits;
+	
+	}
+
+}

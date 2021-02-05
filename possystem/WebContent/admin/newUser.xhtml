@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:r="http://richfaces.org/rich">
+<h:head />
+
+	<h:form id="newLoginUserForm">
+		<r:panel styleClass="limitedHeightDiv">
+
+
+			<h:panelGrid id="newloginusergrid" columns="5" border="0"
+				columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+				<h:outputText value="*" styleClass="mandatory_text" />
+				<h:outputText value="User Name " styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="username" value="#{loginUserBean.userObj.username}"
+					maxlength="45" size="25" disabled="#{loginUserBean.action=='update'}"/>
+				<p:message for="username" styleClass="fieldError" />
+
+
+
+
+				<h:outputText value="*" styleClass="mandatory_text" />
+				<h:outputText value="Role" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu value="#{loginUserBean.userObj.roleId}" id="roleId"
+					styleClass="inputCombo">
+					<f:selectItems value="#{commonListBean.selectRoleList}" />
+				</p:selectOneMenu>
+				<h:message for="roleId" styleClass="fieldError" />
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu value="#{loginUserBean.userObj.status}" id="status"
+					styleClass="inputCombo">
+					<f:selectItem itemLabel="Active" itemValue="Active" />
+					<f:selectItem itemLabel="InActive" itemValue="InActive" />
+				</p:selectOneMenu>
+				<h:message for="status" styleClass="fieldError" />
+
+
+
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:panelGrid id="newcompanybuttongrid" columns="2" border="0"
+					columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+					<p:commandButton value="Save" action="#{loginUserBean.saveUser}"
+						ajax="true" update="newloginusergrid,dataTable"
+						rendered="#{loginUserBean.action!='update'}" />
+
+					<p:commandButton value="Update"
+						action="#{loginUserBean.updateUser}" update="newLoginUserForm"
+						rendered="#{loginUserBean.action=='update'}" />
+
+					<p:commandButton value="Reset" action="#{loginUserBean.resetUser}"
+						update="newLoginUserForm" />
+				</h:panelGrid>
+				<h:outputText value="" />
+
+			</h:panelGrid>
+
+
+			<br />
+
+			<p:dataTable id="dataTable" var="user" rowIndexVar="row"
+				value="#{loginUserBean.userList}" paginator="true" rows="7"
+				style="width: 100%"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+
+				<p:column id="modelHeader">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" />
+				</p:column>
+
+				<p:column sortBy="#{user.username}">
+					<f:facet name="header">
+						<h:outputText value="Login User Name" />
+					</f:facet>
+					<h:outputText value="#{user.username}" />
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Role Name" />
+					</f:facet>
+					<h:outputText value="#{user.roleName}" />
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Status" />
+					</f:facet>
+					<h:outputText value="#{user.status}" />
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Edit" />
+					</f:facet>
+					<p:commandLink ajax="flase" async="true" value="Edit"
+						actionListener="#{loginUserBean.userEdit}"
+						update=":projectHomeForm:newloginusergrid"
+						process=":projectHomeForm:newLoginUserForm">
+						<h:graphicImage value="/images/edit.gif" halt="edit" />
+						<f:attribute name="iduser" value="#{user.iduserLogin}" />
+					</p:commandLink>
+				</p:column>
+
+
+			</p:dataTable>
+
+
+			<br></br>
+
+		</r:panel>
+
+
+
+	</h:form>
+</ui:composition>
+
+

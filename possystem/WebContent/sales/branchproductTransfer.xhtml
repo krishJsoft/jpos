@@ -1,0 +1,233 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="modalItemTransfer" header="Transfer Details"
+		resizable="false" widgetVar="itemtransferDig" modal="true"
+		height="90%" width="90%">
+		<br></br>
+
+		<p:panel id="transferitem">
+
+
+			<p:panelGrid style="width:99%" styleClass="alignTop">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="width:40%;">Branch Details</p:column>
+						<p:column style="width:60%;">Transfer Details</p:column>
+					</p:row>
+				</f:facet>
+
+
+				<p:row>
+					<p:column style="width:40%;" styleClass="alignTop">
+
+
+						<h:panelGrid columns="1" border="0" width="90%"
+							rendered="#{branchtransferBean.transferType=='1'}"
+							styleClass="borderlessGrid" cellpadding="1" cellspacing="1"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.branch.branchName}"
+								styleClass="logintxttable" />
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.branch.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.branch.phoneNo}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.branch.emailAddress}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+
+
+						<h:panelGrid columns="1" border="0" width="90%"
+							rendered="#{branchtransferBean.transferType=='2'}"
+							styleClass="borderlessGrid" cellpadding="1" cellspacing="1"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.supplybranch.branchName}"
+								styleClass="logintxttable" />
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.supplybranch.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.supplybranch.phoneNo}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.supplybranch.emailAddress}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+
+					</p:column>
+
+					<p:column style="width:60%;" styleClass="alignTop">
+
+
+						<h:panelGrid columns="3" border="0" width="100%"
+							styleClass="borderlessGrid" cellpadding="1" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText value="Transfer Request No" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.transferNo}"
+								styleClass="logintxttable" />
+							
+
+							<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{branchtransferBean.branchtransfer.remarks}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+			<p:dataTable id="transferdataTable1" var="sales" rowIndexVar="row"
+				paginatorPosition="top" scrollable="true" scrollHeight="220"
+				value="#{branchtransferBean.branchtransferbreakdowns}"
+				paginator="false" rows="10" style="width: 100%"
+				rowsPerPageTemplate="5,10,15,20,25">
+
+				<f:facet name="header">
+					<p:message for="transferdataTable1" styleClass="fieldError" />
+				</f:facet>
+
+				<p:column styleClass="columnwidth" width="10%">
+					<f:facet name="header">
+						<h:outputText value="Product Code" />
+					</f:facet>
+					<h:outputText value="#{sales.productCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column styleClass="columnwidth" width="25%">
+					<f:facet name="header">
+						<h:outputText value="Product Name" />
+					</f:facet>
+					<h:outputText value="#{sales.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidth" width="5%">
+					<f:facet name="header">
+						<h:outputText value="UOM" />
+					</f:facet>
+					<h:outputText value="#{sales.uomName}" styleClass="logintxttable" />
+				</p:column>
+
+
+				
+
+				<p:column styleClass="columnwidthn" width="7%">
+					<f:facet name="header">
+						<h:outputText value="Quantity" />
+					</f:facet>
+					<h:outputText value="#{sales.quantity}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidthn" width="7%">
+					<f:facet name="header">
+						<h:outputText value="Balance Quantity" />
+					</f:facet>
+					<h:outputText value="#{sales.balanceQuantity}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:7%;" styleClass="columnwidthn">
+					<f:facet name="header">
+						<h:outputText value="Transfer Quantity" />
+					</f:facet>
+					<p:inputText
+						value="#{branchtransferBean.receivalbeQuantity[sales.id]}"
+						size="8" onkeypress='return validateonlyNumber(event)'
+						id="receivable" styleClass="logintxtnumberFormat">
+						<p:ajax event="blur"
+							listener="#{branchtransferBean.validateQuantity(row)}"
+							update="receivable" />
+					</p:inputText>
+					<p:message for="receivable" styleClass="fieldError" />
+				</p:column>
+
+				<p:column style="width:7%;" styleClass="columnwidthn">
+					<f:facet name="header">
+						<h:outputText value="Expiry Date" />
+					</f:facet>
+					<p:calendar navigator="true" pattern="dd/MM/yyyy"
+						value="#{branchtransferBean.receivalbeExpDate[sales.id]}" size="10"
+						id="receivableExpDate">						
+						<p:ajax event="blur" process="@this"	 						
+							update="receivableExpDate" />							
+					</p:calendar>
+					<p:message for="receivableExpDate" styleClass="fieldError" />
+				</p:column>
+				
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Transfer" onclick="transferconfirmDig.show()" />
+			<p:commandButton value="Close" onclick="itemtransferDig.hide()" />
+
+		</h:panelGrid>
+
+
+		<p:dialog showEffect="fade" hideEffect="fade"
+			header="Item Transfer Confirmation" resizable="false"
+			widgetVar="transferconfirmDig" modal="false" height="110" width="340">
+			<br></br>
+
+			<p:panel id="branchtransferItem">
+
+				<h:panelGrid columns="1" border="0" width="100%"
+					styleClass="bgcolor" cellpadding="1" cellspacing="1"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+					<h:outputText value="Are you sure ? " styleClass="logintxttable" />
+
+					<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+						columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+						<p:commandButton value="Yes" ajax="true"
+							oncomplete="handleTransferItem(xhr, status, args)"
+							action="#{branchtransferBean.transferProductConfirm}"
+							update=":addEditSalesForm:salesListPanel,:addEditSalesForm:transferitem">
+						</p:commandButton>
+						<p:commandButton value="No" onclick="transferconfirmDig.hide()" />
+
+					</h:panelGrid>
+				</h:panelGrid>
+
+			</p:panel>
+
+		</p:dialog>
+
+
+
+	</p:dialog>
+
+</ui:composition>

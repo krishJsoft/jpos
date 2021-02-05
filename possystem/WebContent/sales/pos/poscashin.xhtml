@@ -1,0 +1,101 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogCashInOuy" header="Cash Transaction"
+		widgetVar="cashinout" modal="true" height="330" width="630">
+
+
+
+		<p:outputPanel id="salesoptionCashinoutPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesoptionCashinoutPanel" /></td>
+				</tr>
+			</table>
+
+
+			<p:panel
+				style="width:600px; height:310px; align:center;background-image: url('images/contentpagebg.jpg');background-repeat: repeat-x;">
+
+				<h:panelGrid columns="5" border="0" styleClass="bgcolor"
+					id="collection"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="*" styleClass="mandatory_text" />
+					<h:outputText value="Terminal No" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="counterId1" style="width:160px; float :left;"
+						value="#{posOptionBean.poscashtransaction.counterId}"
+						styleClass="inputCombo">
+						<f:selectItem itemValue="0" itemLabel="Select Terminal"></f:selectItem>
+						<f:selectItems value="#{commonListBean.selectTerminalList}"></f:selectItems>
+						<p:ajax update="counterId1" event="change" />						
+					</p:selectOneMenu>
+					<p:message for="counterId1" styleClass="fieldError" />
+
+					<h:outputText value="*" styleClass="mandatory_text" />
+					<h:outputText value="Amount" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="cashamount"
+						value="#{posOptionBean.poscashtransaction.amount}" maxlength="15"
+						 onkeypress='return validate(event)' size="25"
+						style="color:#035E62;font-size:15px;text-align:right;">
+						<p:ajax update="cashamount" process="@this" event="change" />
+					</p:inputText>
+					<p:message for="cashamount" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.remarks']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="4" cols="45" id="remarks" autoResize="false"
+						value="#{posOptionBean.poscashtransaction.remarks}">
+						<p:ajax update="cashamount" process="@this" event="change" />
+					</p:inputTextarea>
+					<p:message for="remarks" styleClass="fieldError" />
+
+
+				</h:panelGrid>
+				<br> </br>
+				<br></br>
+				<br></br>
+
+				<h:panelGrid columns="3" border="0">
+
+					<p:commandButton value="Close" onclick="PF('cashinout').hide();"						
+						immediate="true" ajax="true" async="true">
+					</p:commandButton>
+
+
+					<p:commandButton value="Cash In"
+						action="#{posOptionBean.cashCredit}"
+						oncomplete="handleCashInRequest(xhr, status, args)"
+						update=":cashTransactionListForm:collection"						
+						immediate="true" ajax="true" async="true">
+					</p:commandButton>
+
+
+
+				</h:panelGrid>
+
+
+
+			</p:panel>
+
+
+		</p:outputPanel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

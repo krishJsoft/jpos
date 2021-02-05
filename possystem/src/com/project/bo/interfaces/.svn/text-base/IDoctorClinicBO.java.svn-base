@@ -1,0 +1,22 @@
+package com.alpha.bo.interfaces;
+
+import java.util.List;
+
+import com.alpha.model.datamodel.DoctorclinicModel;
+
+
+public interface IDoctorClinicBO {
+	
+	public boolean createNewDoctorclinic(DoctorclinicModel dclinic) throws Exception;
+
+	public boolean updateDoctorclinic(DoctorclinicModel dclinic) throws Exception;
+
+	public boolean deleteDoctorclinic(DoctorclinicModel dclinic) throws Exception;
+	
+	public List<DoctorclinicModel> findByDoctorclinicList(String identificationNumber,String clinicName,String status) throws Exception;
+		
+	public DoctorclinicModel getDoctorclinicDetails(Integer doctorClinicId) throws Exception;
+	
+    public boolean findDoctorIcExites(String identificationNumber) throws Exception;
+    
+}

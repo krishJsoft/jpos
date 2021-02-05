@@ -1,0 +1,23 @@
+package com.alpha.dao.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Admindespatch;
+
+public interface IAdminDespatchDAO {
+
+	
+	public boolean createNewAdminDespatch(Admindespatch adespatch) throws Exception;
+
+	public boolean updateAdminDespatch(Admindespatch adespatch) throws Exception;
+
+	public boolean deleteAdminDespatch(Admindespatch adespatch) throws Exception;
+	
+	public List<Admindespatch> findByAdmindespatchList() throws Exception;
+		
+	public Admindespatch getAdminDespatchDetails(Integer despatchId) throws Exception;
+	
+    public boolean findAdminDespatchExites(String despatchType,String uom) throws Exception;
+	
+    
+}

@@ -1,0 +1,30 @@
+package com.alpha.dao.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Function;
+import com.alpha.hq.model.Module;
+import com.alpha.hq.model.Role;
+
+public interface IRoleDAO {
+
+	void save(Role role);
+
+	void update(Role role);
+
+	void delete(Role role);
+
+	List<Role> findByRoleListAll();
+
+	List<Function> findbyRoleModuleListAll();
+
+	List<Role> findByRolesingleList(Integer id);
+
+	Role get(Integer id);
+
+	boolean findRoleNameExits(String roleName);
+
+	List<Role> searchList(Integer id);
+
+	public List<Module> findModuleListAll();
+}

@@ -1,0 +1,308 @@
+package com.alpha.bo.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.IProductCategoryBO;
+import com.alpha.dao.interfaces.IProductCategoryDAO;
+import com.alpha.hq.model.Branch;
+import com.alpha.hq.model.Productcategory;
+import com.alpha.hq.model.Uomtype;
+import com.alpha.model.datamodel.BranchModel;
+import com.alpha.model.datamodel.ProductcategoryModel;
+import com.alpha.model.datamodel.UomtypeModel;
+
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 07 July 2013
+ * 
+ */
+
+@Service("productCategoryBO")
+public class ProductCategoryBOImpl implements IProductCategoryBO {
+	
+	public static Logger log = LoggerFactory.getLogger(ProductCategoryBOImpl.class);
+
+	@Resource(name = "productCategoryRepository")
+	private IProductCategoryDAO productCategoryRepository;
+	
+	@Transactional
+	@Override
+	public boolean createNewProductcategory(ProductcategoryModel pcategory)
+			throws Exception {
+		boolean saveSuccess = false;
+		Productcategory categoryObj = new Productcategory();
+		Productcategory categoryChildObj = new Productcategory();
+		try {			
+			categoryObj.setCode(pcategory.getCode());
+			categoryObj.setDescription(pcategory.getDescription());
+			categoryObj.setName(pcategory.getName());	
+			categoryObj.setParentCategoryId(pcategory.getCategoryId());
+			categoryObj.setStatus(pcategory.getStatus());
+			categoryObj.setParentCategoryName(pcategory.getName());
+			saveSuccess = productCategoryRepository.createNewProductcategory(categoryObj);
+		}
+
+		catch (Exception e) {
+			log.info("Error in createNewProductcategory ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return saveSuccess;
+	
+	}
+
+	@Transactional
+	@Override
+	public boolean updateProductcategory(ProductcategoryModel pcategory)
+			throws Exception {
+		boolean updateSuccess = false;
+		Productcategory categoryObj = productCategoryRepository.getProductcategoryDetails(pcategory.getCategoryId());
+		
+		try {			
+			categoryObj.setCode(pcategory.getCode());
+			categoryObj.setDescription(pcategory.getDescription());
+			categoryObj.setName(pcategory.getName());				
+			categoryObj.setStatus(pcategory.getStatus());
+			updateSuccess = productCategoryRepository.updateProductcategory(categoryObj);
+		}
+
+		catch (Exception e) {
+			log.info("Error in updateProductcategory ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	
+	}
+	
+	@Transactional
+	@Override
+	public boolean deleteProductcategory(Integer categoryId)
+			throws Exception {
+		boolean deleteSuccess = false;
+		
+		try {
+			Productcategory categoryObj = productCategoryRepository.getProductcategoryDetails(categoryId);		
+			deleteSuccess = productCategoryRepository.deleteProductcategory(categoryObj);			
+			}
+		catch (Exception e) {
+			log.info("Error in deleteProductcategory ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return deleteSuccess;
+	
+	}
+
+	@Override
+	public List<ProductcategoryModel> findByProductcategoryList(
+			Integer categoryId, String Status) throws Exception {
+		   List<ProductcategoryModel> categoryObjList = new ArrayList<ProductcategoryModel>();	
+		   List<ProductcategoryModel> categorySubObjList = new ArrayList<ProductcategoryModel>();
+		   List<Productcategory> categoryList = new ArrayList<Productcategory>();
+		try {			
+			categoryList = productCategoryRepository.findByProductcategoryList(categoryId, Status);
+			
+			for (Productcategory pcategory : categoryList) {	
+				ProductcategoryModel categoryObj = new ProductcategoryModel();
+				categoryObj.setCode(pcategory.getCode());
+				categoryObj.setDescription(pcategory.getDescription());
+				categoryObj.setName(pcategory.getName());	
+				categoryObj.setCategoryId(pcategory.getCategoryId());
+				categoryObj.setStatus(pcategory.getStatus());
+				categoryObj.setParentCategoryId(pcategory.getParentCategoryId());	
+				categoryObj.setParentCategoryName(pcategory.getParentCategoryName());
+			    categoryObjList.add(categoryObj);
+			}
+		}
+		catch (Exception e) {
+			log.info("Error in findByProductcategoryList ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return categoryObjList;
+	}
+
+	@Override
+	public List<ProductcategoryModel> findByProductcategoryChildList(
+			Integer parentCategoryId, String Status) throws Exception {
+		List<ProductcategoryModel> categoryObjList = new ArrayList<ProductcategoryModel>();	
+		   List<ProductcategoryModel> categorySubObjList = new ArrayList<ProductcategoryModel>();
+		   List<Productcategory> categoryList = new ArrayList<Productcategory>();
+		try {			
+			categoryList = productCategoryRepository.findByProductcategoryChildList(parentCategoryId, Status);
+			
+			for (Productcategory pcategory : categoryList) {	
+				ProductcategoryModel categoryObj = new ProductcategoryModel();
+				categoryObj.setCode(pcategory.getCode());
+				categoryObj.setDescription(pcategory.getDescription());
+				categoryObj.setName(pcategory.getName());	
+				categoryObj.setCategoryId(pcategory.getCategoryId());
+				categoryObj.setParentCategoryId(pcategory.getParentCategoryId());	
+				categoryObj.setStatus(pcategory.getStatus());
+				categoryObj.setParentCategoryName(pcategory.getParentCategoryName());
+			    categoryObjList.add(categoryObj);
+			}
+		}
+		catch (Exception e) {
+			log.info("Error in findByProductcategoryList ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return categoryObjList;
+	}
+
+	@Override
+	public ProductcategoryModel getProductcategoryDetails(Integer categoryId)
+			throws Exception {
+		  ProductcategoryModel categoryObj = new ProductcategoryModel();
+		
+		try {			
+			Productcategory pcategory = productCategoryRepository.getProductcategoryDetails(categoryId);
+						
+			categoryObj.setCode(pcategory.getCode());
+			categoryObj.setDescription(pcategory.getDescription());
+			categoryObj.setName(pcategory.getName());	
+			categoryObj.setCategoryId(pcategory.getCategoryId());
+			categoryObj.setParentCategoryId(pcategory.getParentCategoryId());	
+			categoryObj.setStatus(pcategory.getStatus());
+			categoryObj.setOldname(pcategory.getName());
+			categoryObj.setParentCategoryName(pcategory.getParentCategoryName());
+		}
+		catch (Exception e) {
+			log.info("Error in getProductcategoryDetails ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return categoryObj;
+	}
+
+	@Override
+	public boolean findCategoryExites(Integer categoryId,Integer parentCategoryId, String categoryName)
+			throws Exception {
+		
+		boolean exists = false;		
+		try {
+			exists = productCategoryRepository.findCategoryExites(categoryId, parentCategoryId, categoryName);
+		}
+		catch (Exception e) {
+			log.info("Error in findCategoryExites ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return exists;
+	}
+
+	@Transactional
+	@Override
+	public boolean createNewUom(UomtypeModel uom) throws Exception {
+		boolean saveSuccess = false;
+		Uomtype uomtypeObj = new Uomtype();		
+		try {			
+			uomtypeObj.setUOMName(uom.getUOMName());
+			saveSuccess = productCategoryRepository.createNewUom(uomtypeObj);
+		}
+
+		catch (Exception e) {
+			log.info("Error in createNewUom ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return saveSuccess;
+	
+	}
+
+	@Transactional
+	@Override
+	public boolean updateUom(UomtypeModel uom) throws Exception {
+		boolean updateSuccess = false;
+		Uomtype uomtypeObj = productCategoryRepository.getUomtypeDetails(uom.getUOMId());
+		
+		try {			
+			uomtypeObj.setUOMName(uom.getUOMName());			
+			updateSuccess = productCategoryRepository.updateUom(uomtypeObj);
+		}
+
+		catch (Exception e) {
+			log.info("Error in updateUom ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteUom(UomtypeModel uom) throws Exception {
+		boolean deleteSuccess = false;
+		Uomtype uomtypeObj = productCategoryRepository.getUomtypeDetails(uom.getUOMId());
+		
+		try {						
+			deleteSuccess = productCategoryRepository.deleteUom(uomtypeObj);
+		}
+
+		catch (Exception e) {
+			log.info("Error in updateUom ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return deleteSuccess;
+	}
+
+	@Override
+	public List<UomtypeModel> findByUomtypeList(String UOMName)
+			throws Exception {
+		List<UomtypeModel> uomObjList = new ArrayList<UomtypeModel>();			 
+		   List<Uomtype> uomList = new ArrayList<Uomtype>();
+		try {			
+			uomList = productCategoryRepository.findByUomtypeList(UOMName);
+			
+			for (Uomtype uom : uomList) {	
+				UomtypeModel uomtypeObj = new UomtypeModel();
+				uomtypeObj.setUOMId(uom.getUOMId());
+				uomtypeObj.setUOMName(uom.getUOMName());
+				uomtypeObj.setUOMOldName(uom.getUOMName());
+				uomObjList.add(uomtypeObj);
+			}
+		}
+		catch (Exception e) {
+			log.info("Error in findByUomtypeList ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return uomObjList;
+	}
+
+	@Override
+	public boolean findUomtypeExites(String UOMName) throws Exception {
+		boolean exists = false;		
+		try {
+			exists = productCategoryRepository.findUomtypeExites(UOMName);
+		}
+		catch (Exception e) {
+			log.info("Error in findUomtypeExites ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return exists;
+	}
+
+	@Override
+	public UomtypeModel getUomtypeDetails(Integer UOMId) throws Exception {
+		UomtypeModel uomtypeObj = new UomtypeModel();
+		try
+		{
+			Uomtype uom = productCategoryRepository.getUomtypeDetails(UOMId);
+			uomtypeObj.setUOMId(uom.getUOMId());
+			uomtypeObj.setUOMName(uom.getUOMName());
+			uomtypeObj.setUOMOldName(uom.getUOMName());
+			
+		}
+		catch(Exception e)
+		{
+			log.info("Error in getUomtypeDetails ProductCategoryBOImpl " + e);
+			throw e;
+		}
+		return uomtypeObj;
+	}
+
+}

@@ -1,0 +1,76 @@
+package com.alpha.model.datamodel.purchase;
+
+import java.util.List;
+
+import com.alpha.model.datamodel.ProductModel;
+
+public class PurchaserequestBranchModel {
+
+	private int branchId;
+	private String address;
+	private String branchCode;
+	private String branchName;
+	private String emailAddress;
+	private String faxNo;
+
+	private List<PurchaserequestbreakdownModel> productList;
+
+	public int getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(int branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public String getBranchCode() {
+		return branchCode;
+	}
+
+	public void setBranchCode(String branchCode) {
+		this.branchCode = branchCode;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
+	}
+
+	public String getFaxNo() {
+		return faxNo;
+	}
+
+	public void setFaxNo(String faxNo) {
+		this.faxNo = faxNo;
+	}
+
+	public List<PurchaserequestbreakdownModel> getProductList() {
+		return productList;
+	}
+
+	public void setProductList(List<PurchaserequestbreakdownModel> productList) {
+		this.productList = productList;
+	}
+
+	
+
+}

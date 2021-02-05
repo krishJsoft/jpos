@@ -1,0 +1,118 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel id="step1pane3">
+
+		<h:panelGrid id="addeditsuppliergridstpe3" columns="5" width="50%"
+			columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+			<h:outputText value="#{msg['supplier.label.supportingfiles']}" styleClass="logintxt"/>
+			
+			<p:fileUpload fileUploadListener="#{supplierBean.upload}"
+				mode="advanced" dragDropSupport="false" multiple="true"
+				update="supplierPanel" sizeLimit="10000000" fileLimit="5"
+				allowTypes="/(\.|\/)(gif|jpe?g|png|doc|docx|pdf|txt|html)$/" />
+
+
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:panelGrid columns="3">
+
+
+			</h:panelGrid>
+
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+
+		</h:panelGrid>
+
+
+		<br />
+		<br />
+
+
+		<p:dataTable id="dataTable" var="doc" rowIndexVar="row"
+			rendered="#{supplierBean.doclist.size()!=0}"
+			value="#{supplierBean.doclist}" paginator="false" rows="20"
+			style="width: 45%" rowsPerPageTemplate="5,10,15"
+			rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+			<p:column id="modelHeader">
+				<f:facet name="header">
+					<h:outputText value="SNo" />
+				</f:facet>
+				<h:outputText value="#{row + 1}" />
+			</p:column>
+
+
+			<p:column sortBy="#{purchase.productName}">
+				<f:facet name="header">
+					<h:outputText value="Document Name" />
+				</f:facet>
+				<h:outputText value="#{doc.documentName}" />
+			</p:column>
+
+
+			<p:column styleClass="logintxtnumberFormat" style="width: 15%;">
+				<f:facet name="header">Download</f:facet>
+				<p:commandLink value="Download" ajax="false"
+					actionListener="#{supplierBean.downloadFileFromList}">
+					<f:attribute name="documentName" value="#{doc.documentName}" />
+					<p:fileDownload value="#{supplierBean.file}" />
+				</p:commandLink>
+			</p:column>
+
+
+
+			<p:column styleClass="logintxtnumberFormat" style="width: 15%;">
+				<f:facet name="header">Remove</f:facet>
+				<p:commandLink value="Remove"
+					actionListener="#{supplierBean.deleteFileFromList}"
+					update=":addEditSupplierForm:dataTable">
+					<f:attribute name="documentName" value="#{doc.documentName}" />
+					<p:collector value="#{doc}" removeFrom="#{supplierBean.doclist}" />
+				</p:commandLink>
+			</p:column>
+
+
+		</p:dataTable>
+
+
+
+		<table align="center" width="100%">
+			<tr>
+				<td align="right"><p:commandButton value="Save"
+						action="#{supplierBean.saveSupplier}" update="supplierPanel"
+						rendered="#{supplierBean.action!='update'}" /> <p:commandButton
+						value="Update" action="#{supplierBean.updateSupplier}"
+						update="supplierPanel" rendered="#{supplierBean.action=='update'}" />
+
+					<p:commandButton value="Cancel" ajax="false"
+						action="#{supplierBean.listSupplier}"
+						update="addeditsuppliergridstpe3" /></td>
+			</tr>
+		</table>
+
+
+
+
+	</p:outputPanel>
+
+
+</ui:composition>
+
+

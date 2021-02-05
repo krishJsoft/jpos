@@ -1,0 +1,225 @@
+package com.alpha.bo.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.IStaffBO;
+import com.alpha.dao.interfaces.IStaffDAO;
+import com.alpha.hq.model.Branch;
+import com.alpha.hq.model.Branchstaffmember;
+import com.alpha.hq.model.Department;
+import com.alpha.hq.model.Role;
+import com.alpha.model.datamodel.BranchstaffmemberModel;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 17 June 2013
+ * 
+ */
+
+@Service("staffBO")
+public class StaffBOImpl implements IStaffBO {
+	
+	public static Logger log = LoggerFactory.getLogger(BranchBOImpl.class);
+
+	@Resource(name = "staffRepository")
+	private IStaffDAO staffRepository;
+	
+	@Transactional
+	@Override
+	public boolean createNewStaff(BranchstaffmemberModel staff)
+			throws Exception {
+		boolean saveSuccess = false;
+		Branchstaffmember staffObj = new Branchstaffmember();
+		try {
+			
+			staffObj.setAllowAllBranches(staff.getAllowAllBranches());
+			staffObj.setDesignation(staff.getDesignation());
+			staffObj.setEmailAddress(staff.getEmailAddress());
+			staffObj.setFirstName(staff.getFirstName());
+			staffObj.setIdentificationNumber(staff.getIdentificationNumber());
+			staffObj.setForceReset(staff.getForceReset());
+			staffObj.setInvalidAttempts(staff.getInvalidAttempts());
+			staffObj.setLastName(staff.getLastName());
+			staffObj.setPassword(staff.getPassword());
+			staffObj.setStatus(staff.getStatus());		
+			
+			Branch branch = new Branch();
+			branch.setBranchId(staff.getBranchId());			
+			staffObj.setBranch(branch);
+			
+			Role role = new Role();
+			role.setRoleId(staff.getRoleId());
+			staffObj.setRole(role);
+			
+			Department department = new Department();
+			department.setDepartmentId(staff.getIdDepartment());
+			staffObj.setDepartment(department);
+			
+			
+			saveSuccess = staffRepository.createNewStaff(staffObj);			
+		}
+
+		catch (Exception e) {
+			log.info("Error in createNewStaff StaffBOImpl " + e);
+			throw e;
+		}
+		return saveSuccess;
+	
+	}
+
+	@Transactional
+	@Override
+	public boolean updateStaff(BranchstaffmemberModel staff) throws Exception {
+		boolean updateSuccess = false;
+		Branchstaffmember staffObj = staffRepository.getBranchstaffmemberDetails(staff.getStaffId());
+		try {
+			
+			staffObj.setAllowAllBranches(staff.getAllowAllBranches());
+			staffObj.setDesignation(staff.getDesignation());
+			staffObj.setEmailAddress(staff.getEmailAddress());
+			staffObj.setFirstName(staff.getFirstName());
+			staffObj.setIdentificationNumber(staff.getIdentificationNumber());
+			staffObj.setForceReset(staff.getForceReset());
+			staffObj.setInvalidAttempts(staff.getInvalidAttempts());
+			staffObj.setLastName(staff.getLastName());
+			staffObj.setPassword(staff.getPassword());
+			staffObj.setStatus(staff.getStatus());		
+			
+			Branch branch = new Branch();
+			branch.setBranchId(staff.getBranchId());			
+			staffObj.setBranch(branch);
+			
+			Role role = new Role();
+			role.setRoleId(staff.getRoleId());
+			staffObj.setRole(role);
+			
+			Department department = new Department();
+			department.setDepartmentId(staff.getIdDepartment());
+			staffObj.setDepartment(department);			
+			
+			updateSuccess = staffRepository.createNewStaff(staffObj);			
+		}
+
+		catch (Exception e) {
+			log.info("Error in updateStaff StaffBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteStaff(BranchstaffmemberModel staff) throws Exception {
+			boolean deleteSuccess = false;
+		
+		try {
+			Branchstaffmember staffObj = staffRepository.getBranchstaffmemberDetails(staff.getStaffId());			
+			deleteSuccess = staffRepository.deleteStaff(staffObj);			
+			}
+		catch (Exception e) {
+			log.info("Error in deleteStaff StaffBOImpl " + e);
+			throw e;
+		}
+		return deleteSuccess;
+	}
+
+	@Override
+	public List<BranchstaffmemberModel> findByStaffList(Integer branchId,
+			String icNo, Integer roleId, String Status) throws Exception {
+		  List<BranchstaffmemberModel> staffObjList = new ArrayList<BranchstaffmemberModel>();	
+		   List<Branchstaffmember> staffList = new ArrayList<Branchstaffmember>();
+		try {			
+			staffList = staffRepository.findByStaffList(branchId, icNo, roleId, Status);
+			
+			for (Branchstaffmember staff : staffList) {				
+			BranchstaffmemberModel staffObj = new BranchstaffmemberModel();	
+			staffObj.setAllowAllBranches(staff.getAllowAllBranches());
+			staffObj.setDesignation(staff.getDesignation());
+			staffObj.setEmailAddress(staff.getEmailAddress());
+			staffObj.setFirstName(staff.getFirstName());
+			staffObj.setIdentificationNumber(staff.getIdentificationNumber());
+			staffObj.setForceReset(staff.getForceReset());
+			staffObj.setInvalidAttempts(staff.getInvalidAttempts());
+			staffObj.setLastName(staff.getLastName());
+			staffObj.setPassword(staff.getPassword());
+			staffObj.setStatus(staff.getStatus());				
+			staffObj.setStaffId(staff.getStaffId());
+			
+			staffObj.setRoleName(staff.getRole().getRoleName());
+			staffObj.setRoleId(staff.getRole().getRoleId());
+			staffObj.setBranchName(staff.getBranch().getBranchName());
+			staffObj.setBranchId(staff.getBranch().getBranchId());
+			staffObj.setDepartmentName(staff.getDepartment().getDepartmentName());
+			staffObj.setIdDepartment(staff.getDepartment().getDepartmentId());
+			
+			
+			staffObjList.add(staffObj);
+			}
+		}
+		catch (Exception e) {
+			log.info("Error in findByStaffList StaffBOImpl " + e);
+			throw e;
+		}
+		return staffObjList;
+	}
+
+	@Override
+	public BranchstaffmemberModel getBranchstaffmemberDetails(Integer staffId)
+			throws Exception {
+		  BranchstaffmemberModel staffObj = new BranchstaffmemberModel();	
+		
+		try {			
+			Branchstaffmember staff = staffRepository.getBranchstaffmemberDetails(staffId);
+			
+			staffObj.setAllowAllBranches(staff.getAllowAllBranches());
+			staffObj.setDesignation(staff.getDesignation());
+			staffObj.setEmailAddress(staff.getEmailAddress());
+			staffObj.setFirstName(staff.getFirstName());
+			staffObj.setIdentificationNumber(staff.getIdentificationNumber());			
+			staffObj.setIdentificationOldNumber(staff.getIdentificationNumber());			
+			staffObj.setForceReset(staff.getForceReset());
+			staffObj.setInvalidAttempts(staff.getInvalidAttempts());
+			staffObj.setLastName(staff.getLastName());
+			staffObj.setPassword(staff.getPassword());
+			staffObj.setStatus(staff.getStatus());
+			staffObj.setStaffId(staff.getStaffId());
+			
+			staffObj.setRoleName(staff.getRole().getRoleName());
+			staffObj.setRoleId(staff.getRole().getRoleId());
+			staffObj.setBranchName(staff.getBranch().getBranchName());
+			staffObj.setBranchId(staff.getBranch().getBranchId());
+			staffObj.setDepartmentName(staff.getDepartment().getDepartmentName());
+			staffObj.setIdDepartment(staff.getDepartment().getDepartmentId());
+			
+		}
+		catch (Exception e) {
+			log.info("Error in getBranchstaffmemberDetails StaffBOImpl " + e);
+			throw e;
+		}
+		return staffObj;
+	}
+
+	@Override
+	public boolean findStaffIcExites(String IcNo) throws Exception {
+		boolean exists = false;		
+		try {
+			exists = staffRepository.findStaffIcExites(IcNo);
+		}
+		catch (Exception e) {
+			log.info("Error in findStaffIcExites StaffBOImpl " + e);
+			throw e;
+		}
+		return exists;	
+	}
+
+}

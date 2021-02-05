@@ -1,0 +1,127 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+
+	<h:form id="listtaxForm" prependId="false">
+		<p:outputPanel id="taxPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="taxPanel" /></td>
+				</tr>
+			</table>
+
+
+
+			<p:dataTable id="dataTable" var="tax" rowIndexVar="row"
+				paginatorPosition="top" reflow="true" editable="true"
+				value="#{taxBean.taxListObj}" paginator="true" rows="10"
+				style="width: 100%" rowsPerPageTemplate="5,10,15,25,50,100"
+				rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+
+
+				<f:facet name="header">
+					<p:outputPanel style="float: left">
+
+					</p:outputPanel>
+
+					<p:outputPanel style="float: right">
+						<p:commandButton icon="ui-icon-plus" ajax="true" oncomplete="PF('addtaxdg').show()" value="Add"
+							rendered="#{loginBean.functionList.contains('Add Product')}"
+							action="#{taxBean.resetTax}" update=":listtaxForm:taxPanel,:listtaxForm:taxPanel1">
+						</p:commandButton>
+					</p:outputPanel>
+				</f:facet>
+
+
+				<p:column id="modelHeader" width="3%" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column sortBy="#{tax.taxname}" width="10%" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['tax.label.taxname']}" />
+					</f:facet>
+					<h:outputText value="#{tax.taxname}"
+						styleClass="logintxttable" />
+				</p:column>				
+
+
+				<p:column sortBy="#{tax.taxvalue}" width="10%"
+					styleClass="logintxtnumberFormat">
+					<f:facet name="header">
+						<h:outputText value="#{msg['tax.label.taxvalue']}" />
+					</f:facet>
+					<h:outputText value="#{tax.taxvalue}"
+						styleClass="logintxtnumberFormat" />
+				</p:column>
+
+				
+				<p:column sortBy="#{tax.glcode}" width="10%" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['tax.label.glcode']}" />
+					</f:facet>
+					<h:outputText value="#{tax.glcode}"
+						styleClass="logintxttable" />
+				</p:column>	
+				
+				
+
+				<p:column width="7%" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['common.action.name']}" />
+					</f:facet>
+
+					<p:menuButton value="Options">
+
+						<p:menuitem value="Edit"
+							rendered="#{loginBean.functionList.contains('Edit Product')}"
+							ajax="true" actionListener="#{taxBean.editTax}"
+							update=":listtaxForm:taxPanel,:listtaxForm:taxPanel1" oncomplete="PF('addtaxdg').show()">
+							<f:attribute name="taxid" value="#{tax.taxid}" />
+						</p:menuitem>
+
+					</p:menuButton>
+
+				</p:column>
+
+
+
+			</p:dataTable>
+
+
+		</p:outputPanel>
+
+
+
+
+		<ui:include src="/admin/addtax.xhtml" />
+
+
+	</h:form>
+
+	<script type="text/javascript">  
+    function handleSaveTax(xhr, status, args) {  
+        if(!args.validity) {  
+            PF('addtaxdg').jq.effect("shake", { times:5 }, 100);  
+        }   
+        else {  
+            PF('addtaxdg').hide();              
+        }  
+    }  
+    </script>
+
+
+
+</ui:composition>
+
+

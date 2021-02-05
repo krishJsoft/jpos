@@ -1,0 +1,333 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="addEditPosForm">
+
+
+		<p:outputPanel id="posPanel">
+
+			<h:inputHidden value="#{posBean.salesOrderId}" id="salesOrderId" />
+
+
+
+			<p:panelGrid width="85%">
+				<p:message for="posPanel" />
+			</p:panelGrid>
+
+
+
+			<p:panelGrid style="width:100%" id="posProductGrid">
+
+				<p:row>
+					<p:column style="width:70%;" styleClass="alignTop">
+						<h:panelGrid width="85%" columns="10">
+							<h:outputText value="Table No" styleClass="totalValue"/>
+							<p:inputText value="#{posBean.salesorder.tableName}" />
+
+							<h:outputText value="Card No" styleClass="totalValue"/>
+							<p:inputText value="#{posBean.salesorder.cardNo}" />
+
+
+
+
+						</h:panelGrid>
+					</p:column>
+
+
+
+					<p:column style="width:30%;" styleClass="alignTop">
+						<h:panelGrid width="85%" columns="10">
+
+
+
+							<p:commandButton value="Save Order"
+								rendered="#{posBean.salesorder.salesOrderId==0}"
+								styleClass="itemactionbutton" update="posPanel"
+								action="#{posBean.saveKitchenOrder}" ajax="false">
+							</p:commandButton>
+
+							<p:commandButton value="Update Order"
+								rendered="#{posBean.salesorder.salesOrderId!=0}"
+								styleClass="itemactionbutton" update="posPanel"
+								action="#{posBean.updateKitchenorder}" ajax="false">
+							</p:commandButton>
+
+							<p:commandButton value="New Order" immediate="true"
+								update="posPanel" styleClass="itemactionbutton" ajax="false"
+								action="#{orderBean.tableSelection}"
+								rendered="#{posBean.salesorder.salesOrderId!=0}">
+								<f:param name="id" value="pos" />
+							</p:commandButton>
+
+
+							<p:commandButton value="Clear" immediate="true" update="posPanel"
+								styleClass="itemactionbutton" ajax="true"
+								action="#{posBean.resetPos}"
+								rendered="#{posBean.salesorder.salesOrderId==0}">
+								<f:param name="id" value="pos" />
+							</p:commandButton>
+
+
+
+						</h:panelGrid>
+					</p:column>
+
+
+
+				</p:row>
+
+
+
+				<p:row id="saleslistDetailgrid">
+					<p:column style="width:70%;" styleClass="alignTop" id="listcolumn1">
+
+
+
+						<p:dataGrid id="dataTablegrid1" var="pos" rowIndexVar="row"
+							paginatorPosition="top" scrollable="true" scrollHeight="450"
+							rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}" columns="4"
+							value="#{productBean.productAll}" paginator="false" rows="40"
+							style="width: 100%" rowsPerPageTemplate="50,75,100,200,300,400">
+
+							<h:panelGrid id="asd" columns="2" styleClass="borderlessGrid"
+								cellpadding="0" columnClasses="0">
+								
+
+								<p:commandButton value="#{pos.productName}"
+									icon="images/logo.jpg" style="text-color:ffffff"
+									styleClass="itembuttonproduct"
+									ajax="true"
+									update=":addEditPosForm:posProductGrid,:addEditPosForm:posPanel,:addEditPosForm:dataTablegrid1"
+									actionListener="#{posBean.selectProductMenu}"
+									rendered="#{pos.status!='1'}">
+									<f:attribute name="product" value="#{pos}" />
+								</p:commandButton>
+								
+							</h:panelGrid>
+
+
+						</p:dataGrid>
+
+
+
+					</p:column>
+
+
+
+					<p:column style="width:30%;"
+						styleClass="alignTop">
+
+
+
+						<p:dataTable id="dataTable" var="pos" rowIndexVar="row"
+							scrollable="true" scrollHeight="440"
+							rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+							value="#{posBean.salesorderbreakdowns}" paginator="false"
+							rows="500" style="width: 100%" rowsPerPageTemplate="5,10,15">
+
+
+
+							<p:columnGroup type="header">
+								<p:row>
+
+
+
+									<p:column style="width:40%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Item Name" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+
+
+									<p:column style="width:25%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Qty" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+
+
+									<p:column style="width:10%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+										</f:facet>
+									</p:column>
+								</p:row>
+							</p:columnGroup>
+
+
+
+
+
+
+							<p:column styleClass="columnwidth">
+
+								<p:commandLink value="#{pos.productName}"
+									styleClass="logintxttable"
+									update=":addEditPosForm:dataTable,:addEditPosForm:orderitemremarks"
+									actionListener="#{posBean.remarksItem}"
+									oncomplete="PF('orderItemremarskDig').show()">
+									<f:attribute name="posBreakdownId" value="#{row}" />
+								</p:commandLink>
+
+
+							</p:column>
+
+
+							<p:column styleClass="logintxtnumberFormat">
+
+								<p:inputText value="#{posBean.itemcountQty[pos.sno]}" size="5"
+									onkeypress='return validate(event)' id="itemcountQty"
+									styleClass="logintxtnumberFormat">
+									<p:ajax event="change"
+										listener="#{posBean.addSalesPriceModifyItem1(row)}"
+										update=":addEditPosForm:saleslistDetailgrid,:addEditPosForm:dataTable,:addEditPosForm:posPanel" />
+									<f:convertNumber pattern="#0" />
+								</p:inputText>
+
+							</p:column>
+
+
+
+							<p:column styleClass="columnwidth">
+
+								<p:commandLink value="" styleClass="ui-icon ui-icon-trash"
+									update=":addEditPosForm:dataTable,:addEditPosForm:requestitemdelete"
+									actionListener="#{posBean.removeItem}"
+									oncomplete="PF('posItemdeleteDig').show()">
+									<f:attribute name="posBreakdownId" value="#{row}" />
+								</p:commandLink>
+							</p:column>
+
+
+						</p:dataTable>
+
+
+
+
+					</p:column>
+
+
+
+
+				</p:row>
+
+
+
+
+
+
+			</p:panelGrid>
+
+
+
+
+
+
+
+		</p:outputPanel>
+
+
+		<ui:include src="/sales/pos/positemdeletedialog2.xhtml" />
+		<ui:include src="/sales/pos/orderitemremarksdialog.xhtml" />
+
+	</h:form>
+
+	<script type="text/javascript">  
+    function handleCashInRequest(xhr, status, args) {  
+        if(!args.validity) {  
+            PF('cashinout').jq.effect("shake", { times:5 }, 100);  
+        }   
+        else {  
+            PF('cashinout').hide();  
+            $('#cashout').fadeOut();  
+        }  
+    }  
+
+    function handlePos(xhr, status, args) {  
+        if(!args.validity) {  
+            PF('payment').jq.effect("shake", { times:5 }, 100);  
+        }   
+        else {  
+            PF('payment').hide();  
+           // printBill(); 
+           var salesOrderId=args.salesOrderId;
+           var printname=args.printname;
+           var printServerURL=args.printServerURL;
+           
+          // var printerServletUrl="/material/PrintKot?salesOrderId="+salesOrderId;
+          
+          alert(printname);
+          alert(printServerURL);
+           
+            var v=  document.getElementById("appletVisor");
+            v.print(printServerURL,printname); 
+        }  
+    }  
+
+
+    function printBill() {  
+     // var salesOrderId=document.getElementById('addEditPosForm:salesOrderId').value();
+      //alert(salesOrderId);	
+      //alert($('#addEditPosForm:salesOrderId').val());	
+      var v=  document.getElementById("appletVisor");
+      v.print("/material/PrintKot?salesOrderId=#{posBean.salesOrderId}","Ricoh Aficio MP 3350 PCL6");
+    }  
+
+
+
+    function handlePosCounterPrint(xhr, status, args) {          
+           var salesOrderId=args.salesOrderId;
+           var printname=args.printname;
+           var printServerURL=args.printServerURL;
+          // alert(printname);
+           //alert(printServerURL);           
+         	// var printerServletUrl="/material/PrintKot?salesOrderId="+salesOrderId;
+            var v=  document.getElementById("appletVisor");
+            v.print(printServerURL,printname);           
+    }  
+
+
+
+    function print_doc()
+    {
+  		jsPrintSetup.setOption('orientation', jsPrintSetup.kPortraitOrientation);
+
+  		jsPrintSetup.printWindow(window.frames[0]);
+  		
+  		// set top margins in millimeters
+  		jsPrintSetup.setOption('marginTop', 15);
+  		jsPrintSetup.setOption('marginBottom', 15);
+  		jsPrintSetup.setOption('marginLeft', 20);
+  		jsPrintSetup.setOption('marginRight', 10);
+  		// set page header
+  		jsPrintSetup.setOption('headerStrLeft', 'My custom header');
+  		jsPrintSetup.setOption('headerStrCenter', '');
+  		jsPrintSetup.setOption('headerStrRight', 'PT');
+  		// set empty page footer
+  		jsPrintSetup.setOption('footerStrLeft', '');
+  		jsPrintSetup.setOption('footerStrCenter', '');
+  		jsPrintSetup.setOption('footerStrRight', '');
+  		
+  		// Suppress print dialog
+  		jsPrintSetup.setSilentPrint(true);/** Set silent printing */
+  		// Do Print
+  		jsPrintSetup.print();
+  		// Restore print dialog
+  		jsPrintSetup.setSilentPrint(false); /** Set silent printing back to false */
+   
+    }
+
+    
+
+    
+</script>
+
+</ui:composition>
+
+

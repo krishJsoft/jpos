@@ -1,0 +1,257 @@
+package com.alpha.bo.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.ICommonListBO;
+
+import com.alpha.dao.interfaces.ICommonListDAO;
+
+import com.alpha.hq.model.Department;
+import com.alpha.hq.model.Designation;
+
+import com.alpha.hq.model.Autonum;
+import com.alpha.hq.model.Function;
+import com.alpha.hq.model.Rolefunctionlink;
+import com.alpha.model.datamodel.DepartmentModel;
+
+import com.alpha.model.datamodel.DesignationModel;
+import com.alpha.model.datamodel.FunctionModel;
+import com.alpha.model.datamodel.ModuleModel;
+import com.alpha.model.datamodel.RolefunctionlinkModel;
+
+@Service("commonListBO")
+public class CommonListBOImpl implements ICommonListBO {
+
+	static Logger logger = Logger.getLogger(CommonListBOImpl.class);
+
+	
+
+	@Resource(name = "commonListRepository")
+	private ICommonListDAO commonListRepository;
+
+	@Override
+	public List<DepartmentModel> getDepartmentList() throws Exception {
+
+		List<Department> departmentList = null;
+		List<DepartmentModel> departmentModelList = new ArrayList<DepartmentModel>();
+		DepartmentModel departmentModel = null;
+		try {
+			departmentList = commonListRepository.getDepartmentList();
+			for (Department departmentData : departmentList) {
+				departmentModel = new DepartmentModel();
+				//beanUtils.copyProperties(departmentModel, departmentData);				
+				departmentModel.setDepartmentCode(departmentData.getDepartmentCode());
+				departmentModel.setDepartmentName(departmentData.getDepartmentName());
+				departmentModel.setDepartmentId(departmentData.getDepartmentId());
+				
+				departmentModelList.add(departmentModel);
+			}
+		} catch (Exception e) {
+			logger.info("Error in getDepartmentList of CommonListBOImpl "
+					+ e.toString());
+			throw e;
+		}
+
+		return departmentModelList;
+	}
+
+	@Override
+	public List<DesignationModel> getDesignationList() throws Exception {
+		List<Designation> designationList = null;
+		List<DesignationModel> designationModelList = new ArrayList<DesignationModel>();
+		DesignationModel designationModel = null;
+		try {
+			designationList = commonListRepository.getDesignationList();
+			for (Designation designationData : designationList) {
+				designationModel = new DesignationModel();
+				//beanUtils.copyProperties(designationModel, designationData);
+				
+				designationModel.setDesignationname(designationData.getDesignationname());
+				designationModel.setIddesignation(designationData.getIddesignation());
+				
+				designationModelList.add(designationModel);
+			}
+		} catch (Exception e) {
+			logger.info("Error in getDesignationList of CommonListBOImpl "
+					+ e.toString());
+			throw e;
+		}
+		return designationModelList;
+	}
+
+	
+
+	@Override
+	public List<ModuleModel> getModuleList() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<FunctionModel> getFunctionList(Integer moduleId)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<FunctionModel> getFunctionList() throws Exception {
+		List<Function> functionList = null;
+		List<FunctionModel> functionModelList = new ArrayList<FunctionModel>();
+		FunctionModel functionModel = null;
+		try {
+			functionList = commonListRepository.getFunctionList();
+			for (Function functionData : functionList) {
+				functionModel = new FunctionModel();
+				//beanUtils.copyProperties(functionModel, functionData);
+				
+				functionModel.setFunctionname(functionData.getFunctionName());
+				functionModel.setIdFunctions(functionData.getFunctionId());
+				functionModel.setIdModule(functionData.getModule().getModuleId());
+				functionModel.setModulename(functionData.getModule().getModuleName());
+				
+				functionModelList.add(functionModel);
+			}
+		} catch (Exception e) {
+			logger.info("Error in getFunctionList of CommonListBOImpl "
+					+ e.toString());
+			throw e;
+		}
+		return functionModelList;
+	}
+
+	@Override
+	public List<RolefunctionlinkModel> getRolefunctionlinkList(Integer roleId)
+			throws Exception {
+		List<Rolefunctionlink> rolefunctionlinkList = null;
+		List<RolefunctionlinkModel> rolefunctionlinkModelList = new ArrayList<RolefunctionlinkModel>();
+		RolefunctionlinkModel rolefunctionlinkModel = null;
+		try {
+			rolefunctionlinkList = commonListRepository
+					.getRolefunctionlinkList(roleId);
+			for (Rolefunctionlink rolefunctionlinkData : rolefunctionlinkList) {
+				rolefunctionlinkModel = new RolefunctionlinkModel();
+				//beanUtils.copyProperties(rolefunctionlinkModel,rolefunctionlinkData);
+				
+				rolefunctionlinkModel.setFunctionname(rolefunctionlinkData.getFunction().getFunctionName());
+				rolefunctionlinkModel.setIdFunctions(rolefunctionlinkData.getFunction().getFunctionId());
+				rolefunctionlinkModel.setIdrolefunctionlink(rolefunctionlinkData.getRoleFunctionLinkId());
+				rolefunctionlinkModel.setIduserrole(rolefunctionlinkData.getRole().getRoleId());
+				rolefunctionlinkModel.setRolename(rolefunctionlinkData.getRole().getRoleName());
+				
+				
+				rolefunctionlinkModelList.add(rolefunctionlinkModel);
+			}
+		} catch (Exception e) {
+			logger.info("Error in getRolefunctionlinkList of CommonListBOImpl "
+					+ e.toString());
+			throw e;
+		}
+		return rolefunctionlinkModelList;
+	}
+
+	@Transactional
+	@Override
+	public void saveDepartment(DepartmentModel depObj) throws Exception {
+		Department dptModel = null;
+		try {			
+				dptModel = new Department();				
+				dptModel.setDepartmentCode(depObj.getDepartmentCode());
+				dptModel.setDepartmentName(depObj.getDepartmentName());				
+				commonListRepository.saveDepartment(dptModel);
+		} catch (Exception e) {
+			logger.info("Error in saveDepartment of CommonListBOImpl "
+					+ e.toString());
+			throw e;
+		}
+
+	}
+
+	@Transactional
+	@Override
+	public void updateDepartment(DepartmentModel depObj) throws Exception {
+		
+		Department dptModel = null;
+		try {			
+				dptModel = commonListRepository.getDepartment(depObj.getDepartmentId());		
+				dptModel.setDepartmentCode(depObj.getDepartmentCode());
+				dptModel.setDepartmentName(depObj.getDepartmentName());				
+				commonListRepository.updateDepartment(dptModel);
+				
+		} catch (Exception e) {
+			logger.info("Error in updateDepartment of CommonListBOImpl "
+					+ e.toString());
+			throw e;
+		}
+	}
+
+	@Override
+	public void deleteDepartment(DepartmentModel depObj) throws Exception {
+		
+		Department dptModel = null;		
+		try {			
+			dptModel = commonListRepository.getDepartment(depObj.getDepartmentId());		
+			commonListRepository.deleteDepartment(dptModel);
+				
+		} catch (Exception e) {
+			logger.info("Error in deleteDepartment of CommonListBOImpl "
+					+ e.toString());
+			throw e;
+		}		
+		
+	}
+
+	@Override
+	public DepartmentModel getDepartment(Integer departmentId) throws Exception {
+		Department dptModel = null;
+		DepartmentModel dptModelobj = new DepartmentModel();
+		try {			
+			dptModel = commonListRepository.getDepartment(departmentId);		
+			dptModelobj.setDepartmentCode(dptModel.getDepartmentCode());
+			dptModelobj.setDepartmentName(dptModel.getDepartmentName());	
+			dptModelobj.setDepartmentId(dptModel.getDepartmentId());
+				
+		} catch (Exception e) {
+			logger.info("Error in getDepartment of CommonListBOImpl "
+					+ e.toString());
+			throw e;
+		}
+		return dptModelobj;
+	}
+
+	@Override
+	public List<DepartmentModel> getDepartmentList(Integer departmentId)
+			throws Exception {
+		List<Department> departmentList = null;
+		List<DepartmentModel> departmentModelList = new ArrayList<DepartmentModel>();
+		DepartmentModel departmentModel = null;
+		try {
+			departmentList = commonListRepository.getDepartmentList(departmentId);
+			for (Department departmentData : departmentList) {
+				departmentModel = new DepartmentModel();
+				//beanUtils.copyProperties(departmentModel, departmentData);				
+				departmentModel.setDepartmentCode(departmentData.getDepartmentCode());
+				departmentModel.setDepartmentName(departmentData.getDepartmentName());
+				departmentModel.setDepartmentId(departmentData.getDepartmentId());
+				
+				departmentModelList.add(departmentModel);
+			}
+		} catch (Exception e) {
+			logger.info("Error in getDepartmentList of CommonListBOImpl "
+					+ e.toString());
+			throw e;
+		}
+
+		return departmentModelList;
+	}
+
+	
+
+}

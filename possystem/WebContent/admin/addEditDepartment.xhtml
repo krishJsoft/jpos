@@ -1,0 +1,106 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="newDepartmentForm">
+		<p:outputPanel id="pageContentPanel">
+
+			<p:panel styleClass="mypanel" header="Add/Edit Department"
+				id="departmentPanel">
+
+				<table align="center" width="100%" border="0">
+					<tr>
+						<td align="center"><p:message for="departmentPanel" /></td>
+					</tr>
+				</table>
+
+
+
+				<h:panelGrid id="newdepartmentgrid" columns="5" border="0"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['department.label.departmentname']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="departmentname"
+						value="#{departmentBean.departmentObj.departmentName}"
+						maxlength="45" size="25" />
+					<p:message for="departmentname" styleClass="fieldError" />
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['department.label.departmentcode']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="departmentcode"
+						value="#{departmentBean.departmentObj.departmentCode}"
+						maxlength="15" size="25" />
+					<p:message for="departmentcode" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Description" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="3" cols="25" id="description"
+						value="#{departmentBean.departmentObj.description}" />
+					<p:message for="description" styleClass="fieldError" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid id="newcompanybuttongrid" columns="3" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Save" ajax="false"
+							action="#{departmentBean.saveDepartment}"
+							update="newdepartmentgrid"
+							rendered="#{departmentBean.action!='update'}" />
+
+						<p:commandButton value="Update"
+							action="#{departmentBean.updateDepartment}" ajax="false"
+							update="newdepartmentgrid"
+							rendered="#{departmentBean.action=='update'}" />
+
+						<p:commandButton value="Reset" ajax="false" rendered="#{departmentBean.action!='update'}"
+							action="#{departmentBean.resetDepartment}"
+							update="newdepartmentgrid" />
+							
+							<p:commandButton value="Reset"
+							actionListener="#{departmentBean.departmentEdit}" update="newdepartmentgrid"
+							rendered="#{departmentBean.action=='update'}">
+							<f:attribute name="paramid" value="#{departmentBean.departmentId}" />
+				  		 </p:commandButton>							
+
+						<p:commandButton value="Cancel" ajax="false"
+							action="#{departmentBean.listDepartment}" />
+
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+
+
+
+			</p:panel>
+
+
+
+
+
+
+
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

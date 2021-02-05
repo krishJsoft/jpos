@@ -1,0 +1,37 @@
+package com.alpha.dao.interfaces;
+
+import java.util.Date;
+import java.util.List;
+
+
+import com.alpha.hq.model.Autonum;
+import com.alpha.hq.model.Department;
+import com.alpha.hq.model.Designation;
+import com.alpha.hq.model.Function;
+import com.alpha.hq.model.Module;
+import com.alpha.hq.model.Rolefunctionlink;
+import com.alpha.model.datamodel.DepartmentModel;
+
+public interface ICommonListDAO {
+	
+	public List<Department> getDepartmentList() throws Exception;
+	public List<Department> getDepartmentList(Integer departmentId) throws Exception;
+	
+	public List<Designation> getDesignationList() throws Exception;
+	
+	public List<Module> getModuleList() throws Exception;
+	public List<Function> getFunctionList(Integer moduleId) throws Exception;
+	public List<Function> getFunctionList() throws Exception;
+	public List<Rolefunctionlink> getRolefunctionlinkList(Integer roleId) throws Exception;
+	public Autonum getAutonumDetail() throws Exception;
+	public Autonum updateAutonumDetail(Autonum tutonum) throws Exception;
+	
+	public Department getDepartment(Integer departmentId)  throws Exception;
+	
+	public void saveDepartment(Department depObj)  throws Exception;
+	
+	public void updateDepartment(Department depObj)  throws Exception;
+	
+	public void deleteDepartment(Department depObj)  throws Exception;
+	
+}

@@ -1,0 +1,313 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditQuotationForm">
+		<p:outputPanel id="quotationListPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="quotationListPanel" /></td>
+				</tr>
+			</table>
+
+
+			<p:panelGrid style="width:99%" styleClass="alignTop">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="width:40%;">Quotation Details</p:column>
+						<p:column style="width:60%;">Products</p:column>
+					</p:row>
+				</f:facet>
+
+
+				<p:row>
+					<p:column style="width:40%;" styleClass="alignTop">
+
+						<h:panelGrid id="requestgrid" columns="3" border="0" width="100%"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText value="Quote No" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationNo}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Quotation Date" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationDate}"
+								styleClass="logintxttable">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+
+							<h:outputText value="Quotation Due Date" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationDueDate}"
+								styleClass="logintxttable">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+							<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationNo}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Delivery Terms" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.deliveryTerms}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Payment Terms" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.paymentTerms}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{app['quotationstat.status.neworderlable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.newordervalue']}"
+								styleClass="logintxttable" />
+							<h:outputText
+								value="#{app['quotationstat.status.processedlable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.processedvalue']}"
+								styleClass="logintxttable" />
+							<h:outputText value="#{app['quotationstat.status.orderedlable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.orderedvalue']}"
+								styleClass="logintxttable" />								
+								<h:outputText value="#{app['quotationstat.status.declinelable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.declinevalue']}"
+								styleClass="logintxttable" />
+								
+						</h:panelGrid>
+
+
+					</p:column>
+
+					<p:column style="width:60%;" styleClass="alignTop">
+						<p:dataTable id="dataTable1" var="quotation" rowIndexVar="row"
+							paginatorPosition="top" scrollable="true" scrollHeight="200"
+							value="#{quotationsupplierBean.quotationbreakdowns}"
+							paginator="false" rows="1000" style="width: 100%"
+							rowsPerPageTemplate="5,10,15,20,25" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+							<p:column styleClass="columnwidth" width="6%">
+								<f:facet name="header">
+									<h:outputText value="Product Code" />
+								</f:facet>
+								<h:outputText value="#{quotation.productCode}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column styleClass="columnwidth" width="25%">
+								<f:facet name="header">
+									<h:outputText value="Product Name" />
+								</f:facet>
+								<h:outputText value="#{quotation.productName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column styleClass="columnwidthn" width="7%">
+								<f:facet name="header">
+									<h:outputText value="Qty." />
+								</f:facet>
+								<h:outputText value="#{quotation.quantityRequired}"
+									styleClass="logintxttable" />
+							</p:column>
+						</p:dataTable>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+
+			<p:dataTable id="dataTablesupplier" var="supplier" rowIndexVar="row"
+				paginatorPosition="top" scrollable="true" scrollHeight="190"
+				value="#{quotationsupplierBean.supplierObjList}" paginator="false"
+				rows="1000" style="width: 99%" rowsPerPageTemplate="5,10,15,20,25">
+
+				<p:column styleClass="columnwidth" width="3%">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row+1}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width: 5%;" styleClass="logintxtCenter">
+					<f:facet name="header">
+						<h:outputText value="" />
+					</f:facet>
+
+					<p:selectBooleanCheckbox
+						value="#{quotationsupplierBean.checkMap[supplier.supplier.supplierId]}">
+						<f:ajax event="click" />
+					</p:selectBooleanCheckbox>
+				</p:column>
+
+				<p:column styleClass="columnwidth" width="15%">
+					<f:facet name="header">
+						<h:outputText value="Supplier" />
+					</f:facet>
+					<h:outputText value="#{supplier.supplier.supplierName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidth" width="30%">
+					<f:facet name="header">
+						<h:outputText value="Address" />
+					</f:facet>
+					<h:outputText value="#{supplier.supplier.address}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidth" width="5%">
+					<f:facet name="header">
+						<h:outputText value="Phone No" />
+					</f:facet>
+					<h:outputText value="#{supplier.supplier.phoneNo}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidth" width="5%">
+					<f:facet name="header">
+						<h:outputText value="City" />
+					</f:facet>
+					<h:outputText value="#{supplier.supplier.city}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidth" width="5%">
+					<f:facet name="header">
+						<h:outputText value="State" />
+					</f:facet>
+					<h:outputText value="#{supplier.supplier.state}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidth" width="5%">
+					<f:facet name="header">
+						<h:outputText value="Post Code" />
+					</f:facet>
+					<h:outputText value="#{supplier.supplier.postCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+			</p:dataTable>
+
+			<p:commandButton value="View Supply Products"
+				actionListener="#{quotationsupplierBean.viewSupplierProducts}"
+				update="quotationListPanel" />
+
+			<p:commandButton value="Issue Quotation" id="issueqb"
+				rendered="#{quotationsupplierBean.supplierProducts.size()!=0 }"
+				oncomplete="PF('quotationiiseDig').show();"
+				update="requestapprove" />
+
+
+
+			<p:dataTable var="supplier" id="dataTablesupplierProduct"
+				value="#{quotationsupplierBean.supplierProducts}">
+				<f:facet name="header">
+          			  Supplier Products
+      			  </f:facet>
+
+				<p:columnGroup type="header">
+					<p:row>
+						<p:column rowspan="1" headerText="Supplier" />
+						<p:column colspan="3" headerText="Products" />
+					</p:row>
+					<p:row>
+						<p:column headerText="Product Code" />
+						<p:column headerText="Product Name" />
+						<p:column headerText="Qty" styleClass="columnwidthn" />
+					</p:row>
+				</p:columnGroup>
+
+				<p:subTable var="quotation"
+					value="#{supplier.supplier.quotationbreakdownList}"
+					rowIndexVar="row">
+					<f:facet name="header">
+						<h:panelGrid id="requestgrid" columns="8" border="0" width="100%"
+							styleClass="borderlessGrid" cellpadding="1" cellspacing="1"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText value="#{supplier.supplier.supplierName}" />
+						</h:panelGrid>
+					</f:facet>
+
+
+					<p:column>
+						<h:outputText value="#{quotation.productCode}"
+							styleClass="logintxttable" />
+					</p:column>
+					<p:column>
+						<h:outputText value="#{quotation.productName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column styleClass="columnwidthn">
+						<h:outputText value="#{quotation.quantityRequired}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+				</p:subTable>
+			</p:dataTable>
+
+
+
+
+
+
+
+		</p:outputPanel>
+
+		<p:dialog id="issueQ" showEffect="fade"
+			hideEffect="fade" header="Quotation Issue Confirmation"
+			resizable="false" widgetVar="quotationiiseDig" modal="true"
+			height="120" width="400">
+
+			<br></br>
+
+			<p:panel id="requestapprove">
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText
+						value="Are you sure want to Issue Quotation to Suppliers,  "
+						styleClass="logintxttable" />
+				</h:panelGrid>
+				<br></br>
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+					<p:commandButton value="Yes" ajax="false" rendered="#{quotationsupplierBean.supplierProducts.size()!=0 }"
+						action="#{quotationsupplierBean.saveSupplierQuotation}">
+					</p:commandButton>
+					<p:commandButton value="No" oncomplete="PF('quotationiiseDig').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+	</h:form>
+</ui:composition>
+
+

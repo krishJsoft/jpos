@@ -1,0 +1,55 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogDeliveryApprove" showEffect="fade"
+		hideEffect="fade" header="Sales Order Approve Confirmation"
+		resizable="false" widgetVar="salesProcessDig" modal="true"
+		height="150" width="400">
+
+		<br></br>
+
+		<p:panel id="salesapprove">
+
+			<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+				cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText
+					value="Are you sure you want to approve Sales Order No,  "
+					styleClass="logintxttable" />
+
+				<h:outputText
+					value="#{salesorderBean.salesorder.salesOrderNo}"
+					styleClass="logintxttable" />
+
+			</h:panelGrid>
+
+			<br></br>
+
+			<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+				<p:commandButton value="Approve" ajax="false"
+					rendered="#{loginBean.functionList.contains('Approve DeliveryOrder')}"
+					action="#{salesorderBean.approveSalesOrderConfirm()}">
+				</p:commandButton>
+				<p:commandButton value="Cancel" oncomplete="PF('salesProcessDig').hide()" />
+
+			</h:panelGrid>
+		</p:panel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

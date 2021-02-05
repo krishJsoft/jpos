@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="quotationListForm">
+		<p:outputPanel id="quotationListPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="quotationListPanel" /></td>
+				</tr>
+			</table>
+
+			<p:dataTable id="dataTable" var="quotation" rowIndexVar="row"
+				scrollable="false" lazy="true"
+				value="#{quotationBean.quotationModel}" paginator="true" rows="10"
+				style="width: 100%" rowsPerPageTemplate="5,10,15,25,50,100">
+
+				<p:column style="height:18px;">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Issue Date" />
+					</f:facet>
+					<h:outputText value="#{quotation.createdDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Quotation Due Date" />
+					</f:facet>
+					<h:outputText value="#{quotation.quotationDueDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy " />
+					</h:outputText>
+				</p:column>
+
+				<p:column sortBy="#{quotation.quotationNo}">
+					<f:facet name="header">
+						<h:outputText value="Quotation No" />
+					</f:facet>
+					<h:outputText value="#{quotation.quotationNo}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column sortBy="#{quotation.customerName}">
+					<f:facet name="header">
+						<h:outputText value="Customer Name" />
+					</f:facet>
+					<h:outputText value="#{quotation.customerName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column styleClass="logintxtnumberFormat">
+					<f:facet name="header">
+						<h:outputText value="Amount" />
+					</f:facet>
+					<h:outputText value="#{quotation.totalAmount}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column sortBy="#{quotation.status}">
+					<f:facet name="header">
+						<h:outputText value="Status" />
+					</f:facet>
+					<h:outputText value="#{app['quotationstat.status.neworderlable']}"
+						rendered="#{quotation.status==app['quotationstat.status.newordervalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['quotationstat.status.processedlable']}"
+						rendered="#{quotation.status==app['quotationstat.status.processedvalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['quotationstat.status.orderedlable']}"
+						rendered="#{quotation.status==app['quotationstat.status.orderedvalue']}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+			</p:dataTable>
+
+
+
+
+
+		</p:outputPanel>
+
+	</h:form>
+</ui:composition>
+
+

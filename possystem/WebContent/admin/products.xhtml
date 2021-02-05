@@ -1,0 +1,199 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="listProductForm">
+		<h:panelGroup id="productPanel" stateless="true">
+			<p:message for="productPanel" />
+				
+			<p:panel styleClass="mypanel" header="Search Products">
+
+			
+					<h:panelGrid id="searchproductgrid" columns="10" border="0"
+						width="70%"
+						columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Product Code " styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="barcode" value="#{productBean.barcode}"
+							maxlength="45" size="25" />
+						<p:message for="barcode" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Product Name " styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="productName" value="#{productBean.productName}"
+							maxlength="200" size="25" />
+						<p:message for="productName" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.categoryName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:panelGrid columns="2" border="0">
+							<p:commandButton id="categoryBtn" value="Select" />
+						</h:panelGrid>
+
+						<h:outputText value="" />
+
+
+
+
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:panelGrid columns="2" border="0"
+							columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+							<p:commandButton value="Search" ajax="true"
+								action="#{productBean.searchProduct1}" update="productPanel" />
+
+							<p:commandButton value="Reset" ajax="true"
+								action="#{productBean.resetSearchProduct1}"
+								update="productPanel" />
+						</h:panelGrid>
+						<h:outputText value="" />
+
+					</h:panelGrid>
+				
+
+				<p:dataTable id="dataTable" var="product" rowIndexVar="row"
+					lazy="true" value="#{productBean.productModel}"
+					first="#{productBean.first}" selectionMode="single"
+					paginator="true" rows="10" style="width: 100%"
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+					<p:ajax event="page" listener="#{productBean.onPageChange}" />
+
+
+					<p:column id="modelHeader" width="3%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{product.barcode}" styleClass="columnwidth"
+						width="10%">
+						<f:facet name="header">
+							<h:outputText value="Product Code" />
+						</f:facet>
+						<h:outputText value="#{product.barcode}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{product.productName}" styleClass="columnwidth"
+						width="25%">
+						<f:facet name="header">
+							<h:outputText value="Product Name" />
+						</f:facet>
+						<h:outputText value="#{product.productName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column  styleClass="columnwidth"
+						width="10%">
+						<f:facet name="header">
+							<h:outputText value="Tax Type" />
+						</f:facet>
+						<h:outputText value="#{product.taxType}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{product.categoryName}" styleClass="columnwidth"
+						width="15%">
+						<f:facet name="header">
+							<h:outputText value="Category" />
+						</f:facet>
+						<h:outputText value="#{product.categoryName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column sortBy="#{product.normalPrice}" width="7%"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Selling Price #{app['common.currency']}" />
+						</f:facet>
+						<h:outputText value="#{product.normalPrice}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{product.normalPrice}" width="7%"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Packing Price #{app['common.currency']}" />
+						</f:facet>
+						<h:outputText value="#{product.packingPrice}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column width="10%" styleClass="columnwidth" >
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+
+						<p:menuButton value="Options"  >
+						
+							<p:menuitem value="Edit" styleClass="logintxttable" ajax="false"
+								rendered="#{loginBean.functionList.contains('Edit Product')}"
+								actionListener="#{productBean.editProduct}">
+								
+								<f:attribute name="productId" value="#{product.productId}" />
+							</p:menuitem>
+
+							<p:menuitem value="Delete" styleClass="logintxttable" ajax="false"
+								rendered="#{loginBean.functionList.contains('Delete Product')}"
+								actionListener="#{productBean.deleteProduct}">
+								<p:confirm message="Are you sure want to delete product #{product.productName} ?" icon="ui-icon-alert" />
+								<f:attribute name="productId" value="#{product.productId}" />
+							</p:menuitem>
+
+						</p:menuButton>
+
+
+					</p:column>
+
+				</p:dataTable>
+
+
+				<table align="center" width="100%">
+					<tr>
+						<td align="left"><p:commandButton value="New Product"
+								ajax="false" action="#{productBean.newProduct}"
+								update="searchproductgrid,dataTable" /></td>
+					</tr>
+
+
+				</table>
+			</p:panel>
+
+
+		<p:confirmDialog global="true" >
+		<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		</p:confirmDialog>
+
+		</h:panelGroup>
+
+
+		<ui:include src="/admin/categoryOverlayout.xhtml" />
+		<ui:include src="/admin/productView.xhtml" />
+		<ui:include src="/templates/loadingDialog.xhtml" />
+
+	</h:form>
+
+
+
+</ui:composition>
+
+

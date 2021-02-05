@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="listBranchForm">
+		<p:outputPanel id="branchPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="branchPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Add/Edit Branch"
+				id="branchPanel1">
+
+<p:dataTable value="#{editBean.allRecordList}" var="items" paginator="true"
+                             rows="5" rowsPerPageTemplate="5,10,30"
+                             paginatorTemplate="{FirstPageLink} {PageLinks} {NextPageLink}
+                             {RowsPerPageDropdown}">
+                    <p:column>
+                        <f:facet name="header">Ad</f:facet>
+                        <h:outputText value="#{items.kategoriAdi}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Ust Kategori Id</f:facet>
+                        <h:outputText value="#{items.katUstId}"/>
+                    </p:column>
+                    <p:column>
+                        <f:facet name="header">Edit</f:facet>
+                        <h:outputLink value="EditComplete.xhtml">
+                            <f:param name="id" value="#{items.kategoriId}"/>Düzenle
+                        </h:outputLink>
+                    </p:column>
+                </p:dataTable>
+			</p:panel>
+		</p:outputPanel>
+	</h:form>
+
+	<h:outputLink value="index1.xhtml">Ana Sayfa</h:outputLink>
+
+</ui:composition>
+
+

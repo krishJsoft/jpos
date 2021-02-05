@@ -1,0 +1,252 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditSalesReturnForm">
+		<p:outputPanel id="salesreturnPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesreturnPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Sales Return">
+
+
+				<h:panelGrid id="salesGrid" columns="10" border="0" width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{salesreturnBean.dateFrom}" pattern="dd/MMM/yyyy" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{salesreturnBean.dateTo}" pattern="dd/MMM/yyyy" />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" style="width:160px; float :left;"
+						value="#{salesreturnBean.status}" styleClass="inputCombo">
+						<f:selectItem itemValue="" itemLabel="Select Status"></f:selectItem>
+						<f:selectItems value="#{commonListBean.returnStatusList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{salesreturnBean.searchSalesReturn}"
+							update="salesreturnPanel" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{salesreturnBean.resetSalesReturnOrderSearch}"
+							update="salesreturnPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+					scrollable="false" lazy="true" first="#{salesreturnBean.first}"
+					value="#{salesreturnBean.salesreturnModel}" paginator="true"
+					rows="10" style="width: 100%" selectionMode="single"
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+					<p:ajax event="page" listener="#{salesreturnBean.onPageChange}" />
+
+					<p:column id="modelHeader">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Return Date" />
+						</f:facet>
+						<h:outputText value="#{sales.returndate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{sales.salesorder.salesOrderNo}">
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" />
+						</f:facet>
+						<h:outputText value="#{sales.salesOrderNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{sales.status}">
+						<f:facet name="header">
+							<h:outputText value="Sales Status" />
+						</f:facet>
+						<h:outputText value="#{app['return.status.neworderlable']}"
+							rendered="#{sales.status==app['return.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.processedlable']}"
+							rendered="#{sales.status==app['return.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.orderedlable']}"
+							rendered="#{sales.status==app['return.status.orderedvalue']}"
+							styleClass="logintxttable" />
+
+					</p:column>
+
+					<p:column sortBy="#{sales.status}">
+						<f:facet name="header">
+							<h:outputText value="Supplier Status" />
+						</f:facet>
+						<h:outputText value="#{app['return.status.neworderlable']}"
+							rendered="#{sales.supplierstatus==app['return.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.processedlable']}"
+							rendered="#{sales.supplierstatus==app['return.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.orderedlable']}"
+							rendered="#{sales.supplierstatus==app['return.status.orderedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['return.status.paidlable']}"
+							rendered="#{sales.supplierstatus==app['return.status.paidvalue']}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width: 7%;">
+						<f:facet name="header">Action</f:facet>
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+								update=":addEditSalesReturnForm:requestitem"
+								rendered="#{loginBean.functionList.contains('View ReturnProduct')}"
+								actionListener="#{salesreturnBean.viewSalesreturn}"
+								oncomplete="salesDig.show()">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+							<p:menuitem value="Approve" styleClass="logintxttable"
+								update=":addEditSalesReturnForm:retuenapprove"
+								rendered="#{loginBean.functionList.contains('Approve ReturnProduct') and sales.status==app['return.status.newordervalue']}"
+								actionListener="#{salesreturnBean.approveSalesreturnConfirm}"
+								oncomplete="returnProcessDig.show()">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+
+							<p:menuitem value="Remove" styleClass="logintxttable"
+								update=":addEditSalesReturnForm:retuendeletepanel"
+								rendered="#{loginBean.functionList.contains('Delete ReturnProduct') and sales.status==app['return.status.newordervalue']}"
+								actionListener="#{salesreturnBean.viewSalesreturn}"
+								oncomplete="returndelete.show()">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+
+							<p:menuitem value="Print" styleClass="logintxttable"
+								rendered="#{loginBean.functionList.contains('Print ReturnProduct')}"
+								actionListener="#{salesreturnBean.printSalesReturnOrder}">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+						</p:menuButton>
+
+					
+
+
+					</p:column>
+				</p:dataTable>
+			</p:panel>
+
+			<p:commandButton value="New Sales Return" ajax="false"
+				action="#{salesreturnBean.newSalesReturnOrder}" />
+
+		</p:outputPanel>
+		<ui:include src="/sales/salesReturnView.xhtml" />
+		<ui:include src="/templates/loadingDialog.xhtml" />
+
+
+		<p:dialog showEffect="fade" hideEffect="fade"
+			header="Sales Return Approve Confirmation" resizable="false"
+			widgetVar="returnProcessDig" modal="true" height="120" width="400">
+			<br></br>
+			<p:panel id="retuenapprove">
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+					<h:outputText
+						value="Are you sure you want to approve sales return?,  "
+						styleClass="logintxttable" />
+				</h:panelGrid>
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+					<p:commandButton value="Approve" ajax="false"
+						rendered="#{loginBean.functionList.contains('Approve ReturnProduct')}"
+						action="#{salesreturnBean.approveSalesreturn}">
+					</p:commandButton>
+					<p:commandButton value="Cancel" onclick="returnProcessDig.hide()" />
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+		<p:dialog showEffect="fade" hideEffect="fade"
+			header="Delete Confirmation" resizable="false"
+			widgetVar="returndelete" modal="true" height="120" width="400">
+			<br></br>
+			<p:panel id="retuendeletepanel">
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+					<h:outputText value="Are you sure you want to delete  "
+						styleClass="logintxttable" />
+				</h:panelGrid>
+				<br></br>
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+					<p:commandButton value="Delete" ajax="false"
+						rendered="#{loginBean.functionList.contains('Delete ReturnProduct')}"
+						action="#{salesreturnBean.deleteSalesreturn}">
+					</p:commandButton>
+					<p:commandButton value="Cancel" onclick="returndelete.hide()" />
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+	</h:form>
+</ui:composition>
+
+

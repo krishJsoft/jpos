@@ -1,0 +1,117 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel>
+
+		<br></br>
+
+		<p:panelGrid style="width:100%" id="customerviewgrid"
+			rowClasses="even-row , odd-row" styleClass="alignTop">
+
+			<f:facet name="header">
+				<p:row>
+					
+					<p:column style="width:80%;">Branch Details</p:column>
+				</p:row>
+			</f:facet>
+
+			<p:row>
+				
+
+				<p:column style="width:80%;" styleClass="alignTop">
+
+					<p:panelGrid columns="6" width="100%"
+						style="margin-top:40px;margin-bottom:30px;margin-left:30px;" cellpadding="10"
+						cellspacing="10" styleClass="borderlessGrid"
+						columnClasses="columnLeft width-80px, columnLeft width-10px, columnLeft width-280px">
+
+
+						<h:outputText value="#{msg['branch.label.branchName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.branchName}" />
+
+						<h:outputText value="#{msg['branch.label.branchCode']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.branchCode}" />
+
+						<h:outputText value="#{msg['branch.label.address']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.address}" />
+
+						<h:outputText value="#{msg['branch.label.city']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.city}" />
+
+						<h:outputText value="#{msg['branch.label.state']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.state}" />
+
+						<h:outputText value="#{msg['branch.label.country']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.country}" />
+
+						<h:outputText value="#{msg['branch.label.postCode']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.postCode}" />
+
+						<h:outputText value="#{msg['branch.label.phoneNo']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.phoneNo}" />
+
+						<h:outputText value="#{msg['branch.label.contactPerson']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.contactPerson}" />
+
+						<h:outputText value="#{msg['branch.label.faxNo']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.faxNo}" />
+
+						<h:outputText value="#{msg['branch.label.emailAddress']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.emailAddress}" />
+
+						<h:outputText value="#{msg['branch.label.franchiseeFee']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.franchiseeFee}" />
+
+						<h:outputText value="#{msg['branch.label.licensefee']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{branchBean.branch.fixedLicenseFee}" />
+
+						
+						<h:outputText value="#{msg['branch.label.Status']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="Active"
+							rendered="#{branchBean.branch.status=='1'}" />
+						<h:outputText value="InActive"
+							rendered="#{branchBean.branch.status=='2'}" />
+
+					</p:panelGrid>
+				</p:column>
+
+			</p:row>
+		</p:panelGrid>
+
+	</p:outputPanel>
+
+</ui:composition>
+
+

@@ -1,0 +1,226 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+
+	<h:form id="mambershipPaymentForm">
+	<p:outputPanel id="membershipPaymentPanel">
+		<p:message for="membershipPaymentPanel" />
+		<p:panel styleClass="mypanel" header="MEMBERSHIP PAYMENT" rendered="#{loginBean.functionList.contains('Membership Payment Add')}">
+			<style>
+	.symbol{
+		width:1%;
+	}
+	
+	.label {
+     	width: 10%;
+	}
+	
+	.semicolon {
+	     width: 1%;
+	}
+	.inputs{
+		width: 25%;
+	}
+	
+	.message{
+		width:15%;
+	}
+	.alignTop {
+		vertical-align: top;
+	}
+	</style>
+
+		        
+			<h:panelGrid id="addeditcustomergrid" columns="5" 
+			border="0"
+			style="width: 100%;" columnClasses="symbol alignTop, label alignTop, semicolon alignTop, inputs alignTop, message alignTop"
+			>
+				
+				<h:outputText value=""
+				styleClass="mandatory_text" />
+				<h:outputText value="#{msg['membership.label.name']}" styleClass="logintxt"/>
+				<h:outputText value=":" />
+				<h:panelGrid columns="3">
+					 <p:selectOneMenu  value="#{membershipPaymentBean.memberId}"  panelStyle="width:180px"
+	                         effect="fade"  style="width:160px" filter="true" filterMatchMode="startsWith">
+	                         <f:selectItem itemLabel="Select One" itemValue="" />
+				            <f:selectItems value="#{commonListBean.membershipList}" />
+				            <p:ajax update="mambershipPaymentForm:expiredOn,mambershipPaymentForm:newExpiredDate,mambershipPaymentForm:paymentAmount,mambershipPaymentForm:identificationNumber" listener="#{membershipPaymentBean.onSelectMember}"/>
+				             	<ui:remove><p:column>
+					                <h:outputText  value="#{membershipPaymentBean.membership.name}"/>
+					            </p:column>
+					            </ui:remove>         
+			        </p:selectOneMenu>
+			       
+		        </h:panelGrid>
+		        <h:outputText value="" />
+		        
+		        <h:outputText value="" />
+				<h:outputText value="#{msg['membership.label.identificationNumber']}" styleClass="logintxt"/>
+				<h:outputText value=":" />
+		        <h:outputText id="identificationNumber" value="#{membershipPaymentBean.membership.identificationNumber}" />
+		        <h:outputText value="" />
+		        
+		      <h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+		     <h:outputText value="#{msg['membershipPayment.label.duration']}" styleClass="logintxt"/>
+		        <h:outputText value=":" />
+		        <h:panelGrid columns="1" width="100%"
+			border="0"
+			
+			>
+		        	<h:inputText id="duration" onkeypress="if(event.which &lt; 48 || event.which &gt; 57) return false;" value="#{membershipPaymentBean.duration}" 
+		        	>
+		        		   <f:ajax listener="#{membershipPaymentBean.onChangeDuration}" render="newExpiredDate paymentAmount" update="mambershipPaymentForm:newExpiredDate" />
+		        		  
+		        	</h:inputText >
+		        	
+		        	<p:selectOneRadio  value="#{membershipPaymentBean.durationType}">
+			            <f:selectItem itemLabel="Year" itemValue="year" />
+			            <f:selectItem itemLabel="Month" itemValue="month" />
+			            <p:ajax update="mambershipPaymentForm:newExpiredDate,mambershipPaymentForm:paymentAmount" listener="#{membershipPaymentBean.onSelectDurationType}"/>
+       			 </p:selectOneRadio>
+		        	
+		        </h:panelGrid>
+		        <p:message for="duration" />
+		        
+		         <h:outputText value=""
+				styleClass="mandatory_text" />
+		        <h:outputText value="#{msg['membershipPayment.label.currentExpired']}" styleClass="logintxt"/>
+		        <h:outputText value=":" />
+		        <h:outputText id="expiredOn" value="#{membershipPaymentBean.membership.expirationDate}" >
+		        	<f:convertDateTime type="date" pattern="dd MMMM yyyy"/>
+		        </h:outputText>
+		        <h:outputText value="" />
+		        
+		        
+		        <h:outputText value=""
+				styleClass="mandatory_text" />
+		        <h:outputText value="#{msg['membershipPayment.label.newExpired']}" styleClass="logintxt"/>
+		        <h:outputText value=":" />
+		        <h:outputText id="newExpiredDate" value="#{membershipPaymentBean.newExpiryDate}" >
+		         	<f:convertDateTime type="date" pattern="dd MMMM yyyy"/>
+		        </h:outputText>
+		        <h:outputText value="" />
+		        
+		        <h:outputText value=""
+				styleClass="mandatory_text" />
+		         <h:outputText value="#{msg['membershipPayment.label.amount']}" styleClass="logintxt"/>
+		        <h:outputText value=":" />
+		        <h:outputText id="paymentAmount" value="#{membershipPaymentBean.amount}" />
+		        <h:outputText value="" />
+		        
+		       
+			
+			</h:panelGrid>		
+			<p:commandButton
+			value="SAVE"
+			update="mambershipPaymentForm"
+			action="#{membershipPaymentBean.makePayment}" 
+			/>
+			<ui:remove>
+			<p:commandButton
+			value="UPDATE"
+			update="mambershipPaymentForm"
+			action="#{membershipPaymentBean.updatePayment}" 
+			/>
+			</ui:remove>
+		        
+ 
+    
+		</p:panel>
+	</p:outputPanel>
+		<p:dataTable id="membershipPaymentListTable" var="paymentTrans" rowIndexVar="row"
+		reflow="true" value="#{membershipPaymentBean.membershipPaymentList}"
+		paginator="true" rows="10" style="width: 100%"
+		paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+		rowsPerPageTemplate="10,20,30"
+		>
+			<p:column id="modelHeader" width="3%">
+					<f:facet name="header">
+						<h:outputText value="No" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="20%">
+				<f:facet name="header">
+					<h:outputText value="Name" />
+				</f:facet>
+				<h:outputText value="#{paymentTrans.member.name}"
+					styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="12%">
+				<f:facet name="header">
+					<h:outputText value="Identification Number" />
+				</f:facet>
+				<h:outputText value="#{paymentTrans.member.identificationNumber}"
+					styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column width="10%">
+				<f:facet name="header">
+					<h:outputText value="Payment Date" />
+				</f:facet>
+				<h:outputText value="#{paymentTrans.createdDate}"
+					styleClass="logintxttable" >
+					<f:convertDateTime type="date" pattern="dd MMMM yyyy " />
+					</h:outputText>
+			</p:column>
+			
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="Amount" />
+				</f:facet>
+				<h:outputText value="#{paymentTrans.amount}"
+					styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%" rendered="#{loginBean.functionList.contains('Membership Payment Delete')}" >
+				<f:facet name="header">
+					<h:outputText value="ACTION" />
+				</f:facet>
+		
+				<p:menuButton value="Options">
+					<ui:remove>
+						<p:menuitem ajax="true" value="Edit"
+							update=":#{p:component('mambershipPaymentForm')}"
+								actionListener="#{membershipPaymentBean.editMember}">
+							<f:attribute name="paymentTransactionId" value="#{paymentTrans.id}" />
+							
+						</p:menuitem>
+					</ui:remove>
+					<p:menuitem ajax="true" value="Delete"
+						update=":#{p:component('mambershipPaymentForm')}"
+							actionListener="#{membershipPaymentBean.deleteTransaction}">
+						<f:attribute name="paymentTransactionId" value="#{paymentTrans.id}" />
+						<f:attribute name="expiryDate" value="#{paymentTrans.member.expirationDate}" />
+							<f:attribute name="addedDuration" value="#{paymentTrans.durationAdded}" />
+							<f:attribute name="memberId" value="#{paymentTrans.member.id}" />
+						<p:confirm header="Confirmation" message="Sure to delete ?" icon="ui-icon-alert"  />  
+        				
+    
+						
+						
+					</p:menuitem>
+					
+				</p:menuButton>
+					
+			</p:column>
+		
+		</p:dataTable>
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		        <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+		    </p:confirmDialog>
+		
+					<ui:include src="/membership/print/membershipPaymentPrintTemplate.xhtml" />
+		
+	</h:form>
+</ui:composition>
+
+

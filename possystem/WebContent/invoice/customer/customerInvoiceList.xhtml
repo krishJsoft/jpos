@@ -1,0 +1,242 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:head />
+	<h:form id="addEditInvoiceForm">
+		<p:outputPanel id="invoicePanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="invoicePanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Customer Invoice">
+
+
+				<h:panelGrid id="salesGrid" columns="10" border="0" width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.customerName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:autoComplete id="customerName" maxResults="5" size="25"
+						converter="customerConverter" maxlength="15"
+						value="#{customerInvoiceBean.customer}"
+						completeMethod="#{customerInvoiceBean.getCustomerName}" var="c"
+						itemLabel="#{c.customerName}" itemValue="#{c}">>
+						<p:column>  
+                    	#{c.customerId} - #{c.customerName}   
+                		</p:column>
+					</p:autoComplete>
+					<p:message for="customerName" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Invoice No" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="invoiceNo" size="25"
+						value="#{customerInvoiceBean.invoiceNo}" />
+					<p:message for="invoiceNo" styleClass="fieldError" />
+
+					
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{customerInvoiceBean.dateFrom}" pattern="dd/MMM/yyyy" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{customerInvoiceBean.dateTo}" pattern="dd/MMM/yyyy" />
+					<p:message for="dateTo" styleClass="fieldError" />
+					
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" style="width:160px; float :left;"
+						value="#{customerInvoiceBean.status}" styleClass="inputCombo">
+						<f:selectItem itemValue="" itemLabel="Select Status"></f:selectItem>
+						<f:selectItems value="#{commonListBean.invoiceStatusList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+					
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{customerInvoiceBean.searchInvoice}"
+							update="invoicePanel" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{customerInvoiceBean.resetInvoiceSearch}"
+							update="invoicePanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="invoice" rowIndexVar="row"
+					scrollable="false" lazy="true"
+					value="#{customerInvoiceBean.customerinvoiceModel}"
+					paginator="true" rows="10" style="width: 100%"
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+					<p:column id="modelHeader">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{invoice.customer.customerName}">
+						<f:facet name="header">
+							<h:outputText value="Customer Name" />
+						</f:facet>
+						<h:outputText value="#{invoice.customer.customerName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{invoice.createdDate}">
+						<f:facet name="header">
+							<h:outputText value="Created Date" />
+						</f:facet>
+						<h:outputText value="#{invoice.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{invoice.invoiceNo}">
+						<f:facet name="header">
+							<h:outputText value="Invoice No" />
+						</f:facet>
+						<h:outputText value="#{invoice.invoiceNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{invoice.salesOrderNo}">
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" />
+						</f:facet>
+						<h:outputText value="#{invoice.salesOrderNo}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column sortBy="#{invoice.dispatchAmount}"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Dispatch Amount" />
+						</f:facet>
+						<h:outputText value="#{invoice.dispatchAmount}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column 
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Tax" />
+						</f:facet>
+						<h:outputText value="#{invoice.tax}"
+							styleClass="logintxttable" />
+					</p:column>					
+					
+
+					<p:column sortBy="#{invoice.invoiceAmount}"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Invoice Amount" />
+						</f:facet>
+						<h:outputText value="#{invoice.invoiceAmount}"
+							styleClass="logintxttable" />
+					</p:column>				
+
+
+					<p:column sortBy="#{invoice.status}">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+
+						<h:outputText value="#{app['customerinvoice.status.neworderlable']}"
+							rendered="#{invoice.status==app['customerinvoice.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['customerinvoice.status.processedlable']}"
+							rendered="#{invoice.status==app['customerinvoice.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['customerinvoice.status.orderedlable']}"
+							rendered="#{invoice.status==app['customerinvoice.status.orderedvalue']}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width: 15%;">
+						<f:facet name="header">Action</f:facet>					
+						
+						<p:commandLink value="View" styleClass="logintxttable"
+							update=":addEditInvoiceForm:requestitem"
+							rendered="#{loginBean.functionList.contains('View Customers Invoices')}"
+							actionListener="#{customerInvoiceBean.viewInvoice}"
+							oncomplete="invoiceDig.show()">
+							<f:attribute name="invoice" value="#{invoice}" />
+						</p:commandLink>						
+
+						<h:graphicImage value="resources/images/cal_forward.gif"
+							rendered="#{loginBean.functionList.contains('Edit Customers Invoices') and invoice.status==app['customerinvoice.status.newordervalue']}" />
+
+						<p:commandLink value="Edit" styleClass="logintxttable"
+							ajax="false"
+							rendered="#{loginBean.functionList.contains('Edit Customers Invoices') and invoice.status==app['customerinvoice.status.newordervalue']}"
+							actionListener="#{customerInvoiceBean.editInvoice}">
+							<f:attribute name="invoice" value="#{invoice}" />
+						</p:commandLink>
+
+						<h:graphicImage value="resources/images/cal_forward.gif"
+							rendered="#{loginBean.functionList.contains('Approve Customers Invoices') and invoice.status==app['customerinvoice.status.newordervalue']}" />
+												
+						<p:commandLink value="Approve" styleClass="logintxttable"
+							ajax="true" update=":addEditInvoiceForm:invoiceapprove"
+							oncomplete="invoiceProcessDig.show()"
+							actionListener="#{customerInvoiceBean.approveInvoiceConfirm}"
+							rendered="#{loginBean.functionList.contains('Approve Customers Invoices') and invoice.status==app['customerinvoice.status.newordervalue']}">
+							<f:attribute name="invoice" value="#{invoice}" />
+						</p:commandLink>					
+
+					</p:column>
+
+
+				</p:dataTable>
+
+
+
+			</p:panel>
+
+
+
+		</p:outputPanel>
+		<ui:include src="/invoice/customer/customerInvoiceView.xhtml" />
+		<ui:include src="/invoice/customer/customerInvoiceApprove.xhtml" />
+		<ui:include src="/templates/loadingDialog.xhtml" />
+
+
+	</h:form>
+</ui:composition>
+
+

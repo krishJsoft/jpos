@@ -1,0 +1,77 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:r="http://richfaces.org/rich"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="addCurrencyForm">
+		<r:panel header="Add Currency" id="addCurrency"
+			styleClass="limitedHeightDiv">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><h:message for="addCurrency"
+							styleClass="fieldSuccess" /></td>
+				</tr>
+			</table>
+			<br />
+
+			<h:panelGrid id="newCurrencyGrid" columns="5" border="0"
+				columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+				<h:outputText value="#{msg['common.asterisk']}"
+					styleClass="mandatory_text" />
+				<h:outputText value="#{msg['addCurrency.label.currencyCode']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="currencyCode"
+					value="#{currencyBean.currencyModel.currencyCode}"
+					maxlength="30" size="30" />
+				<h:message for="currencyCode" styleClass="fieldError" />
+
+				<h:outputText value="#{msg['common.asterisk']}"
+					styleClass="mandatory_text" />
+				<h:outputText value="#{msg['addCurrency.label.currencyName']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="currencyName"
+					value="#{currencyBean.currencyModel.currencyName}"
+					maxlength="30" size="30" />
+				<h:message for="currencyName" styleClass="fieldError" />
+
+				<h:outputText value="#{msg['common.asterisk']}"
+					styleClass="mandatory_text" />
+				<h:outputText value="#{msg['addCurrency.label.currencyUnit']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="currencyUnit"
+					value="#{currencyBean.currencyModel.currencyUnit}"
+					maxlength="30" size="30" />
+				<h:message for="currencyUnit" styleClass="fieldError" />
+
+
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:panelGrid id="addareaSubmit" columns="3">
+					<p:commandButton action="#{currencyBean.saveCurrency}" value="Save"
+						rendered="#{currencyBean.currencyAction!='update'}" update="newCurrencyGrid">
+					</p:commandButton>
+					<p:commandButton action="#{currencyBean.updateCurrency}" value="Update"
+						rendered="#{currencyBean.currencyAction=='update'}">
+					</p:commandButton>
+
+					<p:commandButton value="Reset" action="#{currencyBean.resetCurrency}"
+						ajax="false" />
+					<p:commandButton value="Cancel" action="#{currencyBean.cancelCurrency}"
+						ajax="false"></p:commandButton>
+				</h:panelGrid>
+				<h:outputText value="" />
+			</h:panelGrid>
+		</r:panel>
+	</h:form>
+</ui:composition>

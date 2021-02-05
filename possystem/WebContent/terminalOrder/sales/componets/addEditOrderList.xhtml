@@ -1,0 +1,137 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+	<p:dataTable  id="orderListDataTable"
+		var="pos" 
+		rowIndexVar="row"
+		rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+		rendered="#{projectHome.terminalOrderContentPage!='/terminalOrder/sales/tablesSelection.xhtml'}"
+		value="#{posBean.salesorderbreakdowns}" paginator="false"
+		rows="500" style="width: 100%;" rowsPerPageTemplate="5,10,15"
+		emptyMessage="No order found"
+	>
+		
+		<p:columnGroup type="header">
+			<p:row>
+				<p:column style="width:40%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="ITEM NAME" styleClass="tableheader" />
+					</f:facet>
+				</p:column>
+
+				<p:column style="width:20%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="QTY" styleClass="tableheader" />
+					</f:facet>
+				</p:column>
+				
+				<p:column style="width:20%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="PRICE" styleClass="tableheader" />
+					</f:facet>
+				</p:column>
+
+				<p:column style="width:15%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+					</f:facet>
+				</p:column>
+				
+
+			</p:row>
+			
+		</p:columnGroup>
+		
+			<p:column >
+				<p:commandLink
+					value="#{pos.productName}"
+					styleClass="logintxttable"
+					update=":terminalOrderForm:orderListDataTable,:terminalOrderForm:itemRemarksDlg"
+					rendered="#{pos.status==null }"
+					oncomplete="PF('itemRemarksDlg').show()"
+					actionListener="#{orderBean.loadItemRemarks(pos)}"
+				>
+				</p:commandLink>
+				
+				<p:rowToggler rendered="#{!pos.salesProductSetList.isEmpty()}"/>
+				
+	
+			<h:outputText
+				value="#{pos.productName}"
+				style="text-decoration: #{pos.status=='ordered' ? 'none' : 'line-through'};" 
+				styleClass="logintxttable" rendered="#{pos.status!=null}" />
+			<h:outputText rendered='#{pos.packing==1}' value="-{Packing}"
+				styleClass="logintxttable" />
+		</p:column>
+
+		<p:column style="width:20%">
+			<p:keyboard value="#{posBean.itemcountQty[pos.sno]}" size="1"
+				onfocus="this.select();" id="itemcountQty"
+				disabled="#{pos.status!=null}" 
+				layout="custom"
+				layoutTemplate="123,456,789,0-back"
+				update="terminalOrderForm:orderListDataTable"
+			>
+				<p:ajax event="change"
+					listener="#{posBean.addSalesPriceModifyItem1(row)}" />
+				<f:convertNumber pattern="#0" />
+			</p:keyboard>
+		</p:column>
+		<p:column style="width:15%;text-align:center;" >
+			<h:outputText value="#{pos.subTotal}">
+				<f:convertNumber pattern="#0.00" />
+			</h:outputText>
+			
+		</p:column>
+
+		<p:column style="width:15%;text-align:center;"
+		rendered="#{orderBean.kitchenOrderMapping.get(pos.productId)!=0 or pos.status=='cancel' or pos.status==null}"
+		>	
+				<p:commandLink  
+					style="color:red;font-weight:bold;font-size:34px;"
+					actionListener="#{posBean.instantRemove}"
+					update=":terminalOrderForm:orderListDataTable"
+					rendered="#{pos.status!='ordered'}"
+				>
+					<f:attribute name="posBreakdownId" value="#{row}" />
+					<h:graphicImage value="/images/trashIcon.jpg" width="50px" height="50px"/>
+				</p:commandLink>
+				
+				<p:commandLink
+					action="#{orderBean.cancelOrderedItem(pos) }"
+					update=":terminalOrderForm:orderListDataTable"
+					rendered="#{pos.status=='ordered'}"
+				>
+					<h:graphicImage value="/images/minusSign.png" width="50px" height="50px"/>
+				</p:commandLink>
+				
+				
+		</p:column>
+        <p:rowExpansion>
+         	<p:dataList var="setItem" value="#{pos.salesProductSetList}">
+	         	<p:commandLink
+					value="#{setItem.product.productName}"
+					styleClass="logintxttable"
+					update=":terminalOrderForm:itemRemarksDlg"
+					rendered="#{pos.status==null }"
+					oncomplete="PF('itemRemarksDlg').show()"
+					actionListener="#{orderBean.loadSetItemRemarks(pos,setItem)}"
+				>
+					<f:attribute name="posBreakdownId" value="#{row}" />
+				</p:commandLink> 
+				<h:outputText
+					value="#{setItem.product.productName}"
+					rendered="#{pos.status!=null}" 
+					style="text-decoration: #{pos.status=='ordered' ? 'none' : 'line-through'};" 
+					styleClass="logintxttable" 
+					/>
+			
+         	</p:dataList>
+        </p:rowExpansion>
+	</p:dataTable>
+	
+</ui:composition>

@@ -1,0 +1,46 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="membershipConfigurationForm">
+	<p:outputPanel id="membershipConfigurationPanel">
+		<p:message for="membershipConfigurationPanel" />
+		<p:panel styleClass="mypanel" header="MEMBERSHIP CONFIGURATION">
+			<h:panelGrid id="membershipConfigurationgrid" columns="10" width="100%"
+			columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+			
+			
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+				
+				<h:outputLabel value="Fee per month" styleClass="logintxt" />
+				<h:outputText value=":" />
+				
+				<p:inputNumber value="#{membershipConfigurationBean.config.amount}" minValue="1" disabled="#{loginBean.functionList.contains('Membership Configuration Edit') ? false : true}"/>
+				
+				
+				<h:outputText value="" />
+				
+				
+			</h:panelGrid>
+			
+			
+			<center>
+				
+				<p:commandButton value="UPDATE"
+				rendered="#{loginBean.functionList.contains('Membership Configuration Edit')}"
+				action="#{membershipConfigurationBean.updateConfiguration()}">
+				</p:commandButton>
+				
+				
+			</center>
+					
+		</p:panel>
+	</p:outputPanel>
+		
+	</h:form>
+</ui:composition>
+
+

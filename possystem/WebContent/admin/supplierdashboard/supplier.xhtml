@@ -1,0 +1,217 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditSupplierForm">
+		<p:outputPanel id="supplierPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="supplierPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Supplier">
+
+
+				<h:panelGrid id="searchsuppliergrid" columns="10" border="0"
+					width="50%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['supplier.label.companyRegNo']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="companyRegNo" value="#{supplierBean.companyRegNo}"
+						maxlength="15" size="25" />
+					<p:message for="companyRegNo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" value="#{supplierBean.status}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Status" itemValue="" />
+						<f:selectItem itemLabel="Active" itemValue="1" />
+						<f:selectItem itemLabel="InActive" itemValue="0" />
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{supplierBean.searchSupplier}" update="supplierPanel" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{supplierBean.resetSearchSupplier}"
+							update="supplierPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="supplier" rowIndexVar="row"
+					editable="true" value="#{supplierBean.supplierListObj}"
+					paginator="true" rows="10" style="width: 100%"
+					rowsPerPageTemplate="5,10,15"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+					<p:column width="9%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Created Date" styleClass="tableheader" />
+						</f:facet>
+						<h:outputText value="#{supplier.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MM-yyyy" />
+						</h:outputText>
+
+					</p:column>
+
+					<p:column sortBy="#{supplier.supplierName}" width="10%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['supplier.label.supplierName']}" />
+						</f:facet>
+						<h:outputText value="#{supplier.supplierName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column sortBy="#{supplier.companyRegNo}" width="10%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['supplier.label.companyRegNo']}" />
+						</f:facet>
+						<h:outputText value="#{supplier.companyRegNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column width="10%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Email" />
+						</f:facet>
+						<h:outputText value="#{supplier.email}" styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column width="5%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['supplier.label.contactPerson']}"
+								styleClass="tableheader" />
+						</f:facet>
+						<h:outputText value="#{supplier.contactPerson}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column width="6%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText
+								value="#{msg['supplier.label.contactPersonNumber']}" />
+						</f:facet>
+						<h:outputText value="#{supplier.contactPersonNumber}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+
+
+					<p:column width="15%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Address" />
+						</f:facet>
+						<h:outputText value="#{supplier.address}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{supplier.city}" width="8%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="City" />
+						</f:facet>
+						<h:outputText value="#{supplier.city}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{supplier.state}" width="6%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="State" />
+						</f:facet>
+						<h:outputText value="#{supplier.state}" styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column width="4%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+
+						<h:outputText value="Active" rendered="#{supplier.status=='1'}"
+							styleClass="logintxttable" />
+						<h:outputText value="InActive" rendered="#{supplier.status=='0'}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column width="10%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<h:commandLink value="Edit" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('Edit Supplier')}"
+							actionListener="#{supplierBean.editSupplier}">
+							<f:attribute name="supplierId" value="#{supplier.supplierId}" />
+						</h:commandLink>
+
+						<h:graphicImage value="resources/images/cal_forward.gif"
+							rendered="#{loginBean.functionList.contains('View Supplier')}" />
+
+						<p:commandLink value="View" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('View Supplier')}"
+							actionListener="#{supplierBean.viewSupplier}"
+							oncomplete="PF('supplierDig').show()" 
+							update=":addEditSupplierForm:tabView">
+							<f:attribute name="supplierId" value="#{supplier.supplierId}" />
+						</p:commandLink>
+
+
+					</p:column>
+
+				</p:dataTable>
+
+
+				<table align="center" width="100%">
+					<tr>
+						<td align="left"><p:commandButton value="Add New Supplier"
+								ajax="false" action="#{supplierBean.newSupplier}" /></td>
+					</tr>
+
+
+				</table>
+
+
+
+			</p:panel>
+
+
+
+
+		</p:outputPanel>
+
+
+		<ui:include src="/admin/supplierdashboard/supplierdashboard.xhtml" />
+
+	</h:form>
+</ui:composition>
+
+

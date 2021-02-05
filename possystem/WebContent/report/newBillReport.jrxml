@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="216" pageHeight="842" columnWidth="216" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="b98f4891-5dcb-4152-9e5e-f33e8abc0da1">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="SUBREPORT_DIR" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA["C:\\Documents and Settings\\Gopal\\My Documents\\NetBeansProjects\\JasperReports-2-master\\web\\reports\\"]]></defaultValueExpression>
+	</parameter>
+	<field name="salesOrderNo" class="java.lang.String"/>
+	<field name="salesBranchName" class="java.lang.String"/>
+	<field name="salesBranchAddress" class="java.lang.String"/>
+	<field name="salesBranchPhone" class="java.lang.String"/>
+	<field name="salesBranchPost" class="java.lang.String"/>
+	<field name="createdDate" class="java.util.Date"/>
+	<field name="salesorderbreakdowns" class="java.util.List"/>
+	<field name="totalAmount" class="java.math.BigDecimal"/>
+	<field name="createdBy" class="java.lang.String"/>
+	<variable name="totalAmount_1" class="java.math.BigDecimal" resetType="Column" calculation="Variance">
+		<variableExpression><![CDATA[$F{totalAmount}]]></variableExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="4" splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band height="5" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="3" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="105" splitType="Stretch">
+			<textField>
+				<reportElement x="18" y="0" width="196" height="15" uuid="e07cb2a5-ad9d-43c1-88a4-124e4d3f7595"/>
+				<textElement textAlignment="Center">
+					<font fontName="SansSerif" size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{salesBranchName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="18" y="15" width="196" height="25" uuid="811b3761-981e-4398-89a7-1d55b93c381d"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{salesBranchAddress}+" "+$F{salesBranchPost}+" , PH : "+$F{salesBranchPhone}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="18" y="53" width="188" height="1" uuid="5b973caf-2bf1-4e30-b0ca-26a7092b5915"/>
+			</line>
+			<textField>
+				<reportElement x="18" y="40" width="100" height="13" uuid="e51ced8f-8ab1-466c-aab7-84de88b635dc"/>
+				<textElement>
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{salesOrderNo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="109" y="40" width="100" height="13" uuid="2898deaf-f795-49e4-9f22-cdbe4c124c8f"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd-MMM-yyyy").format($F{createdDate})]]></textFieldExpression>
+			</textField>
+			<subreport>
+				<reportElement x="18" y="60" width="196" height="38" uuid="209450a2-88d2-44ec-88da-e4ecd8f442b9"/>
+				<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{salesorderbreakdowns})]]></dataSourceExpression>
+				<subreportExpression><![CDATA["newBillSubreport.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="33" splitType="Stretch">
+			<staticText>
+				<reportElement x="18" y="18" width="119" height="13" uuid="3ea96806-c1c6-4a79-b5ba-f8ae4e23b79f"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<text><![CDATA[Thank you! Please Come again.]]></text>
+			</staticText>
+			<textField pattern="dd/MM/yyyy HH.mm.ss">
+				<reportElement x="132" y="18" width="77" height="13" uuid="1c8c2b00-8de6-43fc-b0ca-db8a0cfe8255"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="132" y="0" width="82" height="13" uuid="2940617e-bfc9-4dc8-9406-2dcde523ed90"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="7" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA["RM "+$F{totalAmount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="18" y="0" width="25" height="13" uuid="5613384c-0849-46b4-b594-f0326f9459c2"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<text><![CDATA[Cashier : ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="41" y="0" width="91" height="13" uuid="800425bb-8d1d-4280-9551-0add50111dc7"/>
+				<textElement>
+					<font fontName="SansSerif" size="6"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{createdBy}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnFooter>
+	<pageFooter>
+		<band height="5" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>

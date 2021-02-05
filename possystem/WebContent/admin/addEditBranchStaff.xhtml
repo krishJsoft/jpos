@@ -1,0 +1,291 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+
+	<h:form id="listBranchStaffForm">
+		<p:outputPanel id="branchStaffPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="branchStaffPanel" /></td>
+				</tr>
+			</table>
+
+
+
+			<p:panel styleClass="mypanel" header="Add/Edit Staff"
+				id="branchStaffPanel1">
+
+				<h:panelGrid id="addeditbranchstaffgrid" columns="10" width="80%" 
+					columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branchstaff.label.departmentName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="departmentName"
+						value="#{branchStaffBean.branchstaff.idDepartment}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Department" itemValue="0" />
+						<f:selectItems value="#{commonListBean.selectDepartmentList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="departmentName" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branchstaff.label.firstName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="firstName"
+						value="#{branchStaffBean.branchstaff.firstName}" maxlength="30"
+						size="25" />
+					<p:message for="firstName" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="Staff Id" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="staffCode"
+						value="#{branchStaffBean.branchstaff.staffCode}" maxlength="20"
+						size="25" />
+					<p:message for="staffCode" styleClass="fieldError" />
+
+
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText
+						value="#{msg['branchstaff.label.identificationNumber']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="identificationNumber"
+						value="#{branchStaffBean.branchstaff.identificationNumber}"
+						maxlength="25" size="25" />
+					<p:message for="identificationNumber" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branchstaff.label.emailAddress']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="emailAddress"
+						value="#{branchStaffBean.branchstaff.emailAddress}" maxlength="50"
+						size="25" />
+					<p:message for="emailAddress" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branchstaff.label.designation']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="designation"
+						value="#{branchStaffBean.branchstaff.designation}" maxlength="50"
+						size="25" />
+					<p:message for="designation" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branchstaff.label.roleName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="roleName"
+						value="#{branchStaffBean.branchstaff.roleId}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Role Name" itemValue="0" />
+						<f:selectItems value="#{commonListBean.selectRoleList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="roleName" styleClass="fieldError" />
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branchstaff.label.commission']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectBooleanCheckbox id="commission"
+						value="#{branchStaffBean.branchstaff.commission}" />
+					<p:message for="commission" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.address']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="3" cols="25" id="address"
+						value="#{branchStaffBean.branchstaff.address}" />
+					<p:message for="address" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.city']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="city" value="#{branchStaffBean.branchstaff.city}"
+						maxlength="25" size="25" />
+					<p:message for="city" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.state']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="state"
+						value="#{branchStaffBean.branchstaff.state}" maxlength="25"
+						size="25" />
+					<p:message for="state" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.country']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="country"
+						value="#{branchStaffBean.branchstaff.country}" maxlength="25"
+						size="25" />
+					<p:message for="country" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.postCode']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="postCode"
+						value="#{branchStaffBean.branchstaff.postCode}" maxlength="10"
+						size="25" />
+					<p:message for="postCode" styleClass="fieldError" />
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.contactNo']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="phoneNo"
+						value="#{branchStaffBean.branchstaff.phoneNo}" maxlength="15"
+						size="25" />
+					<p:message for="phoneNo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Bank Name"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="bankname"
+						value="#{branchStaffBean.branchstaff.bankName}" maxlength="100"
+						size="25" />
+					<p:message for="bankname" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Bank Branch Name"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="bankbranchName"
+						value="#{branchStaffBean.branchstaff.bankbranchName}" maxlength="100"
+						size="25" />
+					<p:message for="bankbranchName" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Account No"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="accountno"
+						value="#{branchStaffBean.branchstaff.accountNo}" maxlength="25"
+						size="25" />
+					<p:message for="accountno" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branchstaff.label.status']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status"
+						value="#{branchStaffBean.branchstaff.status}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Status" itemValue="0" />
+						<f:selectItem itemLabel="Active" itemValue="1" />
+						<f:selectItem itemLabel="InActive" itemValue="0" />
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Add Photo" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:fileUpload fileUploadListener="#{branchStaffBean.upload}"
+						id="photoUpload" mode="advanced" update="listBranchStaffForm" auto="true"
+						sizeLimit="10000000" allowTypes="/(\.|\/)(gif|jpe?g|png)$/" />
+					<p:message for="photoUpload" styleClass="fieldError" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid id="imagePanle" columns="1">
+						<p:graphicImage height="100" width="100"
+							value="/photo/staff/#{branchStaffBean.branchstaff.photoName}" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+
+
+
+				</h:panelGrid>
+
+				<br />
+
+				<table align="center" width="100%">
+					<tr>
+						<td align="center"><p:commandButton value="Save"
+								action="#{branchStaffBean.createNewStaff}"
+								update="branchStaffPanel"
+								rendered="#{branchStaffBean.action!='update'}" /> <p:commandButton
+								value="Update" update="branchStaffPanel"
+								action="#{branchStaffBean.updateBranchStaff}"
+								rendered="#{branchStaffBean.action=='update'}" /> <p:commandButton
+								rendered="#{branchStaffBean.action!='update'}" value="Reset"
+								action="#{branchStaffBean.resetBranchStaff}"
+								update="branchStaffPanel" /> <p:commandButton value="Reset"
+								actionListener="#{branchStaffBean.editBranchStaff}"
+								update="branchStaffPanel"
+								rendered="#{branchStaffBean.action=='update'}">
+								<f:attribute name="branchStaffId"
+									value="#{branchStaffBean.branchstaff.staffId}" />
+							</p:commandButton> <p:commandButton value="Cancel"
+								action="#{branchStaffBean.listStaff}" ajax="false"
+								update="branchStaffPanel" /></td>
+					</tr>
+
+
+				</table>
+
+
+
+
+				<br />
+			</p:panel>
+		</p:outputPanel>
+
+
+		<ui:include src="/templates/loadingDialog.xhtml" />
+
+	</h:form>
+</ui:composition>
+
+

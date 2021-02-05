@@ -1,0 +1,166 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel id="step1pane2">
+
+		<h:panelGrid id="addeditsuppliergridstpe2" columns="5" width="60%"
+			columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.paymentTerms']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="paymentTerms"
+				value="#{supplierBean.supplier.paymentTerms}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Payment Terms" itemValue="0" />
+				<f:selectItem itemLabel="Due to Receipt" itemValue="Due to Receipt" />
+				<f:selectItem itemLabel="Net 5" itemValue="Net 5" />
+				<f:selectItem itemLabel="Net 10" itemValue="Net 5" />
+				<f:selectItem itemLabel="Net 15" itemValue="Net 15" />
+			</p:selectOneMenu>
+			<p:message for="paymentTerms" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.taxSchedule']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="taxSchedule"
+				value="#{supplierBean.supplier.taxSchedule}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Tax Schedule" itemValue="0" />
+				<f:selectItem itemLabel="5" itemValue="5" />
+				<f:selectItem itemLabel="10" itemValue="5" />
+				<f:selectItem itemLabel="15" itemValue="15" />
+			</p:selectOneMenu>
+			<p:message for="taxSchedule" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.deliveryMethod']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="deliveryMethod"
+				value="#{supplierBean.supplier.deliveryMethod}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Delivery Method" itemValue="0" />
+				<f:selectItem itemLabel="Walk-in " itemValue="Walk-in" />
+				<f:selectItem itemLabel="Online" itemValue="Online" />
+			</p:selectOneMenu>
+			<p:message for="deliveryMethod" styleClass="fieldError" />
+
+
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.currency']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="currency"
+				value="#{supplierBean.supplier.currency}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Currency" itemValue="0" />
+				<f:selectItem itemLabel="MYR" itemValue="MYR" />
+			</p:selectOneMenu>
+			<p:message for="currency" styleClass="fieldError" />
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.bankName']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="bankName" value="#{supplierBean.supplier.bankName}"
+				maxlength="25" size="25" />
+			<p:message for="bankName" styleClass="fieldError" />
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}" styleClass="mandatory_text" />
+			<h:outputText value="Bank Branch Name"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="branchName"
+				value="#{supplierBean.supplier.branchName}" maxlength="25" size="25" />
+			<p:message for="branchName" styleClass="fieldError" />
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.accountNumber']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="accountNumber"
+				value="#{supplierBean.supplier.accountNumber}" maxlength="25"
+				size="25" />
+			<p:message for="accountNumber" styleClass="fieldError" />
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.remarks']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputTextarea rows="3" cols="25" id="remarks"
+				value="#{supplierBean.supplier.remarks}" />
+			<p:message for="remarks" styleClass="fieldError" />
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['branchstaff.label.status']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:selectOneMenu id="status"
+				value="#{supplierBean.supplier.status}"
+				style="width:160px; text-align:left;">
+				<f:selectItem itemLabel="Select Status" itemValue="0" />
+				<f:selectItem itemLabel="Active" itemValue="1" />
+				<f:selectItem itemLabel="InActive" itemValue="0" />
+			</p:selectOneMenu>
+			<p:message for="status" styleClass="fieldError" />
+
+
+
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:panelGrid columns="3">
+				<p:commandButton value="Reset" action="#{supplierBean.resetStep2}" rendered="#{supplierBean.action!='update'}"
+					update="supplierPanel" />
+
+					<p:commandButton value="Reset"
+					actionListener="#{supplierBean.editSupplier}" update="supplierPanel"
+					rendered="#{supplierBean.action=='update'}">
+					<f:attribute name="supplierId" value="#{supplierBean.supplier.supplierId}" />
+				   </p:commandButton>
+				   
+				<p:commandButton value="Cancel" ajax="false"
+					action="#{supplierBean.listSupplier}"
+					update="addeditsuppliergridstpe2" />
+			</h:panelGrid>
+
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+
+		</h:panelGrid>
+
+
+
+
+
+
+	</p:outputPanel>
+
+
+</ui:composition>
+
+

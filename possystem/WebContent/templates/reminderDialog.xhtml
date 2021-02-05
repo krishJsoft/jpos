@@ -1,0 +1,73 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogreminderOuy" header="User Reminder"
+		widgetVar="reminder" modal="true" height="300" width="630">
+
+
+
+		<p:outputPanel id="reminderPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="reminderPanel" /></td>
+				</tr>
+			</table>
+
+
+			<p:panel
+				style="width:600px; height:260px; align:center;background-image: url('images/contentpagebg.jpg');background-repeat: repeat-x;">
+
+				<br></br>
+				<br></br>
+
+				<h:panelGrid columns="4" border="0" styleClass="bgcolor"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Reminder" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="7" cols="60" id="reminder"
+						autoResize="false" value="#{loginBean.logdetail.reminder}">
+						<p:ajax update="reminder" process="@this" event="change" />
+					</p:inputTextarea>
+
+				</h:panelGrid>
+				<br> </br>
+				<br></br>
+				<br></br>
+
+				<h:panelGrid columns="2" border="0">
+
+					<p:commandButton value="Close" oncomplete="PF('reminder').hide();"
+						immediate="true" ajax="true" async="true">
+					</p:commandButton>
+
+
+					<p:commandButton value="Logout" action="#{projectHome.userLogout}"
+						oncomplete="PF('reminder').hide();" immediate="true" ajax="false"
+						async="true">
+					</p:commandButton>
+
+				</h:panelGrid>
+
+
+
+			</p:panel>
+
+
+		</p:outputPanel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

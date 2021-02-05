@@ -1,0 +1,13 @@
+mysqldump possystem salesorder --where="createdDate BETWEEN '2018-10-15 00:00:00' and '2018-10-15 23:59:59'" > backup_salesOrder-%date%_%time::=-%.sql;
+
+mysqldump possystem salesorderbreakdown --where="createdDate BETWEEN '2018-10-15 00:00:00' and '2018-10-15 23:59:59'" > backup_salesOrderBreakdown-%date%_%time::=-%.sql;
+
+mysqldump possystem salesitem --where="createdDate BETWEEN '2018-10-15 00:00:00' and '2018-10-15 23:59:59'" > backup_salesItem-%date%_%time::=-%.sql;
+
+mysqldump possystem salesitembreakdown  --where="createdDate BETWEEN '2018-10-15 00:00:00' and '2018-10-15 23:59:59'" > backup_salesItemBreakdown-%date%_%time::=-%.sql;
+
+mysqldump possystem poscashtransaction --where="lastUpdatedDate BETWEEN '2018-10-15 00:00:00' and '2018-10-15 23:59:59'" > backup_posCashTransaction-%date%_%time::=-%.sql;
+
+mysqldump possystem product --where="createdDate BETWEEN '2018-10-15 00:00:00' and '2018-10-15 23:59:59'" > backup_product-%date%_%time::=-%.sql;
+
+mysqldump possystem productcategory > backup_productCategory-%date%_%time::=-%.sql;

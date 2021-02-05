@@ -1,0 +1,147 @@
+package com.alpha.model.datamodel.purchase;
+
+import java.math.BigDecimal;
+
+
+public class PurchaseorderbreakdownsModel {
+
+	private int purchaseOrderBreakdownId;
+	private String discount;
+	private BigDecimal discountAmount;
+	private int quantity;
+	private BigDecimal subTotal;
+	private BigDecimal unitPrice;
+	private int productId;
+	private String productName;
+	private String productCode;
+	private int branchId;
+	private String branchName;
+	private String id;
+	private String referenceNo;
+	private int balanceQuantity;
+	private int receivedQuantity;
+	
+	
+	public int getBalanceQuantity() {
+		return balanceQuantity;
+	}
+
+	public void setBalanceQuantity(int balanceQuantity) {
+		this.balanceQuantity = balanceQuantity;
+	}
+
+	public int getReceivedQuantity() {
+		return receivedQuantity;
+	}
+
+	public void setReceivedQuantity(int receivedQuantity) {
+		this.receivedQuantity = receivedQuantity;
+	}
+
+	public int getPurchaseOrderBreakdownId() {
+		return purchaseOrderBreakdownId;
+	}
+
+	public void setPurchaseOrderBreakdownId(int purchaseOrderBreakdownId) {
+		this.purchaseOrderBreakdownId = purchaseOrderBreakdownId;
+	}
+
+	public String getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+
+	public BigDecimal getDiscountAmount() {
+		return discountAmount;
+	}
+
+	public void setDiscountAmount(BigDecimal discountAmount) {
+		this.discountAmount = discountAmount;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public BigDecimal getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(BigDecimal subTotal) {
+		this.subTotal = subTotal;
+	}
+
+	public BigDecimal getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(BigDecimal unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public String getProductCode() {
+		return productCode;
+	}
+
+	public void setProductCode(String productCode) {
+		this.productCode = productCode;
+	}
+
+	public int getBranchId() {
+		return branchId;
+	}
+
+	public void setBranchId(int branchId) {
+		this.branchId = branchId;
+	}
+
+	public String getBranchName() {
+		return branchName;
+	}
+
+	public void setBranchName(String branchName) {
+		this.branchName = branchName;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public String getReferenceNo() {
+		return referenceNo;
+	}
+
+	public void setReferenceNo(String referenceNo) {
+		this.referenceNo = referenceNo;
+	}
+	
+	
+
+}

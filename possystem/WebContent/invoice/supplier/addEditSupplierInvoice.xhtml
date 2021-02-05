@@ -1,0 +1,681 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditInvoiceForm">
+		<p:panel id="invoicePanel" header="New Supplier/Branch Invoice">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="invoicePanel" /></td>
+				</tr>
+			</table>
+
+
+			<h:panelGrid id="invoicegrid" columns="6" border="0" width="90%"
+				rendered="#{supplierInvoiceBean.action=='update'}"
+				styleClass="bgcolor" cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText value="Supplier Name" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText
+					value="#{supplierInvoiceBean.supplierinvoice.supplier.supplierName}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="Generated User" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText
+					value="#{supplierInvoiceBean.supplierinvoice.createdBy}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="Created Date" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText
+					value="#{supplierInvoiceBean.supplierinvoice.createdDate}"
+					styleClass="logintxttable">
+					<f:convertDateTime pattern="dd-MMM-yyyy " />
+				</h:outputText>
+
+				<h:outputText value="GRN No" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText
+					value="#{supplierInvoiceBean.supplierinvoice.deliveryOrderNo}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="Invoice No" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText
+					value="#{supplierInvoiceBean.supplierinvoice.invoiceNo}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+
+				<h:outputText value="#{app['purchaseorder.status.neworderlable']}"
+					rendered="#{supplierInvoiceBean.supplierinvoice.status==app['supplierinvoice.status.newordervalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['purchaseorder.status.processedlable']}"
+					rendered="#{supplierInvoiceBean.supplierinvoice.status==app['supplierinvoice.status.processedvalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['purchaseorder.status.orderedlable']}"
+					rendered="#{supplierInvoiceBean.supplierinvoice.status==app['supplierinvoice.status.orderedvalue']}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="Total Amount(RM)" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText
+					value="#{supplierInvoiceBean.supplierinvoice.totalAmount}"
+					styleClass="logintxttable" />
+
+
+
+			</h:panelGrid>
+
+
+			<h:panelGrid id="addeditsupplierinvoicePanel" columns="10"
+				width="70%"
+				columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+					rendered="#{supplierInvoiceBean.action!='update'}"
+					styleClass="mandatory_text" />
+				<h:outputText value="#{msg['product.label.supplierName']}"
+					rendered="#{supplierInvoiceBean.action!='update'}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":"
+					rendered="#{supplierInvoiceBean.action!='update'}" />
+				<p:selectOneMenu id="supplierName" effect="fade" editable="false"
+					rendered="#{supplierInvoiceBean.action!='update'}"
+					value="#{supplierInvoiceBean.supplierId}"
+					style="width:160px; float :left;" styleClass="selectOneMenu">
+					<f:selectItem itemLabel="Select Supplier" itemValue="0" />
+					<f:selectItems value="#{commonListBean.selectSupplierList}"></f:selectItems>
+
+					<p:ajax update="deliveryOrderId" event="change"
+						listener="#{supplierInvoiceBean.loadDeiveryOrderNo}" />
+
+				</p:selectOneMenu>
+				<p:message for="supplierName" styleClass="fieldError"
+					rendered="#{supplierInvoiceBean.action!='update'}" />
+
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+					styleClass="mandatory_text"
+					rendered="#{supplierInvoiceBean.action!='update'}" />
+				<h:outputText value="GRN No" styleClass="logintxt"
+					rendered="#{supplierInvoiceBean.action!='update'}"></h:outputText>
+				<h:outputText value=":"
+					rendered="#{supplierInvoiceBean.action!='update'}" />
+				<p:selectOneMenu id="deliveryOrderId" effect="fade" editable="false"
+					rendered="#{supplierInvoiceBean.action!='update'}"
+					value="#{supplierInvoiceBean.deliveryOrderId}"
+					style="width:160px; float :left;" styleClass="selectOneMenu">
+					<f:selectItem itemLabel="Delivery Order" itemValue="0" />
+					<f:selectItems
+						value="#{supplierInvoiceBean.selectDeliveryOrderNoList}"></f:selectItems>
+					<p:ajax update="invoicePanel" event="change"
+						listener="#{supplierInvoiceBean.generateInvoice}" />
+				</p:selectOneMenu>
+				<p:message for="deliveryOrderId" styleClass="fieldError"
+					rendered="#{supplierInvoiceBean.action!='update'}" />
+
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+					styleClass="mandatory_text" />
+				<h:outputText value="Invoice No" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText
+					value="#{supplierInvoiceBean.supplierinvoice.invoiceNo}" size="23"
+					id="invoiceNo" />
+				<p:message for="invoiceNo" styleClass="fieldError" />
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputTextarea rows="3" cols="25" id="invoiceremarks"
+					value="#{supplierInvoiceBean.supplierinvoice.remarks}" />
+				<p:message for="invoiceremarks" styleClass="fieldError" />
+
+
+
+
+			</h:panelGrid>
+			<br></br>
+
+
+
+
+			<p:panelGrid style="width:99%" id="productinvoicePanel"
+				rendered="#{supplierInvoiceBean.supplierinvoice.supplierinvoicebreakdowns!=null and supplierInvoiceBean.supplierinvoice.supplierinvoicebreakdowns.size()!=0}"
+				styleClass="mypanel">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="width:20%;">Supplier</p:column>
+						<p:column style="width:80%;">Product Details</p:column>
+					</p:row>
+				</f:facet>
+
+				<p:row>
+					<p:column style="width:20%;" styleClass="columnwidthc">
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							styleClass="borderlessGrid" cellpadding="3" id="quotationgrid"
+							cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText
+								value="#{supplierInvoiceBean.supplierinvoice.supplier.supplierName}"
+								styleClass="logintxt" />
+
+							<h:outputText
+								value="#{supplierInvoiceBean.supplierinvoice.supplier.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{supplierInvoiceBean.supplierinvoice.supplier.city}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{supplierInvoiceBean.supplierinvoice.supplier.state} - #{supplierInvoiceBean.supplierinvoice.supplier.postCode}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value=" #{supplierInvoiceBean.supplierinvoice.supplier.phoneNo}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+
+
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							styleClass="borderlessGrid" cellpadding="3" id="branchgrid"
+							cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText value="Delivery Branch" styleClass="logintxt" />
+
+							<h:outputText value="" styleClass="logintxt" />
+
+							<h:outputText
+								value="#{supplierInvoiceBean.supplierinvoice.branch.branchName}"
+								styleClass="logintxt" />
+
+							<h:outputText
+								value="#{supplierInvoiceBean.supplierinvoice.branch.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{supplierInvoiceBean.supplierinvoice.branch.city}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{supplierInvoiceBean.supplierinvoice.branch.state}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value=" #{supplierInvoiceBean.supplierinvoice.branch.phoneNo}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+
+
+					</p:column>
+
+
+					<p:column style="width:80%;" styleClass="alignTop">
+						<p:dataTable id="productTable" var="product" scrollable="false"
+							paginator="true" paginatorPosition="top"
+							rowsPerPageTemplate="5,10,15,25,50,100" rows="5"
+							scrollHeight="200" rowIndexVar="productrow" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}"
+							value="#{supplierInvoiceBean.supplierinvoice.supplierinvoicebreakdowns}"
+							style="width:100%;">
+
+
+							<p:columnGroup type="header">
+								<p:row>
+									<p:column style="width:8%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Product Code" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:20%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Product Name" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:5%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="UOM" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:5%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Total Quantity" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+
+									<p:column style="width:5%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Unit Price(RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:5%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Discount (RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:6%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Tax (%)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:7%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Tax (RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+
+
+
+									<p:column style="width:5%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Sub Total (RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+								</p:row>
+							</p:columnGroup>
+
+
+							<p:column style="width:8%;" styleClass="columnwidth">
+								<h:outputText value="#{product.productCode}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:20%;" styleClass="columnwidth">
+								<h:outputText value="#{product.productName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:5%;" styleClass="columnwidth">
+								<h:outputText value="#{product.uom}" styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:5%;" styleClass="columnwidthn">
+								<h:outputText value="#{product.quantity}" size="6" id="quantity"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column width="5%" styleClass="columnwidthn">
+								<h:outputText value="#{product.unitPrice}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+							<p:column width="5%" styleClass="columnwidthn">
+								<h:outputText value="#{product.discountAmount}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="width:5%;" styleClass="columnwidthn">
+								<h:outputText value="#{product.taxCode}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:7%;" styleClass="columnwidthn">
+								<h:outputText value="#{product.taxAmount}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+							<p:column width="5%" styleClass="columnwidthn">
+								<h:outputText value="#{product.subTotal}"
+									styleClass="logintxttable">
+								</h:outputText>
+							</p:column>
+
+							<p:columnGroup type="footer">
+
+
+								<p:row>
+									<p:column colspan="8" footerText="Product Total Amount (RM)"
+										style="text-align:right" />
+									<p:column
+										footerText="#{supplierInvoiceBean.supplierinvoice.invoiceAmount}"
+										style="text-align:right" />
+								</p:row>
+								<p:row>
+									<p:column colspan="8" footerText="Tax Amount (RM)"
+										style="text-align:right" />
+									<p:column
+										footerText="#{supplierInvoiceBean.supplierinvoice.tax}"
+										style="text-align:right" />
+								</p:row>
+
+								<p:row>
+									<p:column colspan="8" footerText="Dispatch Amount (RM)"
+										style="text-align:right" />
+									<p:column
+										footerText="#{supplierInvoiceBean.supplierinvoice.invoicedispatch.despatchAmount}"
+										style="text-align:right" />
+								</p:row>
+
+								<p:row>
+									<p:column colspan="8" footerText="Total Amount (RM)"
+										style="text-align:right" />
+									<p:column
+										footerText="#{supplierInvoiceBean.supplierinvoice.totalAmount}"
+										style="text-align:right" />
+								</p:row>
+
+
+							</p:columnGroup>
+
+						</p:dataTable>
+
+					</p:column>
+				</p:row>
+
+
+
+			</p:panelGrid>
+
+
+
+			<p:panelGrid style="width:99%" id="taxship" styleClass="alignTop"
+				rendered="#{supplierInvoiceBean.supplierinvoice.supplierinvoicebreakdowns!=null and supplierInvoiceBean.supplierinvoice.supplierinvoicebreakdowns.size()!=0}">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="width:50%;">Tax and Shipping Info</p:column>
+						<p:column style="width:50%;">Despatch Info</p:column>
+					</p:row>
+				</f:facet>
+				<p:row>
+					<p:column style="width:50%;" styleClass="alignTop">
+
+
+						<h:panelGrid columns="5" border="0" width="100%"
+							styleClass="borderlessGrid"
+							columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.pricingCurrency']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:selectOneMenu id="pricingCurrency"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicetaxship.pricingCurrency}"
+								style="width:160px; text-align:left;">
+								<f:selectItem itemLabel="MYR" itemValue="MYR" />
+							</p:selectOneMenu>
+							<p:message for="pricingCurrency" styleClass="fieldError" />
+
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.recipient']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="recipient"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicetaxship.recipient}"
+								maxlength="25" size="25" />
+							<p:message for="recipient" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.address']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputTextarea rows="3" cols="25" id="address"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicetaxship.address}" />
+							<p:message for="address" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.city']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="city"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicetaxship.city}"
+								maxlength="25" size="25" />
+							<p:message for="city" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.state']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="state"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicetaxship.state}"
+								maxlength="25" size="25" />
+							<p:message for="state" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.country']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="country"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicetaxship.country}"
+								maxlength="25" size="25" />
+							<p:message for="country" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.postCode']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="postCode"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicetaxship.postCode}"
+								maxlength="25" size="25" />
+							<p:message for="postCode" styleClass="fieldError" />
+
+						</h:panelGrid>
+					</p:column>
+
+
+					<p:column style="width:50%;" styleClass="alignTop">
+
+						<h:panelGrid columns="5" border="0" width="100%"
+							styleClass="borderlessGrid"
+							columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.dispatchDate']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:calendar navigator="true" id="dispatchDate" size="25"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicedispatch.dispatchDate}"
+								pattern="dd/MMM/yyyy" />
+							<p:message for="dispatchDate" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.despatchAmount']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="despatchAmount"
+								styleClass="logintxtnumberFormat"
+								onkeypress='return validate(event)'
+								value="#{supplierInvoiceBean.supplierinvoice.invoicedispatch.despatchAmount}"
+								maxlength="25" size="25">
+								<p:ajax update="productTable" event="blur"
+									listener="#{supplierInvoiceBean.calculateInvoiceAmount}"></p:ajax>
+							</p:inputText>
+							<p:message for="despatchAmount" styleClass="fieldError" />
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.remarks']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputTextarea rows="3" cols="25" id="remarks"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicedispatch.remarks}" />
+							<p:message for="remarks" styleClass="fieldError" />
+
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.recipientName']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="deliveryPerson"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicedispatch.deliveryPerson}"
+								maxlength="25" size="25" />
+							<p:message for="deliveryPerson" styleClass="fieldError" />
+
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.consignmentNo']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="consignmentNo"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicedispatch.consignmentNo}"
+								maxlength="25" size="25" />
+							<p:message for="consignmentNo" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.courierCompany']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="courierCompany"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicedispatch.courierCompany}"
+								maxlength="100" size="35" />
+							<p:message for="courierCompany" styleClass="fieldError" />
+
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['customerinvoice.taxship.transportType']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="transportType"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicedispatch.transportType}"
+								maxlength="25" size="25" />
+							<p:message for="transportType" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['customerinvoice.taxship.vehicleNo']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<p:inputText id="vehicleNo"
+								value="#{supplierInvoiceBean.supplierinvoice.invoicedispatch.vehicleNo}"
+								maxlength="25" size="25" />
+							<p:message for="vehicleNo" styleClass="fieldError" />
+
+
+						</h:panelGrid>
+
+					</p:column>
+				</p:row>
+
+				<f:facet name="footer">
+					<p:row>
+						<p:column colspan="2">
+							<p:commandButton value="Save" ajax="true"
+								rendered="#{supplierInvoiceBean.action!='update'}"
+								oncomplete="PF('invoicecreateDig').show()" update="invoicePanel" />
+
+							<p:commandButton value="Update" ajax="true"
+								rendered="#{supplierInvoiceBean.action=='update'}"
+								oncomplete="PF('invoicecreateDig').show()" update="invoicePanel" />
+
+							<p:commandButton value="Reset" ajax="true"
+								rendered="#{supplierInvoiceBean.action=='update'}"
+								actionListener="#{supplierInvoiceBean.editInvoice}"
+								update="invoicePanel">
+								<f:attribute name="invoice"
+									value="#{supplierInvoiceBean.supplierinvoice}" />
+							</p:commandButton>
+
+							<p:commandButton value="Cancel" ajax="false"
+								action="#{supplierInvoiceBean.listInvoice}"
+								update="invoicePanel" />
+
+						</p:column>
+					</p:row>
+				</f:facet>
+
+			</p:panelGrid>
+
+
+		</p:panel>
+
+
+
+
+		<p:dialog id="modalDialogInvoiceCreate" showEffect="fade"
+			hideEffect="fade" header="Supplier Invoice Create Confirmation"
+			resizable="false" widgetVar="invoicecreateDig" modal="true"
+			height="150" width="400">
+			<br></br>
+
+			<p:panel id="deliverycreate">
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText
+						value="Are you sure want to save  Supplier Invoice ?  "
+						styleClass="logintxttable" />
+
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+					<p:commandButton value="Save" ajax="false"
+						oncomplete="PF('invoicecreateDig').hide();"
+						rendered="#{loginBean.functionList.contains('Add Customers Invoices') and supplierInvoiceBean.action!='update'}"
+						action="#{supplierInvoiceBean.saveInvoice}"
+						update="addEditInvoiceForm">
+					</p:commandButton>
+
+					<p:commandButton value="Update" ajax="false"
+						oncomplete="PF('invoicecreateDig').hide();"
+						rendered="#{loginBean.functionList.contains('Edit Customers Invoices') and supplierInvoiceBean.action=='update' }"
+						action="#{supplierInvoiceBean.updateInvoice}"
+						update="addEditInvoiceForm">
+					</p:commandButton>
+
+
+					<p:commandButton value="Cancel" oncomplete="PF('invoicecreateDig').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+	</h:form>
+</ui:composition>
+
+

@@ -1,0 +1,103 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head />
+	<h:form id="addEditPurchaseRequestForm">
+		<p:outputPanel id="purchaseRequestPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="purchaseRequestPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Purchase Request">
+
+
+				<h:panelGrid id="purchaseRequestGrid" columns="10" border="0"
+					width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Branch Name" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="branchId"
+						value="#{purchaseRequestBean.branchId}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Branch" itemValue="0" />
+						<f:selectItems value="#{commonListBean.selectBranchList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="branchId" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Reference No" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="referenceNo" size="25"
+						value="#{purchaseRequestBean.referenceNo}" />
+					<p:message for="referenceNo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{purchaseRequestBean.dateFrom}" pattern="dd-MMM-yyyy" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{purchaseRequestBean.dateTo}" pattern="dd-MMM-yyyy" />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" style="width:160px; float :left;"
+						value="#{purchaseRequestBean.status}" styleClass="inputCombo">
+						<f:selectItem itemValue="" itemLabel="Select Status"></f:selectItem>
+						<f:selectItems value="#{commonListBean.purchaseRequestStatusList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{purchaseRequestBean.searchPurchaseRequest}"
+							update="purchaseRequestPanel" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{purchaseRequestBean.resetSearch}"
+							update="purchaseRequestPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+				</h:panelGrid>
+
+
+				<table align="center" width="80%">
+					<tr>
+						<td><iframe height="950" width="1030px" name="iframeBirt"
+								src="report/reportViewer.jsp" /></td>
+					</tr>
+				</table>
+
+				<h:panelGrid id="reportresultgrid1" columns="1" border="0"
+					width="100%" style='display:none;'>
+					<iframe height="950" width="1030px" name="iframeBirt1" />
+				</h:panelGrid>
+
+
+
+			</p:panel>
+
+		</p:outputPanel>
+
+
+	</h:form>
+</ui:composition>
+
+

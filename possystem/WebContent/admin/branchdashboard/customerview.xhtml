@@ -1,0 +1,203 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel>
+
+		<br></br>
+
+		<p:panelGrid style="width:100%" id="customerviewgrid" 
+			styleClass="alignTop">
+
+			<f:facet name="header">
+				<p:row>
+					<p:column style="width:25%;">Customer Balance</p:column>
+					<p:column style="width:75%;">Customer Details</p:column>
+				</p:row>
+			</f:facet>
+
+			<p:row>
+				<p:column style="width:25%;" styleClass="alignTop">
+
+					<p:panelGrid columns="1" width="100%" styleClass="borderlessGrid"
+						cellpadding="5" cellspacing="5">
+
+						<h:outputText value="Outstanding (RM)" styleClass="totalValue" />
+						<h:outputText value="6546.00 " styleClass="totalValue"></h:outputText>
+						<br></br>
+						<br></br>
+						<h:outputText value="#{msg['customer.label.availablePoints']}"
+							styleClass="totalValue" />
+						<h:outputText value="#{customerBean.customer.availablePoints}"
+							styleClass="totalValue"></h:outputText>
+
+
+					</p:panelGrid>
+
+				</p:column>
+
+				<p:column style="width:75%;" styleClass="alignTop">
+
+					<p:panelGrid columns="6" width="100%" styleClass="borderlessGrid"
+						cellpadding="3" cellspacing="3"
+						columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+
+						<h:outputText value="#{msg['customer.label.customerName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.customerName}" />
+
+						<h:outputText
+							value="#{msg['customer.label.identificationCompanyRegNo']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText
+							value="#{customerBean.customer.identificationCompanyRegNo}" />
+
+						<h:outputText value="#{msg['customer.label.business']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="Individual"
+							rendered="#{customerBean.customer.business=='1'}" />
+						<h:outputText value="Individual"
+							rendered="#{customerBean.customer.business=='2'}" />
+
+						<h:outputText value="#{msg['customer.label.address']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.address}" />
+
+						<h:outputText value="#{msg['customer.label.city']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.city}" />
+
+						<h:outputText value="#{msg['customer.label.state']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText id="state" value="#{customerBean.customer.state}" />
+
+						<h:outputText value="#{msg['customer.label.country']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.country}" />
+
+						<h:outputText value="#{msg['customer.label.postCode']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.postCode}" />
+
+
+						<h:outputText value="#{msg['customer.label.phoneNo']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.phoneNo}" />
+
+
+						<h:outputText value="#{msg['customer.label.faxNo']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.faxNo}" />
+
+						<h:outputText value="#{msg['customer.label.emailAddress']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.emailAddress}" />
+
+
+						<h:outputText value="#{msg['customer.label.contactPerson']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText id="contactPerson"
+							value="#{customerBean.customer.contactPerson}" />
+
+
+						<h:outputText value="#{msg['customer.label.branchName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.branchName}" />
+
+						<h:outputText value="#{msg['customer.label.pricingCurrency']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.pricingCurrency}" />
+
+
+						<h:outputText value="#{msg['customer.label.salesRep']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.salesRep}" />
+
+
+						<h:outputText value="#{msg['customer.label.discount']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.discount}" />
+
+						<h:outputText value="#{msg['customer.label.deliveryMethod']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.deliveryMethod}" />
+
+
+						<h:outputText value="#{msg['customer.label.paymentTerm']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.paymentTerm}" />
+
+
+						<h:outputText value="#{msg['customer.label.paymentMethod']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.paymentMethod}" />
+
+
+						<h:outputText value="#{msg['customer.label.loyaltyCardCode']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.loyaltyCardCode}" />
+
+
+
+						<h:outputText value="#{msg['customer.label.lastRedemptionDate']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.lastRedemptionDate}" />
+
+						<h:outputText value="#{msg['customer.label.availablePoints']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.availablePoints}" />
+
+
+						<h:outputText value="#{msg['customer.label.notifyBy']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{customerBean.customer.notifyBy}" />
+
+
+						<h:outputText value="#{msg['branch.label.Status']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="Active"
+							rendered="#{customerBean.customer.status=='1'}" />
+						<h:outputText value="InActive"
+							rendered="#{customerBean.customer.status=='2'}" />
+
+					</p:panelGrid>
+				</p:column>
+
+			</p:row>
+		</p:panelGrid>
+
+	</p:outputPanel>
+
+</ui:composition>
+
+

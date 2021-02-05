@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="newDepartmentForm">
+		<p:panel styleClass="limitedHeightDiv">
+
+
+			<h:panelGrid id="newdesignationgrid" columns="5" border="0"
+				columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+				<h:outputText value="*" styleClass="mandatory_text" />
+				<h:outputText value="Designation Name " styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="designationname"
+					value="#{designationBean.designationname}"
+					requiredMessage="Value is Required" label="Organization Name"
+					maxlength="45" size="25" />
+				<p:message for="designationname" styleClass="fieldError" />
+
+
+
+
+
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:panelGrid id="newcompanybuttongrid" columns="2" border="0"
+					columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+					<p:commandButton value="Save"
+						action="#{designationBean.saveDepartment}"
+						update="newdesignationgrid,dataTable"
+						rendered="#{designationBean.action!='update'}" />
+
+					<p:commandButton value="Update"
+						action="#{designationBean.departmentUpdate}"
+						update="newdesignationgrid,dataTable"
+						rendered="#{designationBean.action=='update'}" />
+
+					<p:commandButton value="Reset"
+						action="#{designationBean.resetDepartment}"
+						update="newdesignationgrid" />
+				</h:panelGrid>
+				<h:outputText value="" />
+
+			</h:panelGrid>
+
+
+			<br />
+			<br />
+			<br />
+
+
+			<p:dataTable id="dataTable" var="designation" rowIndexVar="row"
+				value="#{designationBean.designationList}" paginator="true" rows="7"
+				style="width: 50%"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+				<f:facet name="header">  
+            Designation List  
+        </f:facet>
+
+				<p:column id="modelHeader">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" />
+				</p:column>
+
+				<p:column sortBy="#{designation.designationname}">
+					<f:facet name="header">
+						<h:outputText value="Designation Name" />
+					</f:facet>
+					<h:outputText value="#{designation.designationname}" />
+				</p:column>
+
+
+
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Edit" />
+					</f:facet>
+					<p:commandLink ajax="flase" async="true"
+						actionListener="#{designationBean.departmentEdit}"
+						update=":projectHomeForm:newdesignationgrid"
+						process=":projectHomeForm:newdesignationgrid">
+						<h:graphicImage value="/images/edit.gif" halt="edit" />
+						<f:attribute name="paramid" value="#{designation.iddesignation}" />
+					</p:commandLink>
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Delete" />
+					</f:facet>
+
+					<p:commandLink immediate="true" oncomplete="dlg2.show()"
+						ajax="true" async="true"
+						actionListener="#{designationBean.attrListenerDelete}">
+						<h:graphicImage value="/images/delete.gif" alt="delete" />
+
+						<f:attribute name="paramid" value="#{designation.iddesignation}" />
+					</p:commandLink>
+
+
+				</p:column>
+
+			</p:dataTable>
+
+
+			<br></br>
+
+		</p:panel>
+
+
+		<p:dialog id="modalDialog" header="Delete" widgetVar="dlg2"
+			modal="true" height="100" width="400">
+			<h:outputText value="Are your sure want to delete?." />
+
+			<p:commandButton value="No" onclick="dlg2.hide()" type="button" />
+			<p:commandButton value="Yes" update="dataTable" immediate="true"
+				ajax="true" async="true" oncomplete="dlg2.hide()"
+				actionListener="#{designationBean.confirmListenerDelete}">
+				<f:attribute name="paramid" value="#{designationBean.iddesignation}" />
+			</p:commandButton>
+
+
+
+
+		</p:dialog>
+
+	</h:form>
+</ui:composition>
+
+

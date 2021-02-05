@@ -1,0 +1,27 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://primefaces.org/ui">
+
+<body>
+	<ui:composition>
+	<h:form id="preSetPassword">
+		<h:panelGrid styleClass="header_bg" width="100%" columns="2"
+			columnClasses="col_hd_left,col_hd_right">
+		
+		 <h:graphicImage style="float:left" alt="rf"  height="50px" value="/resources/images/Permai.jpg"/>
+		 <h:panelGrid columns="2" style="float:right">
+		 <h:outputText value="userName" class="logintxtmenutitle2" />
+		 <h:outputText value="#{loginBean.loginName}" class="logintxtmenutitle2" />
+		 <h:outputText value="Role" class="logintxtmenutitle2" />
+		 <h:outputText value="#{loginBean.roleName}" class="logintxtmenutitle2" />
+		 </h:panelGrid>
+		 </h:panelGrid>
+		  </h:form>
+	</ui:composition>
+</body>
+</html>

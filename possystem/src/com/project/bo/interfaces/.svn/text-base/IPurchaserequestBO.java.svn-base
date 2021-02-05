@@ -1,0 +1,48 @@
+package com.alpha.bo.interfaces;
+
+import java.util.Date;
+import java.util.List;
+
+import com.alpha.hq.model.Purchaserequestbreakdown;
+import com.alpha.model.datamodel.purchase.PurchaseorderModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestConsolidateModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestbreakdownModel;
+
+
+
+public interface IPurchaserequestBO {
+
+	
+	public List<PurchaserequestModel> findByPurchaserequestListAll() throws Exception;
+
+	public int getPurchaserequestCount(String referenceNo, Integer branchId, Date dateFrom,Date dateTo, String status) throws Exception;
+
+	public List<PurchaserequestModel> getPurchaserequestList(String referenceNo,Integer branchId, Date dateFrom,Date dateTo, String status, int start, int howMany)
+			throws Exception;	
+	
+	public List<PurchaserequestModel> getPurchaserequestList(List<Integer> ids)	throws Exception;	
+	
+	public PurchaserequestModel getPurchaserequestDetails(Integer purchaseRequestId) throws Exception;
+
+	public boolean createNewPurchaserequest(PurchaserequestModel purchaserequest) throws Exception;
+
+	public boolean updatePurchaserequest(PurchaserequestModel purchaserequest) throws Exception;
+	
+	public boolean approvePurchaserequest(PurchaserequestModel purchaserequest) throws Exception;
+	
+	public boolean deletePurchaserequest(PurchaserequestModel Purchaserequest) throws Exception;
+	
+	public PurchaserequestModel getPurchaserequestDetailsByNo(String referenceNo) throws Exception;
+	
+	public boolean deletePurchaserequestbreakdown(PurchaserequestbreakdownModel purchaserequestbreakdown) throws Exception;
+
+	public List<PurchaserequestConsolidateModel> getPurchaserequestbreakdownList(List<Integer> requestIds ,List<Integer> branchIds )	throws Exception;	
+	
+	public List<PurchaserequestbreakdownModel> getPurchaserequestbreakdownListAll(List<Integer> ids)	throws Exception;	
+	
+	public List<PurchaserequestbreakdownModel> getPurchaserequestbreakdownListByProduct(List<Integer> requestIds) throws Exception;
+	
+	public List<PurchaseorderModel> createPurchaseorderList(List<Integer> requestIds)	throws Exception;	
+
+}

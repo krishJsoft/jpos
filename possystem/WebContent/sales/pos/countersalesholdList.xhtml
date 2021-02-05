@@ -1,0 +1,90 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog  header="Sales Hold List"
+		widgetVar="holdSales" modal="true" height="500" width="950">
+
+		<p:outputPanel id="holdSalesPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="holdSalesPanel" /></td>
+				</tr>
+			</table>
+
+
+			<p:panel
+				style="width:900px; height:350px; align:center;background-image: url('images/contentpagebg.jpg');background-repeat: repeat-x;">
+
+			
+
+				<p:dataTable id="salesholdTable" var="sales" rowIndexVar="row"
+					scrollable="true" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+					value="#{posOptionBean.salesOrder}"
+					style="width:100%;" scrollHeight="260">
+
+
+					<p:column style="width:15%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Customer Name" />
+						</f:facet>
+						<h:outputText value="#{sales.customer.customerName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width:15%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Loyalty Code" />
+						</f:facet>
+						<h:outputText value="#{sales.loyaltyCardCode}"
+							styleClass="logintxttable" />
+					</p:column>		
+
+
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Total Amount(RM) " />
+						</f:facet>
+						<h:outputText value="#{sales.totalAmount}"
+							styleClass="logintxttable" />
+					</p:column>						
+					
+
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<p:commandLink value="Select" immediate="true" ajax="true" async="true" update=":addEditPosForm:posPanel"							
+						 oncomplete="PF('holdSales').hide(),PF('salesfunction').hide();"  action="#{posBean.loadHoldSale(row)}">
+						<f:attribute name="salesOrderId" value="#{sales.salesOrderId}" />
+					</p:commandLink>
+
+					</p:column>
+
+
+				</p:dataTable>
+
+			</p:panel>
+
+			<br></br>
+			<p:commandButton value="Close" oncomplete="PF('holdSales').hide();"
+				style="background-image: url('resources/images/redbutton.jpg'); width:149px; height:40px; "
+				immediate="true" ajax="true" async="true">
+			</p:commandButton>
+
+		</p:outputPanel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

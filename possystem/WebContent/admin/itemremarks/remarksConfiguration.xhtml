@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="itemRemarksConfigurationForm">
+	<p:outputPanel id="itemRemarksConfigurationPanel">
+		<p:message for="itemRemarksConfigurationPanel" />
+		<p:panelGrid>
+			<p:panelGrid columns="4" 
+			id="remarkNamePanelGrid"
+					>
+				<p:selectOneMenu value="#{itemRemarksBean.remarksListId}">
+					<f:selectItems value="#{commonListBean.itemRemarksList}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:commandButton icon="ui-icon-plus" action="#{itemRemarksBean.changeButtonStatus}"
+					rendered="#{itemRemarksBean.buttonIsClicked==false}" 
+					update="remarkNamePanelGrid"
+				/>
+						
+				<p:commandButton icon="ui-icon-minus"  action="#{itemRemarksBean.changeButtonStatus}"
+					rendered="#{itemRemarksBean.buttonIsClicked==true}"
+					update="remarkNamePanelGrid" 
+				/>
+				 
+				 <p:panel rendered="#{itemRemarksBean.buttonIsClicked==true}"
+						 style="background-color:#46B881">
+						<p:inputText id="remarkNewName" value="#{itemRemarksBean.remarksName}"/>
+				<p:commandButton icon="ui-icon-check" action="#{itemRemarksBean.createNewRemarksName}"
+					update="remarkNamePanelGrid"
+				/>
+				</p:panel>	
+				
+				<p:message for="remarkNewName" styleClass="fieldError" />	
+			</p:panelGrid>
+			<p:panelGrid columns="4" 
+					>
+				<p:selectOneMenu value="#{itemRemarksBean.categoryId}">
+					<f:selectItems value="#{commonListBean.remarksItemCategory}"></f:selectItems>
+				</p:selectOneMenu>
+				
+			</p:panelGrid>
+			<p:commandButton value="SAVE" action="#{itemRemarksBean.createRemarks}"
+				update="itemRemarksDataTable"
+			/>
+			
+		</p:panelGrid >
+		<p:dataTable
+		id="itemRemarksDataTable"
+		value="#{itemRemarksBean.remarksList}" 
+		var="remarks" rowIndexVar="row"
+		>
+			<p:column id="modelHeader" width="3%">
+					<f:facet name="header">
+						<h:outputText value="No" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="20%">
+				<f:facet name="header">
+					<h:outputText value="CATEGORY NAME" />
+				</f:facet>
+				<h:outputText value="#{remarks.productcategory.name}"
+					styleClass="logintxttable" />
+			</p:column>
+			<p:column  width="20%">
+				<f:facet name="header">
+					<h:outputText value="REMARKS" />
+				</f:facet>
+				<h:outputText value="#{remarks.remarks.remarksName}"
+					styleClass="logintxttable" />
+			</p:column>
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="ACTION" />
+				</f:facet>
+				<p:commandLink  value="" styleClass="ui-icon ui-icon-trash"
+				actionListener="#{itemRemarksBean.removeRemarks}"
+				><p:confirm header="Confirmation" message="Are you sure?" icon="ui-icon-alert" />
+					<f:attribute name="remarksItemId" value="#{remarks.id}" />
+				</p:commandLink>
+			</p:column>
+		</p:dataTable>
+	</p:outputPanel>
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" 
+	style="width:10%">
+			
+	<p:panel style="text-align:right">
+       	<p:commandButton value="CONFIRM" type="button" styleClass="ui-confirmdialog-yes"  icon="ui-icon-check" />
+       	<p:commandButton value="CANCEL" type="button" styleClass="ui-confirmdialog-no" />
+       </p:panel>
+    </p:confirmDialog>
+		
+	</h:form>
+</ui:composition>
+
+

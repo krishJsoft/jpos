@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf15012374558100" configfile="/possystem/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="pages/index" x="122" y="370" id="pf15166816883110" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf15166816883111 pf15166816883112" path="/pages/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/success" x="338" y="178" id="pf15166816883113" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf15166816883111" path="/pages/success.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="pages/error" x="338" y="562" id="pf15166816883114" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf15166816883112" path="/pages/error.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="*" x="122" y="946" id="pf15166816883115" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf15166816883116 pf15166914702421" path="/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="index" x="338" y="946" id="pf15166816883117" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf15166816883116" path="/index.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="mobileIndex" id="pf15166914702422" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" inlinks="pf15166914702421" path="/mobileIndex.xhtml"/>
+  <links id="pf15166816883111" target="pf15166816883113" source="pf15166816883110"/>
+  <links id="pf15166816883112" target="pf15166816883114" source="pf15166816883110"/>
+  <links id="pf15166816883116" target="pf15166816883117" source="pf15166816883115"/>
+  <links id="pf15166914702421" target="pf15166914702422" source="pf15166816883115"/>
+</pageflow:Pageflow>

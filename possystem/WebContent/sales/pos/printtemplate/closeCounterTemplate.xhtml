@@ -1,0 +1,171 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog header="Counter Close Report " widgetVar="counterCloseReport"
+		modal="true" height="500" width="300px">
+		<p:outputPanel id="counterCloseReportPanel">
+			<p:message for="counterCloseReportPanel" />
+
+
+			<p:panelGrid style="width:270px" styleClass="alignTop"
+				id="counterCloseReportprintrequestitem">
+
+				<p:row>
+					<p:column style="width:100%;" styleClass="alignTop">
+
+
+						<table align="center" width="100%">
+
+							<tr>
+								<td align="center"><font size="2" color="black">COUNTER CLOSE REPORT </font></td>
+							</tr>
+
+							<tr>
+								<td align="center"><font size="3" color="black">-----------------------------------------------
+								</font></td>
+							</tr>
+
+
+							<tr>
+								<td align="left"><font size="3" color="black">#{loginBean.branch.branchName}</font>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><font size="1" color="black"><h:outputText value="#{loginBean.branch.address}"  escape="false" /></font>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="center"><font size="3" color="black">-----------------------------------------------
+								</font></td>
+							</tr>
+
+						</table>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column style="width:100%;" styleClass="logintxtnumberFormat">
+						<h:panelGrid columns="2" border="0" styleClass="borderlessGrid">
+						
+						<h:outputText value="Date : " styleClass="reporttxt" />
+							<h:outputText value="#{posOptionBean.shiftDate}"
+								styleClass="reporttxt">
+								  <f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+							</h:outputText>
+								
+						<h:outputText value="Shift : " styleClass="reporttxt" />
+							<h:outputText value="#{posOptionBean.shiftName}"
+								styleClass="reporttxt"></h:outputText>
+								
+							<h:outputText value="Terminal : " styleClass="reporttxt" />
+							<h:outputText value="#{posBean.poscounter.counterNo}"
+								styleClass="reporttxt"></h:outputText>
+
+								
+							<h:outputText value="Print by : " styleClass="reporttxt" />
+							<h:outputText value="#{loginBean.logdetail.emailAddress}"
+								styleClass="reporttxt"></h:outputText>
+
+
+
+						</h:panelGrid>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column style="width:100%;">
+						<table align="center" width="100%">
+							<tr>
+								<td align="center"><font size="3" color="black">-----------------------------------------------
+								</font></td>
+							</tr>
+
+							<tr>
+								<td align="center"><font size="2" color="black">Cash
+										Collection </font></td>
+							</tr>
+
+							<tr>
+								<td align="center"><font size="3" color="black">-----------------------------------------------
+								</font></td>
+							</tr>
+						</table>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column style="width:100%;" styleClass="logintxtnumberFormat">
+						<h:panelGrid columns="2" border="0" styleClass="borderlessGrid">
+
+
+							<h:outputText value="Total Credit-Cash In (#{app['common.currency']})  "
+								styleClass="reporttxt" />
+							<h:outputText
+								value="#{posOptionBean.poscashtransaction.creditamount} "
+								styleClass="reporttxt" />
+								
+							<h:outputText value="Total Debit-Cash Out (#{app['common.currency']})"
+								styleClass="reporttxt" />
+							<h:outputText
+								value="#{posOptionBean.poscashtransaction.debitAmount}"
+								styleClass="reporttxt" />
+
+							<h:outputText value="Total Sales (#{app['common.currency']})" styleClass="reporttxt" />
+							<h:outputText
+								value="#{posOptionBean.poscashtransaction.salesamount} "
+								styleClass="reporttxt" />
+								
+							<h:outputText value="Total Expenses (#{app['common.currency']})" styleClass="reporttxt" />
+							<h:outputText
+								value="#{posOptionBean.totalExpenses}"
+								styleClass="reporttxt" />
+								
+							<h:outputText value="Balance (#{app['common.currency']})" styleClass="reporttxt" />
+							<h:outputText
+								value="#{posOptionBean.poscashtransaction.creditamount
+								+posOptionBean.poscashtransaction.salesamount
+								-posOptionBean.poscashtransaction.debitAmount
+								-posOptionBean.totalExpenses}"
+								styleClass="reporttxt" />
+
+						</h:panelGrid>
+					</p:column>
+				</p:row>
+
+				
+
+			</p:panelGrid>
+
+
+
+
+
+
+			<br></br>
+			<p:panelGrid columns="2" styleClass="borderlessGrid">
+				<p:commandButton value="Close"
+					oncomplete="PF('counterCloseReport').hide();"
+					styleClass="itembutton" style="width:100px; height:30px; "
+					immediate="true" ajax="true" async="true">
+				</p:commandButton>
+
+				<p:commandButton value="Print" styleClass="itembutton"
+					style="width:100px; height:30px; " ajax="true" async="true">
+					<p:printer target="counterCloseReportprintrequestitem" />
+				</p:commandButton>
+			</p:panelGrid>
+
+
+
+		</p:outputPanel>
+	</p:dialog>
+
+</ui:composition>

@@ -1,0 +1,159 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:form id="counterReportForm">
+	<p:panel styleClass="mypanel" header="Daily Counter Report" id="counterDailyReportPanel">
+	<br />
+	<h:panelGrid columns="4" border="0" 
+		columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+		<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+		<h:outputText value=":" />
+		<p:calendar navigator="true" id="dateFrom" size="25"
+			value="#{posOptionBean.counterReportFrom}" pattern="#{des['common.date.pattern']}" />
+		<p:message for="dateFrom" styleClass="fieldError" />
+
+		<h:outputText value="" />
+		<h:outputText value="" />
+		<h:outputText value="" />
+		<h:outputText value="" />
+
+		<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+		<h:outputText value=":" />
+		<p:calendar navigator="true" id="dateTo" size="25"
+			value="#{posOptionBean.counterReportTo}" pattern="#{des['common.date.pattern']}" />
+		<p:message for="dateTo" styleClass="fieldError" />
+		
+	</h:panelGrid>		
+		<br/>
+		<p:panel>
+		<p:selectOneMenu id="counterId" style="width:160px; float :left;"
+			value="#{posOptionBean.counterReportCounterId}" styleClass="inputCombo">
+			<f:selectItems value="#{commonListBean.selectTerminalList}"></f:selectItems>
+		</p:selectOneMenu>
+				
+		<p:commandButton value="Search" ajax="true"
+			update="counterDailyReportPanel,counterReportForm:poscounterReportDataTable"
+			action="#{posOptionBean.searchPosCounterReport}" 
+		/>
+		<p:commandButton value="Reset" ajax="true"
+			update="counterDailyReportPanel,counterReportForm:poscounterReportDataTable"
+			action="#{posOptionBean.resetSearchPosCounterReport}" 
+		/>
+		<ui:remove>
+		
+		<p:commandButton value="Print"
+			style="background: #E32526;color:white" 
+			oncomplete="PF('counterDetailsprintDig').show();">					
+		</p:commandButton>
+		</ui:remove>
+		
+		<ui:remove>
+		<h:commandButton value ="PDF" action="#{posOptionBean.counterCloseReportPDF}"/>
+		</ui:remove>
+		
+		 <p:commandButton ajax="false" value="PDF">
+                <p:dataExporter type="pdf" target="poscounterReportDataTable" fileName="closeCounterReport"/>
+         </p:commandButton>
+        
+        </p:panel>
+         <br />
+		<p:dataTable id="poscounterReportDataTable" var="posCounter" rowIndexVar="row"
+			scrollable="true" scrollHeight="420"
+			value="#{posOptionBean.poscounterReport}" paginator="true"
+			rows="30" style="width: 100%" 
+			rowsPerPageTemplate="5,10,15,25,50,100"
+			rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"  >
+			<p:column id="modelHeader" width="5%">
+				<f:facet name="header">
+					<h:outputText value="#{des['common.table.header.no']}" />
+				</f:facet>
+				<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column style="width:15%">
+				<f:facet name="header">
+					<h:outputText value="Date"/>
+				</f:facet>
+				<h:outputText value="#{posCounter.lastupdatedDate}"
+					styleClass="logintxttable">	
+					<f:convertDateTime pattern="#{des['common.date.pattern']}" />
+				</h:outputText>
+			</p:column>
+			
+			<p:column style="width:15%">
+				<f:facet name="header">
+					<h:outputText value="Shift"/>
+				</f:facet>
+					
+				<h:outputText value="#{posCounter.shiftName}"
+					styleClass="logintxttable">	
+				</h:outputText>
+			</p:column>
+			
+			
+			<p:column style="width:10%">
+				<f:facet name="header">
+					<h:outputText value="Cash In (#{app['common.currency']})"/>
+				</f:facet>
+				<h:outputText value="#{posCounter.creditamount}"
+					styleClass="logintxttable">
+					
+				</h:outputText>
+				
+			</p:column>
+			
+			<p:column style="width:10%">
+				<f:facet name="header">
+					<h:outputText value="Cash Out (#{app['common.currency']})"/>
+				</f:facet>
+				<h:outputText value="#{posCounter.debitAmount}"
+					styleClass="logintxttable">
+					
+				</h:outputText>
+				
+			</p:column>
+			
+			<p:column style="width:10%">
+				<f:facet name="header">
+					<h:outputText value="Sales (#{app['common.currency']})"/>
+				</f:facet>
+				<h:outputText value="#{posCounter.salesamount}"
+					styleClass="logintxttable">
+					
+				</h:outputText>			
+			</p:column>
+			
+			<p:column style="width:10%">
+				<f:facet name="header">
+					<h:outputText value="Expenses (#{app['common.currency']})"/>
+				</f:facet>
+				<h:outputText value="#{posCounter.expensesAmount}"
+					styleClass="logintxttable">
+					
+				</h:outputText>
+			</p:column>
+			
+			<p:column style="width:10%">
+				<f:facet name="header">
+					<h:outputText value="Balance (#{app['common.currency']})"/>
+				</f:facet>
+				<h:outputText value="#{posCounter.balanceAmount}"
+					styleClass="logintxttable">
+					
+				</h:outputText>
+			</p:column>
+
+		
+		</p:dataTable>
+
+	</p:panel>
+
+		<ui:include src="/reports/counterReport/printtemplate/counterReportTemplate.xhtml" />
+	
+</h:form>
+
+
+</ui:composition>

@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:overlayPanel id="customerSearchPanel" for="customerBtn"
+		hideEffect="fade" widgetVar="overcustomer" showCloseIcon="true"
+		style="width:70%;" dynamic="true">
+		<h:panelGroup id="customerPanel" stateless="true">
+
+			
+
+
+				<h:panelGrid id="customerproductgrid" columns="25" border="0"
+					width="100%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText
+						value="IC No"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="oidentificationCompanyRegNo"
+						value="#{customerBean.identificationCompanyRegNo}" maxlength="15"
+						size="25" />
+					<p:message for="oidentificationCompanyRegNo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Customer Name" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="ocustomerName" value="#{customerBean.customerName}"
+						maxlength="15" size="25" />
+					<p:message for="ocustomerName" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Loylty Code" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="oloyaltyCardCode"
+						value="#{customerBean.loyaltyCardCode}" maxlength="15" size="25" />
+					<p:message for="oloyaltyCardCode" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton icon="ui-icon-search" style="height:22px;" ajax="true"
+							action="#{customerBean.searchCustomer}" update="customerPanel" />
+
+					</h:panelGrid>
+					<h:outputText value="" />
+					
+				</h:panelGrid>
+
+				
+				
+				
+				<p:dataTable id="customerdataTable" var="customer" rowIndexVar="row" paginatorPosition="top"
+					lazy="true" value="#{customerBean.customerModel}"
+					first="#{customerBean.first}"  scrollable="true" scrollHeight="200"
+					paginator="true" rows="10" style="width: 100%" selectionMode="single"
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+					
+					<p:ajax event="page" listener="#{customerBean.onPageChange}" />
+
+					<p:ajax event="rowSelect"						
+						oncomplete="PF('overcustomer').hide();" listener="#{quotationBean.selectCustomer}"
+						update=":addEditQuotationForm:customerName">
+						
+					</p:ajax>
+					
+
+
+					<p:column sortBy="#{customer.customerName}" width="15%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['customer.label.customerName']}" />
+						</f:facet>
+						<h:outputText value="#{customer.customerName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column sortBy="#{customer.identificationCompanyRegNo}"
+						width="10%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText
+								value="IC No"
+								styleClass="tableheader" />
+						</f:facet>
+						<h:outputText value="#{customer.identificationCompanyRegNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					
+					
+					<p:column width="15%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Email" />
+						</f:facet>
+						<h:outputText value="#{customer.emailAddress}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column width="10%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Loylty Code" />
+						</f:facet>
+						<h:outputText value="#{customer.loyaltyCardCode}"
+							styleClass="logintxttable" />
+					</p:column>
+
+				
+					<p:column width="5%" styleClass="logintxtnumberFormat" >
+						<f:facet name="header">
+							<h:outputText value="Points" />
+						</f:facet>
+						<h:outputText value="#{customer.availablePoints}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+
+				</p:dataTable>
+				
+			
+
+		</h:panelGroup>
+
+
+	</p:overlayPanel>
+</ui:composition>

@@ -1,0 +1,667 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Add Edit Sales Order">
+
+				<p:outputPanel id="step1">
+					<h:panelGrid id="addeditsalesPanel" columns="5" width="78%"
+						columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="Sales Type" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:selectOneMenu id="salesType"
+							rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}"
+							value="#{salesorderBean.salesType}"
+							style="width:160px; text-align:left;">
+							<f:selectItem itemLabel="Select Sales Type" itemValue="0" />
+							<f:selectItem itemLabel="Sales By Branch" itemValue="1" />
+							<f:selectItem itemLabel="Sales By Quotation" itemValue="2" />
+							<p:ajax update="salesPanel" event="change"
+								listener="#{salesorderBean.changeSalesType}" />
+						</p:selectOneMenu>
+
+						<p:selectOneMenu id="salesType1"
+							rendered="#{loginBean.branch.branchtype==app['project.type.branch.value']}"
+							value="#{salesorderBean.salesType}"
+							style="width:160px; text-align:left;">
+							<f:selectItem itemLabel="Select Sales Type" itemValue="0" />
+							<f:selectItem itemLabel="Sales By Quotation" itemValue="2" />
+							<p:ajax update="salesPanel" event="change"
+								listener="#{salesorderBean.changeSalesType}" />
+						</p:selectOneMenu>
+
+						<p:message for="salesType" styleClass="fieldError" />
+
+					</h:panelGrid>
+				</p:outputPanel>
+
+				<p:outputPanel id="step2">
+
+
+					<h:panelGrid id="addeditBranchsalesPanel" columns="5" width="70%"
+						rendered="#{salesorderBean.salesType=='1' and loginBean.branch.branchtype==app['project.type.hq.value']}"
+						columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="#{msg['purchaseorder.label.branchname']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:selectOneMenu id="branchId" value="#{salesorderBean.branchId}"
+							style="width:160px; text-align:left;">
+							<f:selectItem itemLabel="Select Branch" itemValue="0" />
+							<f:selectItems value="#{commonListBean.branchotherQty}"></f:selectItems>
+
+							<p:ajax update="grnNo,productsalesPanel" event="change"
+								listener="#{salesorderBean.loadGRNListByBranch}" />
+
+						</p:selectOneMenu>
+						<p:message for="branchId" styleClass="fieldError" />
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="GRN No" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:selectOneMenu id="grnNo"
+							value="#{salesorderBean.deliveryOrderId}"
+							style="width:160px; text-align:left;">
+							<f:selectItem itemLabel="Select GRN" itemValue="0" />
+							<f:selectItems value="#{salesorderBean.selectGrnList}"></f:selectItems>
+
+							<p:ajax update="productsalesPanel" event="change"
+								listener="#{salesorderBean.loadDeliveryOrderItem}" />
+
+						</p:selectOneMenu>
+						<p:message for="grnNo" styleClass="fieldError" />
+
+
+
+
+					</h:panelGrid>
+
+
+					<h:panelGrid id="addeditQuotationsalesPanel" columns="5"
+						rendered="#{salesorderBean.salesType=='2'}" width="70%"
+						columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="#{msg['quotation.label.customerName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:autoComplete id="customerName" maxResults="5" size="25"
+							converter="customerConverter" maxlength="15"
+							value="#{salesorderBean.customer}"
+							completeMethod="#{salesorderBean.getCustomerName}" var="c"
+							itemLabel="#{c.customerName}" itemValue="#{c}">>
+						<p:column>  
+                    	#{c.customerId} - #{c.customerName}   
+                		</p:column>
+							<p:ajax event="itemSelect"
+								listener="#{salesorderBean.handleSelect}"
+								update="quotation,productsalesPanel" />
+						</p:autoComplete>
+						<p:message for="customerName" styleClass="fieldError" />
+
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="Quotation No" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:selectOneMenu id="quotation"
+							value="#{salesorderBean.quotationId}"
+							style="width:160px; text-align:left;">
+							<f:selectItem itemLabel="Select Quotation No" itemValue="0" />
+							<f:selectItems value="#{salesorderBean.selectQuotationList}"></f:selectItems>
+							<p:ajax update="productsalesPanel,quotationgrid,branchgrid"
+								event="change" listener="#{salesorderBean.loadQuotationItem}" />
+						</p:selectOneMenu>
+						<p:message for="quotation" styleClass="fieldError" />
+
+
+
+
+					</h:panelGrid>
+				</p:outputPanel>
+
+
+				<br></br>
+
+
+
+
+				<p:panelGrid style="width:99%" id="productsalesPanel"
+					styleClass="alignTop">
+					<f:facet name="header">
+						<p:row>
+							<p:column style="width:15%;">Branch/Customer</p:column>
+							<p:column style="width:85%;">Products Details</p:column>
+						</p:row>
+					</f:facet>
+
+					<p:row>
+						<p:column style="width:15%;" styleClass="columnwidthc">
+
+							<h:panelGrid columns="1" border="0" width="100%"
+								rendered="#{salesorderBean.salesType=='2'}"
+								styleClass="borderlessGrid" cellpadding="3" id="quotationgrid"
+								cellspacing="3"
+								columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+								<h:outputText
+									value="#{salesorderBean.quotation.customer.customerName} , #{salesorderBean.quotation.customer.identificationCompanyRegNo}"
+									styleClass="logintxt" />
+
+								<h:outputText
+									value="#{salesorderBean.quotation.customer.address}"
+									styleClass="logintxttable" />
+
+								<h:outputText value="#{salesorderBean.quotation.customer.city}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesorderBean.quotation.customer.state} - #{salesorderBean.quotation.customer.postCode}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value=" #{salesorderBean.quotation.customer.phoneNo}"
+									styleClass="logintxttable" />
+
+
+							</h:panelGrid>
+
+
+							<h:panelGrid columns="1" border="0" width="100%"
+								rendered="#{salesorderBean.salesType=='1'}"
+								styleClass="borderlessGrid" cellpadding="3" id="branchgrid"
+								cellspacing="3"
+								columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+								<h:outputText
+									value="#{salesorderBean.deliveryorder.branch.branchName}"
+									styleClass="logintxt" />
+
+								<h:outputText
+									value="#{salesorderBean.deliveryorder.branch.address}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesorderBean.deliveryorder.branch.city}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesorderBean.deliveryorder.branch.state}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesorderBean.deliveryorder.branch.postCode}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesorderBean.deliveryorder.branch.phoneNo}"
+									styleClass="logintxttable" />
+							</h:panelGrid>
+
+
+						</p:column>
+
+
+						<p:column style="width:85%;">
+							<p:dataTable id="productTable" var="product" scrollable="true"
+								scrollHeight="250"
+								rendered="#{salesorderBean.salesType=='1' and salesorderBean.deliveryorder.deliveryorderbreakdowns!=null}"
+								rowIndexVar="productrow" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}"
+								value="#{salesorderBean.deliveryorder.deliveryorderbreakdowns}"
+								style="width:100%;">
+
+
+								<p:columnGroup type="header">
+									<p:row>
+
+										<p:column style="width:3%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:8%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Code" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:12%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Name" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="UOM" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Total Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sold Quantity" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Balance Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Unit Price (#{app['common.currency']})"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Discount (#{app['common.currency']})" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sales Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+										
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Tax (#{app['common.currency']})"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sub Total (#{app['common.currency']})"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+									</p:row>
+								</p:columnGroup>
+
+
+								<p:column style="width:3%;" styleClass="columnwidth">
+									<p:selectBooleanCheckbox
+										value="#{salesorderBean.checkAmountApportion[product.id]}">
+										<p:ajax
+											listener="#{salesorderBean.selectAddRemoveAmount(productrow)}"
+											update="productTable" />
+									</p:selectBooleanCheckbox>
+								</p:column>
+
+
+								<p:column style="width:8%;" styleClass="columnwidth">
+									<h:outputText value="#{product.barcode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:12%;" styleClass="columnwidth">
+									<h:outputText value="#{product.productName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:5%;" styleClass="columnwidth">
+									<h:outputText value="#{product.uomName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<h:outputText value="#{product.quantity}" size="6"
+										id="quantity" styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<h:outputText value="#{product.soldQuantity}" size="6"
+										id="received" styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<h:outputText value="#{product.balanceQuantity}" size="6"
+										id="balance" styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{product.unitPrice}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{product.discountAmount}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<p:inputText disabled="true"
+										value="#{salesorderBean.salableQuantity[product.id]}" size="6"
+										onkeypress='return validateonlyNumber(event)' id="receivable"
+										styleClass="logintxtnumberFormat">
+										<p:ajax event="blur"
+											listener="#{salesorderBean.validateBranchQuantity(productrow)}"
+											update="productTable" />
+									</p:inputText>
+									<p:message for="receivable" styleClass="fieldError" />
+								</p:column>
+								
+								<p:column width="7%" styleClass="columnwidthn">
+									<h:outputText
+										value="#{salesorderBean.salableTaxPrice[product.id]}" size="7"
+										id="receivableTaxprice" styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+								
+								
+
+								<p:column width="7%" styleClass="columnwidthn">
+									<h:outputText
+										value="#{salesorderBean.salablePrice[product.id]}" size="7"
+										id="receivableprice" styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:columnGroup type="footer">
+									<p:row>
+										<p:column colspan="11" footerText="Total Amount (#{app['common.currency']})"
+											style="text-align:right" />
+										<p:column footerText="#{salesorderBean.totalAmount}"
+											style="text-align:right" />
+									</p:row>
+								</p:columnGroup>
+
+							</p:dataTable>
+
+
+
+
+
+							<p:dataTable id="productTable1" var="product" scrollable="true"
+								scrollHeight="270"
+								rendered="#{salesorderBean.salesType=='2' and salesorderBean.quotation.quotationbreakdowns!=null}"
+								rowIndexVar="productrow"
+								value="#{salesorderBean.quotation.quotationbreakdowns}"
+								style="width:100%;">
+
+
+								<p:columnGroup type="header">
+									<p:row>
+
+										<p:column style="width:3%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:8%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Code" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:12%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Name" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="UOM" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Total Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sold Quantity" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Balance Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Unit Price (#{app['common.currency']})"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Discount (#{app['common.currency']})" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sales Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Tax" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sub Total (#{app['common.currency']})"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+									</p:row>
+								</p:columnGroup>
+
+								<p:column style="width:3%;" styleClass="columnwidth">
+									<p:selectBooleanCheckbox
+										value="#{salesorderBean.checkAmountApportion[product.id]}">
+										<p:ajax
+											listener="#{salesorderBean.selectAddRemoveQAmount(productrow)}"
+											update="productTable1" />
+									</p:selectBooleanCheckbox>
+								</p:column>
+
+
+								<p:column style="width:8%;" styleClass="columnwidth">
+									<h:outputText value="#{product.productCode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:12%;" styleClass="columnwidth">
+									<h:outputText value="#{product.productName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:5%;" styleClass="columnwidth">
+									<h:outputText value="#{product.uomName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<h:outputText value="#{product.quantity}" size="6"
+										id="quantity" styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<h:outputText value="#{product.soldQuantity}" size="6"
+										id="received" styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<h:outputText value="#{product.balanceQuantity}" size="6"
+										id="balance" styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{product.unitPrice}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{product.discountAmount}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<p:inputText
+										value="#{salesorderBean.salableQuantity[product.id]}" size="5"
+										onkeypress='return validate(event)' id="receivable"
+										styleClass="logintxtnumberFormat">
+										<p:ajax event="blur"
+											listener="#{salesorderBean.validateQuotaionQuantity(productrow)}"
+											update="productTable1" />
+									</p:inputText>
+									<p:message for="receivable" styleClass="fieldError" />
+								</p:column>
+
+								<p:column width="7%" styleClass="columnwidthn">
+									<h:outputText
+										value="#{salesorderBean.salableTaxPrice[product.id]}" size="7"
+										id="receivableTaxprice" styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+
+								<p:column width="7%" styleClass="columnwidthn">
+									<h:outputText
+										value="#{salesorderBean.salablePrice[product.id]}" size="7"
+										id="receivableprice" styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:columnGroup type="footer">
+									<p:row>
+										<p:column colspan="10" footerText="Total Amount (#{app['common.currency']})"
+											style="text-align:right" />
+										<p:column style="text-align:right" footerText="#{salesorderBean.totalAmount}">
+											<h:outputText value="#{salesorderBean.totalAmount}"
+												styleClass="logintxttable">
+												<f:convertNumber minFractionDigits="2" />
+											</h:outputText>
+										</p:column>
+
+									</p:row>
+								</p:columnGroup>
+
+
+							</p:dataTable>
+						</p:column>
+					</p:row>
+
+					<f:facet name="footer">
+						<p:row>
+							<p:column style="width:100%;" colspan="2">
+								<p:commandButton value="Save" ajax="true"
+									action="#{salesorderBean.validateSalesOrder}"
+									oncomplete="PF('salescreateDig').show()"
+									update="salesPanel,deliverycreate" />
+
+								<p:commandButton value="Reset" ajax="true"
+									action="#{salesorderBean.changeSalesType}" update="salesPanel" />
+
+								<p:commandButton value="Cancel" ajax="false"
+									action="#{salesorderBean.listSalesOrder}" update="salesPanel" />
+							</p:column>
+						</p:row>
+					</f:facet>
+
+				</p:panelGrid>
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		<p:dialog id="modalDialogSalesOrderCreate" showEffect="fade"
+			hideEffect="fade" header="Sales Order Create Confirmatio"
+			resizable="false" widgetVar="salescreateDig" modal="true"
+			height="150" width="400">
+
+			<br></br>
+
+			<p:panel id="deliverycreate">
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText
+						value="Are you sure you want to create this sales order?  "
+						styleClass="logintxttable" />
+
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+					<p:commandButton value="Create Sales Order" ajax="true"
+						oncomplete="PF('salescreateDig').hide()"
+						rendered="#{loginBean.functionList.contains('Add SalesOrder') and salesorderBean.saveConfirm==true}"
+						action="#{salesorderBean.saveSalesOrder}" update="salesPanel">
+					</p:commandButton>
+					<p:commandButton value="Cancel" oncomplete="PF('salescreateDig').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

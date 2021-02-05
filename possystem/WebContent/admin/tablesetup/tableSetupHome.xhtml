@@ -1,0 +1,174 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	>
+	
+<style type="text/css">
+.tableSetupPanelGrid>tbody>tr>td {
+    vertical-align: top;
+}
+.tableSetupPanelGrid .ui-panelgrid td {
+    padding: 0 ;
+    margin:0;
+    collapse:collapse;
+    
+}
+
+</style>
+	        
+<h:form id="tableSetupForm">
+
+<p:panel id="systemConfigurationPanel" header="TABLE SETUP">
+    
+<p:panelGrid style="width:100%;height:90vh" styleClass="tableSetupPanelGrid borderlessGrid">
+	<p:row>
+		<p:column colspan="2" >
+			<p:dataGrid
+				id="areaListId"
+				rows="20"
+				var="area"
+				columns="20"
+				layout="grid"
+				value="#{hoteltableBean.hotelTableAreaList}"
+				
+			>
+				<f:facet name="header" style="background:blue">
+					<h:outputText value="SECTION [" />
+					<p:commandLink value=" new " style="color:blue;" oncomplete="PF('hotelTableAreaDlg').show()"/>
+					<h:outputText value="]" />
+				</f:facet>
+						
+				<p:commandButton
+					style="width:5vw;height:5vh;color:#{area.areaId==hoteltableBean.areaId ? 'white' : 'black'};background:#{area.areaId==hoteltableBean.areaId ? '#E32526' : ''}" 
+					value="#{area.areaName}" 
+					action="#{hoteltableBean.loadTableLayout(area.areaId)}"
+					update="tableSetupForm:restrictPanel,tableSetupForm:areaListId,tableSetupForm:unassignedTableList"
+					
+				/>
+				
+			</p:dataGrid>
+		
+		</p:column>
+		
+	</p:row>
+	
+	<p:row>
+		<p:column style="width:5%">
+		
+			<p:dataGrid
+	     		id="unassignedTableList"
+				columns="1"
+				value="#{hoteltableBean.unAssignedHotelTableList}"
+				paginator="true"
+				paginatorPosition="top"
+				paginatorTemplate="{CurrentPageReport}   
+				{PreviousPageLink} 
+				{NextPageLink}"
+				rows="10"
+				var="table"
+			>
+				<f:facet name="header" style="background:blue">
+					<p:commandLink value="AVAILABLE TABLE" />
+				</f:facet>
+				<p:commandButton
+					style="width:5vw;height:5vh;"
+					disabled="#{hoteltableBean.areaId==0}"
+					value="#{table.tableName}"
+					actionListener="#{hoteltableBean.addTableToDraggablePanel(table)}"
+					update="tableSetupForm:restrictPanel,tableSetupForm:unassignedTableList" 
+				/>
+								
+			</p:dataGrid>
+	
+		</p:column>
+		
+		<p:column style="width:90%;">
+		<h:graphicImage 
+					value="/images/layoutBalqis.png"
+					style="position:absolute;
+					z-index:1;
+					width:72vw;
+					height:80vh;
+					"
+					
+					/>
+			<p:outputPanel id="restrictPanel" 
+				layout="block" 
+				style="width:100%;height:80vh;border:1px solid #666666;
+				background:gray;margin-bottom:5px;position: relative;"
+			>		
+			<h:outputText value="#{aa}" />
+					
+			</p:outputPanel>
+			<p:commandButton value="SAVE"
+				style="width:100%;font-size:2em;background:#E32526;color:White" 
+				action="#{hoteltableBean.saveTableLayout}"
+				update="tableSetupForm:restrictPanel,tableSetupForm:unassignedTableList"
+			/>
+	
+		</p:column>
+		
+	</p:row>
+	
+</p:panelGrid>
+
+	
+	<h:inputHidden id="hiddenButton" value="#{hoteltableBean.draggedComponentId}"/>
+	<p:remoteCommand 
+		name="rc_setCompId" 
+		process="hiddenButton" />
+	<p:remoteCommand 
+		name="rc_updateTableLayout" 
+		action="#{hoteltableBean.updateTableLayout}"
+		update="tableSetupForm:restrictPanel" 
+		/>
+</p:panel>
+	<ui:include src="/admin/tablesetup/dialog/hotelTableAreaDlg.xhtml" />
+
+
+	
+</h:form>
+
+<script>
+
+$(document).ready(function() {
+	
+	
+	$('div').on('.ui-draggable-dragging', function(e) {	
+		e.stopPropagation();
+	}).on('mouseup', '.ui-draggable-dragging',function(e) {
+        e.stopPropagation();
+		var comp_id=$(e.target).attr('id');
+		comp_id=comp_id.split(':')[1];
+		document.getElementById('tableSetupForm:hiddenButton').value =comp_id;
+		rc_setCompId();
+		var style = $(e.target).attr('style');
+		
+		var left = style.match(/left[\s\S]*?(;)/g);
+		left=left[0].match(/[\d\.]+/);
+		left = left.join("");
+		//left=parseFloat(left).toFixed(2);
+		left=parseInt(left);
+		left = "left: "+left+"px;"
+		
+		var top=style.match(/top[\s\S]*?(;)/g);
+		top=top[0].match(/[\d\.]+/);
+		top = top.join("");
+		//top=parseFloat(top).toFixed(2);
+		top=parseInt(top);
+		top = "top: "+top+"px;"
+		
+		rc_updateTableLayout([{name:'left',value:left},{name:'top',value:top}]);
+		
+		
+	})
+	
+});
+
+</script>
+
+</ui:composition>

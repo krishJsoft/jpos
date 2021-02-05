@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditSupplierForm">
+		<p:outputPanel id="supplierPanel">
+		
+		<p:panel  styleClass="mytabpanel" header="Add/Edit Supplier">  
+		
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="supplierPanel" /></td>
+				</tr>
+			</table>
+
+
+			
+			
+			<p:wizard widgetVar="wiz"  id="tabView" showStepStatus="true"
+            flowListener="#{supplierBean.onFlowProcess}">
+				
+				
+				<p:tab title="Supplier Step1" id="step1"  titleStyleClass="logintxt">
+					<ui:include src="/admin/supplierStep1.xhtml" />
+				</p:tab>
+
+				
+				<p:tab title="Supplier Step2" id="step2" titleStyleClass="logintxt">
+					<ui:include src="/admin/supplierStep2.xhtml" />
+				</p:tab>
+
+				<p:tab title="Supplier Step3" id="step3" titleStyleClass="logintxt">
+					<ui:include src="/admin/supplierStep3.xhtml" />
+				</p:tab>
+				
+				
+			</p:wizard>
+				
+			</p:panel>
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

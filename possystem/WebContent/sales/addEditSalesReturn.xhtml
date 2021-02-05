@@ -1,0 +1,342 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditSalesReturnForm">
+		<p:outputPanel id="salesreturnPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesreturnPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Add/Edit Sales Return">
+				
+				<h:panelGrid  columns="5"	styleClass="alignTop">
+				<h:outputText value="*" styleClass="mandatory_text" />
+				<h:outputText value="Sales Order No" styleClass="logintxt" />
+
+				<p:inputText value="#{salesreturnBean.salesOrderNo}" size="25"
+					id="salesOrderNo">
+				</p:inputText>
+
+				<p:commandButton value="Check" ajax="true"
+					actionListener="#{salesreturnBean.returnSalesOrder}"
+					update="salesreturnPanel" />
+
+				<p:message for="salesOrderNo" styleClass="fieldError" />
+				</h:panelGrid>
+
+
+
+				<br></br>
+
+				<p:panelGrid style="width:99%" id="productsalesPanel"
+					styleClass="alignTop">
+					<f:facet name="header">
+						<p:row>
+							<p:column style="width:15%;">Branch/Customer</p:column>
+							<p:column style="width:85%;">Products Details</p:column>
+						</p:row>
+					</f:facet>
+
+					<p:row>
+						<p:column style="width:15%;" styleClass="columnwidthc">
+
+							<p:panelGrid columns="1" border="0" width="100%"
+								rendered="#{salesreturnBean.salesorder.salesType=='1'}"
+								styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+								columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+								<h:outputText value="#{salesreturnBean.salesorder.salesOrderNo}"
+									styleClass="logintxt" />
+
+								<h:outputText value="#{salesreturnBean.salesorder.createdDate}"
+									styleClass="logintxt">
+									<f:convertDateTime pattern="dd-MMM-yyyy" />
+								</h:outputText>
+
+								<h:outputText value="#{salesreturnBean.salesorder.totalAmount}"
+									styleClass="logintxt" />
+
+								<br></br>
+
+
+								<h:outputText
+									value="#{salesreturnBean.salesorder.branch.branchName}"
+									styleClass="logintxt" />
+
+								<h:outputText
+									value="#{salesreturnBean.salesorder.branch.address}"
+									styleClass="logintxttable" />
+
+								<h:outputText value="#{salesreturnBean.salesorder.branch.city}"
+									styleClass="logintxttable" />
+
+								<h:outputText value="#{salesreturnBean.salesorder.branch.state}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesreturnBean.salesorder.branch.postCode}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesreturnBean.salesorder.branch.phoneNo}"
+									styleClass="logintxttable" />
+							</p:panelGrid>
+
+
+
+
+
+							<p:panelGrid columns="1" border="0" width="100%"
+								styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+								rendered="#{salesreturnBean.salesorder.salesType=='2'}"
+								columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+								<h:outputText value="#{salesreturnBean.salesorder.salesOrderNo}"
+									styleClass="logintxt" />
+
+								<h:outputText value="#{salesreturnBean.salesorder.createdDate}"
+									styleClass="logintxt">
+									<f:convertDateTime pattern="dd-MMM-yyyy" />
+								</h:outputText>
+
+								<h:outputText
+									value="RM: #{salesreturnBean.salesorder.totalAmount}"
+									styleClass="logintxt" />
+
+								<br></br>
+
+								<h:outputText
+									value="#{salesreturnBean.salesorder.customer.customerName} , #{salesreturnBean.salesorder.customer.identificationCompanyRegNo}"
+									styleClass="logintxt" />
+
+								<h:outputText
+									value="#{salesreturnBean.salesorder.customer.address}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesreturnBean.salesorder.customer.city}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesreturnBean.salesorder.customer.state} - #{salesreturnBean.salesorder.customer.postCode}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value=" #{salesreturnBean.salesorder.customer.phoneNo}"
+									styleClass="logintxttable" />
+
+
+							</p:panelGrid>
+
+						</p:column>
+
+
+						<p:column style="width:85%;">
+
+
+
+							<p:dataTable id="productTable" var="product" scrollable="true"
+								scrollHeight="290" rowIndexVar="productrow"
+								value="#{salesreturnBean.salesorder.salesorderbreakdowns}"
+								style="width:100%;" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}">
+
+								<p:message for="receivable" styleClass="fieldError" />
+
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column style="width:8%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Code" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:16%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Name" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Unit Price(RM)"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Discount (RM)" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+										
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Batch No" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+										
+										<p:column style="width:8%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Expiry Date" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+										
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sold Quantity" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Return Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+									</p:row>
+								</p:columnGroup>
+
+
+
+
+								<p:column style="width:8%;" styleClass="columnwidth">
+									<h:outputText value="#{product.productCode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:16%;" styleClass="columnwidth">
+									<h:outputText value="#{product.productName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{product.unitPrice}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{product.discountAmount}"
+										styleClass="logintxttable" />
+								</p:column>
+
+
+								<p:column width="6%" styleClass="columnwidth">
+									<h:outputText value="#{product.batchNo}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="8%" styleClass="columnwidth">
+									<h:outputText value="#{product.expiryDate}"
+										styleClass="logintxttable">
+										<f:convertDateTime pattern="dd-MMM-yyyy" />
+									</h:outputText>
+								</p:column>
+
+
+
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<h:outputText value="#{product.quantity}" size="6" id="balance"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<p:inputText
+										value="#{salesreturnBean.returnQuantity[product.id]}" size="6"
+										onkeypress='return validate(event)' id="receivable"
+										styleClass="logintxtnumberFormat">
+										<p:ajax event="blur"
+											listener="#{salesreturnBean.validateEditQuantity(productrow)}"
+											update="productTable" />
+									</p:inputText>
+
+								</p:column>
+
+
+
+							</p:dataTable>
+
+						</p:column>
+					</p:row>
+
+					<f:facet name="footer">
+						<p:row>
+							<p:column style="width:100%;" colspan="2">
+								<p:commandButton value="Return" ajax="true"
+									action="#{salesreturnBean.validateSalesReturnOrder}"
+									oncomplete="salescreateDig.show()"
+									update="salesreturnPanel,deliverycreate" />
+
+								<p:commandButton value="Reset" ajax="true"
+									actionListener="#{salesreturnBean.resetRetrun}"
+									update="salesreturnPanel">
+								</p:commandButton>
+
+								<p:commandButton value="Cancel" ajax="false"
+									action="#{salesreturnBean.listSalesReturnOrder}"
+									update="salesreturnPanel" />
+							</p:column>
+						</p:row>
+					</f:facet>
+
+				</p:panelGrid>
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		<p:dialog id="modalDialogSalesOrderCreate" showEffect="fade"
+			hideEffect="fade" header="Sales Order Return Confirmation"
+			resizable="false" widgetVar="salescreateDig" modal="true"
+			height="150" width="400">
+
+			<br></br>
+
+			<p:panel id="deliverycreate">
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="Are you sure you want to return product(s) sold?  "
+						styleClass="logintxttable" />
+
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+					<p:commandButton value="Return Sales " ajax="true"
+						oncomplete="salescreateDig.hide()"
+						rendered="#{loginBean.functionList.contains('Edit SalesOrder') and salesreturnBean.saveConfirm==true }"
+						action="#{salesreturnBean.returnSalesConfirm}"
+						update="salesreturnPanel">
+					</p:commandButton>
+					<p:commandButton value="Cancel" onclick="salescreateDig.hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

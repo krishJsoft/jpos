@@ -1,0 +1,168 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel>
+
+		<br></br>
+
+		<p:panelGrid style="width:100%" id="customerviewgrid"
+			rowClasses="even-row , odd-row" styleClass="alignTop">
+
+			<f:facet name="header">
+				<p:row>
+					<p:column style="width:25%;">Supplier Balance</p:column>
+					<p:column style="width:75%;">Supplier Details</p:column>
+				</p:row>
+			</f:facet>
+
+			<p:row>
+				<p:column style="width:25%;" styleClass="alignTop">
+
+					<p:panelGrid columns="1" width="100%" styleClass="borderlessGrid"
+						cellpadding="5" cellspacing="5">
+
+						<h:outputText value="Outstanding (RM)" styleClass="totalLable" />
+						<h:outputText value="6546.00 " styleClass="totalValue"></h:outputText>
+						<br></br>
+						<br></br>
+					</p:panelGrid>
+
+				</p:column>
+
+				<p:column style="width:75%;" styleClass="alignTop">
+
+					<p:panelGrid columns="6" width="100%" 
+						style="margin-top:20px;margin-bottom:20px;margin-left:50px;" cellpadding="10"
+						cellspacing="10" styleClass="borderlessGrid"
+						columnClasses="columnLeft width-280px, columnLeft width-10px, columnLeft width-280px">
+
+
+
+						<h:outputText value="#{msg['supplier.label.supplierName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.supplierName}" />
+
+						<h:outputText value="#{msg['supplier.label.companyName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.companyName}" />
+
+						<h:outputText value="#{msg['supplier.label.companyRegNo']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.companyRegNo}" />
+
+						<h:outputText value="#{msg['supplier.label.contactPerson']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.contactPerson}" />
+
+						<h:outputText value="#{msg['supplier.label.contactPersonNumber']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.contactPersonNumber}" />
+
+
+						<h:outputText value="#{msg['supplier.label.address']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.address}" />
+
+						<h:outputText value="#{msg['supplier.label.city']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.city}" />
+
+						<h:outputText value="#{msg['supplier.label.state']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.state}" />
+
+						<h:outputText value="#{msg['supplier.label.country']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.country}" />
+
+						<h:outputText value="#{msg['supplier.label.postCode']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.postCode}" />
+
+						<h:outputText value="#{msg['supplier.label.faxNo']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.faxNo}" />
+
+						<h:outputText value="#{msg['supplier.label.email']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.email}" />
+
+						<h:outputText value="#{msg['supplier.label.paymentTerms']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.paymentTerms}" />
+
+						<h:outputText value="#{msg['supplier.label.taxSchedule']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.taxSchedule}" />
+
+						<h:outputText value="#{msg['supplier.label.deliveryMethod']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.deliveryMethod}" />
+
+						<h:outputText value="#{msg['supplier.label.currency']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.currency}" />
+
+						<h:outputText value="#{msg['supplier.label.bankName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.bankName}" />
+
+						<h:outputText value="#{msg['supplier.label.branchName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.branchName}" />
+
+						<h:outputText value="#{msg['supplier.label.accountNumber']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.accountNumber}" />
+
+						<h:outputText value="#{msg['supplier.label.remarks']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="#{supplierBean.supplier.remarks}" />
+
+						<h:outputText value="#{msg['branch.label.Status']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:outputText value="Active"
+							rendered="#{supplierBean.supplier.status=='1'}" />
+						<h:outputText value="InActive"
+							rendered="#{supplierBean.supplier.status=='2'}" />
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+
+					</p:panelGrid>
+				</p:column>
+
+			</p:row>
+		</p:panelGrid>
+
+	</p:outputPanel>
+
+</ui:composition>
+
+

@@ -1,0 +1,147 @@
+package com.alpha.bo.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.RoleFunctionLinkBO;
+
+import com.alpha.dao.interfaces.IRoleDAO;
+import com.alpha.dao.interfaces.RoleFunctionLinkDAO;
+import com.alpha.hq.model.Function;
+import com.alpha.hq.model.Rolefunctionlink;
+import com.alpha.hq.model.Role;
+import com.alpha.model.datamodel.RolePrivilegesModel;
+
+@Service("rolefunctionLinkBO")
+public class RoleFunctionLinkBOImpl implements RoleFunctionLinkBO {
+
+	public static Logger log = LoggerFactory
+			.getLogger(RoleFunctionLinkBOImpl.class);
+
+	@Resource(name = "RoleFunctionLinkRepository")
+	private RoleFunctionLinkDAO RoleFunctionRepository;
+
+	
+	@Resource(name = "RoleRepository")
+	private IRoleDAO RoleRepository;
+	
+	
+	@Transactional
+	public List<Rolefunctionlink> findbyRolefunctionListAll(Integer id) {
+		return RoleFunctionRepository.findbyRolefunctionListAll(id);
+	}
+
+	@Transactional
+	public List<RolePrivilegesModel> findPrivilagesByRole(Integer roleId) {
+
+		List<RolePrivilegesModel> rolePrivilages = null;
+
+		if (roleId == null) {
+			log.error(" Input(roleId) is Null @ findPrivilagesByRole()");
+			return null;
+		}
+		try {
+			List<Rolefunctionlink> rolefunctionslinks = RoleFunctionRepository
+					.findbyRolefunctionListAll(roleId);
+			if (rolefunctionslinks == null || rolefunctionslinks.size() == 0) {
+				log.error(" Rolefunctionslink list is  null for the roleId : "
+						+ roleId);
+				return null;
+			}
+
+			rolePrivilages = new ArrayList<RolePrivilegesModel>();
+			for (Rolefunctionlink rf : rolefunctionslinks) {
+				RolePrivilegesModel rolePriv = new RolePrivilegesModel();
+				rolePriv.setRoleFunctionLinkId(rf.getRoleFunctionLinkId());
+				rolePriv.setFunctionId(rf.getFunction().getFunctionId());
+				rolePriv.setFunctionName(rf.getFunction().getFunctionName());
+				rolePriv.setRoleId(rf.getRole().getRoleId());
+				rolePriv.setRoleName(rf.getRole().getRoleName());
+				rolePrivilages.add(rolePriv);
+			}
+		} catch (Exception e) {
+			log.error("Exception @ findFunctionsByRole : " + e.getMessage());
+		}
+		return rolePrivilages;
+	}
+
+	@Transactional
+	public void save(Rolefunctionlink roleFunctionlink) {
+		RoleFunctionRepository.save(roleFunctionlink);
+	}
+
+	@Transactional
+	public void save(int roleId, Map<Integer, Boolean> checkMap,
+			List<Integer> oldPrivFunctionIds) {
+
+		
+		Role role = new Role();
+
+		role = RoleRepository.get(roleId);
+		List<Rolefunctionlink> curPrivilages = role.getRolefunctionlinks();
+
+		List<Rolefunctionlink> tmpPriv = new ArrayList<Rolefunctionlink>();
+		// Saving the Newly added privilages
+		for (Entry<Integer, Boolean> entry : checkMap.entrySet()) {
+			if (entry.getValue()) { // result = entry.getKey();
+
+				if (oldPrivFunctionIds != null
+						&& oldPrivFunctionIds.contains(entry.getKey())) {
+					continue;
+				}
+				Rolefunctionlink roleFunctionslink = new Rolefunctionlink();
+				Function function = new Function();
+				/*
+				 * Role roleTmp = new Role();
+				 * roleTmp.setRoleId(role.getRoleId());
+				 */
+				function.setFunctionId(entry.getKey());
+				roleFunctionslink.setFunction(function);
+				roleFunctionslink.setRole(role);
+				log.info(" roleFunctionslink : "
+						+ ToStringBuilder.reflectionToString(roleFunctionslink,
+								ToStringStyle.MULTI_LINE_STYLE));
+
+				tmpPriv.add(roleFunctionslink);
+				this.save(roleFunctionslink);
+				// RoleFunctionRepository.save(roleFunctionslink);
+			}
+		}
+
+	/*	if (tmpPriv != null && tmpPriv.size() > 0) {
+
+			role.setRolefunctionlinks(tmpPriv);
+			roleBO.save(role);
+		}*/
+	}
+
+	@Transactional
+	public void update(Rolefunctionlink rolefunctionLink) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Transactional
+	public void delete(Integer id) {
+		RoleFunctionRepository.delete(id);
+	}
+
+	@Override
+	public List<Rolefunctionlink> findfunctionbyRoleListAll(Integer roleId) {
+
+		return RoleFunctionRepository.findfunctionbyRoleListAll(roleId);
+	}
+
+}

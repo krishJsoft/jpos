@@ -1,0 +1,243 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="modalDialogQuotation" header="Quotation Details"
+		resizable="false" widgetVar="quotationDig" modal="true" height="90%"
+		width="90%">
+		<br></br>
+
+		<p:panel id="requestitem">
+
+			<h:panelGrid columns="2" border="0" width="90%" styleClass="bgcolor"
+				cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<p:panel header="Customer Details ">
+					<h:panelGrid columns="1" border="0" width="90%"
+						styleClass="bgcolor" cellpadding="1" cellspacing="1"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+						<h:outputText value="#{quotationBean.quotation.customerName}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{quotationBean.quotation.customer.address}"
+							styleClass="logintxttable" />
+
+						<h:outputText value="#{quotationBean.quotation.customer.phoneNo}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value="#{quotationBean.quotation.customer.emailAddress}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value="#{quotationBean.quotation.customer.loyaltyCardCode}"
+							styleClass="logintxttable" />
+
+						<h:outputText
+							value="#{quotationBean.quotation.customer.availablePoints}"
+							styleClass="logintxttable" />
+
+					</h:panelGrid>
+				</p:panel>
+
+
+
+				<h:panelGrid id="requestgrid" columns="6" border="0" width="100%"
+					styleClass="bgcolor" cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="Quote No"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{quotationBean.quotation.quotationNo}"
+						styleClass="logintxttable" />
+
+					<h:outputText value="Quotation Amount(RM)"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{quotationBean.quotation.totalAmount}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+
+
+					<h:outputText value="Quotation Date"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{quotationBean.quotation.quotationDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy " />
+					</h:outputText>
+
+
+					<h:outputText value="Quotation Due Date"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{quotationBean.quotation.quotationDueDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy " />
+					</h:outputText>
+
+					<h:outputText value="Remarks"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{quotationBean.quotation.quotationNo}"
+						styleClass="logintxttable" />
+
+					<h:outputText value="Delivery Terms"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{quotationBean.quotation.deliveryTerms}"
+						styleClass="logintxttable" />
+
+					<h:outputText value="Payment Terms"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{quotationBean.quotation.paymentTerms}"
+						styleClass="logintxttable" />
+
+					<h:outputText value="Status"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{app['quotationstat.status.neworderlable']}"
+						rendered="#{quotationBean.quotation.status==app['quotationstat.status.newordervalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['quotationstat.status.processedlable']}"
+						rendered="#{quotationBean.quotation.status==app['quotationstat.status.processedvalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['quotationstat.status.orderedlable']}"
+						rendered="#{quotationBean.quotation.status==app['quotationstat.status.orderedvalue']}"
+						styleClass="logintxttable" />
+				</h:panelGrid>
+
+
+			</h:panelGrid>
+
+
+			<br></br>
+			<br></br>
+
+			<p:dataTable id="dataTable1" var="quotation" rowIndexVar="row"
+				paginatorPosition="top" scrollable="false" scrollHeight="220"
+				value="#{quotationBean.quotationbreakdowns}" paginator="true"
+				rows="10" style="width: 100%" rowsPerPageTemplate="5,10,15,20,25" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+				<p:column sortBy="#{quotation.productCode}" styleClass="columnwidth"
+					width="6%">
+					<f:facet name="header">
+						<h:outputText value="Product Code" />
+					</f:facet>
+					<h:outputText value="#{quotation.productCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column sortBy="#{quotation.productName}" styleClass="columnwidth"
+					width="25%">
+					<f:facet name="header">
+						<h:outputText value="Product Name" />
+					</f:facet>
+					<h:outputText value="#{quotation.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column sortBy="#{quotation.uomName}" styleClass="columnwidth"
+					width="5%">
+					<f:facet name="header">
+						<h:outputText value="UOM" />
+					</f:facet>
+					<h:outputText value="#{quotation.uomName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column sortBy="#{quotation.expiryDate}" styleClass="columnwidth"
+					width="7%">
+					<f:facet name="header">
+						<h:outputText value="Expiry Date" />
+					</f:facet>
+					<h:outputText value="#{quotation.expiryDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy " />
+					</h:outputText>
+				</p:column>
+
+				<p:column sortBy="#{quotation.unitPrice}" styleClass="columnwidthn"
+					width="7%">
+					<f:facet name="header">
+						<h:outputText value="Unit Price (RM)" />
+					</f:facet>
+					<h:outputText value="#{quotation.unitPrice}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+				<p:column sortBy="#{quotation.discount}" styleClass="columnwidthn"
+					width="7%">
+					<f:facet name="header">
+						<h:outputText value="Discount (RM)" />
+					</f:facet>
+					<h:outputText value="#{quotation.discountAmount}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column sortBy="#{quotation.quantityRequired}"
+					styleClass="columnwidthn" width="7%">
+					<f:facet name="header">
+						<h:outputText value="Quantity Reqd." />
+					</f:facet>
+					<h:outputText value="#{quotation.quantityRequired}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column style="width:5%;" styleClass="columnwidthn">
+					<f:facet name="header">
+						<h:outputText value="Tax (%)" />
+					</f:facet>
+					<h:outputText value="#{quotation.taxCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:7%;" styleClass="columnwidthn">
+					<f:facet name="header">
+						<h:outputText value="Tax" />
+					</f:facet>
+					<h:outputText value="#{quotation.taxAmount}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column sortBy="#{quotation.subTotal}" styleClass="columnwidthn"
+					width="8%">
+					<f:facet name="header">
+						<h:outputText value="Sub Total(RM)" />
+					</f:facet>
+					<h:outputText value="#{quotation.subTotal}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Close" oncomplete="PF('quotationDig').hide()" />
+
+
+
+		</h:panelGrid>
+
+
+	</p:dialog>
+
+</ui:composition>

@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+
+	<h:form id="listProductCategoryForm">
+		<p:outputPanel id="productCategoryPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="productCategoryPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Add/Edit Category">
+
+
+				<h:panelGrid id="addeditcategorygrid" columns="5" border="0"
+					width="60%"
+					columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" rendered="#{productCategoryBean.action!='update'}"/>
+					<h:outputText value="Parent Category Name" rendered="#{productCategoryBean.action!='update'}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":"  rendered="#{productCategoryBean.action!='update'}"/>
+					<h:outputText value="#{productCategoryBean.parentCategoryName}" styleClass="logintxt" rendered="#{productCategoryBean.action!='update'}"/>
+					<h:outputText value="" rendered="#{productCategoryBean.action!='update'}" />
+
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['productcategory.label.name']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="name"
+						value="#{productCategoryBean.productcategory.name}" maxlength="45"
+						size="25" />
+					<p:message for="name" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['productcategory.label.description']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="3" cols="25" id="description"
+						value="#{productCategoryBean.productcategory.description}" />
+					<p:message for="description" styleClass="fieldError" />
+
+
+					<h:outputText value="*" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status"
+						value="#{productCategoryBean.productcategory.status}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Active" itemValue="1" />
+						<f:selectItem itemLabel="InActive" itemValue="2" />
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+<ui:remove>
+					<h:outputText value="" />
+					<h:outputText value="Online" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu 
+						value="#{productCategoryBean.productcategory.status}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Active" itemValue="1" />
+						<f:selectItem itemLabel="InActive" itemValue="2" />
+					</p:selectOneMenu>
+					<h:outputText value="" />
+</ui:remove>
+
+				</h:panelGrid>
+
+				<br />
+
+
+				<table align="center" width="100%" border="0">
+					<tr>
+						<td align="center"><p:commandButton value="Save"
+								action="#{productCategoryBean.saveCategory}"
+								update="productCategoryPanel"
+								rendered="#{productCategoryBean.action!='update'}" /> <p:commandButton
+								value="Update" update="productCategoryPanel"
+								rendered="#{productCategoryBean.action=='update'}"
+								action="#{productCategoryBean.updateCategory}" /> <p:commandButton
+								value="Reset" action="#{productCategoryBean.resetCategory}"
+								update="addeditcategorygrid" /> <p:commandButton value="Cancel"
+								action="#{productCategoryBean.listCategory}" ajax="false"
+								update="addeditcategorygrid" /></td>
+					</tr>
+
+
+				</table>
+
+
+
+				<br />
+
+			</p:panel>
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

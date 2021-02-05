@@ -1,0 +1,156 @@
+package com.alpha.bo.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.IAdminDespatchBO;
+import com.alpha.dao.interfaces.IAdminDespatchDAO;
+import com.alpha.hq.model.Admindespatch;
+import com.alpha.model.datamodel.AdmindespatchModel;
+
+
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 17 July 2013
+ * 
+ */
+
+@Service("adminDespatchBO")
+public class AdminDespatchBOImpl implements IAdminDespatchBO {
+	
+	public static Logger log = LoggerFactory.getLogger(AdminDespatchBOImpl.class);
+
+	@Resource(name = "adminDespatchRepository")
+	private IAdminDespatchDAO adminDespatchRepository;
+	
+	@Transactional
+	@Override
+	public boolean createNewAdminDespatch(AdmindespatchModel adespatch)
+			throws Exception {
+		 boolean saveSuccess = false;
+		 Admindespatch admindespatchObj = new Admindespatch();
+		try {			
+			admindespatchObj.setDespatchType(adespatch.getDespatchType());
+			admindespatchObj.setSpecification(adespatch.getSpecification());
+			admindespatchObj.setUnitPrice(adespatch.getUnitPrice());
+			admindespatchObj.setUom(adespatch.getUom());
+			
+			saveSuccess = adminDespatchRepository.createNewAdminDespatch(admindespatchObj);	
+		}
+		catch (Exception e) {
+			log.info("Error in createNewAdminDespatch AdminDespatchBOImpl " + e);
+			throw e;
+		}
+		return saveSuccess;
+	}
+
+	@Transactional
+	@Override
+	public boolean updateAdminDespatch(AdmindespatchModel adespatch)
+			throws Exception {
+		 boolean updateSuccess = false;
+		 Admindespatch admindespatchObj = adminDespatchRepository.getAdminDespatchDetails(adespatch.getDespatchId());
+		try {			
+			admindespatchObj.setDespatchType(adespatch.getDespatchType());
+			admindespatchObj.setSpecification(adespatch.getSpecification());
+			admindespatchObj.setUnitPrice(adespatch.getUnitPrice());
+			admindespatchObj.setUom(adespatch.getUom());
+			
+			updateSuccess = adminDespatchRepository.updateAdminDespatch(admindespatchObj);
+		}
+		catch (Exception e) {
+			log.info("Error in updateAdminDespatch AdminDespatchBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteAdminDespatch(AdmindespatchModel adespatch)
+			throws Exception {
+		 boolean updateSuccess = false;
+		 Admindespatch admindespatchObj = adminDespatchRepository.getAdminDespatchDetails(adespatch.getDespatchId());
+		try {	
+			updateSuccess = adminDespatchRepository.deleteAdminDespatch(admindespatchObj);
+			}
+		catch (Exception e) {
+			log.info("Error in deleteAdminDespatch AdminDespatchBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	}
+
+	@Override
+	public List<AdmindespatchModel> findByAdmindespatchList() throws Exception {
+		List<AdmindespatchModel> admindespatchObjList = new ArrayList<AdmindespatchModel>();	
+		   List<Admindespatch> admindespatchList = new ArrayList<Admindespatch>();
+		try {			
+			admindespatchList = adminDespatchRepository.findByAdmindespatchList();
+			
+			for (Admindespatch adespatch : admindespatchList) {				
+				AdmindespatchModel admindespatchObj = new AdmindespatchModel();	
+				 
+				 admindespatchObj.setDespatchType(adespatch.getDespatchType());
+				 admindespatchObj.setSpecification(adespatch.getSpecification());
+				 admindespatchObj.setUnitPrice(adespatch.getUnitPrice());
+				 admindespatchObj.setUom(adespatch.getUom());
+				 admindespatchObj.setDespatchId(adespatch.getDespatchId());
+			
+				 admindespatchObjList.add(admindespatchObj);
+			}
+		}
+		catch (Exception e) {
+			log.info("Error in findByAdmindespatchList AdminDespatchBOImpl " + e);
+			throw e;
+		}
+		return admindespatchObjList;
+	}
+
+	
+	@Override
+	public AdmindespatchModel getAdminDespatchDetails(Integer despatchId)
+			throws Exception {
+		AdmindespatchModel admindespatchObj = new AdmindespatchModel();	
+		
+		try {			
+			Admindespatch adespatch= adminDespatchRepository.getAdminDespatchDetails(despatchId);
+			 admindespatchObj.setDespatchType(adespatch.getDespatchType());
+			 admindespatchObj.setSpecification(adespatch.getSpecification());
+			 admindespatchObj.setUnitPrice(adespatch.getUnitPrice());
+			 admindespatchObj.setUom(adespatch.getUom());
+			 admindespatchObj.setDespatchId(adespatch.getDespatchId());	
+			 admindespatchObj.setDespatchOldType(adespatch.getDespatchType());
+			 admindespatchObj.setUomold(adespatch.getUom());
+		}
+		catch (Exception e) {
+			log.info("Error in getAdminDespatchDetails AdminDespatchBOImpl " + e);
+			throw e;
+		}
+		return admindespatchObj;
+	}
+
+	@Override
+	public boolean findAdminDespatchExites(String despatchType, String uom)
+			throws Exception {
+		boolean exists = false;		
+		try {
+			exists = adminDespatchRepository.findAdminDespatchExites(despatchType,uom);
+		}
+		catch (Exception e) {
+			log.info("Error in findAdminDespatchExites AdminDespatchBOImpl " + e);
+			throw e;
+		}
+		return exists;	
+	}
+
+}

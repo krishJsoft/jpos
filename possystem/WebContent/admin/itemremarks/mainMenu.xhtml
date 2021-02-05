@@ -1,0 +1,159 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<style>
+.ui-orderlist-list {
+   height:92vh;
+}
+ .ui-paginator-page{
+  	width:5vw;
+  	height:5vh;   
+}
+</style>
+
+<h:form id="remarksSettingForm">
+
+	<p:outputPanel id="itemRemarksMainMenuPanel" >
+		<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+		
+
+		<p:panel styleClass="itemRemarksTabPanel" header="ITEM REMARKS ">
+			
+			<p:panelGrid id="remarksSettingPanelGrid"  style="width:100%;" >
+					<p:row style="height:10px">
+						<p:column style="height:10%;width:50%;text-align:center;background-color:teal;color:white" >
+							<h:outputText value="UNASSIGNED REMARKS" />
+						</p:column>
+						<p:column >
+						<p:commandButton value="NEW"
+							styleClass="itembuttonsmall"
+							style="width:7vw;height:7vh"
+							oncomplete="PF('remarksDlg').show()"
+							
+							ajax="true" immediate="false">
+						</p:commandButton>
+						</p:column>
+						<p:column style="text-align:center;width:50%;background-color:teal;color:white">
+							<h:outputText value="ASSIGNED REMARKS" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="background-color:#73D3C4">
+						<p:dataTable id="pickList1"
+						scrollable="true" scrollHeight="200"  
+							var="pickList" 
+							value="#{itemRemarksBean.unAssignedRemarksList}"
+							selection="#{itemRemarksBean.selectedRemarksList}"
+							rowKey="#{pickList.remarksListID}"
+							selectionMode="multi"
+						>
+							
+							<p:column>
+								<h:outputText value="#{pickList.remarksName}" />
+							</p:column>
+						</p:dataTable>
+						</p:column>
+						
+						<p:column >	
+						<p:commandButton 
+							icon="ui-icon-arrowthick-1-e" 
+							style="width:7vw;height:7vh" 
+							actionListener="#{itemRemarksBean.addItemToPickList}" 
+						 	update="pickList1,pickList2"
+						 	>
+						 </p:commandButton>
+						 
+							 <br/>
+							 <br/>
+						<p:commandButton 
+							icon="ui-icon-arrowthick-1-w" 
+							style="width:7vw;height:7vh" 
+							actionListener="#{itemRemarksBean.removeItemFromPickList}" 
+					 		update="pickList1,pickList2"
+					 		>
+						</p:commandButton>
+							
+						</p:column>
+						
+						<p:column style="background-color:#73D3C4">
+						<p:dataTable id="pickList2" 
+							scrollable="true" scrollHeight="200"
+							var="pickList" 
+							value="#{itemRemarksBean.assignedRemarksList}"
+							selection="#{itemRemarksBean.unSelectedRemarksList}"
+							rowKey="#{pickList.remarksID}"
+							selectionMode="multi"
+						>
+						
+							<p:column>
+								<h:outputText value="#{pickList.remarks.remarksName}"/>
+							</p:column>
+						
+	
+						</p:dataTable>
+						</p:column>
+						
+					</p:row>
+				
+				</p:panelGrid>
+			<div style="background-color:white;height:40vh;overflow:auto;">
+				<p:dataGrid  
+					var="productCategory"
+					value="#{productCategoryBean.productcategoriesList}"
+					id="dataTablegrid" 
+					columns="8" 
+					layout="grid" 
+					paginator="true"
+					paginatorPosition="top"
+					paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} " 
+      					
+				>
+				 	<f:facet name="header">
+			            CATEGORY
+			        </f:facet>
+					<p:commandButton value="#{productCategory.name}"
+						rendered="#{productCategory.categoryId==itemRemarksBean.categoryId}"
+						styleClass="itembuttonsmall"
+						style="background:#b38f00;color:white;text-transform: uppercase;height:10vh"
+						update=":remarksSettingForm:remarksSettingPanelGrid,:remarksSettingForm:dataTablegrid"
+						actionListener="#{itemRemarksBean.loadRemarksPickList}">
+							<f:attribute name="categoryId" value="#{productCategory.categoryId}" />
+					</p:commandButton>
+							
+					<p:commandButton value="#{productCategory.name}"
+						rendered="#{productCategory.categoryId!=itemRemarksBean.categoryId}"
+						styleClass="itembuttonsmall"
+						style="background:#F7DC6F;color:black;text-transform: uppercase;height:10vh"
+						update=":remarksSettingForm:remarksSettingPanelGrid,:remarksSettingForm:dataTablegrid"
+						actionListener="#{itemRemarksBean.loadRemarksPickList}">
+							<f:attribute name="categoryId" value="#{productCategory.categoryId}" />
+					</p:commandButton>
+				
+							
+				</p:dataGrid>
+				
+			</div>
+		</p:panel>
+		
+		<p:dialog id="remarksDlg" hideEffect="fade" header="NEW REMARKS"
+		widgetVar="remarksDlg" style="width:90%;" dynamic="true" >
+		
+			<p:inputText id="remarkNewName" value="#{itemRemarksBean.remarksName}"/>
+			<p:commandButton value="SAVE" action="#{itemRemarksBean.createNewRemarksName}"
+				oncomplete="PF('remarksDlg').hide()"
+				update=":remarksSettingForm:itemRemarksMainMenuPanel"
+			/>
+			<p:commandButton value="CANCEL"
+				oncomplete="PF('remarksDlg').hide()"
+			/>
+			
+		</p:dialog>
+		
+	</p:outputPanel>
+	</h:form>
+</ui:composition>

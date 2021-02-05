@@ -1,0 +1,112 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="countersalesDialog" header="Recent Counter Sales "
+		 widgetVar="counterSales" modal="true" height="500"
+		width="950">
+
+		<p:outputPanel id="counterSalesPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="counterSalesPanel" /></td>
+				</tr>
+			</table>
+
+
+			<p:panel
+				style="width:900px; height:370px; align:center;background-image: url('images/contentpagebg.jpg');background-repeat: repeat-x;">
+
+
+				<p:dataTable id="salesTable1" var="sales" rowIndexVar="row"
+					scrollable="true"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+					value="#{posOptionBean.poscashtransactionListObj}"
+					style="width:100%;" scrollHeight="300">
+
+
+					<p:column style="width:15%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" />
+						</f:facet>
+						<h:outputText value="#{sales.salesOrderNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width:15%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:outputText value="#{sales.lastupdatedDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd/MMM/yyyy" />
+						</h:outputText>
+					</p:column>
+
+
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Total Amount(RM) " />
+						</f:facet>
+						<h:outputText value="#{sales.creditamount}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Received Amount(RM) " />
+						</f:facet>
+						<h:outputText value="#{sales.receivedAmount}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<p:commandLink value="Print" ajax="true"
+							oncomplete="handlePosCounterPrint(xhr, status, args)"
+							actionListener="#{posBean.printCounterBill}">
+							<f:attribute name="salesOrderNo" value="#{sales.salesOrderNo}" />
+						</p:commandLink>
+
+
+						<p:commandLink value="Download" ajax="false"							
+							actionListener="#{posBean.printBillTest}">
+							<f:attribute name="salesOrderNo" value="#{sales.salesOrderNo}" />
+						</p:commandLink>						
+						
+					</p:column>
+
+
+					
+
+				</p:dataTable>
+
+			</p:panel>
+
+			<br></br>
+			<p:commandButton value="Close"
+				oncomplete="PF('counterSales').hide();"
+				style="background-image: url('resources/images/redbutton.jpg'); width:149px; height:40px; "
+				immediate="true" ajax="true" async="true">
+			</p:commandButton>
+
+		</p:outputPanel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

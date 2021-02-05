@@ -1,0 +1,39 @@
+package com.alpha.bo.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Uomtype;
+import com.alpha.model.datamodel.ProductcategoryModel;
+import com.alpha.model.datamodel.UomtypeModel;
+
+
+public interface IProductCategoryBO {	
+
+	public boolean createNewProductcategory(ProductcategoryModel pcategory) throws Exception;
+
+	public boolean updateProductcategory(ProductcategoryModel pcategory) throws Exception;
+
+	public boolean deleteProductcategory(Integer categoryId) throws Exception;
+	
+	public List<ProductcategoryModel> findByProductcategoryList(Integer categoryId,String Status) throws Exception;
+	
+	public List<ProductcategoryModel> findByProductcategoryChildList(Integer parentCategoryId,String Status) throws Exception;
+	
+	public ProductcategoryModel getProductcategoryDetails(Integer categoryId) throws Exception;
+	
+    public boolean findCategoryExites(Integer categoryId ,Integer parentCategoryId, String categoryName) throws Exception;
+    
+    
+    public boolean createNewUom(UomtypeModel uom) throws Exception;
+
+	public boolean updateUom(UomtypeModel uom) throws Exception;
+
+	public boolean deleteUom(UomtypeModel uom) throws Exception;
+	
+	public List<UomtypeModel> findByUomtypeList(String UOMName) throws Exception;
+	
+    public boolean findUomtypeExites( String UOMName) throws Exception;
+    
+    public UomtypeModel getUomtypeDetails(Integer UOMId) throws Exception;
+    
+}

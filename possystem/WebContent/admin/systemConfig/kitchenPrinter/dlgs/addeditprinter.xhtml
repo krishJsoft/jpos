@@ -1,0 +1,93 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	
+	>
+
+
+	
+	<p:dialog id="addEditPrinterDlg"  header="KITCHEN PRINTER"
+		widgetVar="addEditPrinterDlg" width="45%"  height="20vh" 
+		position="center center"
+		>
+		<p:panelGrid id="addEditPrinterGrid" columns="2" border="0" styleClass="borderlessGrid"
+		
+		>
+			<h:outputText styleClass="logintxt" value="Printer"/>
+			<p:selectOneMenu  style="width:160px; text-align:left;" value="#{systemSettingBean.installedPrinterValue}">
+		   		<f:selectItems value="#{systemSettingBean.installedPrinters}" />
+			</p:selectOneMenu>
+			
+			<h:outputText styleClass="logintxt" value="Kitchen Name"/>
+			<p:inputText value="#{systemSettingBean.kitchenName}">
+			</p:inputText>
+			
+			
+			<p:commandButton value="SAVE" update="kitchenSettingForm:kitchenPrinterDatatable,kitchenSettingForm:addEditPrinterGrid" 
+			action="#{systemSettingBean.createNewKitchenPrinter}" 
+			rendered="#{systemSettingBean.action!='update'}"
+			ajax="true"
+			>
+			</p:commandButton>
+			<p:commandButton value="UPDATE" update="kitchenSettingForm:kitchenPrinterDatatable,kitchenSettingForm:addEditPrinterGrid" 
+			action="#{systemSettingBean.updateKitchenPrinter}" 
+			rendered="#{systemSettingBean.action=='update'}"
+			ajax="true"
+			>
+			</p:commandButton>
+				<p:commandButton value="CLOSE" oncomplete="PF('addEditPrinterDlg').hide()">
+			</p:commandButton>
+			
+		</p:panelGrid>
+		
+			<p:dataTable id="kitchenPrinterDatatable" var="printer" rowIndexVar="row"
+				reflow="true" value="#{systemSettingBean.kitchenPrinterList}"
+				paginator="true" rows="5" style="width: 100%"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,20"
+				>
+				<p:column  width="5%">
+					<f:facet name="header">
+						<h:outputText value="#" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+				
+				<p:column  width="20%">
+					<f:facet name="header">
+						<h:outputText value="Kitchen Name" />
+					</f:facet>
+					<h:outputText value="#{printer.kitchenName}" styleClass="logintxttable" />
+				</p:column>
+				
+				<p:column  width="20%">
+					<f:facet name="header">
+						<h:outputText value="Printer" />
+					</f:facet>
+					<h:outputText value="#{printer.printerName}" styleClass="logintxttable" />
+				</p:column>
+				<p:column  width="10%">
+					<f:facet name="header">
+						<h:outputText value="Action" />
+					</f:facet>
+				
+					<p:commandButton ajax="true" value="Edit"
+						update="systemSetting:tabView:kitchenSettingForm:addEditPrinterGrid" 
+						style="background: #E32526;color:white" 
+						actionListener="#{systemSettingBean.editKitchenPrinter}" 
+					>
+						<f:attribute name="printerId" value="#{printer.id}" />
+					</p:commandButton>
+				</p:column>
+				
+			</p:dataTable>
+		
+						
+	</p:dialog>
+	
+
+</ui:composition>
+
+

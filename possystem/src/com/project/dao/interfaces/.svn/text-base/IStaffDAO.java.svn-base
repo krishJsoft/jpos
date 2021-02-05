@@ -1,0 +1,23 @@
+package com.alpha.dao.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Branchstaffmember;
+
+public interface IStaffDAO {
+
+	
+	public boolean createNewStaff(Branchstaffmember staff) throws Exception;
+
+	public boolean updateStaff(Branchstaffmember staff) throws Exception;
+
+	public boolean deleteStaff(Branchstaffmember staff) throws Exception;
+	
+	public List<Branchstaffmember> findByStaffList(Integer branchId,String icNo,Integer roleId,String Status) throws Exception;
+		
+	public Branchstaffmember getBranchstaffmemberDetails(Integer staffId) throws Exception;
+	
+    public boolean findStaffIcExites(String IcNo) throws Exception;
+	
+	
+}

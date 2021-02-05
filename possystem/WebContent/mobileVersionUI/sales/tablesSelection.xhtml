@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	
+	>
+
+<h:head>
+
+
+	
+<style>
+
+	.tableSelectionGrid{
+		
+	}
+	.tableButton{
+		width: 20vh;
+		height: 60px;
+		font-size: 15px;
+		
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+			'Helvetica Neue', Arial, sans-serif;
+	}
+	.free{
+		
+		background-color: #287ab8;
+		
+	}
+	.busy{
+		
+		background-color: #ff8000;
+	
+	}
+		.footerPanel{
+		position:relative;
+		bottom:1%;
+
+		width:100%;
+		
+	}
+	.footerPanel tr{
+		background-color:black;
+	}
+	
+	.footerButtonPanel{
+		position:fixed;
+		bottom:1%;
+	
+		width:100%;		
+	}
+	
+	.footerButtonPanel tr{
+		background-color:black;
+	}
+	
+	.ui-datagrid-header{
+	 	background: #1F618D;
+	 	color:white;
+	 } 
+</style>
+
+</h:head>
+<script>
+function myFunction() {
+   // alert("Page is loaded" +getWidth() );
+}
+function getWidth() {
+	  return Math.max(
+	    document.body.scrollWidth,
+	    document.documentElement.scrollWidth,
+	    document.body.offsetWidth,
+	    document.documentElement.offsetWidth,
+	    document.documentElement.clientWidth
+	  );
+	}
+</script>
+<body  >
+
+<h:form id="mobileTableSelectionForm" >
+	
+	<div style="background-color:transparent; overflow: auto;">
+	<p:dataGrid id="mobileTableSelectionDataGrid" var="pos" rowIndexVar="row"
+		paginatorPosition="top" scrollable="true"  
+		columns="#{loginBean.columnGrid}" value="#{orderBean.tableList}"
+		rows="100"  rowsPerPageTemplate="50,75,100,200,300,400"
+		styleClass="tableSelectionGrid"	
+		>
+	 	<f:facet name="header">
+	 		<h:outputText value="Table No" />
+	 	</f:facet>
+		<p:commandButton value="#{pos.tableNo}" rendered="#{pos.status=='1'}"
+			styleClass="tableButton" style="background:#FF5A5A;color:#CECBCB"
+			actionListener="#{orderBean.menuorder}">
+			<f:attribute name="productcat" value="#{pos}" />
+		</p:commandButton>
+		
+		<p:commandButton value="#{pos.tableNo}" rendered="#{pos.status=='0'}"
+			styleClass="tableButton" style="background:#001FFF;color:#FFFFFF"
+			 actionListener="#{orderBean.menuorder}" >
+			<f:attribute name="productcat" value="#{pos}" />
+		</p:commandButton>
+		<p:row >
+			<p:column>
+				
+			</p:column>
+		</p:row>	
+	</p:dataGrid>
+	<p:panelGrid style="width:100%">
+		<p:row>
+			<p:column >
+				<h:outputText value=" " />
+			</p:column>
+			
+		</p:row>
+	</p:panelGrid>
+	</div>
+	<c:if test="#{loginBean.logdetail.roleName=='Waiter'}" >
+	<ui:include src="/mobileVersionUI/sales/contentFooter.xhtml" rendered="false"/>
+	</c:if>
+	
+	<ui:include src="/mobileVersionUI/sales/dialogs/tableCardNoDlg.xhtml" />
+		
+</h:form>
+
+</body>
+
+</ui:composition>
+
+

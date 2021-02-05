@@ -1,0 +1,84 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="newCounterForm">
+		<p:outputPanel id="counterPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="counterPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Terminals">
+
+
+
+
+
+				<br />
+				<p:dataTable id="dataTable" var="terminal" rowIndexVar="row"
+					paginatorPosition="top" editable="true"
+					value="#{poscounterBean.poscounterListObj}" paginator="true"
+					rows="10" style="width: 60%" rowsPerPageTemplate="5,10,15"
+					rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+
+
+					<p:column id="modelHeader" width="3%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column width="15%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['counter.label.counterNo']}" />
+						</f:facet>
+						<h:outputText value="#{terminal.counterNo}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+
+					<p:column sortBy="#{branch.status}" width="5%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['branch.label.Status']}" />
+						</f:facet>
+						<h:outputText value="Active" rendered="#{terminal.status=='1'}"
+							styleClass="logintxttable" />
+						<h:outputText value="InActive" rendered="#{terminal.status=='0'}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column width="10%" styleClass="columnwidth" style="text-align:center">
+						<f:facet name="header">
+							<h:outputText value="#{msg['common.action.name']}" />
+						</f:facet>
+						<p:commandButton value="Edit" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('Edit pos')}"
+							actionListener="#{poscounterBean.editCounter}"
+							style="background: #E32526;color:white">
+							<f:attribute name="counterId" value="#{terminal.counterId}" />
+						</p:commandButton>
+
+
+
+					</p:column>
+				</p:dataTable>
+				<br />
+				<p:commandButton value="New Terminal" ajax="false"
+					action="#{poscounterBean.newCounter}" update="newcountergrid" />
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+
+	</h:form>
+</ui:composition>
+
+

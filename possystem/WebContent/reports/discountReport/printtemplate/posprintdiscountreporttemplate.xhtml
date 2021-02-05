@@ -1,0 +1,156 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:dialog header="Daily Discount Report" resizable="false"
+		widgetVar="salesdiscountrptprintdlg" modal="false" height="480"
+		width="330px">
+
+		<p:panelGrid style="width:295px" styleClass="alignTop"
+			id="salesdiscountprintrequestitem">
+
+			<p:row>
+				<p:column style="width:100%;">
+
+
+
+					<table align="center" width="100%">
+						<tr>
+							<td align="center" style="font-weight:bold" ><font size="2" color="black">
+									Daily Discount Report <br />
+									(
+									<h:outputText  value="#{discountBean.dateFrom}" >
+										<f:convertDateTime pattern="#{des['common.date.pattern']}" />
+								</h:outputText>
+										- 
+									<h:outputText  value="#{discountBean.dateTo}" >
+										<f:convertDateTime pattern="#{des['common.date.pattern']}" />
+								</h:outputText>	
+									)
+									</font></td>
+							
+						</tr>
+						
+						<tr>
+							<td align="left"><font size="3" color="black">------------------------------------------
+							</font></td>
+						</tr>
+						
+						<tr>
+							<td align="#{des['common.print.align.companyName']}" style="font-weight:bold"><font size="3" color="black">#{loginBean.branch.branchName}</font>
+							</td>
+						</tr>
+						<tr>
+							<td align="#{des['common.print.align.address']}" class="reporttxt"><h:outputText value="#{loginBean.branch.address}"  escape="false" />
+							</td>
+						</tr>
+
+
+					</table>
+
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column style="width:100%;" styleClass="alignTop">
+					<h:panelGrid columns="3" border="0" width="90%"
+						styleClass="borderlessGrid" cellpadding="2" cellspacing="2"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="GST No "
+							styleClass="reporttxt" style="font-weight:bold" />
+						<h:outputText value=" : "
+							styleClass="reporttxt" style="font-weight:bold" />
+						<h:outputText value=" #{app['project.gst.number']}"
+							styleClass="reporttxt" style="font-weight:bold" />
+
+	
+						<h:outputText value=" REG No "
+							styleClass="reporttxt" style="font-weight:bold" />
+						<h:outputText value=" : "
+							styleClass="reporttxt" style="font-weight:bold" />
+						<h:outputText value=" #{app['project.reg.number']}"
+							styleClass="reporttxt" style="font-weight:bold" />
+							
+					</h:panelGrid>
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column style="width:100%;">
+
+					<p:dataGrid id="discountReportDatatable" var="sales" rowIndexVar="row"
+						scrollable="true" scrollHeight="380" columns="1"
+						value="#{discountBean.salesDiscountList}" paginator="false"
+						rows="1000000" style="width: 100%"
+						rowsPerPageTemplate="5,10,15,25,50,100"
+						rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+						<h:outputText  value="#{sales.createdDate}" styleClass="reporttxt" style="font-weight:bold">
+							<f:convertDateTime pattern="#{des['common.date.pattern']}" />
+						</h:outputText>
+- 
+						<h:outputText value=" #{sales.salesOrderNo}"
+							styleClass="reporttxt"  style="font-weight:bold" >
+						</h:outputText>
+						
+						<h:panelGrid columns="3" border="0" styleClass="borderlessGrid"
+							cellpadding="0" cellspacing="0">
+
+							<h:outputText value="Before Discount (#{app['common.currency']}) " styleClass="reporttxt" />
+							<h:outputText value=" : " styleClass="reporttxt" />
+							<h:outputText value="#{sales.totalBeforeDiscount}" styleClass="reporttxt">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+
+							<h:outputText value="Discount Rate (%)" styleClass="reporttxt" />
+							<h:outputText value=" : " styleClass="reporttxt" />
+							<h:outputText value="#{sales.discountRate}%" styleClass="reporttxt">
+							</h:outputText>
+							
+							<h:outputText value="After Discount (#{app['common.currency']})" styleClass="reporttxt" />
+							<h:outputText value=" : " styleClass="reporttxt" />
+							
+							<h:outputText value="#{sales.totalAmount}" styleClass="reporttxt">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+
+						</h:panelGrid>
+
+					</p:dataGrid>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column style="width:100%;">
+					<p:panelGrid columns="2" border="0" width="90%"
+						styleClass="borderlessGrid" cellpadding="1" cellspacing="1"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+						<h:outputText value="Print by : " styleClass="reporttxt" />
+						<h:outputText value="#{loginBean.logdetail.emailAddress}" styleClass="reporttxt" />
+					</p:panelGrid>
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+
+		<br></br>
+		<f:facet name="footer">
+			<h:panelGrid columns="3" style="float:left"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+				<p:commandButton value="Print"
+					oncomplete="PF('salesdiscountrptprintdlg').hide()">
+					<p:printer target="salesdiscountprintrequestitem" />
+				</p:commandButton>
+
+				<p:commandButton value="Close"
+					oncomplete="PF('salesdiscountrptprintdlg').hide()" />
+
+			</h:panelGrid>
+		</f:facet>
+	</p:dialog>
+
+
+</ui:composition>

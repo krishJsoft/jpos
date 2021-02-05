@@ -1,0 +1,188 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditQuotationForm">
+		<p:outputPanel id="quotationListPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="quotationListPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Add/Edit Quotation">
+
+				<h:panelGrid id="quotationGrid" columns="10" border="0" width="80%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.deliveryTerms']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />					
+					<p:inputTextarea rows="3" cols="25" id="deliveryTerms"
+						value="#{quotationsupplierBean.quotation.deliveryTerms}" />						
+					<p:message for="deliveryTerms" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.paymentTerms']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />					
+					<p:inputTextarea rows="3" cols="25" id="paymentTerms"
+						value="#{quotationsupplierBean.quotation.paymentTerms}" />						
+					<p:message for="paymentTerms" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.remarks']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="3" cols="25" id="remarks"
+						value="#{quotationsupplierBean.quotation.remarks}" />
+					<p:message for="remarks" styleClass="fieldError" />
+					
+					
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.quotationDueDate']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="quotationDueDate" size="25"
+						value="#{quotationsupplierBean.quotation.quotationDueDate}"
+						pattern="dd/MM/yyyy" />
+					<p:message for="quotationDueDate" styleClass="fieldError" />
+					
+					
+					
+					
+
+					<h:outputText value="" styleClass="mandatory_text"
+						rendered="#{quotationsupplierBean.itemaction=='update'}" />
+					<h:outputText value="Quote No" styleClass="logintxt"
+						rendered="#{quotationsupplierBean.itemaction=='update'}"></h:outputText>
+					<h:outputText value=":"
+						rendered="#{quotationsupplierBean.itemaction=='update'}" />
+					<h:outputText value="#{quotationsupplierBean.quotation.quotationNo}"
+						styleClass="logintxt"
+						rendered="#{quotationsupplierBean.itemaction=='update'}" />
+					<h:outputText value=""
+						rendered="#{quotationsupplierBean.itemaction=='update'}" />
+				</h:panelGrid>
+				<br />
+
+
+				<p:panelGrid style="width:99%" id="quotationProductGrid"
+					styleClass="alignTop">
+					<f:facet name="header">
+						<p:row>						
+							<p:column style="width:100%;">Products Details</p:column>
+						</p:row>
+					</f:facet>
+
+					<p:row>
+						
+
+
+						<p:column style="width:100%;">
+
+							<p:dataTable id="dataTable" var="quotation" rowIndexVar="row"
+								scrollable="true" scrollHeight="230" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+								value="#{quotationsupplierBean.quotationbreakdowns}" paginator="false"
+								rows="500" style="width: 100%" rowsPerPageTemplate="5,10,15">
+
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column style="width:15%;"
+											styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Code" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:25%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Name" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="UOM" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+										<p:column style="width:10%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Quantity Reqd."
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+									</p:row>
+								</p:columnGroup>
+
+
+								<p:column width="10%" styleClass="columnwidth"
+									style="width:8%;height:15px;">
+									<h:outputText value="#{quotation.productCode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="25%" styleClass="columnwidth">
+									<h:outputText value="#{quotation.productName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidth">
+									<h:outputText value="#{quotation.uomName}"
+										styleClass="logintxttable" />
+								</p:column>
+								
+
+								<p:column  width="10%" styleClass="columnwidthn">
+									<h:outputText value="#{quotation.quantityRequired}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								
+
+							</p:dataTable>
+						</p:column>
+					</p:row>
+
+					<f:facet name="footer">
+						<p:row>
+							<p:column style="width:100%;" colspan="1">
+								<p:commandButton value="Save and Proceed" ajax="false"
+									action="#{quotationsupplierBean.saveQuotation}"
+									update="quotationListPanel"
+									rendered="#{quotationsupplierBean.itemaction!='update'}" />								
+									
+
+								<p:commandButton value="Cancel" ajax="false"
+									action="#{quotationsupplierBean.listQuotation}"
+									update="quotationListPanel" />
+							</p:column>
+						</p:row>
+					</f:facet>
+
+
+				</p:panelGrid>
+
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		
+		
+	
+	</h:form>
+</ui:composition>
+
+

@@ -1,0 +1,140 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogProduct" header="Product Stock Detail"
+		resizable="false" widgetVar="productDig" modal="true" height="290"
+		width="900">
+
+
+		<br></br>
+
+
+		<p:panel id="productviewPanel">
+			<h:panelGrid id="productdiggrid" columns="6" border="0" width="100%"
+				styleClass="bgcolor" cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText value="#{msg['product.label.productName']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.productName}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="#{msg['product.label.brandName']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.brandName}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="#{msg['product.label.categoryName']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.categoryName}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.categoryName']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.categoryName}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="#{msg['product.label.uom']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.uom}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.quantityonHand']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.quantityonHand}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="Product Code"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.barcode}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="#{msg['product.label.reorderPoint']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.reorderPoint}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.reorderQuantity']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.reorderQuantity}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.height']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.height}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.width']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.width}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="#{msg['product.label.length']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.length}"
+					styleClass="logintxttable" />
+
+
+
+				<h:outputText value="#{msg['product.label.weight']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{productBean.product.weight}"
+					styleClass="logintxttable" />
+
+
+				<h:outputText value="Status"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="Active"
+					rendered="#{productBean.product.status=='1'}"
+					styleClass="logintxttable" />
+				<h:outputText value="InActive"
+					rendered="#{productBean.product.status=='0'}"
+					styleClass="logintxttable" />
+
+
+			</h:panelGrid>
+
+
+
+
+		</p:panel>
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:right"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Close" onclick="PF('productDig').hide();" />
+
+
+		</h:panelGrid>
+
+
+
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

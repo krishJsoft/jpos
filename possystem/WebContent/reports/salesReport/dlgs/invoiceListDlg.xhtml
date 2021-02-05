@@ -1,0 +1,133 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogSalesInvoiceList" header="Daily Sales Details Report"
+		resizable="false" widgetVar="salesIncoiceListDlg" height="90%"
+		width="88%">
+
+		<p:panel id="salesinvoicelistpanel" styleClass="mytabpanel">			
+
+			<p:dataTable id="dataTableSearch" var="sales" rowIndexVar="row"
+					scrollable="false" lazy="true" first="#{salesorderBean.first}"
+					value="#{salesorderBean.salesorderModel}" paginator="true"
+					rows="10" style="width: 100%" selectionMode="single" position="top" 
+					rowsPerPageTemplate="5,10,15,25,50,100,200,300"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}" rendered="#{salesorderBean.searchBy=='salesOrder'}" >
+
+
+					<p:column style="width: 5%;">
+						<f:facet name="header">
+							<h:outputText value="#{des['common.table.header.no']}" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Time" />
+						</f:facet>
+						<h:outputText value="#{sales.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="hh:mm:ss a" />
+						</h:outputText>
+					</p:column>
+
+				
+
+					<p:column sortBy="#{sales.salesOrderNo}">
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" />
+						</f:facet>
+						<h:outputText value="#{sales.salesOrderNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{sales.totalAmount}"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Total Amount (#{app['common.currency']})" />
+						</f:facet>
+						<h:outputText value="#{sales.totalAmount}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+
+					<p:column sortBy="#{sales.status}">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+
+						<h:outputText value="#{app['salesorder.status.neworderlable']}"
+							rendered="#{sales.status==app['salesorder.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.processedlable']}"
+							rendered="#{sales.status==app['salesorder.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.orderedlable']}"
+							rendered="#{sales.status==app['salesorder.status.orderedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.paidlable']}"
+							rendered="#{sales.status==app['salesorder.status.paidvalue']}"
+							styleClass="logintxttable" />
+
+
+					</p:column>
+
+
+					<p:column style="width: 15%;">
+						<f:facet name="header">Action</f:facet>
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+								update="dailySalesReportForm:requestitem" 
+								rendered="#{loginBean.functionList.contains('View SalesOrder')}"
+								actionListener="#{salesorderBean.viewSalesOrder}"
+								oncomplete="PF('salesDig').show()">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+							<p:menuitem value="Re-Print" styleClass="logintxttable"
+								ajax="true" update="dailySalesReportForm:printrequestitem"
+								oncomplete="PF('salesprintDig').show()"
+								actionListener="#{salesorderBean.viewSalesOrder}">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+
+						</p:menuButton>
+					</p:column>
+
+
+				</p:dataTable>
+
+		</p:panel>
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+			
+				<p:commandButton value="Print"
+				style="background: #E32526;color:white" 
+					oncomplete="PF('dailyInvoicePrinttDig').show();">					
+				</p:commandButton>
+				
+				
+			<p:commandButton value="Close" oncomplete="PF('salesIncoiceListDlg').hide()" />
+
+		</h:panelGrid>
+
+	</p:dialog>
+		
+	
+</ui:composition>

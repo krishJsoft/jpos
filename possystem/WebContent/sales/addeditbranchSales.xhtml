@@ -1,0 +1,502 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesListPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesListPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Add/Edit Branch Sales">
+
+				<h:panelGrid id="quotationGrid" columns="10" border="0" width="80%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['purchaseorder.label.branchname']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="branchId" value="#{branchsaleBean.branchId}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Branch" itemValue="0" />
+						<f:selectItems value="#{commonListBean.branchotherQty}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="branchId" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.deliveryTerms']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="deliveryTerms"
+						value="#{branchsaleBean.branchsale.deliveryTerms}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select a Delivery Terms" itemValue="" />
+						<f:selectItem itemLabel="FOB" itemValue="FOB" />
+						<f:selectItem itemLabel="CIF" itemValue="CIF" />
+					</p:selectOneMenu>
+					<p:message for="deliveryTerms" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.paymentTerms']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="paymentTerms"
+						value="#{branchsaleBean.branchsale.paymentTerms}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select a Payment Terms" itemValue="" />
+						<f:selectItem itemLabel="COD" itemValue="COD" />
+						<f:selectItem itemLabel="30 Days" itemValue="30 Days" />
+						<f:selectItem itemLabel="60 Days" itemValue="60 Days" />
+						<f:selectItem itemLabel="90 Days" itemValue="0 Days" />
+						<f:selectItem itemLabel="180 Days" itemValue="180 Days" />
+
+					</p:selectOneMenu>
+					<p:message for="paymentTerms" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.remarks']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="3" cols="25" id="remarks"
+						value="#{branchsaleBean.branchsale.remarks}" />
+					<p:message for="remarks" styleClass="fieldError" />
+
+
+				</h:panelGrid>
+				<br />
+
+
+				<p:panelGrid style="width:99%" id="quotationProductGrid"
+					styleClass="alignTop">
+					<f:facet name="header">
+						<p:row>
+							<p:column style="width:15%;">Add Product</p:column>
+							<p:column style="width:85%;">Products Details</p:column>
+						</p:row>
+					</f:facet>
+
+					<p:row>
+						<p:column style="width:15%;" styleClass="columnwidthc">
+
+							<h:panelGrid id="quotationAddGrid" columns="1" border="0"
+								styleClass="borderlessGrid" width="100%"
+								columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+								<h:panelGrid columns="2">
+									<p:commandButton id="productBtn" icon="ui-icon-search"
+										style="height:22px;" update="productPanel" onclick="PF('overproduct').show();"/>
+
+									<h:outputText
+										value="#{msg['purchaserequest.label.productCode']}"
+										styleClass="logintxt"></h:outputText>
+								</h:panelGrid>
+
+								<p:autoComplete id="productCode" maxResults="500" size="20"
+									converter="productNameConverter" maxlength="15"
+									minQueryLength="3" dropdown="false" scrollHeight="250"
+									queryDelay="2" disabled="#{branchsaleBean.productCodedisable}"
+									value="#{branchsaleBean.product}"
+									completeMethod="#{commonListBean.getAllProductListByName}"
+									var="p" itemLabel="#{p.productName}" itemValue="#{p}">
+									<p:column>  
+                   					 #{p.productName}   -#{p.barcode} - #{p.uom}
+                			</p:column>
+								</p:autoComplete>
+
+
+								<h:outputText value="#{msg['quotation.label.itemCount']}"
+									styleClass="logintxt"></h:outputText>
+
+								<p:inputText id="itemCount" value="#{branchsaleBean.itemCount}"
+									maxlength="15" size="20" />
+
+								<h:panelGrid columns="2" border="0" styleClass="borderlessGrid"
+									columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+									<p:commandButton value="Add" ajax="true"
+										update="quotationAddGrid,dataTable"
+										action="#{branchsaleBean.addSalesItem}" />
+								</h:panelGrid>
+
+							</h:panelGrid>
+
+						</p:column>
+
+
+						<p:column style="width:85%;">
+
+							<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+								scrollable="true" scrollHeight="230"
+								value="#{branchsaleBean.branchsalesbreakdowns}"
+								paginator="false" rows="500" style="width: 100%"
+								rowsPerPageTemplate="5,10,15" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column style="width:8%;"
+											styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Code" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:12%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Name" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="UOM" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:9%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Unit Price (#{app['common.currency']})"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Quantity" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Discount (#{app['common.currency']})" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Tax (%)" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Tax" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sub Total (#{app['common.currency']})"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:3%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+											</f:facet>
+										</p:column>
+									</p:row>
+								</p:columnGroup>
+
+
+								<p:column width="10%" styleClass="columnwidth"
+									style="width:8%;">
+									<h:outputText value="#{sales.productCode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="15%" styleClass="columnwidth">
+									<h:outputText value="#{sales.productName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidth">
+									<h:outputText value="#{sales.uomName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+
+
+								<p:column styleClass="logintxtnumberFormat" width="8%">
+
+									<p:inputText
+										value="#{branchsaleBean.priceQty[sales.productId]}" size="11"
+										onkeypress='return validate(event)' id="priceQty"
+										styleClass="logintxtnumberFormat">
+										<p:ajax event="blur"
+											listener="#{branchsaleBean.addSalesPriceModifyItem(row)}"
+											update=":addEditSalesForm:quotationAddGrid,:addEditSalesForm:dataTable" />
+										<f:convertNumber pattern="#0.00" />
+									</p:inputText>
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{sales.quantityRequired}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn"
+									footerText="Total (#{app['common.currency']})">
+									<h:outputText value="#{sales.discountAmount}"
+										styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+
+								<p:column style="width:5%;" styleClass="columnwidthn">
+									<h:outputText value="#{sales.taxCode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:7%;" styleClass="columnwidthn">
+									<h:outputText value="#{sales.taxAmount}"
+										styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:column width="8%" styleClass="columnwidthn">
+									<f:facet name="footer">
+										<h:outputText value="#{branchsaleBean.totalAmount}"
+											styleClass="logintxttable">
+											<f:convertNumber pattern="#0.00" />
+										</h:outputText>
+									</f:facet>
+
+									<h:outputText value="#{sales.subTotal}"
+										styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:column width="3%" styleClass="columnwidth">
+									<p:commandLink value="" styleClass="ui-icon ui-icon-trash"
+										title="Remove" actionListener="#{branchsaleBean.removeItem}"
+										oncomplete="PF('salesItemdeleteDig').show()">
+										<f:attribute name="branchsalesId" value="#{row}" />
+									</p:commandLink>
+								</p:column>
+
+
+							</p:dataTable>
+						</p:column>
+					</p:row>
+
+					<f:facet name="footer">
+						<p:row>
+							<p:column style="width:100%;" colspan="2">
+								<p:commandButton value="Save" ajax="false"
+									action="#{branchsaleBean.saveSales}" update="salesListPanel"
+									rendered="#{branchsaleBean.itemaction!='update'}" />
+
+								<p:commandButton value="Reset" ajax="true"
+									action="#{branchsaleBean.resetSales}" update="salesListPanel"
+									rendered="#{branchsaleBean.itemaction!='update'}" />
+
+								<p:commandButton value="Update" ajax="false"
+									action="#{branchsaleBean.updateSales}" update="salesListPanel"
+									rendered="#{branchsaleBean.itemaction=='update'}" />
+
+								<p:commandButton value="Reset" ajax="true"
+									action="#{branchsaleBean.loadSales}" update="salesListPanel"
+									rendered="#{branchsaleBean.itemaction=='update'}" />
+
+								<p:commandButton value="Cancel" ajax="false"
+									action="#{branchsaleBean.listSales}" update="salesListPanel" />
+							</p:column>
+						</p:row>
+					</f:facet>
+
+
+				</p:panelGrid>
+
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+
+		<p:dialog id="modelsalesitemdelete" showEffect="fade"
+			hideEffect="fade" header="Sales Item Delete Confirmation"
+			resizable="false" widgetVar="salesItemdeleteDig" modal="true"
+			height="100" width="360">
+
+			<br></br>
+
+			<p:panel id="salesitemdelete">
+
+				<h:panelGrid columns="1" border="0" width="100%"
+					styleClass="bgcolor" cellpadding="1" cellspacing="1"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+					<h:outputText value="Are you sure you want to delete this item? "
+						styleClass="logintxttable" />
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+					<p:commandButton value="Yes" ajax="true" update="salesListPanel"
+						oncomplete="PF('salesItemdeleteDig').hide()"
+						action="#{branchsaleBean.removeItemConfirm}">
+					</p:commandButton>
+					<p:commandButton value="No" oncomplete="PF('salesItemdeleteDig').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+		<p:overlayPanel id="productSearchPanel" for="productBtn"
+			hideEffect="fade" widgetVar="overproduct" showCloseIcon="true"
+			style="width:70%;" dynamic="true">
+			<h:panelGroup id="productPanel" stateless="true">
+
+			
+					<h:panelGrid id="searchproductgrid" columns="25" border="0"
+						width="100%"
+						columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Product Code " styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="pbarcode" value="#{productBean.barcode}"
+							maxlength="45" size="15" />
+						<p:message for="pbarcode" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Product Name " styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="pproductName" value="#{productBean.productName}"
+							maxlength="200" size="20" />
+						<p:message for="pproductName" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Brand Name " styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="brandName" value="#{productBean.brandName}"
+							maxlength="200" size="20" />
+						<p:message for="brandName" styleClass="fieldError" />
+
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.categoryName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<h:panelGrid columns="2" border="0">
+							<p:commandLink id="categoryBtn" value="Select" onclick="PF('overp').show();" />
+						</h:panelGrid>
+						<h:outputText value="" />
+
+
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:outputText value="" />
+						<h:panelGrid columns="2" border="0"
+							columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+							<p:commandButton ajax="true" icon="ui-icon-search"
+								style="height:22px;" action="#{productBean.searchProduct}"
+								update="productPanel" />
+						</h:panelGrid>
+						<h:outputText value="" />
+
+					</h:panelGrid>
+
+					<p:dataTable id="productdataTable" var="product" rowIndexVar="row"
+						paginatorPosition="top" lazy="true"
+						value="#{productBean.productModel}" scrollable="true"
+						first="#{productBean.first}" scrollHeight="200"
+						selectionMode="single" paginator="true" rows="10"
+						style="width:100%" rowsPerPageTemplate="10,15,25,50,100,250,500"
+						rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+						<p:ajax event="page" listener="#{productBean.onPageChange}" />
+
+						<p:ajax event="rowSelect" listener="#{branchsaleBean.selectProduct}"
+							oncomplete="PF('overproduct').hide();" update=":addEditSalesForm:productCode">
+							<f:attribute name="product" value="#{product}" />
+						</p:ajax>
+
+
+
+						<p:column sortBy="#{product.barcode}" styleClass="columnwidth"
+							width="8%">
+							<f:facet name="header">
+								<h:outputText value="Product Code" />
+							</f:facet>
+							<h:outputText value="#{product.barcode}"
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column sortBy="#{product.productName}" styleClass="columnwidth"
+							width="20%">
+							<f:facet name="header">
+								<h:outputText value="Product Name" />
+							</f:facet>
+							<h:outputText value="#{product.productName}"
+								styleClass="logintxttable" />
+						</p:column>
+
+
+
+
+						<p:column sortBy="#{product.brandName}" styleClass="columnwidth"
+							width="10%">
+							<f:facet name="header">
+								<h:outputText value="Brand" />
+							</f:facet>
+							<h:outputText value="#{product.brandName}"
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column sortBy="#{product.categoryName}"
+							styleClass="columnwidth" width="10%">
+							<f:facet name="header">
+								<h:outputText value="Category" />
+							</f:facet>
+							<h:outputText value="#{product.categoryName}"
+								styleClass="logintxttable" />
+						</p:column>
+
+
+						<p:column width="4%">
+							<f:facet name="header">
+								<h:outputText value="UOM Type" />
+							</f:facet>
+							<h:outputText value="#{product.uom}" styleClass="logintxttable" />
+						</p:column>
+
+
+					</p:dataTable>
+			
+
+			</h:panelGroup>
+
+
+		</p:overlayPanel>
+
+
+		<ui:include src="/admin/categoryOverlayout.xhtml" />
+
+
+	</h:form>
+</ui:composition>
+
+

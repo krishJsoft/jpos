@@ -1,0 +1,116 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<p:dialog id="orderListDlg" showEffect="fade"
+		hideEffect="fade" header="ORDER LIST"
+		resizable="false" widgetVar="orderListDlg" modal="true"
+		height="160" width="100%">
+		<p:dataTable id="dataTable" var="pos" rowIndexVar="row"
+			scrollable="true" scrollHeight="440"
+			rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+			value="#{posBean.salesorderbreakdowns}" paginator="false"
+			rows="500" style="width: 100%;" rowsPerPageTemplate="5,10,15"
+			
+			>
+
+
+
+			<p:columnGroup type="header">
+				<p:row>
+
+
+
+					<p:column style="width:40%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Item Name" styleClass="tableheader" />
+						</f:facet>
+					</p:column>
+
+
+
+					<p:column style="width:15%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Qty" styleClass="tableheader" />
+						</f:facet>
+					</p:column>
+
+					<p:column style="width:25%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Remarks" styleClass="tableheader" />
+						</f:facet>
+					</p:column>
+
+					<p:column style="width:10%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+						</f:facet>
+					</p:column>
+				</p:row>
+			</p:columnGroup>
+
+
+
+
+
+
+			<p:column styleClass="columnwidth">
+
+				<p:commandLink value="#{pos.productName}"
+					styleClass="logintxttable"
+					
+					actionListener="#{posBean.remarksItem}"
+					oncomplete="PF('orderItemremarskDig').show()">
+					<f:attribute name="posBreakdownId" value="#{row}" />
+				</p:commandLink>
+
+
+			</p:column>
+
+
+			<p:column styleClass="logintxtnumberFormat">
+
+				<p:inputText value="#{posBean.itemcountQty[pos.sno]}" style="width:100%"
+					onkeypress='return validate(event)' id="itemcountQty"
+					styleClass="logintxtnumberFormat">
+					<p:ajax event="change"
+						listener="#{posBean.addSalesPriceModifyItem1(row)}"
+						 />
+					<f:convertNumber pattern="#0" />
+				</p:inputText>
+
+			</p:column>
+
+			<p:column styleClass="logintxtnumberFormat">
+	
+					<p:inputText value="" style="width:100%"
+						styleClass="logintxtnumberFormat">
+						
+					</p:inputText>
+	
+				</p:column>
+
+
+			<p:column styleClass="columnwidth">
+
+				<p:commandLink value="" styleClass="ui-icon ui-icon-trash"
+					
+					actionListener="#{posBean.removeItem}"
+					oncomplete="PF('posItemdeleteDig').show()">
+					<f:attribute name="posBreakdownId" value="#{row}" />
+				</p:commandLink>
+			</p:column>
+
+
+		</p:dataTable>
+	</p:dialog>	
+		
+
+
+
+</ui:composition>

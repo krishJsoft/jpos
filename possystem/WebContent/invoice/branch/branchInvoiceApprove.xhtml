@@ -1,0 +1,65 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogInvoiceApprove" showEffect="fade"
+		hideEffect="fade" header="Branch/Customer Approve Confirmation"
+		resizable="false" widgetVar="invoiceProcessDig" modal="true"
+		height="190" width="400">
+
+		<br></br>
+
+		<p:panel id="invoiceapprove">
+
+			<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+				cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText
+					value="Are you sure you want to approve Invoice No,  "
+					styleClass="logintxttable" />
+
+				<h:outputText
+					value="#{branchInvoiceBean.branchinvoice.invoiceNo}"
+					styleClass="logintxttable" />
+				
+				<h:outputText
+					value="#{branchInvoiceBean.branchinvoice.branch.branchName}"
+					rendered="#{branchInvoiceBean.branchinvoice.invoiceType=='1'}" styleClass="logintxttable" />
+				<h:outputText
+					value="#{branchInvoiceBean.branchinvoice.customer.customerName}"
+					rendered="#{branchInvoiceBean.branchinvoice.invoiceType=='2'}" styleClass="logintxttable" />	
+					
+				<h:outputText value="#{branchInvoiceBean.branchinvoice.totalAmount}"
+					styleClass="logintxttable" />
+					
+			</h:panelGrid>
+
+			<br></br>
+
+			<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+				<p:commandButton value="Approve" ajax="false"
+					rendered="#{loginBean.functionList.contains('Approve Branches Invoices')}"
+					action="#{branchInvoiceBean.approveInvoice}">
+				</p:commandButton>
+				<p:commandButton value="Cancel" oncomplete="PF('invoiceProcessDig').hide()" />
+
+			</h:panelGrid>
+		</p:panel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

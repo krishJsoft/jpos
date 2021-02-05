@@ -1,0 +1,37 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	>
+
+
+<p:dialog id="hotelTableAreaDlg" showEffect="fade"
+		hideEffect="fade" header="ADD NEW SECTION"
+		resizable="true" widgetVar="hotelTableAreaDlg"
+		height="100px" width="300px" 
+		modal="true" 
+		>
+		<p:messages id="messages" showDetail="true" closable="true">
+    	</p:messages>
+    	
+		<h:panelGrid width="85%" columns="3" id="cardNoGrid"
+		
+		>
+			<h:outputText value="SECTION NAME"/>
+			<p:inputText id="tableAreaName" value="#{hoteltableBean.hotelTableArea.areaName}" />
+			<p:message for="tableAreaName" />
+		
+	
+		</h:panelGrid>
+		<p:commandButton value="CREATE AREA" 
+			action="#{hoteltableBean.createHotelTableArea}"
+			update=":tableSetupForm"
+		/>
+	
+	</p:dialog>
+
+
+
+</ui:composition>

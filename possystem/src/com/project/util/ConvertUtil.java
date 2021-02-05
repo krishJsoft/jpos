@@ -1,0 +1,285 @@
+package com.project.util;
+
+import java.math.BigDecimal;
+import java.math.BigInteger;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
+
+/*
+ * * @author Gopal
+ * @version 1.0
+ * @since 08 Aug 2012
+ * 
+ */
+
+public class ConvertUtil {
+	
+	public static Logger log = LoggerFactory.getLogger(ConvertUtil.class);
+
+	public static BigDecimal toBigDecimal(int value){
+		try {
+			return new BigDecimal(value);
+		} catch (Exception e) {
+			return new BigDecimal(0);
+		}
+	}
+	
+	public static BigDecimal toBigDecimal(long value){
+		try {
+			return new BigDecimal(value);
+		} catch (Exception e) {
+			return new BigDecimal(0);
+		}
+	}
+	
+	public static BigDecimal toBigDecimal(String value){
+		try {
+			if(value!=null){
+				value = removeCommaCashFormat(value);
+			return new BigDecimal(value);
+			}
+			else{
+				return new BigDecimal(0);
+			}
+		} catch (Exception e) {
+			return new BigDecimal(0);
+		}
+	}
+	
+	public static BigInteger toBigInteger(String value){
+		try {
+			return new BigInteger(value);
+		} catch (Exception e) {
+			return new BigInteger("0");
+		}
+	}
+	
+	public static int toInt(BigDecimal value){
+		try {
+			return value.intValue();
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public static int toInt(BigInteger value){
+		try {
+			return value.intValue();
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public static Integer toInt(Long value){
+		try {
+			return value.intValue();
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public static long toLog(BigDecimal value){
+		try {
+			return value.longValue();
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public static String toDecimal(double value){
+		return new DecimalFormat("0.00").format(value);
+	}
+	
+	public static Double toDecimalDouble(double value){
+		return Double.parseDouble(new DecimalFormat("0.00").format(value));
+	}
+	
+	public static BigDecimal toBigDecimal(double value){
+		try {
+			return new BigDecimal(value);
+		} catch (Exception e) {
+			return new BigDecimal(0.0);
+		}
+	}
+	
+	public static double toDouble(BigDecimal value){
+		try {
+			return value.doubleValue();
+		} catch (Exception e) {
+			return 0.0;
+		}
+	}
+	
+	public static double toDouble(BigInteger value){
+		try {
+			return value.doubleValue();
+		} catch (Exception e) {
+			return 0.0;
+		}
+	}
+	
+	public static String toString(long value){
+		try {
+			return String.valueOf(value);
+		} catch (Exception e) {
+			return "0";
+		}
+	}
+	
+	public static String toString(int value){
+		try {
+			return String.valueOf(value);
+		} catch (Exception e) {
+			return "0";
+		}
+	}
+	
+	public static String toString(double value){
+		try {
+			return String.valueOf(value);
+		} catch (Exception e) {
+			return "0";
+		}
+	}
+	
+	public static String toString(BigDecimal value){
+		
+		try {
+			return String.valueOf(value);
+		} catch (Exception e) {
+			return "0";
+		}
+	}
+	
+	public static String toString(BigInteger value){
+		try {
+			return String.valueOf(value);
+		} catch (Exception e) {
+			return "0";
+		}
+	}
+	
+	public static long toLong(String value){
+		try {
+			if(Utility.isNotNull(value))
+			{
+				return Long.parseLong(value);
+			}else{
+				return 0;
+			}
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
+	
+	public static int toInt(String value){
+		try {
+			if(Utility.isNotNull(value))
+			{
+				return Integer.parseInt(value);
+			}else{
+				return 0;
+			}
+		} catch (NumberFormatException e) {
+			return 0;
+		}
+	}
+	
+	public static int toStringToInt(String value ){
+		try {
+			return toInt(toBigDecimal(value));
+		} catch (Exception e) {
+			return 0;
+		}
+	}
+	
+	public static Double toDouble(String value){
+		
+		try {
+			return Double.parseDouble(value);
+		} catch (NumberFormatException e) {
+			return 0.0;
+		}
+	}
+	
+	public static String toCashFormat(String value){
+		NumberFormat formatter =  new DecimalFormat("#,###,###.00");
+		double amount = Double.parseDouble(value);
+		return formatter.format(amount);
+	}
+	
+	public static String removeCommaCashFormat(String value){
+		double convertValue = 0;
+		//double amount = Double.parseDouble(convertValue);
+		try {
+			NumberFormat formatter = new DecimalFormat("#,###,###.00");
+			convertValue = formatter.parse(value).doubleValue();
+		} catch (Exception e) {
+			// TODO: handle exception
+			System.out.println(e);
+		}
+		
+		return String.valueOf(convertValue);
+	}
+	
+	public static boolean isInt(String value){
+		if(value == null || value.equals(""))
+			return false;
+		try{
+			Integer.parseInt(value);
+			return true;
+		}catch(NumberFormatException e){
+			return false;
+		}
+	}
+	
+	/*
+	 * Created By	: Mathi
+	 * Created Date	: 09 Nov 2012
+	 * Description	: Converts the Int array to comma separated string.
+	 */
+	public static String getCommaSeparatedString(int[] values){
+		StringBuilder sb = new StringBuilder();
+		for(int value : values){
+			sb.append(value + ",");
+		}
+		if(sb.length() > 0)
+			return sb.substring(0, sb.length() - 1);
+		return sb.toString();
+	}
+	
+	/*
+	 * Created By	: Mathi
+	 * Created Date	: 10 Nov 2012
+	 * Description	: To convert int array to List.
+	 */
+	public static List<Integer> getIntegerList(int[] values){
+		List<Integer> intList = new ArrayList<Integer>();
+		for(int value : values){
+			intList.add(new Integer(value));
+		}
+		return intList;
+	}
+	
+	public static void main(String[] args){
+		ConvertUtil convert = new ConvertUtil();
+		int[] values = new int[6];
+		values[0] = 0;
+		values[1] = 1;
+		values[2] = 2;
+		values[3] = 3;
+		values[4] = 4;
+		values[5] = 5;
+		System.out.println(convert.getCommaSeparatedString(values));
+	}
+	
+	
+}

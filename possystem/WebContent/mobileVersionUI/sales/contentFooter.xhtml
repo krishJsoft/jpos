@@ -1,0 +1,115 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<style>
+	.footerButtonPanel{
+		background-color:black;		
+		bottom:0px;
+		width:100%;
+		padding: 0 0 0 0 !important;
+		height:8vh;
+		margin:0 0 0 0 !important;
+	}
+	.footerButton{
+		padding:0px;
+		margin:0px;
+		
+		font-weight:bold;
+	}
+	.ui-button.footerButton{
+		font-size:150%;
+		width:100%;
+		
+		
+	}
+	.footerButtonPanel tr{
+		
+		background-color:black;
+	}
+	
+	.ui-icon.ui-confirm-dialog-severity.ui-icon-alert {
+    	background-position: 0 0 !important; 
+    	background-image: none !important;
+	}
+	.ui-button.footerButton{
+		
+		color: white;
+		background: #E32526;
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+			'Helvetica Neue', Arial, sans-serif;
+	}
+	
+</style>
+
+<p:panelGrid styleClass="footerButtonPanel"  id="footerId">
+		<p:row>
+			
+			<p:column rendered="#{projectHome.contenttpage != '/mobileVersionUI/sales/tablesSelection.xhtml' and 
+			projectHome.contenttpage != '/mobileVersionUI/sales/viewKitchenOrder.xhtml'}">
+				<p:commandButton value="BACK" action="#{projectHome.redirectToPrevPage}"
+				disabled="#{posBean.salesorderbreakdowns.size()!=0 and 	projectHome.contenttpage == '/mobileVersionUI/sales/categorySelection.xhtml'}"
+				styleClass="footerButton"
+				>
+				</p:commandButton>
+				
+			</p:column>
+			<p:column style="text-align:center;" >
+				
+				<p:commandButton styleClass="footerButton" value="CANCEL" action="#{projectHome.redirectToHomePage}"  >
+				</p:commandButton>
+			</p:column>
+			<p:column style="text-align:right" rendered="#{projectHome.contenttpage == '/mobileVersionUI/sales/categorySelection.xhtml' or 
+			projectHome.contenttpage == '/mobileVersionUI/sales/productSelection.xhtml' or 
+			projectHome.posKitchenOrderPage=='/mobileVersionUI/sales/categorySelection.xhtml'  or 
+			projectHome.posKitchenOrderPage == '/mobileVersionUI/sales/productSelection.xhtml'}">
+				
+				<p:commandButton action="#{posBean.mobileOrderList}" value="LIST" styleClass="footerButton" 
+				disabled="#{posBean.salesorderbreakdowns.size()==0}"
+				/>
+			</p:column>
+			<p:column style="text-align:right" rendered="#{(orderBean.orderAction=='new') and (projectHome.contenttpage == '/mobileVersionUI/sales/orderList.xhtml' or projectHome.posKitchenOrderPage=='/mobileVersionUI/sales/orderList.xhtml')}">
+			
+				<p:commandButton action="#{posBean.saveKitchenOrder}"
+				 value="SEND TO KITCHEN "  
+				 styleClass="footerButton" 
+				 >
+				  <p:confirm header="Confirm your order : "  />
+				 </p:commandButton>
+			</p:column>
+			<p:column style="text-align:right"  rendered="#{posBean.salesorder.salesOrderId!=0 and  orderBean.orderAction=='edit' and projectHome.contenttpage == '/mobileVersionUI/sales/orderList.xhtml'}">
+			<p:commandButton value="UPDATE ORDER "
+			styleClass="footerButton" 
+				action="#{posBean.updateKitchenorder}" ajax="false"
+				
+				>
+			</p:commandButton>
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade" 
+	style="width:10%;" closable="false">
+		<div style="height: 40vh; overflow: auto;">
+			<p:dataTable id="orderListDataTable" var="pos" rowIndexVar="row"
+			scrollable="true" value="#{posBean.salesorderbreakdowns}" paginator="false"
+			style="width: 100%" rowsPerPageTemplate="5,10,15"
+			>
+				<p:column style="width:10%" >
+					<h:outputText value="#{row+1}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{pos.productName} - x #{posBean.itemcountQty[pos.sno]}  " />
+					
+				</p:column>
+			</p:dataTable>
+		</div>
+		<p:panel style="text-align:right" >
+			<p:commandButton value="BACK" type="button" styleClass="ui-confirmdialog-no" />
+        	<p:commandButton value="CONFIRM" type="button" styleClass="ui-confirmdialog-yes"  icon="ui-icon-check" />	
+        </p:panel>
+    </p:confirmDialog>
+				
+</ui:composition>

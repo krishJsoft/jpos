@@ -1,0 +1,34 @@
+package com.alpha.dao.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Customer;
+import com.alpha.model.datamodel.CustomerModel;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 25 June 2013
+ * 
+ */
+
+
+public interface ICustomerDAO {
+
+	
+	public boolean createNewCustomer(Customer customer) throws Exception;
+
+	public boolean updateCustomer(Customer customer) throws Exception;
+
+	public boolean deleteCustomer(Customer customer) throws Exception;
+	
+	public List<Customer> findByCustomerList(String identificationCompanyRegNo,String Status) throws Exception;
+		
+	public List<Customer> getCustomerList(String customerName) throws Exception;
+	
+	public Customer getCustomerDetails(Integer customerId) throws Exception;
+	
+    public boolean findCustomerIcExites(String identificationCompanyRegNo) throws Exception;
+	
+    
+}

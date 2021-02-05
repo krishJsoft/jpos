@@ -1,0 +1,53 @@
+package com.alpha.dao.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Product;
+import com.alpha.hq.model.Productprice;
+import com.alpha.hq.model.Productsupplier;
+
+public interface IProductDAO {
+
+	
+	public List<Product> findByProductListAll() throws Exception;
+
+	public int getProductCount(Integer categoryId,Integer supplierId , String barcode , String status) throws Exception;
+
+	public List<Product> getProductList(Integer categoryId,Integer supplierId , String barcode , String status, int start, int howMany)
+			throws Exception;
+	
+	public List<Product> getProductListUsingLikeProductCode(String productCode) throws Exception;
+	
+	public Product getProductDetails(int productId) throws Exception;
+	
+	public Product getProductPriceDetails(int productId) throws Exception;
+	
+	public boolean createNewProduct(Product Product) throws Exception;
+
+	public boolean updateProduct(Product Product) throws Exception;
+	
+	public boolean deleteProduct(Product Product) throws Exception;
+	
+	public Product getProductDetailsByBarcode(String barcode) throws Exception;
+	
+	public boolean findProductExites(String Product) throws Exception;
+	
+	public boolean findbarcodeExites(String barcode) throws Exception;
+	
+	public List<Product> getProductList(String barCode) throws Exception;
+
+	public List<Productsupplier> getProductSuppliersByBarcode(String barcode) throws Exception;
+	
+	public List<Productprice> getProductpriceByBarcode(String barcode) throws Exception;
+	
+	public boolean deleteProductPrice(Productprice productprice) throws Exception;
+	
+	public boolean updateProductPrice(Productprice Product) throws Exception;
+	
+	public Productprice getProductPriceDetailsbyId(int productpriceId) throws Exception;
+	
+	public boolean deleteProductsupplier(Productsupplier productsupplier) throws Exception;
+	
+	public Productsupplier getProductSupplierDetailsbyId(Integer productsupplierId) throws Exception;
+			
+}

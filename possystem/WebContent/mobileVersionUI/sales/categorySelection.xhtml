@@ -1,0 +1,225 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:jsf="http://xmlns.jcp.org/jsf">
+
+	<h:head>
+	<style>
+.menuListButton {
+	position: relative;
+	width: 100%;
+	height: 105%;
+	font-size: 100%;
+	font-weight: bold;
+	font-variant: small-caps;
+	text-align: left;
+}
+
+.menuListHeader {
+	text-align: center;
+	font-size: 150%;
+	border-top-left-radius: 40px;
+	border-top-right-radius: 40px;
+	padding: 0;
+	font-weight: bold;
+	background: #1F618D;
+	height: 10vh;
+	vertical-align: top;
+}
+
+.menuListColumn {
+	background-color: #E30074;
+	height: 10vh
+}
+
+.menuListFooter {
+	background-color: #1F618D;
+	width: 100%;
+}
+
+.ui-datagrid td {
+	padding: 5px;
+}
+
+.quickMenuTable {
+	width: 100%;
+	height: 100%;
+	background: transparent;
+}
+
+.quickMenuTable tr {
+	background: transparent;
+}
+
+.quickMenuTable td {
+	text-align: center;
+	width: 50%;
+	background: transparent;
+	border-style: hidden !important;
+	/*border-style:hidden !important;*/
+}
+
+.quickMenuTableButton {
+	width: 100%;
+	height: 100%;
+}
+
+.quickMenuDataGrid td {
+	background: black;
+}
+
+.quickMenuDataGrid .ui-datagrid-content {
+	border: none;
+}
+</style>
+		<script>
+function validate(evt,value) {
+	  var theEvent = evt || window.event;
+	  var key = theEvent.keyCode || theEvent.which;
+	  key = String.fromCharCode( key );
+	  var regex = /[0-9]/;
+	  
+	  if( !regex.test(key)) {
+		  
+	    theEvent.returnValue = false;
+	    if(theEvent.preventDefault) theEvent.preventDefault();
+	  }
+	  
+	}
+$(document).ready(function() {
+
+
+});
+
+function test(){
+	alert($('.cardNo').val());
+	$('.cardNo').val('a');
+}
+</script>
+	</h:head>
+
+	<h:form id="mobileCategorySelectionForm" style="z-index:-22">
+
+		<p:focus context="tableNcardNoGrid" id="focus" />
+		<h:panelGrid width="85%" columns="3" id="tableNcardNoGrid">
+			<h:outputText value="Table No" styleClass="totalValue"
+				style="width:10%;font-size:100%" />
+			<p:inputText value="#{posBean.salesorder.tableName}"
+				style="width:30%;font-size:100%;" disabled="true" />
+			<h:outputText value="" />
+
+			<h:outputText value="Card No" styleClass="totalValue"
+				style="width:20%;font-size:100%" />
+
+
+			<p:inputText id="cardNo" styleClass="cardNo"
+				jsf:value="#{posBean.salesorder.cardNo}"
+				style="width:30%;font-size:100%;" autocomplete="off" disabled="true">
+
+				<p:ajax event="keyup" update="outCardMessage,menuListHeader"
+					listener="#{posBean.validateCardNo}" />
+			</p:inputText>
+			<ui:remove>
+				<input type="number" min=" 1" max=" 10" jsf:id="cardNo2"
+					onkeyup="test()" />
+			</ui:remove>
+			<h:panelGrid columns="2">
+				<h:outputText id="outCardMessage" styleClass="fieldErroro"
+					value="#{posBean.cardMessageInUse}" style="font-size:100%" />
+				<h:message for="cardNo" styleClass="fieldErroro"
+					style="font-size:100%" />
+
+
+			</h:panelGrid>
+
+		</h:panelGrid>
+
+		<div style="height: 80%; overflow: auto;">
+			<p:panel id="menuListHeader" styleClass="menuListHeader">
+				<h:outputText id="outCardMessage2" value="PLEASE ENTER CARD NO"
+					styleClass="fieldErroro" style="width:20%;font-size:100%"
+					rendered="#{posBean.salesorder.cardNo==null or posBean.salesorder.cardNo==''}" />
+
+
+				<p:panelGrid style="width:100%;border-style:hidden">
+
+					<p:row style="background:transparent;background-color:transparent">
+
+
+
+						<p:column style="width:80%">
+							<p:commandLink value="CATEGORY"
+								style="color:white;text-decoration: underline;"
+								disabled="#{posBean.cardMessageInUse=='Card in use !' or posBean.salesorder.cardNo==null or posBean.salesorder.cardNo==''}"
+								actionListener="#{posBean.productListMenu}">
+								<f:attribute name="categoryId" value="" />
+
+							</p:commandLink>
+						</p:column>
+
+						<p:column>
+							<p:commandLink oncomplete="PF('quickMenuDlg').show()"
+								disabled="#{posBean.cardMessageInUse=='Card in use !' or posBean.salesorder.cardNo==null or posBean.salesorder.cardNo==''}">
+								<i class="fa fa-list-alt fa-5x"
+									style="font-size: 48px; color: orange"></i>
+							</p:commandLink>
+
+
+
+
+						</p:column>
+					</p:row>
+
+				</p:panelGrid>
+
+			</p:panel>
+
+
+			<p:tree id="treetable" value="#{commonListBean.rootNode}"
+				scrollable="true" dynamic="true" selectionMode="single"
+				scrollHeight="420" selection="#{productCategoryBean.selectedNode}"
+				var="category" orientation="horizontal">
+				<p:treeNode>
+
+					
+					<p:splitButton value="#{category.name}">
+						<p:menuitem value="Go" ajax="false"
+							actionListener="#{posBean.selectCategoryMenu}"
+							disabled="#{posBean.cardMessageInUse=='Card in use !' or posBean.salesorder.cardNo==null or posBean.salesorder.cardNo==''}">
+							<f:attribute name="productcat" value="#{category}" />
+							<f:attribute name="orderMachine" value="mobile" />
+						</p:menuitem>
+
+
+					</p:splitButton>
+
+
+				</p:treeNode>
+			</p:tree>
+
+		</div>
+		<p:panelGrid style="width:100%">
+			<p:row>
+				<p:column styleClass="menuListFooter">
+					<h:outputText value=" " />
+				</p:column>
+
+			</p:row>
+		</p:panelGrid>
+
+
+
+
+		<ui:include src="/mobileVersionUI/sales/contentFooter.xhtml" />
+		<ui:include src="/mobileVersionUI/sales/dialogs/quickmenudialog.xhtml" />
+
+
+
+	</h:form>
+
+
+
+</ui:composition>
+
+

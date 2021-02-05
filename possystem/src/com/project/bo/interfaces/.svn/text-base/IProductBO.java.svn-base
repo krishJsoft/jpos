@@ -1,0 +1,49 @@
+package com.alpha.bo.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Product;
+import com.alpha.hq.model.Productprice;
+import com.alpha.model.datamodel.ProductModel;
+import com.alpha.model.datamodel.ProductpriceModel;
+import com.alpha.model.datamodel.ProductsupplierModel;
+
+
+public interface IProductBO {
+
+	public List<ProductModel> findByProductListAll() throws Exception;
+
+	public int getProductCount(Integer categoryId,Integer supplierId , String barcode , String status) throws Exception;
+
+	public List<ProductModel> getProductList(Integer categoryId,Integer supplierId , String barcode , String status, int start, int howMany)
+			throws Exception;
+	
+	public List<ProductModel> getProductListUsingLikeProductCode(String productCode) throws Exception;
+	
+	public ProductModel getProductDetails(int productId) throws Exception;
+	public ProductModel getProductPriceDetails(int productId) throws Exception;
+	public boolean createNewProduct(ProductModel Product) throws Exception;
+
+	public boolean updateProduct(ProductModel Product) throws Exception;
+	
+	public boolean deleteProduct(ProductModel Product) throws Exception;
+	
+	public ProductModel getProductDetailsByBarcode(String barcode) throws Exception;
+	
+	public boolean findProductExites(String Product) throws Exception;
+	
+	public boolean findbarcodeExites(String barcode) throws Exception;
+	
+	public List<ProductModel> getProductList(String barcode) throws Exception;
+	
+	public List<ProductsupplierModel> getProductSuppliersByBarcode(String barcode) throws Exception;
+	
+	public List<ProductpriceModel> getProductpriceByBarcode(String barcode) throws Exception;
+			
+	public boolean deleteProductPrice(ProductpriceModel productprice) throws Exception;
+	
+	public boolean updateProductPrice(Integer productId,List<ProductpriceModel> deleteproductPriceList,List<ProductpriceModel> newproductPriceList)
+			throws Exception;
+			
+	public boolean deleteProductsupplier(ProductsupplierModel productsupplier) throws Exception;
+}

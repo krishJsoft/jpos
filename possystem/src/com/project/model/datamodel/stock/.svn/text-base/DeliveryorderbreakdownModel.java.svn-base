@@ -1,0 +1,170 @@
+package com.alpha.model.datamodel.stock;
+
+import java.math.BigDecimal;
+import java.util.Date;
+
+public class DeliveryorderbreakdownModel {
+
+	private int deliveryOrderBreakdownId;
+
+	private String discount;
+
+	private BigDecimal discountAmount;
+
+	private String productName;
+
+	private String uomName;	
+	
+	private int quantity;
+
+	private int quantityAfter;
+
+	private int quantityBefore;
+
+	private BigDecimal subTotal;
+
+	private BigDecimal unitPrice;
+
+	private int productId;
+
+	private String barcode;
+	
+	private int balanceQuantity;
+
+	private int receivedQuantity;
+	
+	private Date expDate;
+	
+	private Date createdDate;
+
+	public int getDeliveryOrderBreakdownId() {
+		return deliveryOrderBreakdownId;
+	}
+
+	public void setDeliveryOrderBreakdownId(int deliveryOrderBreakdownId) {
+		this.deliveryOrderBreakdownId = deliveryOrderBreakdownId;
+	}
+
+	public String getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(String discount) {
+		this.discount = discount;
+	}
+
+	public BigDecimal getDiscountAmount() {
+		return discountAmount;
+	}
+
+	public void setDiscountAmount(BigDecimal discountAmount) {
+		this.discountAmount = discountAmount;
+	}
+
+	public String getProductName() {
+		return productName;
+	}
+
+	public void setProductName(String productName) {
+		this.productName = productName;
+	}
+
+	public int getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
+	}
+
+	public int getQuantityAfter() {
+		return quantityAfter;
+	}
+
+	public void setQuantityAfter(int quantityAfter) {
+		this.quantityAfter = quantityAfter;
+	}
+
+	public int getQuantityBefore() {
+		return quantityBefore;
+	}
+
+	public void setQuantityBefore(int quantityBefore) {
+		this.quantityBefore = quantityBefore;
+	}
+
+	public BigDecimal getSubTotal() {
+		return subTotal;
+	}
+
+	public void setSubTotal(BigDecimal subTotal) {
+		this.subTotal = subTotal;
+	}
+
+	public BigDecimal getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(BigDecimal unitPrice) {
+		this.unitPrice = unitPrice;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
+	}
+
+	public String getBarcode() {
+		return barcode;
+	}
+
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+
+	public int getBalanceQuantity() {
+		return balanceQuantity;
+	}
+
+	public void setBalanceQuantity(int balanceQuantity) {
+		this.balanceQuantity = balanceQuantity;
+	}
+
+	public int getReceivedQuantity() {
+		return receivedQuantity;
+	}
+
+	public void setReceivedQuantity(int receivedQuantity) {
+		this.receivedQuantity = receivedQuantity;
+	}
+
+	public Date getExpDate() {
+		return expDate;
+	}
+
+	public void setExpDate(Date expDate) {
+		this.expDate = expDate;
+	}
+
+	public String getUomName() {
+		return uomName;
+	}
+
+	public void setUomName(String uomName) {
+		this.uomName = uomName;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+	
+	
+
+}

@@ -1,0 +1,80 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="listBranchForm">
+		<p:outputPanel id="branchPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="branchPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Add/Edit Branch"
+				id="branchPanel1">
+
+
+				<p:contextMenu for="treetable">
+					<p:menuitem value="New" update="documentPanel"
+						icon="ui-icon-search" oncomplete="documentDialog.show()" />
+				</p:contextMenu>
+
+				<p:treeTable id="treetable" value="#{nodeBean.root}" dynamic="true"
+					selectionMode="single" selection="#{nodeBean.selectedNode}"
+					var="category" resizableColumns="true">
+
+					<p:column headerText="Category Name">
+						<h:outputText value="#{category}" />
+					</p:column>
+
+				</p:treeTable>
+
+
+
+
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+
+
+		<p:dialog header="New Category Creation" showEffect="fade" width="400"
+			height="130" widgetVar="documentDialog" modal="true">
+			<p:outputPanel id="documentPanel">
+				<h:panelGrid columns="2" width="100%"
+					columnClasses="columnLeft width-150px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+					<h:outputText value="Category Name " />
+					<p:inputText id="id" value="#{nodeBean.kategIsmi}" required="true"
+						requiredMessage="Category Name Required">
+						<f:validateLength minimum="1" maximum="30" />
+					</p:inputText>
+					
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					
+					<h:outputText value="" />
+					<p:message for="id" />
+					
+					<h:outputText value="" />
+					<p:commandButton value="Save" update="branchPanel"
+						action="#{nodeBean.yeniKatEkle}"
+						oncomplete="documentDialog.hide()" async="true" />
+				</h:panelGrid>
+				
+			</p:outputPanel>
+		</p:dialog>
+
+	</h:form>
+
+
+
+</ui:composition>
+
+

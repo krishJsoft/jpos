@@ -1,0 +1,168 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesPanel">
+			<p:message for="salesPanel" />
+			<p:panel styleClass="mypanel" header="Monthly Sales Summary">
+<br/>
+
+				
+
+				<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+					scrollable="true" scrollHeight="420"
+					value="#{salesorderBean.salesorderlist}" paginator="false"
+					rows="1000000" style="width: 100%" 
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+					<p:column id="modelHeader" width="5%">
+						<f:facet name="header">
+							<h:outputText value="#{des['common.table.header.no']}" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width:10%">
+						<f:facet name="header" >
+							<h:outputText value="Created Date and Time " />
+						</f:facet>
+						<h:outputText value="#{sales.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="#{des['common.date.time.pattern']}" />
+						</h:outputText>
+					</p:column>
+
+						
+
+				
+					<p:column sortBy="#{sales.salesOrderNo}" style="width:12%">
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" />
+						</f:facet>
+						
+						<f:facet name="footer">
+							<h:outputText value="Total Amount (#{app['common.currency']})" />
+						</f:facet>
+						
+						<h:outputText value="#{sales.salesOrderNo}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					
+					
+
+					<p:column sortBy="#{sales.totalAmount}"
+						styleClass="logintxtnumberFormat" style="width:8%">
+						<f:facet name="header">
+							<h:outputText value="Sales Amount (#{app['common.currency']})" />
+						</f:facet>
+						<h:outputText value="#{sales.totalAmount.subtract(sales.totalTax)}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+						
+						<f:facet name="footer">
+						<p:outputPanel style="float: right">
+							<h:outputText value="#{salesorderBean.totalAmount.subtract(salesorderBean.totalTaxAmount)}" />
+							</p:outputPanel>
+						</f:facet>
+						
+					</p:column>
+					
+					<p:column sortBy="#{sales.totalTax}"
+						styleClass="logintxtnumberFormat" style="width:8%">
+						<f:facet name="header">
+							<h:outputText value="Tax Amount (#{app['common.currency']})" />
+						</f:facet>
+						<h:outputText value="#{sales.totalTax}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+						
+						<f:facet name="footer">
+						<p:outputPanel style="float: right">
+							<h:outputText value="#{salesorderBean.totalTaxAmount}" />
+							</p:outputPanel>
+						</f:facet>
+						
+					</p:column>
+					
+
+
+					<p:column sortBy="#{sales.status}" style="width:7%">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+
+						<h:outputText value="#{app['salesorder.status.neworderlable']}"
+							rendered="#{sales.status==app['salesorder.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.processedlable']}"
+							rendered="#{sales.status==app['salesorder.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.orderedlable']}"
+							rendered="#{sales.status==app['salesorder.status.orderedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.paidlable']}"
+							rendered="#{sales.status==app['salesorder.status.paidvalue']}"
+							styleClass="logintxttable" />
+
+
+					</p:column>
+
+
+					<p:column style="width: 7%;">
+						<f:facet name="header">Action</f:facet>
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+								update=":addEditSalesForm:requestitem"
+								rendered="#{loginBean.functionList.contains('View SalesOrder')}"
+								actionListener="#{salesorderBean.viewSalesOrder}"
+								oncomplete="PF('salesDig').show()">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+							
+						</p:menuButton>
+
+
+
+					</p:column>
+
+
+				</p:dataTable>
+				<br />
+				<p:commandButton value="Print"   update=":addEditSalesForm:annualmonthdataTable"
+				style="background: #E32526;color:white" 
+				oncomplete="PF('monthsalesprintDig').show();"	
+				>
+							
+				</p:commandButton>
+
+<ui:remove>
+	<f:attribute name="maxPrintListSize" value="15" />
+					<f:attribute name="printListSize" value="15" />
+					<f:attribute name="printDlgId" value="monthsalesprintDig" />	
+action="#{salesorderBean.printAlertLongList}"
+
+</ui:remove>
+
+			</p:panel>
+
+		</p:outputPanel>
+		<ui:include src="/sales/salesApprove.xhtml" />
+		<ui:include src="/sales/annualmonthprinttemplate.xhtml" />
+		<ui:include src="/sales/salesOrderView.xhtml" />
+		<ui:include src="/templates/loadingDialog.xhtml" />
+	</h:form>
+</ui:composition>
+
+

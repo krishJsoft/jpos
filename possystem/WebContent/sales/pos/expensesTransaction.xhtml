@@ -1,0 +1,183 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalExpensesTransaction" header="Expenses"
+		widgetVar="expensesWidget" modal="true" height="430" width="700">
+	
+		<p:outputPanel id="expensesPanel">
+		<p:message for="expensesPanel" />
+			<p:panelGrid columns="3" width="680" 
+			styleClass="borderlessGrid"
+			columnClasses="columnLeft width-5px, columnLeft width-500px,columnLeft width-200px"
+			>
+			
+				
+				<p:outputLabel value="Expense">
+				</p:outputLabel>
+				<h:panelGrid columns="4" 
+				>
+					<p:selectOneMenu value="#{expensesBean.expTrans.expTransId}"
+						filter="true" filterMatchMode="contains"
+					>
+						<f:selectItems value="#{commonListBean.expensesList}"></f:selectItems>
+					</p:selectOneMenu>
+					
+					<p:commandButton icon="ui-icon-plus" ajax="true" actionListener="#{expensesBean.changeNewExpStatus}" update="expensesPanel"
+						rendered="#{expensesBean.newExpName!='yes'}">
+						<f:attribute name="expAction" value="yes" />
+					</p:commandButton>
+					
+					<p:commandButton icon="ui-icon-minus" id="expNewNameButton" ajax="true" actionListener="#{expensesBean.changeNewExpStatus}" update="expensesPanel"
+					rendered="#{expensesBean.newExpName=='yes'}"
+						 >
+						 <f:attribute name="expAction" value="no" />
+					 </p:commandButton>
+					 
+					 <p:panel rendered="#{expensesBean.newExpName=='yes'}" 
+					 style="background-color:#46B881">
+					<p:inputText id="expNewName" value="#{expensesBean.expName}"/>
+					<p:commandButton icon="ui-icon-check" action="#{expensesBean.createNewExpName}" update="expensesPanel"/>
+					
+					<ui:remove>
+						<p:commandButton  icon="ui-icon-close" actionListener="#{expensesBean.changeNewExpStatus}" update="expensesPanel">
+							<f:attribute name="expAction" value="no" />
+						</p:commandButton>
+					</ui:remove>
+					
+					</p:panel>
+	
+					<p:message for="expNewName" styleClass="fieldError" />
+					
+				</h:panelGrid>
+				
+				<h:outputText value="" />
+				
+				
+				<p:outputLabel value="#{msg['expenses.label.expensesAmount']}">
+				</p:outputLabel>
+				<p:inputText align="right" id="expenseAmount" value="#{expensesBean.expTrans.ammount}"
+					>
+					<f:convertNumber pattern="#0.00" />
+				</p:inputText>
+				<p:message for="expenseAmount" styleClass="fieldError" />
+				
+				<p:outputLabel value="Credited to" />
+				<p:selectOneMenu value="#{expensesBean.expTrans.staffCreditedTo.staffId}"
+				filter="true" filterMatchMode="contains"
+				>
+					<f:selectItem itemValue="0" itemLabel="--SELECT--"></f:selectItem>
+					<f:selectItems value="#{commonListBean.staffAllList}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="" />
+				
+				<p:outputLabel value="Receipt No">
+				</p:outputLabel>
+				<p:inputText value="#{expensesBean.expTrans.supplierResistNo}"></p:inputText>
+				<h:outputText value="" />
+				
+				<p:outputLabel value="Receipt Issued Date">
+				</p:outputLabel>
+				<p:calendar navigator="true"  pattern="dd-MMM-yyyy" 
+					value="#{expensesBean.expTrans.supplierResitDate}" size="25" />
+				<h:outputText value="" />
+				
+				
+				<p:outputLabel value="Status" rendered="#{expensesBean.action=='update'}">
+				</p:outputLabel>
+				<p:selectOneMenu value="#{expensesBean.expTrans.activeStatus}" rendered="#{expensesBean.action=='update'}">
+				  <f:selectItem itemLabel="Active" itemValue="1" />
+				  <f:selectItem itemLabel="Inactive" itemValue="0" />
+				</p:selectOneMenu>
+				<h:outputText value="" rendered="#{expensesBean.action=='update'}"/>
+				
+			</p:panelGrid>
+			<p:panel style="border:0;" border="0">
+
+			<p:commandButton value="SAVE"
+			 update="expensesPanel"
+			 action="#{expensesBean.createNewExpTrans}"
+			 rendered="#{expensesBean.action!='update'}"
+			 />
+			
+			<p:commandButton value="UPDATE"
+			 update="expensesPanel" 
+			 rendered="#{expensesBean.action=='update'}"
+			 action="#{expensesBean.updateExpTrans}"
+			 />
+			 <p:commandButton value="CANCEL"
+			 update="expensesPanel" 
+			 rendered="#{expensesBean.action=='update'}"
+			 action="#{expensesBean.cancelEdit}"
+			 />
+			 </p:panel>
+	
+			<p:dataTable id="expensesListTable" var="exp" rowIndexVar="row"
+				reflow="true" value="#{expensesBean.expTransList}"
+				paginator="true" rows="10" style="width: 100%"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="10,20,30"
+				>
+				
+				<p:column id="modelHeader" width="5%">
+					<f:facet name="header">
+						<h:outputText value="No" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+				
+				<p:column  width="15%">
+					<f:facet name="header">
+						<h:outputText value="Created Date" />
+					</f:facet>
+					<h:outputText value="#{exp.createdDate}"
+						styleClass="logintxttable" />
+				</p:column>
+				
+				<p:column  width="15%">
+					<f:facet name="header">
+						<h:outputText value="Expense" />
+					</f:facet>
+					<h:outputText value="#{exp.expList.expName}"
+						styleClass="logintxttable" />
+				</p:column>
+				
+				<p:column  width="15%">
+					<f:facet name="header">
+						<h:outputText value="Amount" />
+					</f:facet>
+					<h:outputText value="#{exp.ammount}"
+						styleClass="logintxttable" />
+				</p:column>
+				
+				<p:column  width="10%">
+					<f:facet name="header">
+						<h:outputText value="ACTION" />
+					</f:facet>
+			
+					<p:menuButton value="Options">
+
+						<p:menuitem ajax="true" value="Edit"
+							update=":addEditPosForm:expensesPanel"	actionListener="#{expensesBean.editExpTrans}">
+							<f:attribute name="expensesID" value="#{exp.expTransId}" />
+						</p:menuitem>
+					</p:menuButton>
+					
+				</p:column>
+				
+			</p:dataTable>
+			
+		</p:outputPanel>
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

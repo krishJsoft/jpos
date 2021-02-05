@@ -1,0 +1,38 @@
+package com.alpha.dao.interfaces;
+
+import java.util.Date;
+import java.util.List;
+
+import com.alpha.hq.model.Purchaseorder;
+import com.alpha.hq.model.Purchaseorderbreakdown;
+
+
+public interface IPurchaseOrderDAO {
+
+	
+	public List<Purchaseorder> findByPurchaseorderListAll() throws Exception;
+
+	public int getPurchaseorderCount(String purchaseOrderNo,Integer supplierId, Date dateFrom,Date dateTo, String status) throws Exception;
+
+	public List<Purchaseorder> getPurchaseorderList(String purchaseOrderNo,Integer supplierId, Date dateFrom,Date dateTo, String status, int start, int howMany)
+			throws Exception;		
+	
+	public List<Purchaseorder> getPurchaseorderList(Integer supplierId,String status) throws Exception;	
+	
+	public Purchaseorder getPurchaseorderDetails(Integer purchaseOrderId) throws Exception;
+	
+	public Purchaseorder getPurchaseorderDetails(String purchaseOrderNo) throws Exception;	
+
+	public boolean createNewPurchaseorder(Purchaseorder purchaseorder) throws Exception;
+
+	public boolean updatePurchaseorder(Purchaseorder purchaseorder) throws Exception;
+	
+	public boolean deletePurchaseorder(Purchaseorder purchaseorder) throws Exception;
+	
+	public List<Purchaseorderbreakdown> getPurchaseorderbreakdownList(Integer branchId,Integer purchaseOrderId)	throws Exception;	
+
+	public List<Purchaseorderbreakdown> getPurchaseorderBranchList(	Integer purchaseOrderId) throws Exception;
+	
+	public boolean deletePurchaseorderbreakdown(Purchaseorderbreakdown purchaseorderbreakdown) throws Exception;	
+	
+}

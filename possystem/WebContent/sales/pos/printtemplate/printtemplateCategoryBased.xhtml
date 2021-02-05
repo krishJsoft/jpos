@@ -1,0 +1,176 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog header="Category Sales Order Detail" resizable="false"
+		widgetVar="categoryReportprintDig" modal="false" height="480"
+		width="267px">
+
+
+
+		<p:panelGrid style="width:260px" styleClass="alignTop"
+			id="categoryReportprintDigprintrequestitem">
+
+			<p:row>
+				<p:column style="width:100%;">
+
+
+
+					<table align="center" width="100%">
+
+						<tr>
+							<td align="center"><font size="2" color="black">
+								Report Category Based   </font></td>
+							
+						</tr>
+					
+						<tr>
+						<td>
+						<h:panelGrid columns="3" border="0" styleClass="borderlessGrid">
+								<h:outputText value="From" ></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText  value="#{salesorderBean.dateFrom}" >
+									<f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+								</h:outputText>
+						
+								<h:outputText value="To" ></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText  value="#{salesorderBean.dateTo}" >
+									<f:convertDateTime type="date" pattern="dd-MM-yyyy"/>
+								</h:outputText>
+								
+							
+							</h:panelGrid>
+						</td>
+						
+						</tr>
+
+						<tr>
+							<td align="left"><font size="3" color="black">------------------------------------------
+							</font></td>
+						</tr>
+
+
+						<tr>
+							<td align="left"><font size="3" color="black">#{loginBean.branch.branchName}</font>
+							</td>
+						</tr>
+						<tr>
+							<td align="left" class="reporttxt"><h:outputText value="#{loginBean.branch.address}"  escape="false" />
+							</td>
+						</tr>
+
+						<tr>
+							<td align="left"><font size="3" color="black"><h:outputText
+										value="#{posOptionBean.dateFrom}" styleClass="reporttxt">
+										<f:convertDateTime pattern="dd-MMM-yyyy" />
+									</h:outputText></font></td>
+						</tr>
+
+
+					</table>
+
+				</p:column>
+			</p:row>
+
+
+
+			<p:row>
+			
+				<p:column style="width:100%;">
+
+					<p:dataGrid id="annualmonthdataTableCategoryBased" var="salesbd" rowIndexVar="row"
+						scrollable="true" scrollHeight="420"
+						value="#{salesorderBean.salesorderbreakdowns}" paginator="false"
+						rows="1000000" style="width: 100%" columns="1"
+						rowsPerPageTemplate="5,10,15,25,50,100"
+						rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+
+						<h:panelGrid columns="2" border="0" styleClass="borderlessGrid"
+							cellpadding="0" cellspacing="0">
+
+							<h:outputText style="font-weight:bold" value="#{salesbd.categoryName}" styleClass="reporttxt">
+								<f:convertDateTime pattern="dd-MMM-yyyy" />
+							</h:outputText>
+
+							<h:outputText value="- Qty : #{salesbd.qtty}"
+								styleClass="reporttxt" style="text-align:right;" >
+								<f:convertNumber pattern="#0" />
+							</h:outputText>
+
+							<h:outputText value="Sales : #{salesbd.unitPrice}  - &amp;   "
+								styleClass="reporttxt">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+							<h:outputText value="   Tax :  #{salesbd.taxAmount}"
+								styleClass="reporttxt" style="text-align:right;">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+
+
+
+						</h:panelGrid>
+					</p:dataGrid>
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column style="width:100%;">
+					<h:panelGrid columns="2" border="0" styleClass="borderlessGrid"
+						cellpadding="0" cellspacing="0">
+						<h:outputText style="font-weight:bold" value="Total Amount (#{app['common.currency']})  " styleClass="reporttxt" />
+						<h:outputText value="#{salesorderBean.totalAmount} "
+							styleClass="reporttxt" />
+						<h:outputText style="font-weight:bold" value="Total Tax (#{app['common.currency']})  " styleClass="reporttxt" />
+						<h:outputText value="#{salesorderBean.totalTaxAmount} "
+							styleClass="reporttxt" />
+
+
+					</h:panelGrid>
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column style="width:100%;">
+					<p:panelGrid columns="2" border="0" width="90%"
+						styleClass="borderlessGrid" cellpadding="1" cellspacing="1"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+						<h:outputText value="Print by : " styleClass="reporttxt" />
+						<h:outputText value="#{loginBean.logdetail.emailAddress}" styleClass="reporttxt" />
+					</p:panelGrid>
+				</p:column>
+			</p:row>
+
+
+		</p:panelGrid>
+
+		<br></br>
+		<f:facet name="footer">
+			<h:panelGrid columns="3" style="float:left"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+				<p:commandButton value="Print"
+					oncomplete="PF('categoryReportprintDig').hide()">
+					<p:printer target="categoryReportprintDigprintrequestitem" />
+				</p:commandButton>
+
+				<p:commandButton value="Close"
+					oncomplete="PF('categoryReportprintDig').hide()" />
+
+			</h:panelGrid>
+		</f:facet>
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

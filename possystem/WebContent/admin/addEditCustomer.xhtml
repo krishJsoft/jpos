@@ -1,0 +1,31 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditCustomerForm">
+		<p:outputPanel id="customerPanel">
+
+			<p:panel styleClass="mytabpanel" header="Add/Edit Customer">
+
+				<table align="center" width="100%" border="0">
+					<tr>
+						<td align="center"><p:message for="customerPanel" /></td>
+					</tr>
+				</table>
+
+				<ui:include src="/admin/customerStep1.xhtml" />
+
+				
+
+			</p:panel>
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

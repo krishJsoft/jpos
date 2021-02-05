@@ -1,0 +1,48 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog showEffect="fade"
+		hideEffect="fade" header="Order Item Delete Confirmation"
+		resizable="false" widgetVar="posItemdeleteSplitDig" modal="true"
+		height="130" width="360">
+
+		<br></br>
+
+		<p:panel id="requestitemsplitdelete">
+
+			<h:panelGrid columns="1" border="0" width="100%" styleClass="bgcolor"
+				cellpadding="1" cellspacing="1"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+				<h:outputText
+					value="Are you sure want to Delete Item ? "
+					styleClass="logintxttable" />
+			</h:panelGrid>
+
+			<br></br>
+
+			<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+				
+				<p:commandButton value="Yes" ajax="true" update=":addEditPosForm:splitDataTable" 
+					action="#{posBean.removeItemFromSplitConfirm}" oncomplete="PF('posItemdeleteSplitDig').hide();">
+				</p:commandButton>
+				<p:commandButton value="No"
+					oncomplete="PF('posItemdeleteSplitDig').hide();" />
+
+			</h:panelGrid>
+		</p:panel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

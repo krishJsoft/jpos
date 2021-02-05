@@ -1,0 +1,155 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:form id="expensesReportForm">
+	<p:panel styleClass="mypanel" header="Daily Expenses Report" id="expensesDailyReportPanel">
+	<br />
+	<div class="ui-g">
+    	<div class="ui-g-6">
+    		<h:panelGrid columns="4" border="0" 
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px"
+			>
+	    		<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:calendar navigator="true" id="dateFrom" size="25"
+					value="#{expensesBean.dateFrom}" pattern="#{des['common.date.pattern']}" />
+				<p:message for="dateFrom" styleClass="fieldError" />
+				
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+			
+				<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:calendar navigator="true" id="dateTo" size="25"
+					value="#{expensesBean.dateTo}" pattern="#{des['common.date.pattern']}" />
+				<p:message for="dateTo" styleClass="fieldError" />	
+			
+			</h:panelGrid>
+			
+    	</div>
+    	<div class="ui-g-6">
+    		<h:panelGrid columns="4" border="0" 
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px"
+			>
+			
+				<h:outputText value="Expenses"  styleClass="logintxt"/>
+				<h:outputText value=":" />
+				<p:selectOneMenu value="#{expensesBean.reportExpensesId}" 
+					style="width:200px"
+					filter="true" filterMatchMode="contains"
+				>
+					<f:selectItem itemValue="0" itemLabel="--SELECT--"></f:selectItem>
+					<f:selectItems value="#{commonListBean.expensesList}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="" />
+				
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+				
+				<h:outputText value="Staff"  styleClass="logintxt"/>
+				<h:outputText value=":" />
+				<p:selectOneMenu value="#{expensesBean.reportStaffId}"
+					style="width:200px"
+					filter="true" filterMatchMode="contains"
+				>
+					<f:selectItem itemValue="0" itemLabel="--SELECT--"></f:selectItem>
+					<f:selectItems value="#{commonListBean.staffAllList}"></f:selectItems>
+				</p:selectOneMenu>
+				<h:outputText value="" />
+				
+				
+			</h:panelGrid>
+			
+    	</div>
+	</div>
+		
+		<br />
+		<p:panel>
+		<p:commandButton value="Search" ajax="true"
+			update="expensesDailyReportPanel,expensesReportForm:expensesDetailsPrintGrid"
+			action="#{expensesBean.searchExpensesDateBased}" 
+		/>
+
+		<p:commandButton value="Print"
+		 	style="	background: #E32526;color:white"
+			oncomplete="PF('expensesDetailsprintDig').show();">					
+		</p:commandButton>
+		</p:panel>
+		<br />
+		<p:dataTable id="dataTable" var="expenses" rowIndexVar="row"
+			scrollable="true" scrollHeight="420"
+			value="#{expensesBean.expTransReport}" paginator="false"
+			rows="1000000" style="width: 100%" 
+			rowsPerPageTemplate="15,30,60,120,"
+			rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+			<p:column id="modelHeader" width="5%">
+				<f:facet name="header">
+					<h:outputText value="#{des['common.table.header.no']}" />
+				</f:facet>
+				
+				<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column style="width:10%">
+				<f:facet name="header">
+					<h:outputText value="Date"/>
+				</f:facet>
+				<h:outputText value="#{expenses.createdDate}"
+					styleClass="logintxttable">
+					<f:convertDateTime pattern="#{des['common.date.pattern']}" />
+				</h:outputText>
+			</p:column>
+			
+			<p:column style="width:30%">
+				<f:facet name="header">
+					<h:outputText value="Expenses"/>
+				</f:facet>
+					
+				<h:outputText value="#{expenses.expList.expName}"
+					styleClass="logintxttable">	
+				</h:outputText>
+			</p:column>
+			
+			<p:column style="width:30%">
+				<f:facet name="header">
+					<h:outputText value="Staff"/>
+				</f:facet>
+					<f:facet name="footer">
+					<h:outputText value="Total Amount (#{app['common.currency']})" />
+				</f:facet>
+				<h:outputText value="#{expenses.staffCreditedTo.firstName}"
+					styleClass="logintxttable">	
+				</h:outputText>
+			</p:column>
+			
+			<p:column style="width:20%">
+				<f:facet name="header">
+					<h:outputText value="Expenses Amount (#{app['common.currency']})"/>
+				</f:facet>
+				<h:outputText value="#{expenses.ammount}"
+					styleClass="logintxttable">
+				</h:outputText>
+				
+				<f:facet name="footer">
+				<p:outputPanel style="float: right">
+					<h:outputText value="#{expensesBean.expensesTotalAmount}" />
+					</p:outputPanel>
+				</f:facet>
+			</p:column>
+						
+		</p:dataTable>
+	</p:panel>
+
+		<ui:include src="/reports/expensesReport/printtemplate/expensesReportTemplate.xhtml" />
+	
+</h:form>
+
+
+</ui:composition>

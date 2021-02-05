@@ -1,0 +1,1257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <property name="units">in</property>
+    <method name="beforeFactory"><![CDATA[importPackage(Packages.org.springframework.context);
+importPackage(Packages.org.springframework.web.context.support);
+
+orderDetailsTotalCount=0;
+orderDetailsCurrentIndex=0;
+branchIndex=0;
+userBranchIndex=0;
+var sc = reportContext.getHttpServletRequest().getSession().getServletContext();
+var spring = WebApplicationContextUtils.getWebApplicationContext(sc);
+
+var staffBO= spring.getBean("staffBO");
+userbranch=staffBO.getBranchstaffmemberDetails(params["userId"]);
+
+
+var salesOrderBO= spring.getBean("salesOrderBO");
+var customerBO= spring.getBean("customerBO");
+salesSummary=salesOrderBO.getCustomerSalesByProductReport(params["customerId"],params["dateFrom"],params["dateTo"],params["branchRecordId"]);
+
+if(salesSummary==null)
+ {
+ 	orderDetailsTotalCount=0;
+ } 
+ else
+ { 		
+ orderDetailsTotalCount=salesSummary.size();	 	
+ }
+ 
+ customer=customerBO.getCustomerDetails(params["customerId"]);
+ 
+]]></method>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <parameters>
+        <scalar-parameter name="dateFrom" id="26">
+            <text-property name="promptText">dateFrom</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="dateTo" id="27">
+            <text-property name="promptText">dateTo</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">date</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="branchRecordId" id="29">
+            <text-property name="promptText">branchRecordId</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="userId" id="164">
+            <text-property name="promptText">userId</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+        <scalar-parameter name="customerId" id="1186">
+            <text-property name="promptText">customerId</text-property>
+            <property name="valueType">static</property>
+            <property name="isRequired">false</property>
+            <property name="dataType">integer</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <script-data-source name="Data Source" id="1185"/>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="userbranch" id="165">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">branchName</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">branchId</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">address</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">city</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">state</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">postCode</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">phoneNo</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">emailAddress</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">loginName</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">10</property>
+                    <property name="name">firstName</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">branchName</property>
+                    <text-property name="displayName">branchName</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">branchId</property>
+                    <text-property name="displayName">branchId</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">address</property>
+                    <text-property name="displayName">address</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">city</property>
+                    <text-property name="displayName">city</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">state</property>
+                    <text-property name="displayName">state</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">postCode</property>
+                    <text-property name="displayName">postCode</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">phoneNo</property>
+                    <text-property name="displayName">phoneNo</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">emailAddress</property>
+                    <text-property name="displayName">emailAddress</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">loginName</property>
+                    <text-property name="displayName">loginName</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">firstName</property>
+                    <text-property name="displayName">firstName</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">branchName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">branchId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">address</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">city</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">state</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">postCode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">phoneNo</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">emailAddress</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">loginName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">10</property>
+                        <property name="name">firstName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <method name="open"><![CDATA[userBranchIndex=0;]]></method>
+            <method name="fetch"><![CDATA[if(userBranchIndex==1)
+	return false;
+	
+row["branchName"]=userbranch.getBranch().getBranchName();	
+row["address"]=userbranch.getBranch().getAddress();
+row["city"]=userbranch.getBranch().getCity();
+row["state"]=userbranch.getBranch().getState();
+row["postCode"]=userbranch.getBranch().getPostCode();
+row["faxNo"]=userbranch.getBranch().getFaxNo();
+row["emailAddress"]=userbranch.getBranch().getEmailAddress();
+row["phoneNo"]=userbranch.getBranch().getPhoneNo();
+row["loginName"]=userbranch.getEmailAddress();
+row["firstName"]=userbranch.getFirstName();
+userBranchIndex++;
+return true;
+]]></method>
+        </script-data-set>
+        <script-data-set name="salesSummary" id="30">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">ProductName</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">ProductCode</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">totalQuantity</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">normalPriceTotal</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">purchasePriceTotal</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">marginTotal</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">margin</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">ProductName</property>
+                    <text-property name="displayName">ProductName</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">ProductCode</property>
+                    <text-property name="displayName">ProductCode</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">totalQuantity</property>
+                    <text-property name="displayName">Quantity Sold</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">normalPriceTotal</property>
+                    <text-property name="displayName">Ext Price(RM)</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">purchasePriceTotal</property>
+                    <text-property name="displayName">Ext Cost(RM)</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">marginTotal</property>
+                    <text-property name="displayName">Ext Margin Amount(RM)</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">margin</property>
+                    <text-property name="displayName">Margin(%)</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">ProductName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">ProductCode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">totalQuantity</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">normalPriceTotal</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">purchasePriceTotal</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">marginTotal</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">margin</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <method name="open"><![CDATA[orderDetailsCurrentIndex=0;]]></method>
+            <method name="fetch"><![CDATA[
+
+if(orderDetailsCurrentIndex==orderDetailsTotalCount)
+	return false;
+	
+row["ProductName"]=salesSummary.get(orderDetailsCurrentIndex).getProductName();
+row["ProductCode"]=salesSummary.get(orderDetailsCurrentIndex).getProductCode();
+
+row["totalQuantity"]=salesSummary.get(orderDetailsCurrentIndex).getTotalQuantity();
+row["normalPriceTotal"]=salesSummary.get(orderDetailsCurrentIndex).getNormalPriceTotal();
+row["purchasePriceTotal"]=salesSummary.get(orderDetailsCurrentIndex).getPurchasePriceTotal();
+row["marginTotal"]=salesSummary.get(orderDetailsCurrentIndex).getMarginTotal();
+row["margin"]=salesSummary.get(orderDetailsCurrentIndex).getMargin();
+
+
+orderDetailsCurrentIndex++;
+return true;
+]]></method>
+        </script-data-set>
+        <script-data-set name="customer" id="33">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">customerName</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">customerId</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">address</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">city</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">state</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">postCode</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">phoneNo</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">8</property>
+                    <property name="name">emailAddress</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">9</property>
+                    <property name="name">loyaltyCode</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">customerName</property>
+                    <text-property name="displayName">CustomerName</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">customerId</property>
+                    <text-property name="displayName">CustomerId</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">address</property>
+                    <text-property name="displayName">address</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">city</property>
+                    <text-property name="displayName">city</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">state</property>
+                    <text-property name="displayName">state</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">postCode</property>
+                    <text-property name="displayName">postCode</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">phoneNo</property>
+                    <text-property name="displayName">phoneNo</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">emailAddress</property>
+                    <text-property name="displayName">emailAddress</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">loyaltyCode</property>
+                    <text-property name="displayName">loyaltyCode</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">customerName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">customerId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">address</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">city</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">state</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">postCode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">phoneNo</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">8</property>
+                        <property name="name">emailAddress</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">9</property>
+                        <property name="name">loyaltyCode</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">Data Source</property>
+            <method name="open"><![CDATA[branchIndex=0;]]></method>
+            <method name="fetch"><![CDATA[if(branchIndex==1)
+	return false;
+row["address"]=customer.getAddress();
+row["city"]=customer.getCity();
+row["state"]=customer.getState();
+row["postCode"]=customer.getPostCode();
+row["faxNo"]=customer.getFaxNo();
+row["emailAddress"]=customer.getEmailAddress();
+row["phoneNo"]=customer.getPhoneNo();
+row["customerName"]=customer.getCustomerName();
+row["loyaltyCode"]=customer.getLoyaltyCardCode();
+branchIndex++;
+return true;
+]]></method>
+        </script-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="topMargin">0.041666666666666664in</property>
+            <property name="leftMargin">0.041666666666666664in</property>
+            <property name="bottomMargin">0.052083333333333336in</property>
+            <property name="rightMargin">0.041666666666666664in</property>
+            <property name="backgroundColor">#FFFFFF</property>
+            <property name="headerHeight">0.8in</property>
+            <property name="footerHeight">0.3in</property>
+            <page-header>
+                <grid id="1125">
+                    <property name="backgroundColor">#FFFFFF</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">medium</property>
+                    <property name="height">0.6875in</property>
+                    <property name="width">8.260416666666666in</property>
+                    <column id="1126">
+                        <property name="width">2.5833333333333335in</property>
+                    </column>
+                    <column id="1127">
+                        <property name="width">3.53125in</property>
+                    </column>
+                    <column id="1128">
+                        <property name="width">2.1458333333333335in</property>
+                    </column>
+                    <row id="183">
+                        <property name="height">0.6875in</property>
+                        <property name="backgroundColor">#FFFFFF</property>
+                        <property name="borderBottomStyle">solid</property>
+                        <property name="borderBottomWidth">medium</property>
+                        <cell id="184">
+                            <image id="185">
+                                <property name="height">40px</property>
+                                <property name="source">file</property>
+                                <expression name="uri" type="constant">report/images/logo.jpg</expression>
+                            </image>
+                        </cell>
+                        <cell id="186">
+                            <grid id="1129">
+                                <property name="height">0.5625in</property>
+                                <column id="1130"/>
+                                <row id="1131">
+                                    <cell id="1132"/>
+                                </row>
+                                <row id="1089">
+                                    <property name="height">0.22916666666666666in</property>
+                                    <cell id="249"/>
+                                </row>
+                                <row id="1090">
+                                    <cell id="1133">
+                                        <label id="1092">
+                                            <property name="fontWeight">bold</property>
+                                            <property name="textAlign">center</property>
+                                            <text-property name="text">Customer Sales Detail</text-property>
+                                        </label>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                        <cell id="188">
+                            <grid id="189">
+                                <property name="fontFamily">"Segoe UI"</property>
+                                <property name="fontSize">7pt</property>
+                                <property name="height">0.625in</property>
+                                <column id="190"/>
+                                <row id="191">
+                                    <property name="height">0.3958333333333333in</property>
+                                    <cell id="1093">
+                                        <data id="197">
+                                            <property name="dataSet">userbranch</property>
+                                            <list-property name="boundDataColumns">
+                                                <structure>
+                                                    <property name="name">branchName</property>
+                                                    <text-property name="displayName">branchName</text-property>
+                                                    <expression name="expression" type="javascript">dataSetRow["branchName"]</expression>
+                                                    <property name="dataType">string</property>
+                                                </structure>
+                                            </list-property>
+                                            <property name="resultSetColumn">branchName</property>
+                                        </data>
+                                        <data id="1134">
+                                            <property name="dataSet">userbranch</property>
+                                            <list-property name="boundDataColumns">
+                                                <structure>
+                                                    <property name="name">address</property>
+                                                    <text-property name="displayName">address</text-property>
+                                                    <expression name="expression" type="javascript">dataSetRow["address"]</expression>
+                                                    <property name="dataType">string</property>
+                                                </structure>
+                                            </list-property>
+                                            <property name="resultSetColumn">address</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                                <row id="1095">
+                                    <property name="height">0.22916666666666666in</property>
+                                    <cell id="209">
+                                        <grid id="1135">
+                                            <property name="width">2.59375in</property>
+                                            <column id="1136">
+                                                <property name="width">0.84375in</property>
+                                            </column>
+                                            <column id="1098">
+                                                <property name="width">1.75in</property>
+                                            </column>
+                                            <row id="1099">
+                                                <cell id="1100">
+                                                    <data id="1137">
+                                                        <property name="dataSet">userbranch</property>
+                                                        <list-property name="boundDataColumns">
+                                                            <structure>
+                                                                <property name="name">postCode</property>
+                                                                <text-property name="displayName">postCode</text-property>
+                                                                <expression name="expression" type="javascript">dataSetRow["postCode"]</expression>
+                                                                <property name="dataType">string</property>
+                                                            </structure>
+                                                        </list-property>
+                                                        <property name="resultSetColumn">postCode</property>
+                                                    </data>
+                                                </cell>
+                                                <cell id="204">
+                                                    <data id="1102">
+                                                        <property name="dataSet">userbranch</property>
+                                                        <list-property name="boundDataColumns">
+                                                            <structure>
+                                                                <property name="name">phoneNo</property>
+                                                                <text-property name="displayName">phoneNo</text-property>
+                                                                <expression name="expression" type="javascript">dataSetRow["phoneNo"]</expression>
+                                                                <property name="dataType">string</property>
+                                                            </structure>
+                                                        </list-property>
+                                                        <property name="resultSetColumn">phoneNo</property>
+                                                    </data>
+                                                </cell>
+                                            </row>
+                                        </grid>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                </grid>
+            </page-header>
+            <page-footer>
+                <grid id="1179">
+                    <property name="backgroundColor">#FFFFFF</property>
+                    <property name="fontFamily">"Segoe UI"</property>
+                    <property name="fontSize">8pt</property>
+                    <property name="width">8.21875in</property>
+                    <column id="1139">
+                        <property name="width">2.875in</property>
+                    </column>
+                    <column id="210">
+                        <property name="width">3.6354166666666665in</property>
+                    </column>
+                    <column id="1140">
+                        <property name="width">1.7083333333333333in</property>
+                    </column>
+                    <row id="1180">
+                        <property name="borderTopStyle">solid</property>
+                        <property name="borderTopWidth">medium</property>
+                        <cell id="1181">
+                            <text-data id="1142">
+                                <expression name="valueExpr">BirtDateTime.now()</expression>
+                                <property name="contentType">html</property>
+                            </text-data>
+                        </cell>
+                        <cell id="1182">
+                            <grid id="1183">
+                                <property name="textAlign">right</property>
+                                <property name="width">3.3958333333333335in</property>
+                                <column id="1184">
+                                    <property name="width">0.9583333333333334in</property>
+                                </column>
+                                <column id="1146">
+                                    <property name="width">2.4375in</property>
+                                </column>
+                                <row id="1147">
+                                    <cell id="1148">
+                                        <label id="1149">
+                                            <property name="fontSize">8pt</property>
+                                            <text-property name="text">Print By :  </text-property>
+                                        </label>
+                                    </cell>
+                                    <cell id="1150">
+                                        <data id="1151">
+                                            <property name="textAlign">left</property>
+                                            <property name="dataSet">userbranch</property>
+                                            <list-property name="boundDataColumns">
+                                                <structure>
+                                                    <property name="name">loginName</property>
+                                                    <text-property name="displayName">loginName</text-property>
+                                                    <expression name="expression" type="javascript">dataSetRow["loginName"]</expression>
+                                                    <property name="dataType">string</property>
+                                                </structure>
+                                            </list-property>
+                                            <property name="resultSetColumn">loginName</property>
+                                        </data>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                        <cell id="1152">
+                            <grid id="367">
+                                <property name="textAlign">left</property>
+                                <property name="width">1.9791666666666667in</property>
+                                <column id="368">
+                                    <property name="width">0.84375in</property>
+                                </column>
+                                <column id="369">
+                                    <property name="width">0.3020833333333333in</property>
+                                </column>
+                                <column id="370">
+                                    <property name="width">0.8333333333333334in</property>
+                                </column>
+                                <row id="371">
+                                    <cell id="372">
+                                        <auto-text id="373">
+                                            <property name="textAlign">right</property>
+                                            <property name="type">page-number</property>
+                                        </auto-text>
+                                    </cell>
+                                    <cell id="374">
+                                        <text id="375">
+                                            <property name="textAlign">center</property>
+                                            <property name="contentType">plain</property>
+                                            <text-property name="content"><![CDATA[of]]></text-property>
+                                        </text>
+                                    </cell>
+                                    <cell id="376">
+                                        <auto-text id="377">
+                                            <property name="textAlign">left</property>
+                                            <property name="type">total-page</property>
+                                        </auto-text>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                </grid>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <grid id="1252">
+            <property name="fontFamily">"Segoe UI"</property>
+            <property name="fontSize">8pt</property>
+            <property name="height">0.9791666666666666in</property>
+            <property name="width">8.364583333333334in</property>
+            <column id="1253">
+                <property name="width">2.0520833333333335in</property>
+            </column>
+            <column id="1254">
+                <property name="width">6.3125in</property>
+            </column>
+            <row id="1255">
+                <property name="height">0.9791666666666666in</property>
+                <cell id="1256">
+                    <label id="1285">
+                        <text-property name="text">Sales to Customer</text-property>
+                    </label>
+                </cell>
+                <cell id="1257">
+                    <data id="1280">
+                        <property name="dataSet">customer</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">customerName</property>
+                                <text-property name="displayName">CustomerName</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["customerName"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">customerName</property>
+                    </data>
+                    <data id="1282">
+                        <property name="dataSet">customer</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">loyaltyCode</property>
+                                <text-property name="displayName">loyaltyCode</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["loyaltyCode"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">loyaltyCode</property>
+                    </data>
+                    <data id="1283">
+                        <property name="dataSet">customer</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">address</property>
+                                <text-property name="displayName">address</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["address"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">address</property>
+                    </data>
+                    <data id="1284">
+                        <property name="dataSet">customer</property>
+                        <list-property name="boundDataColumns">
+                            <structure>
+                                <property name="name">phoneNo</property>
+                                <text-property name="displayName">phoneNo</text-property>
+                                <expression name="expression" type="javascript">dataSetRow["phoneNo"]</expression>
+                                <property name="dataType">string</property>
+                            </structure>
+                        </list-property>
+                        <property name="resultSetColumn">phoneNo</property>
+                    </data>
+                </cell>
+            </row>
+        </grid>
+        <table id="1286">
+            <property name="width">8.364583333333334in</property>
+            <property name="dataSet">salesSummary</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">ProductName</property>
+                    <text-property name="displayName">ProductName</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ProductName"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">ProductCode</property>
+                    <text-property name="displayName">ProductCode</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ProductCode"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">totalQuantity</property>
+                    <text-property name="displayName">Quantity Sold</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["totalQuantity"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">normalPriceTotal</property>
+                    <text-property name="displayName">Ext Price(RM)</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["normalPriceTotal"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">purchasePriceTotal</property>
+                    <text-property name="displayName">Ext Cost(RM)</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["purchasePriceTotal"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">marginTotal</property>
+                    <text-property name="displayName">Ext Margin Amount(RM)</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["marginTotal"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">margin</property>
+                    <text-property name="displayName">Margin(%)</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["margin"]</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">QtyTotal</property>
+                    <text-property name="displayName">QtyTotal</text-property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["totalQuantity"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">margin_1</property>
+                    <text-property name="displayName">Margin(%)</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["margin"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="name">TotalMargin</property>
+                    <text-property name="displayName">TotalMargin</text-property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">AVE</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["margin"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">TotalExtMargin</property>
+                    <text-property name="displayName">TotalExtMargin</text-property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["marginTotal"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">TotalExtCost</property>
+                    <text-property name="displayName">TotalExtCost</text-property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["purchasePriceTotal"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">TotalExtPrice</property>
+                    <text-property name="displayName">TotalExtPrice</text-property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["normalPriceTotal"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+            </list-property>
+            <column id="1325">
+                <property name="width">2.0625in</property>
+            </column>
+            <column id="1326">
+                <property name="width">1.5in</property>
+            </column>
+            <column id="1327">
+                <property name="width">0.75in</property>
+            </column>
+            <column id="1328">
+                <property name="width">1.2083333333333333in</property>
+            </column>
+            <column id="1329">
+                <property name="width">1.1666666666666667in</property>
+            </column>
+            <column id="1330">
+                <property name="width">1in</property>
+            </column>
+            <column id="1331">
+                <property name="width">0.6770833333333334in</property>
+            </column>
+            <header>
+                <row id="1287">
+                    <property name="backgroundColor">#BFBFBF</property>
+                    <property name="fontSize">8pt</property>
+                    <property name="fontWeight">bold</property>
+                    <property name="color">#000000</property>
+                    <cell id="1288">
+                        <label id="1289">
+                            <text-property name="text">ProductName</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1290">
+                        <label id="1291">
+                            <text-property name="text">ProductCode</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1292">
+                        <label id="1293">
+                            <text-property name="text">Quantity Sold</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1294">
+                        <label id="1295">
+                            <text-property name="text">Ext Price(RM)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1296">
+                        <label id="1297">
+                            <text-property name="text">Ext Cost(RM)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1298">
+                        <label id="1299">
+                            <text-property name="text">Ext Margin Amount(RM)</text-property>
+                        </label>
+                    </cell>
+                    <cell id="1300">
+                        <label id="1301">
+                            <text-property name="text">Margin(%)</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="1302">
+                    <property name="height">0.375in</property>
+                    <property name="backgroundColor">#FFFFFF</property>
+                    <property name="fontFamily">"Segoe UI"</property>
+                    <property name="fontSize">8pt</property>
+                    <property name="borderBottomStyle">solid</property>
+                    <property name="borderBottomWidth">thin</property>
+                    <property name="borderLeftStyle">solid</property>
+                    <property name="borderLeftWidth">thin</property>
+                    <property name="borderRightStyle">solid</property>
+                    <property name="borderRightWidth">thin</property>
+                    <property name="borderTopStyle">solid</property>
+                    <property name="borderTopWidth">thin</property>
+                    <cell id="1303">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="1304">
+                            <property name="resultSetColumn">ProductName</property>
+                        </data>
+                    </cell>
+                    <cell id="1305">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="1306">
+                            <property name="resultSetColumn">ProductCode</property>
+                        </data>
+                    </cell>
+                    <cell id="1307">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="1308">
+                            <property name="textAlign">right</property>
+                            <property name="resultSetColumn">totalQuantity</property>
+                        </data>
+                    </cell>
+                    <cell id="1309">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="textAlign">right</property>
+                        <data id="1310">
+                            <structure name="numberFormat">
+                                <property name="category">Currency</property>
+                                <property name="pattern">#,##0.00{RoundingMode=UNNECESSARY}</property>
+                            </structure>
+                            <property name="resultSetColumn">normalPriceTotal</property>
+                        </data>
+                    </cell>
+                    <cell id="1311">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="textAlign">right</property>
+                        <data id="1312">
+                            <structure name="numberFormat">
+                                <property name="category">Currency</property>
+                                <property name="pattern">#,##0.00{RoundingMode=UNNECESSARY}</property>
+                            </structure>
+                            <property name="resultSetColumn">purchasePriceTotal</property>
+                        </data>
+                    </cell>
+                    <cell id="1313">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <data id="1314">
+                            <structure name="numberFormat">
+                                <property name="category">Currency</property>
+                                <property name="pattern">#,##0.00{RoundingMode=UNNECESSARY}</property>
+                            </structure>
+                            <property name="textAlign">right</property>
+                            <property name="resultSetColumn">marginTotal</property>
+                        </data>
+                    </cell>
+                    <cell id="1315">
+                        <property name="borderRightStyle">solid</property>
+                        <property name="borderRightWidth">thin</property>
+                        <property name="textAlign">right</property>
+                        <data id="1316">
+                            <structure name="numberFormat">
+                                <property name="category">Currency</property>
+                                <property name="pattern">###0.00{RoundingMode=UNNECESSARY}</property>
+                            </structure>
+                            <property name="resultSetColumn">margin</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="1317">
+                    <property name="height">0.2604166666666667in</property>
+                    <property name="backgroundColor">#BFBFBF</property>
+                    <property name="fontSize">8pt</property>
+                    <property name="fontWeight">bold</property>
+                    <property name="color">#000000</property>
+                    <cell id="1318">
+                        <label id="1332">
+                            <text-property name="text">Back</text-property>
+                            <list-property name="action">
+                                <structure>
+                                    <property name="linkType">drill-through</property>
+                                    <property name="reportName">customerSalesSummaryReportList.rptdesign</property>
+                                    <property name="targetWindow">_self</property>
+                                    <property name="targetFileType">report-design</property>
+                                    <list-property name="paramBindings">
+                                        <structure>
+                                            <property name="paramName">dateFrom</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">params["dateFrom"].value</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">dateTo</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">params["dateTo"].value</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">branchRecordId</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">params["branchRecordId"].value</value>
+                                            </simple-property-list>
+                                        </structure>
+                                        <structure>
+                                            <property name="paramName">userId</property>
+                                            <simple-property-list name="expression">
+                                                <value type="javascript">params["userId"].value</value>
+                                            </simple-property-list>
+                                        </structure>
+                                    </list-property>
+                                </structure>
+                            </list-property>
+                        </label>
+                    </cell>
+                    <cell id="1319"/>
+                    <cell id="1320">
+                        <property name="textAlign">right</property>
+                        <text-data id="1337">
+                            <expression name="valueExpr">row["QtyTotal"]</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="1321">
+                        <property name="textAlign">right</property>
+                        <text-data id="1336">
+                            <expression name="valueExpr">row["TotalExtPrice"]</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="1322">
+                        <property name="textAlign">right</property>
+                        <text-data id="1335">
+                            <expression name="valueExpr">row["TotalExtCost"]</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="1323">
+                        <property name="textAlign">right</property>
+                        <text-data id="1334">
+                            <expression name="valueExpr">row["TotalExtMargin"]</expression>
+                            <property name="contentType">html</property>
+                        </text-data>
+                    </cell>
+                    <cell id="1324">
+                        <property name="textAlign">right</property>
+                    </cell>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>

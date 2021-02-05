@@ -1,0 +1,23 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+	<p:outputPanel id="stockList">
+
+		<p:panel id="graphpanel1">
+			<h:panelGrid id="graphpanelgrid1" columns="1" border="0">
+				<p:barChart id="basic1" value="#{chartBean.categoryModel1}"
+					legendPosition="ne" title="Sales / Purchase Chart" min="0"
+					max="180000" style="height:350px;width:900px" />
+			</h:panelGrid>
+
+		</p:panel>
+
+	</p:outputPanel>
+</ui:composition>
+
+

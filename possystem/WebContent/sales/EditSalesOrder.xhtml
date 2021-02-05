@@ -1,0 +1,394 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Add Edit Sales Order">
+
+
+
+				<h:panelGrid id="requestgrid" columns="6" border="0" width="90%"
+					styleClass="bgcolor" cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="Branch/Customer Name" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText
+						value="#{salesorderBean.salesorder.customerBranchName}" />
+
+					<h:outputText value="Request User" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{salesorderBean.salesorder.createdBy}"
+						styleClass="logintxttable" />
+
+					<h:outputText value="Created Date" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{salesorderBean.salesorder.createdDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy " />
+					</h:outputText>
+
+					<h:outputText value="Sales Order No" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{salesorderBean.salesorder.salesOrderNo}"
+						styleClass="logintxttable" />
+
+
+					<h:outputText value="Quote/GRN No" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{salesorderBean.salesorder.quoteNo}"
+						styleClass="logintxttable" />
+
+
+					<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{salesorderBean.salesorder.remarks}"
+						styleClass="logintxttable" />
+
+					<h:outputText value="Sales Type" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="Branch"
+						rendered="#{salesorderBean.salesorder.salesType=='1'}"
+						styleClass="logintxttable" />
+
+					<h:outputText value="Customer/Quotation"
+						rendered="#{salesorderBean.salesorder.salesType=='2'}"
+						styleClass="logintxttable" />
+
+					<h:outputText value="Customer/POS"
+						rendered="#{salesorderBean.salesorder.salesType=='3'}"
+						styleClass="logintxttable" />
+
+
+					<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+
+					<h:outputText value="#{app['salesorder.status.neworderlable']}"
+						rendered="#{salesorderBean.salesorder.status==app['salesorder.status.newordervalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['salesorder.status.processedlable']}"
+						rendered="#{salesorderBean.salesorder.status==app['salesorder.status.processedvalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['salesorder.status.orderedlable']}"
+						rendered="#{salesorderBean.salesorder.status==app['salesorder.status.orderedvalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['salesorder.status.paidlable']}"
+						rendered="#{salesorderBean.salesorder.status==app['salesorder.status.paidvalue']}"
+						styleClass="logintxttable" />
+
+
+					
+				</h:panelGrid>
+
+				<br></br>
+
+
+				<p:panelGrid style="width:99%" id="productsalesPanel"
+					styleClass="alignTop">
+					<f:facet name="header">
+						<p:row>
+							<p:column style="width:15%;">Branch/Customer</p:column>
+							<p:column style="width:85%;">Products Details</p:column>
+						</p:row>
+					</f:facet>
+
+					<p:row>
+						<p:column style="width:15%;" styleClass="columnwidthc">
+
+							<h:panelGrid columns="1" border="0" width="100%"
+								rendered="#{salesorderBean.salesorder.salesType=='1'}"
+								styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+								columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+								<h:outputText
+									value="#{salesorderBean.salesorder.branch.branchName}"
+									styleClass="logintxt" />
+
+								<h:outputText
+									value="#{salesorderBean.salesorder.branch.address}"
+									styleClass="logintxttable" />
+
+								<h:outputText value="#{salesorderBean.salesorder.branch.city}"
+									styleClass="logintxttable" />
+
+								<h:outputText value="#{salesorderBean.salesorder.branch.state}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesorderBean.salesorder.branch.postCode}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesorderBean.salesorder.branch.phoneNo}"
+									styleClass="logintxttable" />
+							</h:panelGrid>
+
+
+
+
+
+							<h:panelGrid columns="1" border="0" width="100%"
+								styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+								rendered="#{salesorderBean.salesorder.salesType=='2'}"
+								columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+								<h:outputText
+									value="#{salesorderBean.salesorder.customer.customerName} , #{salesorderBean.salesorder.customer.identificationCompanyRegNo}"
+									styleClass="logintxt" />
+
+								<h:outputText
+									value="#{salesorderBean.salesorder.customer.address}"
+									styleClass="logintxttable" />
+
+								<h:outputText value="#{salesorderBean.salesorder.customer.city}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value="#{salesorderBean.salesorder.customer.state} - #{salesorderBean.salesorder.customer.postCode}"
+									styleClass="logintxttable" />
+
+								<h:outputText
+									value=" #{salesorderBean.salesorder.customer.phoneNo}"
+									styleClass="logintxttable" />
+
+
+							</h:panelGrid>
+
+						</p:column>
+
+
+						<p:column style="width:85%;">
+							<p:dataTable id="productTable" var="product" scrollable="true"
+								scrollHeight="290" rowIndexVar="productrow" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}"
+								value="#{salesorderBean.salesorder.salesorderbreakdowns}"
+								style="width:100%;">
+
+
+								<p:columnGroup type="header">
+									<p:row>
+									
+									
+										<p:column style="width:8%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Code" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:12%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Name" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="UOM" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Balance Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Unit Price(RM)"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Discount (RM)" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sales Quantity"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+										
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Tax (RM)"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sub Total (RM)"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+									</p:row>
+								</p:columnGroup>
+
+
+
+
+								<p:column style="width:8%;" styleClass="columnwidth">
+									<h:outputText value="#{product.productCode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:12%;" styleClass="columnwidth">
+									<h:outputText value="#{product.productName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:5%;" styleClass="columnwidth">
+									<h:outputText value="#{product.uom}" styleClass="logintxttable" />
+								</p:column>
+
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<h:outputText value="#{product.balanceEditQuantity}" size="6"
+										id="balance" styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{product.unitPrice}"
+										styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{product.discountAmount}"
+										styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:column style="width:6%;" styleClass="columnwidthn">
+									<p:inputText
+										value="#{salesorderBean.salableQuantity[product.id]}" size="6"
+										onkeypress='return validate(event)' id="receivable"
+										styleClass="logintxtnumberFormat">
+										<p:ajax event="blur"
+											listener="#{salesorderBean.validateEditQuantity(productrow)}"
+											update="productTable" />
+									</p:inputText>
+									<p:message for="receivable" styleClass="fieldError" />
+								</p:column>
+								
+								<p:column width="7%" styleClass="columnwidthn">
+									<h:outputText
+										value="#{salesorderBean.salableTaxPrice[product.id]}" 
+										id="receivableTaxprice" styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:column width="7%" styleClass="columnwidthn">
+									<h:outputText
+										value="#{salesorderBean.salablePrice[product.id]}" 
+										id="receivableprice" styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:columnGroup type="footer">
+									<p:row>
+										<p:column colspan="9" footerText="Total Amount (RM)"
+											style="text-align:right" />
+										<p:column footerText="#{salesorderBean.totalAmount}"
+											style="text-align:right">
+											
+									     </p:column>
+									</p:row>
+								</p:columnGroup>
+
+							</p:dataTable>
+
+						</p:column>
+					</p:row>
+
+					<f:facet name="footer">
+						<p:row>
+							<p:column style="width:100%;" colspan="2">
+								<p:commandButton value="Update" ajax="true"
+									action="#{salesorderBean.validateSalesOrder}"
+									oncomplete="PF('salescreateDig').show()"
+									update="salesPanel,deliverycreate" />
+
+								<p:commandButton value="Reset" ajax="true"
+									actionListener="#{salesorderBean.editSalesOrder}"
+									update="salesPanel">
+									<f:attribute name="sales" value="#{salesorderBean.salesorder}" />
+								</p:commandButton>
+
+
+
+								<p:commandButton value="Cancel" ajax="false"
+									action="#{salesorderBean.listSalesOrder}" update="salesPanel" />
+							</p:column>
+						</p:row>
+					</f:facet>
+
+				</p:panelGrid>
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		<p:dialog id="modalDialogSalesOrderCreate" showEffect="fade"
+			hideEffect="fade" header="Sales Order Create Confirmation"
+			resizable="false" widgetVar="salescreateDig" modal="true"
+			height="150" width="400">
+
+			<br></br>
+
+			<p:panel id="deliverycreate">
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="Are you sure want to Update  Sales Order ?  "
+						styleClass="logintxttable" />
+
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+					<p:commandButton value="Update Sales Order" ajax="true"
+						oncomplete="PF('salescreateDig').hide()"
+						rendered="#{loginBean.functionList.contains('Edit SalesOrder') and salesorderBean.saveConfirm==true }"
+						action="#{salesorderBean.updateSalesOrder}" update="salesPanel">
+					</p:commandButton>
+					<p:commandButton value="Cancel" oncomplete="PF('salescreateDig').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

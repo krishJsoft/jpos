@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+>
+
+<link rel="stylesheet" type="text/css" href="resources/css/analogClock.css">
+
+<style>
+table.customerDisplay{
+width:100vw;
+height:100vh;
+//background:red;
+position: absolute; top: 0; bottom: 0; left: 0; right: 0;
+border-collapse:collapse;
+
+}
+
+th, td {
+    padding: 0;
+}
+
+table.orderBreakdownTable tbody>td{
+text-align:center;
+}
+
+</style>
+
+<body >
+
+<table class="customerDisplay">
+	<tr>
+		
+		<td valign="top" style="width:45vw;background:#E32526;" rowspan="2">
+			<table id="informationTable" style="background:#E32526;height:100%;width:100%;border-collapse:collapse;">
+				<tr>
+					<td>
+					<!-- HTML ANALOG CLOCK START -->
+					<div class="clock">
+							 
+				  	<div class="dot"></div>
+					  	 <div>
+						    <div class="info date" "></div>
+						    <div class="info day"></div>
+					  	</div>
+				  		<div>
+			    			<div class="hour-hand"></div>
+				    		<div class="minute-hand"></div>
+				    		<div class="second-hand"></div>
+				  		</div>
+				  		<div>
+				    		<span class="h3">3</span>
+				    		<span class="h6">6</span>
+				    		<span class="h9">9</span>
+				    		<span class="h12">12</span>
+				  		</div>
+				  		<div class="diallines"></div>
+					</div>
+					
+					<!-- HTML ANALOG CLOCK END -->
+					</td>
+				</tr>
+			</table>
+		</td>
+		<td valign="top" style="height:100%">
+		<div style="height:100%;overflow:auto;">
+			<table id="orderBreakdownTable" style="width:100%;background:white;font-size:24px">
+				<thead style="background:black;color:white;text-align:center;">
+					<tr>
+						<th style="width:60%;text-align:left">
+							ITEM
+						</th>
+						<th style="width:20%">
+							QTY
+						</th>
+						<th style="width:20%;">
+							PRICE (RM)
+						</th>
+					</tr>
+				</thead>
+				<tbody style="text-align:center;font-family: Tahoma, Verdana, Segoe, sans-serif;">
+				
+				</tbody>
+				
+			</table>
+		</div>
+		</td>
+	</tr>
+	<tr>
+		<td valign="bottom" style="background:black;">
+			<table style="border-collapse:collapse;width:100%;height:100%;font-family: Lucida Sans Typewriter, Lucida Console, Monaco, Bitstream Vera Sans Mono, monospace">
+				<tr style="color:#00FF40;">
+					<td style="font-size:44px;font-weight:bold;width:80%">
+					TOTAL AMOUNT
+					</td>
+					
+					<td style="font-size:34px;font-weight:bold;">
+					:&nbspRM&nbsp
+					</td>
+					
+					<td id="totalAmount" style="font-size:44px;width:20%;font-weight:bold;text-align:right">
+					0.00
+					</td>
+				</tr>
+				<tr style="color:#0080FF">
+					<td style="font-size:34px;font-weight:bold">
+					PAID AMOUNT
+					</td>
+					
+					<td style="font-size:34px;font-weight:bold">
+					:&nbspRM&nbsp
+					</td>
+					
+					<td id="paidAmount" style="font-size:34px;font-weight:bold;text-align:right">
+					0.00
+					</td>
+				</tr>
+				<tr style="color:#FFFF00">
+					<td style="font-size:34px;font-weight:bold">
+					BALANCE AMOUNT
+					</td>
+					
+					<td style="font-size:34px;font-weight:bold">
+					:&nbspRM&nbsp
+					</td>
+					
+					<td id="balanceAmount" style="font-size:34px;font-weight:bold;text-align:right">
+					0.00
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	
+</table>
+
+<script>
+	var terminalName="Counter A"; 
+    var webSocket = new WebSocket("ws://software:8080/possystem/customerDisplayServerEndpoint");
+
+    function sendMsg() {
+        var msgToSend = msgField.value;
+        webSocket.send(msgToSend);
+        divMsg.innerHTML += "<div style='color:red'>Client> " + msgToSend +
+                            "</div>"
+        msgField.value = "";
+    }
+
+    webSocket.onmessage = function(message) {
+		var sales = JSON.parse(message.data);
+    	var messageType=sales.messageType;
+    	var orderBreakdown=sales.salesbreakdown;
+    	
+    	var table=document.getElementById("orderBreakdownTable").getElementsByTagName('tbody')[0];
+    	table.innerHTML="";
+    	var totalAmountTd=document.getElementById("totalAmount");
+    	var paidAmountTd=document.getElementById("paidAmount");
+    	var balanceAmountTd=document.getElementById("balanceAmount");
+    	if(messageType.toUpperCase() === "RESET"){
+    		
+    		totalAmountTd.innerHTML="0.00";
+	    	paidAmountTd.innerHTML="0.00";
+	    	balanceAmountTd.innerHTML="0.00";
+	    	
+    	}else{
+    		
+    		var totalAmountTd=document.getElementById("totalAmount");
+    		
+	    	var paidAmountTd=document.getElementById("paidAmount");
+	    	var balanceAmountTd=document.getElementById("balanceAmount");
+	    	
+	    	totalAmountTd.innerHTML=sales.totalAmount.toFixed(2);
+	    	if(typeof sales.paidAmount == 'undefined'){
+    			
+    			paidAmountTd.innerHTML="0.00";
+    		}else{
+	    		paidAmountTd.innerHTML=sales.paidAmount.toFixed(2);
+    		}
+	    	if(typeof sales.balanceAmount == 'undefined'){
+    			
+    			balanceAmountTd.innerHTML="0.00";
+    		}else{
+        		balanceAmountTd.innerHTML=sales.balanceAmount.toFixed(2);	
+    		}
+    		
+	    	
+	    	
+	    	for(i in orderBreakdown){
+	    	
+	    		var row=table.insertRow(i);
+	    		var productNameCell=row.insertCell(0);
+	    		var qtyCell=row.insertCell(1);
+	    		var price=row.insertCell(2);
+	    		
+	    		productNameCell.style.textAlign="left";
+	    		price.style.textAlign="right";
+	    		
+	    		productNameCell.innerHTML=orderBreakdown[i].productName;
+	    		qtyCell.innerHTML=orderBreakdown[i].quantity;
+	    		price.innerHTML=orderBreakdown[i].price.toFixed(2);
+	    		
+	    	}
+    		
+    	}
+        
+    	  
+    }
+
+    webSocket.onopen = function() {
+    	
+        console.log("connection opened");
+        
+        //webSocket.send("INIT DIS_"+displayName);
+        
+        var messageType="INIT DISPLAY";
+    	var json={
+        		'messageType':messageType,
+        		'terminalName':terminalName
+        };
+        webSocket.send(JSON.stringify(json));
+    };
+
+    webSocket.onclose = function() {
+        console.log("connection closed");
+    };
+
+    webSocket.onerror = function wserror(message) {
+        console.log("error: " + message);
+    }
+    
+    
+</script>
+<script type="text/javascript" src="resources/js/analogClock.js"></script>
+</body>
+</html>

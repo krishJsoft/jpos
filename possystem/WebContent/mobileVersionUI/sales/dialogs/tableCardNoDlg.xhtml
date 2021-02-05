@@ -1,0 +1,85 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	>
+
+<style>
+.keypad-key {
+    font-size: 3em !important;
+    width: 120px !important;
+}
+</style>
+<p:dialog id="cardNoDlg" showEffect="fade"
+		hideEffect="fade" header="Enter Card No"
+		resizable="true" widgetVar="cardNoDlg"
+		height="100px" width="300px" 
+		modal="true" 
+		>
+		<p:messages id="messages" showDetail="true" closable="true">
+    	</p:messages>
+		<h:panelGrid width="85%" columns="3" id="cardNoGrid"
+		
+		>
+			<h:outputText value="Card No" styleClass="totalValue" style="width:20%;font-size:100%"/>
+			
+		
+		  		
+				<c:choose>
+				
+					<c:when  test="${fn:containsIgnoreCase(request.getHeader('User-Agent'), 'Android')=='false'}">
+		    			<p:keyboard id="cardNo" 
+		    			value="#{posBean.salesorder.cardNo}" 
+		    			onfocus="this.select();" 
+	    				layout="custom" layoutTemplate="123,456,789,0-back"
+		    			>
+		     				<p:ajax event="change" 
+				 				update="outCardMessage,submitButton,goButton" 
+				 				listener="#{posBean.validateCardNo}" />
+		      			</p:keyboard>
+		      		</c:when >
+		      		
+		      		<c:otherwise>
+		      			<p:inputText  
+							id="cardNo" styleClass="tableNcardNoGrid" 
+						 	value="#{posBean.salesorder.cardNo}"
+						 	style="font-size:100%;" 
+							autocomplete="off" 
+							disabled="#{projectHome.initPage == '/mobileVersionUI/sales/viewKitchenOrder.xhtml'}"
+						>
+						 	<p:ajax event="keyup" 
+						 	update="outCardMessage,submitButton,goButton" 
+						 	listener="#{posBean.validateCardNo}" />
+						</p:inputText>
+		      		</c:otherwise> 
+		      		
+		      	</c:choose>
+		      	
+			<h:panelGrid columns="2">
+				<h:outputText id="outCardMessage" styleClass="fieldErroro" value="#{posBean.cardMessageInUse}" style="font-size:100%"/>
+				<h:message for="cardNo" styleClass="fieldErroro" style="font-size:100%" />
+			</h:panelGrid>
+			
+			<h:outputText value="" />
+			
+			<p:commandButton id="goButton" 
+			disabled="#{posBean.cardMessageInUse=='Card in use !' or posBean.salesorder.cardNo==null or posBean.salesorder.cardNo==''}"   
+			rendered="#{orderBean.cardNoView=='tablelist'}" 
+			value="GO" action="#{orderBean.redirectToCategory}" />
+			
+			<p:commandButton id="submitButton" 
+			disabled="#{posBean.cardMessageInUse=='Card in use !' or posBean.salesorder.cardNo==null or posBean.salesorder.cardNo==''}"
+			rendered="#{orderBean.cardNoView!='tablelist'}"  
+			value="SUBMIT" oncomplete="PF('cardNoDlg').hide()" />	
+					
+		</h:panelGrid>
+	
+	</p:dialog>
+
+
+
+</ui:composition>

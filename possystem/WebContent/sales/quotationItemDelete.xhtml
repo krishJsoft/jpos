@@ -1,0 +1,48 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modelquotationitemdelete" showEffect="fade"
+		hideEffect="fade" header="Quotation Item Delete Confirmation"
+		resizable="false" widgetVar="quotationItemdeleteDig" modal="true"
+		height="100" width="360">
+
+		<br></br>
+
+		<p:panel id="quoteitemdelete">
+
+			<h:panelGrid columns="1" border="0" width="100%" styleClass="bgcolor"
+				cellpadding="1" cellspacing="1"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+				<h:outputText
+					value="Are you sure you want to delete this item? "
+					styleClass="logintxttable" />
+			</h:panelGrid>
+
+			<br></br>
+
+			<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+				
+				<p:commandButton value="Yes" ajax="true" update="quotationListPanel" oncomplete="PF('quotationItemdeleteDig').hide()"
+					action="#{quotationBean.removeItemConfirm}">
+				</p:commandButton>
+				<p:commandButton value="No"
+					oncomplete="PF('quotationItemdeleteDig').hide()" />
+
+			</h:panelGrid>
+		</p:panel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

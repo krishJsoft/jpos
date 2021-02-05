@@ -1,0 +1,242 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="quotationListForm">
+		<p:outputPanel id="quotationListPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="quotationListPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Quotation List">
+				<h:panelGrid id="quotationListGrid" columns="10" border="0"
+					width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+					
+					
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{quotationBean.dateFrom}" pattern="dd/MM/yyyy" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{quotationBean.dateTo}" pattern="dd/MM/yyyy" />
+					<p:message for="dateTo" styleClass="fieldError" />
+					
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Quote No" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="quoteNo" size="25"
+						value="#{quotationBean.quotationNo}" />
+					<p:message for="quoteNo" styleClass="fieldError" />
+					
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" style="width:160px; float :left;"
+						value="#{quotationBean.status}" styleClass="inputCombo">
+						<f:selectItem itemValue="" itemLabel="Select Status"></f:selectItem>
+						<f:selectItems value="#{commonListBean.quotationStatusList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true" action="#{quotationBean.searchQuotation}"
+							update="quotationListPanel" />
+						<p:commandButton value="Reset" ajax="true"
+							action="#{quotationBean.resetQuotationSearch}"
+							update="quotationListPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+					
+				</h:panelGrid>
+								<br />
+
+				<p:dataTable id="dataTable" var="quotation" rowIndexVar="row"
+					scrollable="false" lazy="true"
+					value="#{quotationBean.quotationModel}"
+					paginator="true" rows="10" style="width: 100%"
+					rowsPerPageTemplate="5,10,15,25,50,100" selectionMode="single"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+					
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="Issue Date" />
+						</f:facet>
+						<h:outputText value="#{quotation.createdDate}" styleClass="logintxttable" >
+						<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+					
+					
+					<p:column >
+						<f:facet name="header">
+							<h:outputText value="Quotation Due Date" />
+						</f:facet>
+						<h:outputText value="#{quotation.quotationDueDate}" styleClass="logintxttable" >
+						<f:convertDateTime pattern="dd-MMM-yyyy " />
+						</h:outputText>
+					</p:column>
+					
+					<p:column sortBy="#{quotation.quotationNo}">
+						<f:facet name="header">
+							<h:outputText value="Quote No" />
+						</f:facet>
+						<h:outputText value="#{quotation.quotationNo}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column sortBy="#{quotation.customerName}">
+						<f:facet name="header">
+							<h:outputText value="Customer Name" />
+						</f:facet>
+						<h:outputText value="#{quotation.customerName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Amount(RM)" />
+						</f:facet>
+						<h:outputText value="#{quotation.totalAmount}" styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column sortBy="#{quotation.status}">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText
+							value="#{app['quotationstat.status.neworderlable']}"
+							rendered="#{quotation.status==app['quotationstat.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText
+							value="#{app['quotationstat.status.processedlable']}"
+							rendered="#{quotation.status==app['quotationstat.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText
+							value="#{app['quotationstat.status.orderedlable']}"
+							rendered="#{quotation.status==app['quotationstat.status.orderedvalue']}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column style="width: 6%;">
+						<f:facet name="header">Action</f:facet>
+						
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('View Quotation')}"
+							actionListener="#{quotationBean.viewQuotation}"
+							oncomplete="PF('quotationDig').show()"
+							update=":quotationListForm:requestitem">
+							<f:attribute name="quotationId"
+								value="#{quotation.quotationId}" />
+							</p:menuitem>
+						
+						<p:menuitem value="Edit" styleClass="logintxttable" ajax="false"
+							rendered="#{loginBean.functionList.contains('Edit Quotation') and quotation.status==app['quotationstat.status.newordervalue']}"
+							actionListener="#{quotationBean.editQuotation}">
+							<f:attribute name="quotationId"
+								value="#{quotation.quotationId}" />
+							</p:menuitem>
+							
+							
+							<p:menuitem value="Approve" styleClass="logintxttable"
+							ajax="true" oncomplete="PF('quotationProcessDig').show()"
+							update=":quotationListForm:requestapprove"
+							rendered="#{loginBean.functionList.contains('Approve Quotation') and quotation.status==app['quotationstat.status.newordervalue']}"
+							actionListener="#{quotationBean.approveQuotation}">
+							<f:attribute name="quotationId" value="#{quotation.quotationId}" />
+							</p:menuitem>
+							
+							<p:menuitem value="Print" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('Print Quotation')}"
+							actionListener="#{quotationBean.printQuotation}">
+							<f:attribute name="quotationId"
+								value="#{quotation.quotationId}" />
+							</p:menuitem>
+							
+							</p:menuButton>
+							
+
+					</p:column>
+			</p:dataTable>
+				<br />
+				<p:commandButton value="New Quotation" ajax="false"
+					rendered="#{loginBean.functionList.contains('Add Quotation')}"
+					action="#{quotationBean.newQuotation}"
+					update="quotationListPanel" />
+			</p:panel>
+			
+			
+			
+			<p:dialog id="modalDialogQuotationApprove" showEffect="fade"
+		hideEffect="fade" header="Quotation Approve Confirmation"
+		resizable="false" widgetVar="quotationProcessDig" modal="true"
+		height="150" width="400">
+
+		<br></br>
+
+		<p:panel id="requestapprove">
+
+			<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+				cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText
+					value="Are you sure you want to approve Quote No,  "
+					styleClass="logintxttable" />
+
+				<h:outputText
+					value="#{quotationBean.quotation.quotationNo}"
+					styleClass="logintxttable" />
+
+			</h:panelGrid>
+
+			<br></br>
+
+			<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+				<p:commandButton value="Approve" ajax="false"
+					rendered="#{loginBean.functionList.contains('Approve Quotation')}"
+					action="#{quotationBean.approveQuotationConfirm}">
+				</p:commandButton>
+				<p:commandButton value="Cancel" oncomplete="PF('quotationProcessDig').hide()" />
+
+			</h:panelGrid>
+		</p:panel>
+
+	</p:dialog>
+			
+		</p:outputPanel>
+			<ui:include src="/sales/quotationView.xhtml" />
+			<ui:include src="/templates/loadingDialog.xhtml" />
+	</h:form>
+</ui:composition>
+
+

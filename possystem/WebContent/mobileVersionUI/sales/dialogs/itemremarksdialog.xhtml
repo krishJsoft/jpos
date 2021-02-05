@@ -1,0 +1,82 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+	<p:dialog id="itemRemarksDlg" showEffect="fade"
+		hideEffect="fade" header="REMARKS"
+		resizable="false" widgetVar="itemRemarksDlg"
+		height="230" width="100%">
+		
+		<p:panelGrid style="width:100%;border-style:hidden" >
+			<p:row>
+				<p:column style="width:20%">
+					<h:outputText value="REMARKS" />
+				</p:column>
+				
+				<p:column style="width:80%">
+				
+				  	<p:selectManyCheckbox id="grid" layout="grid" value="#{posBean.selectedRemarksId}" columns="#{loginBean.columnGrid}">
+        				<f:selectItems value="#{posBean.remarksList}" var="remarks" itemLabel="#{remarks.label}" itemValue="#{remarks.value}" />
+    				</p:selectManyCheckbox>
+				<ui:remove>
+					<p:selectOneMenu value="#{posBean.remarksId}">
+						<f:selectItems value="#{posBean.remarksList}"></f:selectItems>
+					</p:selectOneMenu>
+				</ui:remove>
+				</p:column>
+			</p:row>
+			
+			<p:row rendered="#{posBean.item.product.packingPrice > 0}" >
+				<p:column>
+					<h:outputText value="PACKING" />
+				</p:column>
+				
+				<p:column>
+					<p:selectBooleanCheckbox value="#{posBean.packing}" />
+				</p:column>
+			</p:row>
+			<ui:remove>
+			<p:row rendered="#{posBean.item.productId == 32 or posBean.item.productId == 33 or posBean.item.productId == 34 or posBean.item.productId == 838 or posBean.item.productId == 839}">
+				<p:column>
+					<h:outputText value="DRINKS" />
+				</p:column>
+				
+				<p:column>
+					<p:selectOneMenu value="#{posBean.setOption}">
+						<f:selectItem itemValue="1" itemLabel="SIRAP AIS"></f:selectItem>
+						<f:selectItem itemValue="2" itemLabel="TEH-o AIS"></f:selectItem>
+						<f:selectItem itemValue="3" itemLabel="LIMAU AIS"></f:selectItem>
+					</p:selectOneMenu>
+				</p:column>
+			</p:row>
+			</ui:remove>
+			<p:row>
+				<p:column>
+					<p:commandButton value="SAVE" 
+						action="#{posBean.saveRemarksToItem}"
+						update=":mobileOrderListForm"
+						oncomplete="PF('itemRemarksDlg').hide()"
+					>
+					</p:commandButton>
+				</p:column>
+				
+				<p:column>
+					<p:commandButton value="CANCEL" 
+						oncomplete="PF('itemRemarksDlg').hide()" 
+					/>
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+			
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

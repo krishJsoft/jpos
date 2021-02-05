@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.0"
+	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
+
+
+	<persistence-unit name="jpos" transaction-type="RESOURCE_LOCAL">
+
+		<!--<non-jta-data-source>java:comp/env/jdbc/AlphaHQDS</non-jta-data-source>  -->
+	
+	<class>com.project.model.his.Admindespatch</class>
+		<class>com.project.model.his.Autonum</class>
+		<class>com.project.model.his.Branch</class>
+		<class>com.project.model.his.Branchinvoice</class>
+		<class>com.project.model.his.Branchinvoicebreakdown</class>
+		<class>com.project.model.his.Branchpayment</class>
+		<class>com.project.model.his.Branchpaymentbreakdown</class>
+		<class>com.project.model.his.Branchsale</class>
+		<class>com.project.model.his.Branchsalesbreakdown</class>
+		<class>com.project.model.his.Branchstaffmember</class>
+		<class>com.project.model.his.Branchtransfer</class>
+		<class>com.project.model.his.Branchtransferbreakdown</class>
+		<class>com.project.model.his.Charge</class>
+		<class>com.project.model.his.Commissionbreakdown</class>
+		<class>com.project.model.his.Commission</class>
+		<class>com.project.model.his.Country</class>
+		<class>com.project.model.his.Customer</class>
+		<class>com.project.model.his.Customerinvoice</class>
+		<class>com.project.model.his.Customerinvoicebreakdown</class>
+		<class>com.project.model.his.Customerpayment</class>
+		<class>com.project.model.his.Customerpaymentbreakdown</class>
+		<class>com.project.model.his.Deliveryorder</class>
+		<class>com.project.model.his.Deliveryorderbreakdown</class>
+		<class>com.project.model.his.Department</class>
+		<class>com.project.model.his.Despatchesadmin</class>
+		<class>com.project.model.his.Functionmaster</class>
+		<class>com.project.model.his.Function</class>
+		
+		<class>com.project.model.his.Inventorymovement</class>
+		<class>com.project.model.his.Invoicedispatch</class>
+		<class>com.project.model.his.Invoice</class>
+		<class>com.project.model.his.Invoicetaxship</class>		
+		
+		<class>com.project.model.his.Loyaltyredemption</class>
+		<class>com.project.model.his.Loyaltyredemptionbreakdown</class>
+		
+		<class>com.project.model.his.Modulemaster</class>
+		<class>com.project.model.his.Module</class>
+		
+		<class>com.project.model.his.Organization</class>
+		
+		
+		<class>com.project.model.his.Patient</class>
+		<class>com.project.model.his.Paymentcollectionapportion</class>
+		<class>com.project.model.his.Paymentcollection</class>
+		<class>com.project.model.his.Payment</class>
+		<class>com.project.model.his.Paymentsettlementapportion</class>
+		<class>com.project.model.his.Paymentsettlement</class>
+		
+		
+		<class>com.project.model.his.Poscashtransaction</class>
+		<class>com.project.model.his.Poscounter</class>
+		<class>com.project.model.his.Pospayment</class>
+		<class>com.project.model.his.Prescription</class>
+		<class>com.project.model.his.Product</class>
+		<class>com.project.model.his.Productbatch</class>
+		<class>com.project.model.his.Productbranchlink</class>
+		<class>com.project.model.his.Productcategory</class>
+		<class>com.project.model.his.Productlot</class>
+		<class>com.project.model.his.Productprice</class>
+		<class>com.project.model.his.Productserial</class>
+		<class>com.project.model.his.Productsupplier</class>
+		<class>com.project.model.his.Productvalidity</class>
+		
+		<class>com.project.model.his.Purchaseorder</class>
+		<class>com.project.model.his.Purchaseorderbreakdown</class>
+		<class>com.project.model.his.Purchaseorderdeliveryaddress</class>
+		<class>com.project.model.his.Purchaserequest</class>
+		<class>com.project.model.his.Purchaserequestbreakdown</class>
+		<class>com.project.model.his.Quotation</class>
+		<class>com.project.model.his.Quotationbreakdown</class>
+		<class>com.project.model.his.Quotationsupplier</class>
+		<class>com.project.model.his.Quotationbreakdownsupplier</class>
+		<class>com.project.model.his.Quotationsupplierdetail</class>
+		<class>com.project.model.his.Quotationbreakdownsupplierdetail</class>		
+		<class>com.project.model.his.Role</class>
+		<class>com.project.model.his.Rolefunctionlink</class>
+		<class>com.project.model.his.Salesdiscounthistry</class>
+		<class>com.project.model.his.Salesorder</class>
+		<class>com.project.model.his.Salesorderbreakdown</class>
+		<class>com.project.model.his.Salesorderreturn</class>
+		<class>com.project.model.his.Salesreturn</class>		
+		<class>com.project.model.his.State</class>
+		<class>com.project.model.his.Supplier</class>
+		<class>com.project.model.his.Supplierdocument</class>
+		<class>com.project.model.his.Supplierinvoice</class>
+		<class>com.project.model.his.Supplierinvoicebreakdown</class>
+		<class>com.project.model.his.Supplierpayment</class>
+		
+		<class>com.project.model.his.Systemreview</class>
+		<class>com.project.model.his.Taxcode</class>
+		<class>com.project.model.his.Uomtype</class>
+		<class>com.project.model.his.Vaccination</class>
+		<class>com.project.model.his.Workflow</class>
+		<class>com.project.model.his.Salesorderhold</class>
+		<class>com.project.model.his.Salesorderbreakdownhold</class>
+		<class>com.project.model.his.Productmaterail</class>		
+		<class>com.project.model.his.Gstaccount</class>
+		<class>com.project.model.his.Gstpurchaseaccountbreakdown</class>
+		<class>com.project.model.his.Gstsalesaccountbreakdown</class>
+		<class>com.project.model.his.GstaccountPayment</class>
+		<class>com.project.model.his.Taxmaster</class>
+		<class>com.project.model.his.Productbundle</class>
+		<class>com.project.model.his.Kitchenorderbreakdown</class>
+		<class>com.project.model.his.Kitchensorder</class>
+		<class>com.project.model.his.Hoteltable</class>
+		
+		
+		<class>com.project.model.his.Branchiteminvoice</class>
+		<class>com.project.model.his.Branchiteminvoicebreakdown</class>
+		<class>com.project.model.his.Salesitem</class>
+		<class>com.project.model.his.Salesitembreakdown</class>
+		<class>com.project.model.his.ExpensesList</class>
+		<class>com.project.model.his.ExpensesTransaction</class>
+		<class>com.project.model.his.Membership</class>
+		<class>com.project.model.his.MembershipPaymentTransaction</class>
+		<class>com.project.model.his.Itemremarksfunctionlist</class>
+		<class>com.project.model.his.Itemremarkslist</class>
+		
+		
+		
+		<!--<properties>
+			<property name="hibernate.connection.url" value="jdbc:sqlserver://192.168.2.72:1433;databaseName=HIS" />
+			<property name="hibernate.connection.username" value="sa" />
+			<property name="hibernate.connection.password" value="buzznet" />			
+			<property name="hibernate.connection.driver_class"  value="com.microsoft.sqlserver.jdbc.SQLServerDriver" />
+			<property name="showSql" value="false" />			
+			
+			<property name="hibernate.c3p0.acquire_increment" value="1" ></property>
+			<property name="hibernate.c3p0.idle_test_period" value="300"></property>
+			<property name="hibernate.c3p0.timeout" value="120000"></property>
+			<property name="hibernate.c3p0.max_size" value="25"></property>
+			<property name="hibernate.c3p0.min_size" value="1"></property>
+			<property name="hibernate.c3p0.max_statement" value="0"></property>
+			<property name="hibernate.c3p0.preferredTestQuery" value="select 1;"></property>	
+					
+		</properties>
+		
+		-->
+		
+			<properties>
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/balqis" />
+			<property name="hibernate.connection.username" value="admin" />
+			<property name="hibernate.connection.password" value="admin" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="showSql" value="false" />
+			<property name="hibernate.order_inserts" value="true" />
+			<property name="hibernate.order_updates" value="true" />
+			<property name="hibernate.c3p0.acquire_increment" value="1" ></property>
+			<property name="hibernate.c3p0.idle_test_period" value="300"></property>
+			<property name="hibernate.c3p0.timeout" value="120000"></property>
+			<property name="hibernate.c3p0.max_size" value="25"></property>
+			<property name="hibernate.c3p0.min_size" value="1"></property>
+			<property name="hibernate.c3p0.max_statement" value="0"></property>
+			<property name="hibernate.c3p0.preferredTestQuery" value="select 1;"></property>			
+		</properties>				
+		
+		
+		<!--
+		<properties>
+			<property name="hibernate.connection.url" value="jdbc:mysql://ec2-23-21-211-172.compute-1.amazonaws.com:3306/alphabranch" />
+			<property name="hibernate.connection.username" value="kdo5n55" />
+			<property name="hibernate.connection.password" value="kdo5n55" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="showSql" value="true" />
+		</properties>
+		
+					
+		<properties>
+		<property name="hibernate.connection.url" value="jdbc:db2://192.168.2.76:50000/ALPHAHQ"/>
+		<property name="hibernate.connection.username" value="emerge" />
+		<property name="hibernate.connection.password" value="Buzznet123" /> 
+		<property name="hibernate.connection.driver_class" 	value="com.ibm.db2.jcc.DB2Driver" />
+		<property name="showSql" value="true"/>
+		</properties> 			
+		
+		
+		
+		-->
+	</persistence-unit>
+
+
+
+	<persistence-unit name="onlinedb" transaction-type="RESOURCE_LOCAL">
+
+	<class>com.project.model.his.Admindespatch</class>
+		<class>com.project.model.his.Autonum</class>
+		<class>com.project.model.his.Branch</class>
+		<class>com.project.model.his.Branchinvoice</class>
+		<class>com.project.model.his.Branchinvoicebreakdown</class>
+		<class>com.project.model.his.Branchpayment</class>
+		<class>com.project.model.his.Branchpaymentbreakdown</class>
+		<class>com.project.model.his.Branchsale</class>
+		<class>com.project.model.his.Branchsalesbreakdown</class>
+		<class>com.project.model.his.Branchstaffmember</class>
+		<class>com.project.model.his.Branchtransfer</class>
+		<class>com.project.model.his.Branchtransferbreakdown</class>
+		<class>com.project.model.his.Charge</class>
+		<class>com.project.model.his.Commissionbreakdown</class>
+		<class>com.project.model.his.Commission</class>
+		<class>com.project.model.his.Country</class>
+		<class>com.project.model.his.Customer</class>
+		<class>com.project.model.his.Customerinvoice</class>
+		<class>com.project.model.his.Customerinvoicebreakdown</class>
+		<class>com.project.model.his.Customerpayment</class>
+		<class>com.project.model.his.Customerpaymentbreakdown</class>
+		<class>com.project.model.his.Deliveryorder</class>
+		<class>com.project.model.his.Deliveryorderbreakdown</class>
+		<class>com.project.model.his.Department</class>
+		<class>com.project.model.his.Despatchesadmin</class>
+		<class>com.project.model.his.Functionmaster</class>
+		<class>com.project.model.his.Function</class>
+		
+		<class>com.project.model.his.Inventorymovement</class>
+		<class>com.project.model.his.Invoicedispatch</class>
+		<class>com.project.model.his.Invoice</class>
+		<class>com.project.model.his.Invoicetaxship</class>		
+		
+		<class>com.project.model.his.Loyaltyredemption</class>
+		<class>com.project.model.his.Loyaltyredemptionbreakdown</class>
+		
+		<class>com.project.model.his.Modulemaster</class>
+		<class>com.project.model.his.Module</class>
+		
+		<class>com.project.model.his.Organization</class>
+		
+		
+		<class>com.project.model.his.Patient</class>
+		<class>com.project.model.his.Paymentcollectionapportion</class>
+		<class>com.project.model.his.Paymentcollection</class>
+		<class>com.project.model.his.Payment</class>
+		<class>com.project.model.his.Paymentsettlementapportion</class>
+		<class>com.project.model.his.Paymentsettlement</class>
+		
+		
+		<class>com.project.model.his.Poscashtransaction</class>
+		<class>com.project.model.his.Poscounter</class>
+		<class>com.project.model.his.Pospayment</class>
+		<class>com.project.model.his.Prescription</class>
+		<class>com.project.model.his.Product</class>
+		<class>com.project.model.his.Productbatch</class>
+		<class>com.project.model.his.Productbranchlink</class>
+		<class>com.project.model.his.Productcategory</class>
+		<class>com.project.model.his.Productlot</class>
+		<class>com.project.model.his.Productprice</class>
+		<class>com.project.model.his.Productserial</class>
+		<class>com.project.model.his.Productsupplier</class>
+		<class>com.project.model.his.Productvalidity</class>
+		
+		<class>com.project.model.his.Purchaseorder</class>
+		<class>com.project.model.his.Purchaseorderbreakdown</class>
+		<class>com.project.model.his.Purchaseorderdeliveryaddress</class>
+		<class>com.project.model.his.Purchaserequest</class>
+		<class>com.project.model.his.Purchaserequestbreakdown</class>
+		<class>com.project.model.his.Quotation</class>
+		<class>com.project.model.his.Quotationbreakdown</class>
+		<class>com.project.model.his.Quotationsupplier</class>
+		<class>com.project.model.his.Quotationbreakdownsupplier</class>
+		<class>com.project.model.his.Quotationsupplierdetail</class>
+		<class>com.project.model.his.Quotationbreakdownsupplierdetail</class>		
+		<class>com.project.model.his.Role</class>
+		<class>com.project.model.his.Rolefunctionlink</class>
+		<class>com.project.model.his.Salesdiscounthistry</class>
+		<class>com.project.model.his.Salesorder</class>
+		<class>com.project.model.his.Salesorderbreakdown</class>
+		<class>com.project.model.his.Salesorderreturn</class>
+		<class>com.project.model.his.Salesreturn</class>		
+		<class>com.project.model.his.State</class>
+		<class>com.project.model.his.Supplier</class>
+		<class>com.project.model.his.Supplierdocument</class>
+		<class>com.project.model.his.Supplierinvoice</class>
+		<class>com.project.model.his.Supplierinvoicebreakdown</class>
+		<class>com.project.model.his.Supplierpayment</class>
+		
+		<class>com.project.model.his.Systemreview</class>
+		<class>com.project.model.his.Taxcode</class>
+		<class>com.project.model.his.Uomtype</class>
+		<class>com.project.model.his.Vaccination</class>
+		<class>com.project.model.his.Workflow</class>
+		<class>com.project.model.his.Salesorderhold</class>
+		<class>com.project.model.his.Salesorderbreakdownhold</class>
+		<class>com.project.model.his.Productmaterail</class>		
+		<class>com.project.model.his.Gstaccount</class>
+		<class>com.project.model.his.Gstpurchaseaccountbreakdown</class>
+		<class>com.project.model.his.Gstsalesaccountbreakdown</class>
+		<class>com.project.model.his.GstaccountPayment</class>
+		<class>com.project.model.his.Taxmaster</class>
+		<class>com.project.model.his.Productbundle</class>
+		<class>com.project.model.his.Kitchenorderbreakdown</class>
+		<class>com.project.model.his.Kitchensorder</class>
+		<class>com.project.model.his.Hoteltable</class>
+		
+		
+		<class>com.project.model.his.Branchiteminvoice</class>
+		<class>com.project.model.his.Branchiteminvoicebreakdown</class>
+		<class>com.project.model.his.Salesitem</class>
+		<class>com.project.model.his.Salesitembreakdown</class>
+		<class>com.project.model.his.ExpensesList</class>
+		<class>com.project.model.his.ExpensesTransaction</class>
+		<class>com.project.model.his.Membership</class>
+		<class>com.project.model.his.MembershipPaymentTransaction</class>
+		<class>com.project.model.his.Itemremarksfunctionlist</class>
+		<class>com.project.model.his.Itemremarkslist</class>
+		
+		<properties>
+
+			<property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/balqis" />
+			<property name="hibernate.connection.username" value="admin" />
+			<property name="hibernate.connection.password" value="admin" />
+			<property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver" />
+			<property name="showSql" value="false" />
+			<property name="hibernate.order_inserts" value="true" />
+			<property name="hibernate.order_updates" value="true" />
+			<property name="hibernate.c3p0.acquire_increment" value="1" ></property>
+			<property name="hibernate.c3p0.idle_test_period" value="300"></property>
+			<property name="hibernate.c3p0.timeout" value="120000"></property>
+			<property name="hibernate.c3p0.max_size" value="25"></property>
+			<property name="hibernate.c3p0.min_size" value="1"></property>
+			<property name="hibernate.c3p0.max_statement" value="0"></property>
+			<property name="hibernate.c3p0.preferredTestQuery" value="select 1;"></property>
+
+		</properties>
+
+
+
+
+
+	</persistence-unit>
+
+
+</persistence>

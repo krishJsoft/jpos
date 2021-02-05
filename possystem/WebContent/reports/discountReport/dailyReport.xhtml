@@ -1,0 +1,109 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<h:form id="discountReportForm">
+
+	<p:panel styleClass="mypanel" header="" id="discountreportPanel" position="top">
+		<f:facet name="header" >
+			<h:outputText value="Daily Discount Report" /> 
+		</f:facet>
+		<br />
+	<h:panelGrid columns="4" border="0" 
+		columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+		<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+		<h:outputText value=":" />
+		<p:calendar navigator="true" id="dateFrom" size="25"
+			value="#{discountBean.dateFrom}" pattern="#{des['common.date.pattern']}" />
+		<p:message for="dateFrom" styleClass="fieldError" />
+
+		<h:outputText value="" />
+		<h:outputText value="" />
+		<h:outputText value="" />
+		<h:outputText value="" />
+
+		<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+		<h:outputText value=":" />
+		<p:calendar navigator="true" id="dateTo" size="25"
+			value="#{discountBean.dateTo}" pattern="#{des['common.date.pattern']}" />
+		<p:message for="dateTo" styleClass="fieldError" />
+	</h:panelGrid>		
+		<br />		
+		
+		<p:panel>
+		
+		<p:commandButton value="Search" ajax="true"
+			update="discountreportPanel,discountReportForm:salesdiscountprintrequestitem"
+			action="#{discountBean.searchDiscountReport}" 
+		/>
+		<p:commandButton value="Reset" ajax="true"
+			update="discountreportPanel,discountReportForm:salesdiscountprintrequestitem"
+			action="#{discountBean.resetSearchDiscountReport}" 
+		/>
+		<p:commandButton value="Print" 
+			style="background: #E32526;color:white"
+			update="discountreportDatatable,"
+			oncomplete="PF('salesdiscountrptprintdlg').show();">
+		</p:commandButton>
+		
+		</p:panel>
+		<br />
+		
+		<p:dataTable id="discountreportDatatable" var="salesDisc" rowIndexVar="row"
+			scrollable="true" scrollHeight="220"
+			value="#{discountBean.salesDiscountList}" 
+			paginator="false"
+			rows="100" style="width: 100%" 
+			rowsPerPageTemplate="5,10,15,25,50,100"
+			rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}" >
+			<p:column id="modelHeader" width="5%">
+				<f:facet name="header">
+					<h:outputText value="#{des['common.table.header.no']}" />
+				</f:facet>
+				<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="DATE TIME" />
+				</f:facet>
+				<h:outputText value="#{salesDisc.createdDate}" styleClass="logintxttable" >	
+					<f:convertDateTime pattern="#{des['common.date.pattern']}" />
+				</h:outputText>
+			</p:column>
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="INVOICE NO" />
+				</f:facet>
+				<h:outputText value="#{salesDisc.salesOrderNo}" styleClass="logintxttable" />
+			</p:column>
+			<p:column  width="15%">
+				<f:facet name="header">
+					<h:outputText value="BEFORE DISCOUNT (#{app['common.currency']})" />							
+				</f:facet>
+				<h:outputText value="#{salesDisc.totalBeforeDiscount}" styleClass="logintxttable" />
+				
+			</p:column>
+			<p:column  width="15%">
+				<f:facet name="header">
+					<h:outputText value="DISCOUNT (%)" />							
+				</f:facet>
+				<h:outputText value="#{salesDisc.discountRate}" styleClass="logintxttable" />
+				
+			</p:column>
+			<p:column width="15%">
+				<f:facet name="header">
+					<h:outputText value="AFTER DISCOUNT (#{app['common.currency']})" />
+				</f:facet>
+				<h:outputText value="#{salesDisc.totalAmount}" styleClass="logintxttable" />
+			</p:column>
+		</p:dataTable>
+	</p:panel>
+
+		<ui:include src="/reports/discountReport/printtemplate/posprintdiscountreporttemplate.xhtml" />
+	
+</h:form>
+
+
+</ui:composition>

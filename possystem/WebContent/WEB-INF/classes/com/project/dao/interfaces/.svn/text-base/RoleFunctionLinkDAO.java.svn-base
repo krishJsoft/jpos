@@ -1,0 +1,19 @@
+package com.alpha.dao.interfaces;
+
+import java.util.List;
+
+import com.alpha.hq.model.Rolefunctionlink;
+
+public interface RoleFunctionLinkDAO {
+
+	void save(Rolefunctionlink rolefunctionLink);
+
+	void update(Rolefunctionlink rolefunctionLink);
+
+	void delete(Integer id);
+
+	List<Rolefunctionlink> findbyRolefunctionListAll(Integer id);
+
+	List<Rolefunctionlink> findfunctionbyRoleListAll(Integer roleId);
+
+}

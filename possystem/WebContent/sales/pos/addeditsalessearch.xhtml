@@ -1,0 +1,343 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogSearch" header="Sales Search"
+		widgetVar="salessearch" modal="true" height="480px" width="80%">
+
+
+
+		<p:outputPanel id="salesPanel">
+			
+			<p:panel header="Search Sales Order">
+
+
+				<h:panelGrid id="salesGrid" columns="10" border="0" width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+
+
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{salesorderBean.dateFrom}" pattern="#{des['common.date.pattern']}"/>
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{salesorderBean.dateTo}" pattern="#{des['common.date.pattern']}" />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Sales Order No" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="referenceNo" size="25"
+						value="#{salesorderBean.salesOrderNo}" />
+					<p:message for="referenceNo" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{salesorderBean.searchPosSalesOrder}"
+							update="salesPanel" />
+							<ui:remove>
+						<p:commandButton value="Search By Category" ajax="true"
+							update="salesPanel,:addEditPosForm:categoryReportprintDigprintrequestitem"
+							action="#{salesorderBean.searchSalesOrderSummaryCategoryDateBased}" 
+							/>
+							</ui:remove>
+						<p:commandButton value="Reset" ajax="true"
+							action="#{salesorderBean.resetSalesOrderSearch}"
+							update="salesPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTableSearch" var="sales" rowIndexVar="row"
+					scrollable="false" lazy="true" first="#{salesorderBean.first}"
+					value="#{salesorderBean.salesorderModel}" paginator="true"
+					rows="10" style="width: 100%" selectionMode="single"
+					rowsPerPageTemplate="5,10,15,25,50,100,200,300"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}" rendered="#{salesorderBean.searchBy=='salesOrder'}" >
+
+					<p:ajax event="page" listener="#{salesorderBean.onPageChange}" />
+
+					<p:column style="width: 5%;">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Created Date" />
+						</f:facet>
+						<h:outputText value="#{sales.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="#{des['common.date.time.pattern']}" />
+						</h:outputText>
+					</p:column>
+
+				
+
+					<p:column sortBy="#{sales.salesOrderNo}">
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" />
+						</f:facet>
+						<h:outputText value="#{sales.salesOrderNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{sales.totalAmount}"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Total Amount(RM)" />
+						</f:facet>
+						<h:outputText value="#{sales.totalAmount}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+
+					<p:column sortBy="#{sales.status}">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+
+						<h:outputText value="#{app['salesorder.status.neworderlable']}"
+							rendered="#{sales.status==app['salesorder.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.processedlable']}"
+							rendered="#{sales.status==app['salesorder.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.orderedlable']}"
+							rendered="#{sales.status==app['salesorder.status.orderedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.paidlable']}"
+							rendered="#{sales.status==app['salesorder.status.paidvalue']}"
+							styleClass="logintxttable" />
+
+
+					</p:column>
+
+
+					<p:column style="width: 15%;">
+						<f:facet name="header">Action</f:facet>
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+								update=":addEditPosForm:requestitem"
+								rendered="#{loginBean.functionList.contains('View SalesOrder')}"
+								actionListener="#{salesorderBean.viewSalesOrder}"
+								oncomplete="PF('salesDig').show()">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+							
+							<p:menuitem value="Refund" styleClass="logintxttable" 
+								actionListener="#{posBean.editSalesOrder(sales)}" 
+								oncomplete="PF('salessearch').hide(),PF('salesoption').hide()"
+								update="addEditPosForm:cardNoList,addEditPosForm:totalAmount,:addEditPosForm:dataTable,:addEditPosForm:salesButtonsPanel,:addEditPosForm:cardNoid"
+								>
+							>
+							</p:menuitem>
+<ui:remove>
+							<p:menuitem value="Delete" styleClass="logintxttable"
+								oncomplete="PF('salesorderdeleteDig').show()"
+								rendered="#{loginBean.functionList.contains('Delete SalesOrder')}"
+								actionListener="#{salesorderBean.viewSalesOrder}">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+</ui:remove>
+
+							<p:menuitem value="Re-Print" styleClass="logintxttable"
+								ajax="true" update=":addEditPosForm:printrequestitem"
+								oncomplete="PF('salesprintDig').show()"
+								actionListener="#{salesorderBean.viewSalesOrder}">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+
+						</p:menuButton>
+					</p:column>
+
+
+				</p:dataTable>
+				
+					
+				<p:dataTable id="categorySalesDataTable2" var="salesbd" rowIndexVar="row"
+					scrollable="true" scrollHeight="420"
+					value="#{salesorderBean.salesorderbreakdowns}" paginator="true"
+					rows="10" style="width: 100%" 
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"  rendered="#{salesorderBean.searchBy=='salesCategory'}">
+					<p:column id="modelHeader" width="5%">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+					
+						<p:column width="15%" sortBy="#{salesbd.createdDate}">
+						<f:facet name="header">
+							<h:outputText value="Created Date" />
+						</f:facet>
+						<h:outputText value="#{salesbd.createdDate}"
+							styleClass="logintxttable" 
+							>
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:30%" sortBy="#{salesbd.categoryName}">
+						<f:facet name="header">
+							<h:outputText value="Product Category"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.categoryName}"
+							styleClass="logintxttable">	
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Quantity"/>
+						</f:facet>
+						
+						
+						<h:outputText value="#{salesbd.qtty}"
+							>
+							<f:convertNumber pattern="#0" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Sales Amount (RM)"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.unitPrice}"
+							styleClass="logintxttable">
+							
+						</h:outputText>
+						
+						
+					</p:column>
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Tax Amount (RM)"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.taxAmount}"
+							styleClass="logintxttable">
+							
+						</h:outputText>
+						
+						
+					</p:column>
+					
+					<p:column style="width: 7%;">
+						<f:facet name="header">Action</f:facet>
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+								update=":addEditPosForm:requestcategoryitem,:addEditPosForm:categoryOrderDetailPrintRequestItem"
+								actionListener="#{salesorderBean.viewSalesOrderCategoryBased}"
+								oncomplete="PF('salesCategoryDlg').show()"
+								>
+								<f:attribute name="sales" value="#{salesbd}" />
+							</p:menuitem>
+						</p:menuButton>
+					</p:column>
+					
+				</p:dataTable>
+				<ui:remove>
+			<p:commandButton value="Print" 
+					oncomplete="PF('categoryReportprintDig').show();">					
+				</p:commandButton>
+				</ui:remove>
+				
+			</p:panel>
+
+			<p:commandButton value="Close" oncomplete="PF('salessearch').hide()"
+				style="background-image: url('resources/images/redbutton.jpg'); width:100px; height:30px; " />
+
+		</p:outputPanel>
+		
+		<ui:include src="/sales/pos/salesOrderSearchView.xhtml" />
+
+
+
+		<p:dialog showEffect="fade" hideEffect="fade"
+			header="Sales Order Delete Confirmation" resizable="false"
+			widgetVar="salesorderdeleteDig" modal="false" height="160"
+			width="450">
+
+			<br></br>
+
+			<p:panel>
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="1" cellspacing="1"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="Are you sure you want to Delete Sales Order  "
+						styleClass="logintxttable" />
+
+					<h:outputText value="#{salesorderBean.salesorder.salesOrderNo}"
+						styleClass="logintxttable" />
+
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+					<p:commandButton value="Delete" ajax="true" update="salesPanel"
+						rendered="#{loginBean.functionList.contains('Delete SalesOrder')}"
+						oncomplete="PF('salesorderdeleteDig').hide();"
+						action="#{salesorderBean.deleteSalesordernative}">
+					</p:commandButton>
+					<p:commandButton value="Cancel"
+						oncomplete="PF('salesorderdeleteDig').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

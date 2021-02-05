@@ -1,0 +1,199 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+	<p:dialog id="modalDialogDp" header="Doctor Prescription Details"
+		resizable="false" widgetVar="dpDig" modal="true" height="490"
+		width="960">
+
+
+		<br></br>
+
+
+		<p:panel id="dpitem">
+
+
+			<h:panelGrid id="dpgrid" columns="6" border="0" width="90%"
+				styleClass="bgcolor" cellpadding="3" cellspacing="3"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText value="Patient Name"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{dpBean.dpModel.customer.customerName}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="Created Date"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{dpBean.dpModel.createdDate}"
+					styleClass="logintxttable">
+					<f:convertDateTime pattern="dd-MMM-yyyy " />
+				</h:outputText>
+
+				<h:outputText
+					value="#{msg['doctorsprescriptions.label.presriptionNo']}"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText value="#{dpBean.dpModel.prescptNo}"
+					styleClass="logintxttable" />
+
+			
+
+				<h:outputText
+					value="#{msg['doctorsprescriptions.label.totMedicAmt']}" />
+				<h:outputText value=":" />
+				<h:outputText value="#{dpBean.dpModel.totalAmount}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="Status"></h:outputText>
+				<h:outputText value=":" />
+				
+				<h:outputText value="#{app['doctor.status.neworderlable']}"
+					rendered="#{dpBean.dpModel.status==app['doctor.status.newordervalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['doctor.status.processedlable']}"
+					rendered="#{dpBean.dpModel.status==app['doctor.status.processedvalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['doctor.status.orderedlable']}"
+					rendered="#{dpBean.dpModel.status==app['doctor.status.orderedvalue']}"
+					styleClass="logintxttable" />
+				<h:outputText value="#{app['doctor.status.closedlable']}"
+					rendered="#{dpBean.dpModel.status==app['doctor.status.closedvalue']}"
+					styleClass="logintxttable" />
+					
+
+				<h:outputText value="#{msg['doctorsprescriptions.label.remarks']}" />
+				<h:outputText value=":" />
+				<h:outputText value="#{dpBean.dpModel.remarks}"
+					styleClass="logintxttable" />
+
+			</h:panelGrid>
+
+
+			<br></br>
+			<br></br>
+
+
+			<p:dataTable id="dataTable1" var="breakdown" rowIndexVar="row"
+				scrollable="true" scrollHeight="170" value="#{dpBean.dpbModels}"
+				paginator="false" rows="500" style="width: 100%"
+				rowsPerPageTemplate="5,10,15"
+				rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+				<p:column id="modelHeader" style="width: 3%;">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width: 10%;">
+					<f:facet name="header">
+						<h:outputText value="Product Code" />
+					</f:facet>
+					<h:outputText value="#{breakdown.product.barcode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width: 20%;">
+					<f:facet name="header">
+						<h:outputText value="Product Name" />
+					</f:facet>
+					<h:outputText value="#{breakdown.product.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				
+
+				<p:column style="width: 5%;">
+					<f:facet name="header">
+						<h:outputText value="Dose" />
+					</f:facet>
+					<h:outputText value="#{breakdown.dose}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width: 8%;">
+					<f:facet name="header">
+						<h:outputText value="Form" />
+					</f:facet>
+					<h:outputText value="#{breakdown.formName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width: 6%;">
+					<f:facet name="header">
+						<h:outputText value="Frequency" />
+					</f:facet>
+					<h:outputText value="#{breakdown.frequency}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width: 5%;">
+					<f:facet name="header">
+						<h:outputText value="Take M" />
+					</f:facet>
+					<h:outputText value="#{breakdown.takeM}" styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column style="width: 5%;">
+					<f:facet name="header">
+						<h:outputText value="Take A" />
+					</f:facet>
+					<h:outputText value="#{breakdown.takeA}" styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column style="width: 5%;">
+					<f:facet name="header">
+						<h:outputText value="Take N" />
+					</f:facet>
+					<h:outputText value="#{breakdown.takeN}" styleClass="logintxttable" />
+				</p:column>
+
+			
+
+
+				<p:column style="width: 7%;">
+					<f:facet name="header">
+						<h:outputText value="Quantity" />
+					</f:facet>
+					<h:outputText value="#{breakdown.quantity}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width: 7%;">
+					<f:facet name="header">
+						<h:outputText value="Price (RM)" />
+					</f:facet>
+					<h:outputText value="#{breakdown.subTotal}"
+						styleClass="logintxttable" />
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Close" oncomplete="PF('dpDig').hide()" />
+
+
+
+		</h:panelGrid>
+
+
+
+
+	</p:dialog>
+
+
+
+
+</ui:composition>

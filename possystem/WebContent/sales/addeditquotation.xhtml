@@ -1,0 +1,381 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditQuotationForm">
+		<p:outputPanel id="quotationListPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="quotationListPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Add/Edit Quotation">
+
+				<h:panelGrid id="quotationGrid" columns="10" border="0" width="80%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+
+
+					<h:panelGrid columns="2">
+
+						<p:commandButton id="customerBtn" icon="ui-icon-search"
+							style="height:22px;" update="customerPanel"
+							onclick="PF('overcustomer').show();" />
+
+						<h:outputText value="#{msg['quotation.label.customerName']}"
+							styleClass="logintxt"></h:outputText>
+
+					</h:panelGrid>
+
+
+
+					<h:outputText value=":" />
+					<p:autoComplete id="customerName" maxResults="5" size="25"
+						converter="customerConverter"
+						disabled="#{quotationBean.customerNamedisable}" maxlength="15"
+						value="#{quotationBean.customer}"
+						completeMethod="#{quotationBean.getCustomerName}" var="c"
+						itemLabel="#{c.customerName}" itemValue="#{c}">>
+						<p:column>  
+                    	#{c.customerId} - #{c.customerName}   
+                		</p:column>
+					</p:autoComplete>
+					<p:message for="customerName" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.quotationDueDate']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="quotationDueDate" size="25"
+						value="#{quotationBean.quotation.quotationDueDate}"
+						pattern="dd/MM/yyyy" />
+					<p:message for="quotationDueDate" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.deliveryTerms']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="deliveryTerms"
+						value="#{quotationBean.quotation.deliveryTerms}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select a Delivery Terms" itemValue="" />
+						<f:selectItem itemLabel="FOB" itemValue="FOB" />
+						<f:selectItem itemLabel="CIF" itemValue="CIF" />
+					</p:selectOneMenu>
+					<p:message for="deliveryTerms" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.paymentTerms']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="paymentTerms"
+						value="#{quotationBean.quotation.paymentTerms}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select a Payment Terms" itemValue="" />
+						<f:selectItem itemLabel="COD" itemValue="COD" />
+						<f:selectItem itemLabel="30 Days" itemValue="30 Days" />
+						<f:selectItem itemLabel="60 Days" itemValue="60 Days" />
+						<f:selectItem itemLabel="90 Days" itemValue="0 Days" />
+						<f:selectItem itemLabel="180 Days" itemValue="180 Days" />
+
+					</p:selectOneMenu>
+					<p:message for="paymentTerms" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.remarks']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="3" cols="25" id="remarks"
+						value="#{quotationBean.quotation.remarks}" />
+					<p:message for="remarks" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text"
+						rendered="#{quotationBean.itemaction=='update'}" />
+					<h:outputText value="Quote No" styleClass="logintxt"
+						rendered="#{quotationBean.itemaction=='update'}"></h:outputText>
+					<h:outputText value=":"
+						rendered="#{quotationBean.itemaction=='update'}" />
+					<h:outputText value="#{quotationBean.quotation.quotationNo}"
+						styleClass="logintxt"
+						rendered="#{quotationBean.itemaction=='update'}" />
+					<h:outputText value=""
+						rendered="#{quotationBean.itemaction=='update'}" />
+				</h:panelGrid>
+				<br />
+
+
+				<p:panelGrid style="width:99%" id="quotationProductGrid"
+					styleClass="alignTop">
+					<f:facet name="header">
+						<p:row>
+							<p:column style="width:15%;">Add Product</p:column>
+							<p:column style="width:85%;">Products Details</p:column>
+						</p:row>
+					</f:facet>
+
+					<p:row>
+						<p:column style="width:15%;" styleClass="columnwidthc">
+
+							<h:panelGrid id="quotationAddGrid" columns="1" border="0"
+								styleClass="borderlessGrid" width="100%"
+								columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+								<h:panelGrid columns="2">
+									<p:commandButton id="productBtn" icon="ui-icon-search"
+										style="height:22px;" update="productPanel"
+										onclick="PF('overproduct').show();" />
+
+									<h:outputText
+										value="#{msg['purchaserequest.label.productName']}"
+										styleClass="logintxt"></h:outputText>
+								</h:panelGrid>
+
+								<p:autoComplete id="productCode" maxResults="500" size="20"
+									converter="productNameConverter" maxlength="15"
+									minQueryLength="3" dropdown="false" scrollHeight="250"
+									queryDelay="2" disabled="#{quotationBean.productCodedisable}"
+									value="#{quotationBean.product}"
+									completeMethod="#{commonListBean.getAllProductListByName}"
+									var="p" itemLabel="#{p.productName}" itemValue="#{p}">
+									<p:column>  
+                   					 #{p.productName}   -#{p.barcode} - #{p.uom}
+                			</p:column>
+								</p:autoComplete>
+
+
+								<h:outputText value="#{msg['quotation.label.itemCount']}"
+									styleClass="logintxt"></h:outputText>
+
+								<p:inputText id="itemCount" value="#{quotationBean.itemCount}"
+									maxlength="15" size="20" />
+
+								<h:panelGrid columns="2" border="0" styleClass="borderlessGrid"
+									columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+									<p:commandButton value="Add" ajax="true"
+										update="quotationAddGrid,dataTable"
+										action="#{quotationBean.addQuotationItem}" />
+								</h:panelGrid>
+
+							</h:panelGrid>
+
+						</p:column>
+
+
+						<p:column style="width:85%;">
+
+							<p:dataTable id="dataTable" var="quotation" rowIndexVar="row"
+								scrollable="true" scrollHeight="230" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+								value="#{quotationBean.quotationbreakdowns}" paginator="false"
+								rows="500" style="width: 100%" rowsPerPageTemplate="5,10,15">
+
+
+								<p:columnGroup type="header">
+									<p:row>
+										<p:column style="width:8%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Code" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:12%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Product Name" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="UOM" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:9%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Unit Price(RM)"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Quantity Reqd."
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Discount (RM)" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:6%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Tax (%)" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Tax" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+
+
+										<p:column style="width:7%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Sub Total (RM)"
+													styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+
+										<p:column style="width:3%;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+											</f:facet>
+										</p:column>
+									</p:row>
+								</p:columnGroup>
+
+
+								<p:column width="10%" styleClass="columnwidth"
+									style="width:8%;height:15px;">
+									<h:outputText value="#{quotation.productCode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="15%" styleClass="columnwidth">
+									<h:outputText value="#{quotation.productName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidth">
+									<h:outputText value="#{quotation.uomName}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column styleClass="logintxtnumberFormat" width="8%">
+
+									<p:inputText
+										value="#{quotationBean.priceQty[quotation.productId]}"
+										size="11" onkeypress='return validate(event)' id="priceQty"
+										styleClass="logintxtnumberFormat">
+										<p:ajax event="blur"
+											listener="#{quotationBean.addSalesPriceModifyItem(row)}"
+											update=":addEditQuotationForm:quotationAddGrid,:addEditQuotationForm:dataTable" />
+										<f:convertNumber pattern="#0.00" />
+									</p:inputText>
+								</p:column>
+
+
+								<p:column width="6%" styleClass="columnwidthn">
+									<h:outputText value="#{quotation.quantityRequired}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column width="6%" styleClass="columnwidthn"
+									footerText="Total (RM)">
+									<h:outputText value="#{quotation.discountAmount}"
+										styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+
+								<p:column style="width:5%;" styleClass="columnwidthn">
+									<h:outputText value="#{quotation.taxCode}"
+										styleClass="logintxttable" />
+								</p:column>
+
+								<p:column style="width:7%;" styleClass="columnwidthn">
+									<h:outputText value="#{quotation.taxAmount}"
+										styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:column width="8%" styleClass="columnwidthn">
+									<f:facet name="footer">
+										<h:outputText value="#{quotationBean.totalAmount}"
+											styleClass="logintxttable">
+											<f:convertNumber pattern="#0.00" />
+										</h:outputText>
+									</f:facet>
+
+									<h:outputText value="#{quotation.subTotal}"
+										styleClass="logintxttable">
+										<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+								</p:column>
+
+								<p:column width="3%" styleClass="columnwidth">
+									<p:commandLink value="" styleClass="ui-icon ui-icon-trash"
+										title="Remove" actionListener="#{quotationBean.removeItem}"
+										oncomplete="PF('quotationItemdeleteDig').show()">
+										<f:attribute name="quotationBreakdownId" value="#{row}" />
+									</p:commandLink>
+								</p:column>
+
+
+							</p:dataTable>
+						</p:column>
+					</p:row>
+
+					<f:facet name="footer">
+						<p:row>
+							<p:column style="width:100%;" colspan="2">
+								<p:commandButton value="Save" ajax="false"
+									action="#{quotationBean.saveQuotation}"
+									update="quotationListPanel"
+									rendered="#{quotationBean.itemaction!='update'}" />
+
+								<p:commandButton value="Reset" ajax="true"
+									action="#{quotationBean.resetQuotation}"
+									update="quotationListPanel"
+									rendered="#{quotationBean.itemaction!='update'}" />
+
+								<p:commandButton value="Update" ajax="false"
+									action="#{quotationBean.updateQuotation}"
+									update="quotationListPanel"
+									rendered="#{quotationBean.itemaction=='update'}" />
+
+								<p:commandButton value="Reset" ajax="true"
+									action="#{quotationBean.loadQuotation}"
+									update="quotationListPanel"
+									rendered="#{quotationBean.itemaction=='update'}" />
+
+								<p:commandButton value="Cancel" ajax="false"
+									action="#{quotationBean.listQuotation}"
+									update="quotationListPanel" />
+							</p:column>
+						</p:row>
+					</f:facet>
+
+
+				</p:panelGrid>
+
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		<ui:include src="/sales/quotationItemDelete.xhtml" />
+		<ui:include src="/sales/quotationcustomerOverlayout.xhtml" />
+		<ui:include src="/sales/quotationproductOverlayout.xhtml" />
+		<ui:include src="/admin/categoryOverlayout.xhtml" />
+	</h:form>
+</ui:composition>
+
+

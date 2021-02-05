@@ -1,0 +1,368 @@
+package com.alpha.dao.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.dao.interfaces.IPurchaserequestDAO;
+import com.alpha.hq.model.Purchaserequest;
+import com.alpha.hq.model.Purchaserequestbreakdown;
+import com.alpha.util.ConvertUtil;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 17 July 2013
+ */
+
+@Repository("purchaseRequestRepository")
+public class PurchaserequestDAOImpl implements IPurchaserequestDAO {
+	
+	public static Logger log = LoggerFactory.getLogger(PurchaserequestDAOImpl.class);
+	long l = 0;
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+	public EntityManager getEm() {
+		return em;
+	}
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}	
+	
+	@Override
+	public List<Purchaserequest> findByPurchaserequestListAll()
+			throws Exception {
+		
+		return null;
+	}
+
+	@Override
+	public int getPurchaserequestCount(String referenceNo, Integer branchId, Date dateFrom,
+			Date dateTo, String status) throws Exception {
+		int countResult = 0;
+		try {
+			
+			StringBuilder buf = new StringBuilder(
+					"SELECT COUNT(p) FROM Purchaserequest p   WHERE 1 = 1 ");
+
+			if ((dateFrom != null) && (dateFrom != null)) {
+				buf.append("  AND p.createdDate between  :dateFrom and :dateTo   ");
+			}	
+			
+			if (branchId !=null && branchId !=0) {
+				buf.append(" AND p.branchId =  :branchId  ");
+			}		
+					
+			if (referenceNo != null && referenceNo != "" && (!referenceNo.equalsIgnoreCase("0")) && (!referenceNo.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.referenceNo =:referenceNo ");
+			}
+			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.status =:status ");
+			}
+			
+			Query query = em.createQuery(buf.toString());
+
+			if ((dateFrom != null) && (dateTo != null))
+			{
+				query.setParameter("dateFrom", dateFrom);
+				query.setParameter("dateTo", dateTo);
+			}
+			
+			if (branchId !=null && branchId !=0) 
+			{
+				query.setParameter("branchId", branchId);
+			}
+			if (referenceNo != null && referenceNo != "" && (!referenceNo.equalsIgnoreCase("0")) && (!referenceNo.equalsIgnoreCase(""))) 
+			{
+				query.setParameter("referenceNo", referenceNo);
+			}			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase("")))  
+			{
+				query.setParameter("status", status);
+			}			
+			
+			Number cResults = (Number) query.getSingleResult();
+			countResult = Integer.parseInt(String.valueOf(cResults));
+			}		
+			catch (Exception e) {
+			log.info("Error in getPurchaserequestCount of PurchaserequestDAOImpl "
+					+ e.toString());
+			throw e;
+		} 
+
+		return countResult;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchaserequest> getPurchaserequestList(
+			String referenceNo, Integer branchId, Date dateFrom,
+			Date dateTo, String status, int start, int howMany)
+			throws Exception {
+		List<Purchaserequest> data = null;
+		try {			
+		StringBuilder buf = new StringBuilder(
+				"select t from Purchaserequest t inner join fetch t.branch inner join fetch t.purchaserequestbreakdowns prb inner join fetch prb.product inner join fetch prb.supplier WHERE 1 = 1 ");
+
+		if ((dateFrom != null) && (dateFrom != null)) {
+			buf.append("  AND t.createdDate between  :dateFrom and :dateTo   ");
+		}		
+		if (branchId !=null && branchId !=0) {
+			buf.append(" AND t.branchId =  :branchId  ");
+		}				
+		if (referenceNo != null && referenceNo != "" && (!referenceNo.equalsIgnoreCase("0")) && (!referenceNo.equalsIgnoreCase(""))) 
+		{
+			buf.append(" AND  t.referenceNo =:referenceNo ");
+		}		
+		if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase(""))) 
+		{
+			buf.append(" AND  t.status =:status ");
+		}
+		
+		Query query = em.createQuery(buf.toString());
+
+		if ((dateFrom != null) && (dateTo != null))
+		{
+			query.setParameter("dateFrom", dateFrom);
+			query.setParameter("dateTo", dateTo);
+		}		
+		if (branchId !=null && branchId !=0) 
+		{
+			query.setParameter("branchId", branchId);
+		}
+		if (referenceNo != null && referenceNo != "" && (!referenceNo.equalsIgnoreCase("0")) && (!referenceNo.equalsIgnoreCase(""))) 
+		{
+			query.setParameter("referenceNo", referenceNo);
+		}			
+		if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase("")))  
+		{
+			query.setParameter("status", status);
+		}			
+
+		query.setFirstResult(start);
+		query.setMaxResults(howMany);
+		data = query.getResultList();
+		}	
+		catch (Exception e) {
+		log.info("Error in getPurchaserequestList of PurchaserequestDAOImpl "
+				+ e.toString());
+		throw e;
+	} 	
+	return data;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchaserequest> getPurchaserequestList(List<Integer> ids , Integer supplierId,Integer branchId)
+			throws Exception {
+		List<Purchaserequest> purchaserequest=null;
+		String sqlQuery="select t from Purchaserequest t inner join fetch t.branch b  WHERE t.purchaseRequestId in :purchaseRequestId  and br.supplier.supplierId=:supplierId and b.branchId=:branchId";
+		try {			
+			Query query = em.createQuery(sqlQuery).setParameter("purchaseRequestId", ids).setParameter("supplierId", supplierId).setParameter("branchId", branchId);
+			purchaserequest=query.getResultList();
+			
+			} catch (Exception e) {
+				log.info("Error in getPurchaserequestList PurchaserequestDAOImpl " + e);
+				throw e;
+			}
+			return purchaserequest;
+	}
+	
+	
+	
+
+	@Override
+	public Purchaserequest getPurchaserequestDetails(Integer purchaseRequestId)
+			throws Exception {
+		Purchaserequest retData = null;
+		String sqlQuery = "select t from Purchaserequest t inner join fetch t.branch inner join fetch t.purchaserequestbreakdowns prb inner join fetch prb.product inner join fetch prb.supplier   WHERE t.purchaseRequestId = :purchaseRequestId ";
+		try {
+			retData = (Purchaserequest) em.createQuery(sqlQuery).setParameter("purchaseRequestId", purchaseRequestId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getPurchaserequestDetails PurchaserequestDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+	@Override
+	public boolean createNewPurchaserequest(Purchaserequest purchaserequest)
+			throws Exception {
+		try {
+			em.persist(purchaserequest);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewPurchaserequest PurchaserequestDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updatePurchaserequest(Purchaserequest purchaserequest)
+			throws Exception {
+		try {
+			em.merge(purchaserequest);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updatePurchaserequest PurchaserequestDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deletePurchaserequest(Purchaserequest Purchaserequest)
+			throws Exception {
+		try {
+			em.remove(Purchaserequest);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deletePurchaserequest PurchaserequestDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public Purchaserequest getPurchaserequestDetailsByNo(
+			String referenceNo) throws Exception {
+		Purchaserequest retData = null;
+		String sqlQuery = "select t from Purchaserequest t inner join fetch t.branch inner join fetch t.purchaserequestbreakdowns prb inner join fetch prb.product inner join fetch prb.supplier   WHERE t.referenceNo = :referenceNo ";
+		try {
+			retData = (Purchaserequest) em.createQuery(sqlQuery).setParameter("referenceNo", referenceNo).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getPurchaserequestDetailsByNo PurchaserequestDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+	
+	@Override
+	public Purchaserequestbreakdown getPurchaserequestbreakdown(
+			Integer purchaseRequestBreakdownId) throws Exception {
+		Purchaserequestbreakdown retData = null;
+		String sqlQuery = "select t from Purchaserequestbreakdown t   WHERE t.purchaseRequestBreakdownId = :purchaseRequestBreakdownId ";
+		try {
+			retData = (Purchaserequestbreakdown) em.createQuery(sqlQuery).setParameter("purchaseRequestBreakdownId", purchaseRequestBreakdownId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getPurchaserequestbreakdown PurchaserequestDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+	
+	@Transactional
+	@Override
+	public boolean deletePurchaserequestbreakdown(
+			Purchaserequestbreakdown purchaserequestbreakdown) throws Exception {
+		try {
+			em.remove(purchaserequestbreakdown);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deletePurchaserequestbreakdown PurchaserequestDAOImpl " + e);
+			throw e;
+		}
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchaserequestbreakdown> getPurchaserequestbreakdownList(
+			List<Integer> ids) throws Exception {
+		List<Purchaserequestbreakdown> purchaserequest=null;
+		String sqlQuery="select t from Purchaserequestbreakdown t inner join fetch t.product inner join fetch t.purchaserequest  pr inner join fetch pr.branch b inner join fetch t.supplier s  WHERE pr.purchaseRequestId in :purchaseRequestId group by s.supplierId";
+		try {			
+			Query query = em.createQuery(sqlQuery).setParameter("purchaseRequestId", ids);
+			purchaserequest=query.getResultList();
+			
+			} catch (Exception e) {
+				log.info("Error in getPurchaserequestList PurchaserequestDAOImpl " + e);
+				throw e;
+			}
+			return purchaserequest;
+	}
+
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Object[]> getPurchaserequestbreakdownListByProduct(
+			List<Integer> requestIds) throws Exception {
+		//List<Purchaserequestbreakdown> purchaserequest=null;
+		List<Object[]> purchaserequest=null;
+		String sqlQuery="select t, sum(t.quantityRequired) from Purchaserequestbreakdown t inner join fetch t.product p inner join fetch t.purchaserequest  pr  WHERE pr.purchaseRequestId in :purchaseRequestId group by p.productId";
+		try {	
+			
+			Query query = em.createQuery(sqlQuery).setParameter("purchaseRequestId", requestIds);
+			purchaserequest=query.getResultList();
+			
+			} catch (Exception e) {
+				log.info("Error in getPurchaserequestList PurchaserequestDAOImpl " + e);
+				throw e;
+			}
+			return purchaserequest;
+	}
+
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchaserequestbreakdown> getPurchaserequestbreakdownListAll(
+			List<Integer> ids ,Integer branchId,Integer supplierId) throws Exception {
+		List<Purchaserequestbreakdown> purchaserequest=null;
+		String sqlQuery="select t from Purchaserequestbreakdown t inner join fetch t.product inner join fetch t.purchaserequest  pr inner join fetch t.supplier s inner join fetch pr.branch b  WHERE pr.purchaseRequestId in :purchaseRequestId and b.branchId=:branchId and s.supplierId=:supplierId ";
+		try {			
+			Query query = em.createQuery(sqlQuery).setParameter("purchaseRequestId", ids).setParameter("branchId", branchId).setParameter("supplierId", supplierId);
+			purchaserequest=query.getResultList();
+			
+			} catch (Exception e) {
+				log.info("Error in getPurchaserequestList PurchaserequestDAOImpl " + e);
+				throw e;
+			}
+			return purchaserequest;
+	}
+	
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchaserequestbreakdown> createPurchaseorderModel(
+			List<Integer> requestIds ,Integer supplierId) throws Exception {
+		List<Purchaserequestbreakdown> purchaserequest=null;
+		String sqlQuery="select t from Purchaserequestbreakdown t inner join fetch t.product inner join fetch t.purchaserequest  pr inner join fetch t.supplier s inner join fetch pr.branch b  WHERE pr.purchaseRequestId in :purchaseRequestId  and s.supplierId=:supplierId ";
+		try {			
+			Query query = em.createQuery(sqlQuery).setParameter("purchaseRequestId", requestIds).setParameter("supplierId", supplierId);
+			purchaserequest=query.getResultList();
+			
+			} catch (Exception e) {
+				log.info("Error in createPurchaseorderModel PurchaserequestDAOImpl " + e);
+				throw e;
+			}
+			return purchaserequest;
+	}
+	
+	
+	
+}

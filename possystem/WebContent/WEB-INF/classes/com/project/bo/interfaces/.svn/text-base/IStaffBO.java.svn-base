@@ -1,0 +1,25 @@
+package com.alpha.bo.interfaces;
+
+import java.util.List;
+
+import com.alpha.model.datamodel.BranchstaffmemberModel;
+
+
+
+public interface IStaffBO {
+
+	
+	public boolean createNewStaff(BranchstaffmemberModel staff) throws Exception;
+
+	public boolean updateStaff(BranchstaffmemberModel staff) throws Exception;
+
+	public boolean deleteStaff(BranchstaffmemberModel staff) throws Exception;
+	
+	public List<BranchstaffmemberModel> findByStaffList(Integer branchId,String icNo,Integer roleId,String Status) throws Exception;
+		
+	public BranchstaffmemberModel getBranchstaffmemberDetails(Integer staffId) throws Exception;
+	
+    public boolean findStaffIcExites(String IcNo) throws Exception;
+	
+    
+}

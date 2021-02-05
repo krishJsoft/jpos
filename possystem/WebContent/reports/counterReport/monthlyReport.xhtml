@@ -1,0 +1,91 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<head></head>
+
+<h:form id="annualExpensesReportForm">
+		<p:outputPanel id="expensesReportPanel">
+			<p:message for="expensesReportPanel" />
+			<p:panel styleClass="mypanel" header="Annual Expenses Report">
+
+
+				<h:panelGrid id="salesGrid" columns="10" border="0" width="20%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<p:selectOneMenu id="salesyear" value="#{chartBean.salesyear}"
+						style="width:180px; text-align:left;">
+						<f:selectItems value="#{commonListBean.yearList}"></f:selectItems>
+					</p:selectOneMenu>
+
+					<p:commandButton value="Search" ajax="true"
+						action="#{dashboardBean.getSalesRecord}" update="dataTable" />
+
+					<p:selectOneMenu id="counterId" style="width:160px; float :left;"
+						value="#{posOptionBean.counterId}" styleClass="inputCombo">
+						<f:selectItems value="#{commonListBean.selectTerminalList}"></f:selectItems>
+					</p:selectOneMenu>
+				</h:panelGrid>
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="expenses" rowIndexVar="row"
+					scrollable="true" scrollHeight="480"
+					value="#{dashboardBean.dashList}" paginator="false" rows="1000000"
+					style="width: 100%" rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+					<p:column id="modelHeader" width="5%">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width:25%">
+						<f:facet name="header">
+							<h:outputText value="Month" />
+						</f:facet>
+
+						<p:commandLink ajax="false" styleClass="logintxttable"
+							value="#{getPosCounterReport.monthName}"
+							actionListener="#{expensesBean.annualExpensesReport}">
+							<f:attribute name="startDate" value="#{expenses.startDate}" />
+							<f:attribute name="endDate" value="#{expenses.endDate}" />
+						</p:commandLink>
+
+					</p:column>
+
+
+					<p:column styleClass="logintxtnumberFormat" style="width:15%">
+						<f:facet name="header">
+							<h:outputText value="Expenses Amount (#{app['common.currency']})" />
+						</f:facet>
+						<h:outputText value="#{expenses.expensesAmmount}" styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+
+
+
+					</p:column>
+
+				
+				</p:dataTable>
+
+			
+
+
+			</p:panel>
+
+		</p:outputPanel>
+
+
+	</h:form>
+</ui:composition>
+
+

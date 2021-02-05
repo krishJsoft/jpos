@@ -1,0 +1,220 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addRoleForm">
+
+		<p:outputPanel id="outPanel">
+
+			<p:panel id="addRole" styleClass="mypanel"
+				header="User Role Privileges">
+
+				<table align="center" width="100%" border="0">
+					<tr>
+						<td align="center"><p:message for="addRole" /></td>
+					</tr>
+				</table>
+
+
+				<h:panelGrid id="newRolegrid" columns="5" border="0"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px,
+					 columnLeft width-280px, columnLeft width-280px ,columnLeft">
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['addRole.label.rolename']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText id="roleName" value="#{roleBean.roleInfo.roleName}"
+						styleClass="logintxttable" />
+					<h:outputText value="" />
+				</h:panelGrid>
+
+
+
+				<p:dataTable id="rolefunctionsdataTable" var="mainmodule"
+					value="#{roleBean.allMasterPrivilagesList}" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+
+					<p:column style="width: 15%;" styleClass="alignTop">
+						<f:facet name="header">
+							<h:outputText value="Module Name" />
+						</f:facet>
+						<h:outputText value="#{mainmodule.moduleMasterName}"
+							styleClass="logintxt" style="valign:top;" />
+					</p:column>
+
+					<p:column style="width: 85%;" styleClass="alignTop">
+						<f:facet name="header">
+							<h:outputText value="Privileges" />
+
+							<table align="center" width="100%" class="borderlessGrid">
+								<tr>
+									<td width="22%"></td>
+
+									<td width="10%">View <p:selectBooleanCheckbox
+											value="#{roleBean.checkAllView}">
+											<p:ajax listener="#{roleBean.selectAddRemove_ViewPrivilages}"
+												update=":addRoleForm:rolefunctionsdataTable" />
+										</p:selectBooleanCheckbox></td>
+
+									<td width="10%">Add <p:selectBooleanCheckbox
+											value="#{roleBean.checkAllAdd}">
+											<p:ajax listener="#{roleBean.selectAddRemove_AddPrivilages}"
+												update=":addRoleForm:rolefunctionsdataTable" />
+										</p:selectBooleanCheckbox></td>
+									<td width="10%">Edit <p:selectBooleanCheckbox
+											value="#{roleBean.checkAllEdit}">
+											<p:ajax listener="#{roleBean.selectAddRemove_EditPrivilages}"
+												update=":addRoleForm:rolefunctionsdataTable" />
+										</p:selectBooleanCheckbox></td>
+									<td width="10%">Delete <p:selectBooleanCheckbox
+											value="#{roleBean.checkAllDelete}">
+											<p:ajax
+												listener="#{roleBean.selectAddRemove_DeletePrivilages}"
+												update=":addRoleForm:rolefunctionsdataTable" />
+										</p:selectBooleanCheckbox></td>
+									<td width="10%">Approve <p:selectBooleanCheckbox
+											value="#{roleBean.checkAllApprove}">
+											<p:ajax
+												listener="#{roleBean.selectAddRemove_ApprovePrivilages}"
+												update=":addRoleForm:rolefunctionsdataTable" />
+										</p:selectBooleanCheckbox></td>
+									<td width="10%">Print <p:selectBooleanCheckbox
+											value="#{roleBean.checkAllPrint}">
+											<p:ajax
+												listener="#{roleBean.selectAddRemove_PrintPrivilages}"
+												update=":addRoleForm:rolefunctionsdataTable" />
+										</p:selectBooleanCheckbox>
+									</td>
+
+
+								</tr>
+
+							</table>
+
+
+						</f:facet>
+
+						<p:dataTable var="rolelt" rowIndexVar="row" scrollable="false"
+							scrollHeight="390" resizableColumns="true" editable="false"
+							value="#{mainmodule.functions}" style="width: 100%"
+							rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+							<p:column style="width: 20%;">
+								<f:facet name="header">
+									<h:outputText value="Sub Module Name" />
+								</f:facet>
+								<h:outputText value="#{rolelt.moduleName}"
+									styleClass="logintxttable" style="valign:top;" />
+							</p:column>
+
+
+
+							<p:column style="width: 10%;" styleClass="logintxtCenter">
+								<f:facet name="header">
+									<h:outputText value="View" />
+
+								</f:facet>
+								<p:selectBooleanCheckbox
+									rendered="#{rolelt.viewFunctionId!= null}"
+									value="#{roleBean.checkMap[rolelt.viewFunctionId]}">
+									<f:ajax event="click" />
+								</p:selectBooleanCheckbox>
+							</p:column>
+
+
+							<p:column style="width: 10%;" styleClass="logintxtCenter">
+								<f:facet name="header">
+									<h:outputText value="Add" />
+
+								</f:facet>
+								<p:selectBooleanCheckbox
+									rendered="#{rolelt.addFunctionId!= null}"
+									value="#{roleBean.checkMap[rolelt.addFunctionId]}">
+									<f:ajax event="click" />
+								</p:selectBooleanCheckbox>
+							</p:column>
+
+
+							<p:column style="width: 10%;" styleClass="logintxtCenter">
+								<f:facet name="header">
+									<h:outputText value="Edit" />
+
+								</f:facet>
+								<p:selectBooleanCheckbox
+									rendered="#{rolelt.editFunctionId!= null}"
+									value="#{roleBean.checkMap[rolelt.editFunctionId]}">
+									<f:ajax event="click" />
+								</p:selectBooleanCheckbox>
+							</p:column>
+
+
+							<p:column style="width: 10%;" styleClass="logintxtCenter">
+								<f:facet name="header">
+									<h:outputText value="Delete" />
+
+								</f:facet>
+								<p:selectBooleanCheckbox
+									rendered="#{rolelt.deleteFunctionId!= null}"
+									value="#{roleBean.checkMap[rolelt.deleteFunctionId]}">
+									<f:ajax event="click" />
+								</p:selectBooleanCheckbox>
+							</p:column>
+
+							<p:column style="width: 10%;" styleClass="logintxtCenter">
+								<f:facet name="header">
+									<h:outputText value="Approve" />
+
+								</f:facet>
+								<p:selectBooleanCheckbox
+									rendered="#{rolelt.approveFunctionId!= null}"
+									value="#{roleBean.checkMap[rolelt.approveFunctionId]}">
+									<f:ajax event="click" />
+								</p:selectBooleanCheckbox>
+							</p:column>
+
+							<p:column style="width: 10%;" styleClass="logintxtCenter">
+								<f:facet name="header">
+									<h:outputText value="Print" />
+								</f:facet>
+								<p:selectBooleanCheckbox
+									rendered="#{rolelt.approveFunctionId!= null}"
+									value="#{roleBean.checkMap[rolelt.printFunctionId]}">
+									<f:ajax event="click" />
+								</p:selectBooleanCheckbox>
+							</p:column>
+
+
+						</p:dataTable>
+
+					</p:column>
+
+
+				</p:dataTable>
+
+				<br></br>
+
+				<h:panelGrid columns="4"
+					columnClasses="columnLeft width-120px,columnLeft width-120px
+			,columnLeft width-120px,columnLeft width-120px">
+					<p:commandButton value="Submit" action="#{roleBean.savePrivilages}"
+						update="addRole" styleClass="loginText" />
+
+					<p:commandButton value="Reset" action="#{roleBean.resetPrivilages}"
+						styleClass="loginText" update="rolefunctionsdataTable">
+					</p:commandButton>
+
+					<p:commandButton value="Cancel"
+						action="#{roleBean.cancelPrivilages}" styleClass="loginText"
+						ajax="false" />
+				</h:panelGrid>
+
+			</p:panel>
+
+		</p:outputPanel>
+	</h:form>
+
+</ui:composition>

@@ -1,0 +1,1508 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<style>
+
+
+.hoverBlackText:hover{
+ 	color:black;
+}
+.ui-dialog-header, .ui-dialog-titlebar {	
+    background: #E32526!important;
+ 
+}
+
+.cardOptionNormal .ui-button{
+  background:white;
+  color:black;
+}
+.cardOptionNormal .ui-button:nth-child(1){
+  color:white;
+  background:#E32526;
+}
+
+
+table#posCashier{
+	
+	width:100%;
+	height:92vh;
+	table-layout:fixed;
+	border:collapse:collapse;
+	
+}
+table#posCashier  td {
+	
+}
+
+table#numpadKey{
+	width:100%;
+	padding:0;
+	margin:0;
+	table-layout:fixed;
+	
+}
+
+table#numpadKey td{
+	padding:0;	
+	height:10vh;
+	
+}
+table#numpadKey td button{
+	font-family:"Courier New", Courier, monospace;
+    width: 100%;
+    height:10vh;
+    font-weight:bold;
+    font-size:30px;
+    cursor:pointer;
+    
+    color: white;
+    background-color: #2BC4CA;
+    border:1px solid white;
+    border-radius:5px;"
+    
+}
+table#numpadKey td button:active{
+    box-shadow: 0px 1px;
+	background-color: #D0E4EB;
+    height:9vh;
+}
+
+
+ .ui-paginator-page{
+  	width:5vw;
+  	height:5vh;   
+}
+
+.ui-button.salesButton {
+	font-family:"Courier New", Courier, monospace;
+	color:white;
+	font-weight:bold;
+	font-size:16px;
+	height:8vh;
+    background: #E32526;
+    
+}
+
+.ui-button.salesButton:hover{
+	background:blue;
+	
+}
+
+
+.ui-button.salesPaymentButton {
+	font-family:"Courier New", Courier, monospace;
+	font-weight:bold;
+	color:white;
+	font-size:24px;
+	height:15vh;
+	width:100%;
+    background: green;
+    
+}
+.ui-button.salesPaymentButton:disabled {
+	opacity:1;
+    background: gray;
+    
+}
+
+.ui-button.salesPaymentButton:hover:enabled{
+//	background:blue;
+	
+}
+
+.ui-button.takeAway-SendToKitchen-Button{
+	font-family:"Courier New", Courier, monospace;
+	font-weight:bold;
+	color:white;
+	font-size:24px;
+	height:15vh;
+	width:100%;
+    background: blue;
+}
+.ui-button.takeAway-SendToKitchen-Button:disabled {
+	opacity:1;
+    background: gray;  
+}
+
+
+
+
+.ui-chkbox .ui-chkbox-box
+{
+	width:3vw ;
+	height:5vh ;
+	background-color: #69D2F7;
+
+}
+.kitchenOrderRow{
+background:cyan;
+}
+
+.dataGridHeader{
+	background:black;
+	color:white;
+	text-align:left;
+	height:10vh;
+	padding-top:10px;
+	width:100%;
+} 
+.dataGridHeader .ui-button{
+	height:7vh;
+	font-weight:bold;
+	
+}
+
+.keypad-key {
+    font-size: 4em ;
+    font-weight:bold;
+    height:10vh ;
+    width: 8vw ;
+    
+}
+.keypad-spacebar{
+	width: 46vw ;
+}
+
+button.keypad-key.ui-state-default{
+	background:#4CF91D;
+	border:2px solid #40883B;
+}
+
+
+#keypad-div{
+	border:10px solid gray;
+}
+.dataGridHeaderSpacer{
+	width:10px;
+}
+.salesPanelHeader td{
+	background:black;
+
+}
+#salesItemPanel{
+text-align:center;
+//background:#e15c07;
+}
+.row2{
+background:#E32526;
+//color:white;
+}
+
+.image-Icon{
+	width:80px;
+	height:50px;
+	border-radius:50px;
+}
+</style>
+
+<h:form id="addEditPosForm" style="background-color:white;">
+		<p:commandButton value="dummyButtonForEnterKey" style="display:none;">
+		</p:commandButton>
+	
+
+<p:focus context="headerGrid" id="focus" for="cardNoid" />
+
+	<table  id="posCashier" >
+		
+		<tbody>
+			<tr>
+			
+				<td valign="top" colspan="3" rowspan="3">
+					<br style="line-height: 50%;"/>
+					<div style="height:80vh;overflow:auto;border-bottom:1px solid black">
+					
+					<table class="dataGridHeader">
+						<tr>
+							<td >
+								<p:spacer styleClass="dataGridHeaderSpacer" />
+					 			<h:graphicImage value="/images/search.png" width="30px" height="30px"/>
+					 			
+								<p:spacer styleClass="dataGridHeaderSpacer" />
+						 		<p:keyboard id="productSearchInput" 
+	 								value="#{productBean.productNameFilter}"
+	 							 	style="height:6vh;border-radius:50px;" size="25"
+	 							 	onclick="this.value=''"
+			    					layout="custom" 
+			    					layoutTemplate="1234567890-back,-space-QWERTYUIOP&#x2011;,-space-space-ASDFGHJKL,-space-space-space-ZXCVBNM&#x2e;,-space-space-space-space-space-space-spacebar"
+			    					rendered="#{systemSettingBean.myConfig.orderScreenProductSearchBy=='name'}" 
+			    				>
+				    				<p:ajax event="change" 
+						 				update="addEditPosForm:dataTablegrid1,addEditPosForm:posPanel,addEditPosForm:salesButtonsPanel" 
+						 				listener="#{productBean.filterProductByName}" />
+			      				</p:keyboard>
+			      				<p:watermark for="productSearchInput" value="Search by product name" id="watermark" />
+			      				
+			      				<!--  
+			      				<p:inputText id="productSearchByCodeInput" 
+										value="#{productBean.productCodeFilter}" 
+										style="height:6vh;border-radius:50px;" size="25"
+			    					onfocus="this.value=''"
+			    					rendered="#{systemSettingBean.myConfig.orderScreenProductSearchBy=='code'}"
+			 					/>
+		 						-->
+		 						
+			 					<p:keyboard id="productSearchByCodeInput" 
+	 								value="#{productBean.productCodeFilter}" 
+	 								rendered="#{systemSettingBean.myConfig.orderScreenProductSearchBy=='code'}"
+	 								style="height:6vh;border-radius:50px;" size="25"
+			    					onclick="this.value=''"
+			    					layout="custom" 
+					    			layoutTemplate="1234567890-back,-space-QWERTYUIOP&#x2011;,-space-space-ASDFGHJKL&#x23ce;,-space-space-space-ZXCVBNM&#x2e;,-space-space-space-space-space-space-spacebar"
+			 					/>
+								<p:watermark for="productSearchByCodeInput" value="Search by product code" />
+								
+								<p:remoteCommand name="rc_loadProdut" 
+									action="#{productBean.filterProductByCode}"
+									update="addEditPosForm:dataTablegrid1,addEditPosForm:posPanel,addEditPosForm:salesButtonsPanel"
+								/>
+							
+							
+			      				<p:spacer styleClass="dataGridHeaderSpacer" /> 
+			      				<p:commandButton value="RESET" action="#{posBean.resetProductList}" 
+								 oncomplete="focusOnProductSearchInput()"  
+					               	update=":addEditPosForm:dataTablegrid1,productSearchInput" 
+					               ></p:commandButton>
+				               
+				            
+							
+							</td>
+							<td style="text-align:right;">
+								<p:spacer styleClass="dataGridHeaderSpacer" />
+						            <p:commandLink				            
+										oncomplete="PF('hotListDlg').show()"
+										update=":addEditPosForm:dataTablegrid1" 
+									>
+										<h:graphicImage value="/images/hotlist.png" styleClass="image-Icon"/>
+									</p:commandLink>
+					               
+					            <p:spacer styleClass="dataGridHeaderSpacer" />
+						            <p:commandLink				            
+						            	action="#{productCategoryBean.loadCategory()}"
+										update="categorySelectionDlg"
+						               	oncomplete="PF('categorySelectionDlg').show()" 
+									>
+										<h:graphicImage value="/images/category.png" styleClass="image-Icon"/>
+									</p:commandLink>
+								 
+					        	<p:spacer styleClass="dataGridHeaderSpacer" />
+						             <p:commandLink				            
+						            	action="#{posBean.getKitchenOrders}"
+										update="kitchenlistdlg,posPanel,focus"
+						               	oncomplete="PF('kitchenlistdlg').show()" 
+									>
+										<h:graphicImage value="/images/orderList.png" styleClass="image-Icon"/>
+									</p:commandLink>
+								
+					               
+					         	<p:spacer styleClass="dataGridHeaderSpacer" />
+						             <p:commandLink
+						             	rendered="#{systemSettingBean.myConfig.cashierKitchenOrder==true and systemSettingBean.myConfig.kitchenOrder==true}"				            
+						            	action="#{orderBean.resetTerminalOrder}"
+						               	oncomplete="javascript:window.open('/possystem/terminalOrder/sales/terminalHome.xhtml','Kitchen Order','fullscreen=yes,scrollbars=auto')" 
+									>
+										<h:graphicImage value="/images/kitchenOrder.png" styleClass="image-Icon"/>
+									</p:commandLink> 
+								
+								<p:spacer styleClass="dataGridHeaderSpacer" />
+						             <p:commandLink
+						             	rendered="#{systemSettingBean.myConfig.cashierKitchenOrder==true and systemSettingBean.myConfig.kitchenOrder==true}"				            
+						            	action="#{posBean.togglePosOption('take-away')}"
+										update="posPanel,salesButtonsPanel,focus,cardOptionColumn,addEditPosForm:takeAwayDlgGrid"
+									>
+										<h:graphicImage value="/images/takeaway.png" styleClass="image-Icon"/>
+									</p:commandLink>
+							
+							</td>
+						</tr>
+					</table>
+					 	
+					 	
+					 	<br style="line-height: 50%;"/>
+						<p:dataGrid  
+						var="pos"
+						value="#{productBean.productAll}"
+						id="dataTablegrid1" 
+						columns="6" 
+						layout="grid" 
+						rows="18" 
+						paginator="true"
+						paginatorPosition="top"
+						paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink}  " 
+				        
+				        >
+				        
+						<p:commandLink style="width: 110px; "
+						actionListener="#{posBean.selectProductMenu}" 
+						update=":addEditPosForm:posPanel,:addEditPosForm:salesButtonsPanel" 
+						oncomplete="focusOnSalesPanel('#{pos.categoryId}')"  
+						>
+							<h:graphicImage value="/productImages/#{pos.imageDirectory}" width="130px" height="100px"/>
+								<f:attribute name="product" value="#{pos}" />
+						</p:commandLink>
+						
+						<p:commandButton value="#{pos.productName}"
+						styleClass="itembuttonsmall"
+						style="background:orange;color:black;text-transform: uppercase;height:10vh"
+						actionListener="#{posBean.selectProductMenu}"
+						update=":addEditPosForm:posPanel,:addEditPosForm:salesButtonsPanel" 
+						oncomplete="focusOnSalesPanel('#{pos.categoryId}')"
+										
+						>
+							<f:attribute name="product" value="#{pos}" />
+						</p:commandButton>
+				
+					</p:dataGrid>
+						
+					</div>
+					
+					
+					
+				  <table style="width:100%">
+							<tr>
+								<td >
+									<p:commandLink
+									>
+										<h:graphicImage value="/images/onlineOrder.png" width="60px" height="50px"/>
+									</p:commandLink>
+								</td>
+								
+								<td style="Width:100%">
+									<h:graphicImage value="/images/stocklist.png" width="100%" height="80px"/>
+									
+								</td>
+								
+								<td >
+									<p:commandLink				            
+					            		action="#{projectHome.userLogout}"
+	       								ajax="false" 
+									>
+										<h:graphicImage value="/images/exit.png" width="80px" height="80px"/>
+									</p:commandLink>
+								</td>
+							</tr>
+						</table>   
+						
+							  
+				</td>
+				
+				
+				<td valign="top" style="width:31%;border:10px solid gray;background:black" align="center" rowspan="2"  >
+		
+					<p:panelGrid styleClass="borderlessGrid salesPanelHeader" id ="cardOptionGrid" columns="3" style="width:100%;border:none;text-align:right;" 
+					rendered="#{systemSettingBean.myConfig.systemType.hasTableNo==true and systemSettingBean.myConfig.kitchenOrder==true}">
+						<p:row style="background:black;">
+							
+							<p:column >
+							
+								<h:panelGroup id="cardOptionColumn">
+								<p:commandButton 
+									value="CUSTOMER NAME"
+									id="customerNameDlgTrigger"
+									rendered="#{posBean.posOption.equalsIgnoreCase('take-away')}"
+									oncomplete="PF('takeAwayDlg').show()"
+								/>
+								
+							    <p:selectOneButton
+							    	value="#{posBean.cardOption}" 
+							    	styleClass="cardOptionNormal" id="salesType"  
+							    	onchange="changeSalesType(this)"
+							    	rendered="#{!posBean.posOption.equalsIgnoreCase('take-away')}" 
+							     >
+							     	<p:ajax listener="#{posBean.resetPos}" event="change"
+										    update=":addEditPosForm:posPanel,:addEditPosForm:salesButtonsPanel,focus" />
+										    
+				    				<f:selectItem id="normalSales" itemLabel="NORMAL" itemValue="normal" />
+							   	 	<f:selectItem itemLabel="MERGE" itemValue="merge" />
+							   	 	<f:selectItem itemLabel="SPLIT" itemValue="split" />
+								</p:selectOneButton>    										
+								  </h:panelGroup>
+								  
+								
+							</p:column>
+							
+							
+						</p:row>
+						
+					</p:panelGrid>
+					
+					<p:outputPanel id="posPanel">
+					<h:inputHidden value="#{posBean.salesOrderId}" id="salesOrderId" />
+					<p:panelGrid styleClass="borderlessGrid salesPanelHeader" columns="2" style="width:100%;text-align:right" >
+					
+							<p:column>
+								<h:outputText id="cardNoList" value="#{posBean.cardNoList}" style="font-size:16px;font-weight:bold;color:white" />
+							</p:column>
+							<p:column>
+							
+							<h:outputText  value="#{systemSettingBean.myConfig.systemType.hasCardNo ? 'CARD NO' : 'TABLE NO'}" style="font-size:18px;font-weight:bold;color:#3E6284" />
+								
+								<p:keyboard  value="#{posBean.cardNo}" 
+									id="cardNoid"
+	    							onfocus="this.select();" size="10" 
+	    							style="color:#035E62;font-size:20px;text-align:center;"
+	    							layout="custom" layoutTemplate="123,456,789,0-back-&#x23ce;"
+	    							autocomplete="off"
+	    							disabled="#{posBean.posOption.equalsIgnoreCase('take-away')}" 
+    							>
+    							
+    							<ui:remove>
+				     				<p:ajax event="change" 
+						 				listener="#{posBean.loadKitchenOrderforSale}"
+										update="addEditPosForm:cardNoList,addEditPosForm:totalAmount,:addEditPosForm:dataTable,:addEditPosForm:salesButtonsPanel,:addEditPosForm:cardNoid"  
+									/>
+									</ui:remove>
+				      			</p:keyboard>
+								<p:remoteCommand name="rc_loadKOrder" update="addEditPosForm:cardNoList,addEditPosForm:totalAmount,:addEditPosForm:dataTable,:addEditPosForm:salesButtonsPanel,:addEditPosForm:cardNoid" action="#{posBean.loadKitchenOrderforSale}" />					
+							</p:column>
+					
+							
+							<p:column >
+							
+
+							</p:column>
+							
+							<p:column >
+								<h:outputText value="TOTAL " styleClass="totalValue" 
+									readonly="true"
+									style="color:green;font-size:20px;font-weight:bold;text-align:right;">
+								</h:outputText>
+								<h:inputText  value="#{posBean.totalAmount}"
+								 	size="10" id="totalAmount" 
+									style="color:#035E62;font-size:20px;text-align:center;align:right"
+									disabled="true" >
+									<f:convertNumber type="currency" currencySymbol="#{app['common.currency']}" locale="en_US" />
+								</h:inputText>
+							</p:column>
+					
+						
+					</p:panelGrid>
+					
+						<div style="height:51vh;overflow:auto;width:98%;border:1px solid black" id="salesItemPanel">
+					
+						<p:dataTable id="dataTable" var="pos" rowIndexVar="row"
+							scrollable="true" 
+							rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'row2'}"
+							value="#{posBean.salesorderbreakdowns}" paginator="false"
+							style="width: 100%;" rowsPerPageTemplate="5,10,15"
+							>
+							
+								<p:columnGroup type="header">
+									<p:row>
+	
+										<p:column style="width:1vw;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="#" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+	
+										<p:column style="width:3vw;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Item Name" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+	
+										<p:column style="width:2vw;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Unit Price" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+	
+	
+										<p:column style="width:2vw" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Qty" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+	
+	
+										<p:column style="width:2vw;" styleClass="columnwidth">
+											<f:facet name="header">
+												<h:outputText value="Price" styleClass="tableheader" />
+											</f:facet>
+										</p:column>
+	
+	                               
+										<p:column style="width:1vw;" styleClass="columnwidth">
+											<f:facet name="header">
+											
+											  <h:outputText value="" styleClass="ui-icon ui-icon-trash" /> 	
+											
+											</f:facet>
+										</p:column>
+										
+									
+										
+									</p:row>
+								</p:columnGroup>
+								
+								<p:column id="modelHeader" styleClass="columnwidth #{pos.salesOrderBreakdownId>0 ? 'kitchenOrderRow' : 'null'}">
+	
+									<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+								</p:column>
+								
+								<p:column styleClass="columnwidth" style="width:45%;text-align:left"  
+								
+								>
+									<p:commandLink value="#{pos.productName} " 
+										update=":addEditPosForm:editProduct" 
+										actionListener="#{posBean.editRemarksPOS}" 
+										oncomplete="PF('editProduct').show()"
+										rendered="#{pos.status==null}" 
+										>
+										<f:attribute name="posPanelRowId" value="#{row}" />
+									</p:commandLink>
+									
+									<h:outputText
+										value="#{pos.productName}"
+										styleClass="logintxttable" 
+										rendered="#{pos.status!=null}" 
+									/>
+									
+									<h:outputText rendered='#{pos.packing==1}' value="-{Packing}"
+									styleClass="logintxttable" />
+								
+								</p:column>
+								
+								<p:column styleClass="logintxtnumberFormat" style="width:15%;">
+	
+	
+								<p:keyboard  value="#{posBean.priceQty[pos.sno]}" 
+	    							onfocus="this.select();" size="2" 
+	    							 id="priceQty"
+	    							layout="custom" layoutTemplate="123,456,789,0-&#x2e;-back"
+	    							disabled="#{pos.status!=null}"
+    							>
+					    			<f:convertNumber pattern="#0.00" />
+				     				<p:ajax event="change" 
+						 				listener="#{posBean.addSalesPriceModifyItem1(row)}"
+										update="subtotal,:addEditPosForm:totalAmount,:addEditPosForm:salesButtonsPanel"  
+									/>
+				      			</p:keyboard>
+								
+									
+								</p:column>
+						<ui:remove>
+						disabled="#{pos.product.normalPrice.compareTo(java.math.BigDecimal.ZERO)==0}"
+						</ui:remove>		
+								<p:column styleClass="logintxtnumberFormat" style="width:15%;text-align:left;">
+	
+	
+						<p:keyboard  value="#{posBean.itemcountQty[pos.sno]}" 
+	    							onfocus="this.select();" size="2" id="itemcountQty" 
+	    							layout="custom" layoutTemplate="123,456,789,0-&#x2e;-back"
+	    							disabled="#{pos.status!=null}"
+    							>
+					    			<f:convertNumber pattern="#0" />
+				     				<p:ajax event="change" 
+						 				listener="#{posBean.addSalesPriceModifyItem1(row)}"
+										update="subtotal,:addEditPosForm:totalAmount,:addEditPosForm:salesButtonsPanel"  
+									/>
+				      			</p:keyboard>
+									
+	
+	
+								</p:column>
+								
+										
+								<p:column styleClass="logintxtnumberFormat" style="width:15%;">
+									<h:outputText value="#{pos.subTotal}" id="subtotal" size="8"
+										styleClass="logintxtnumberFormat"
+										>
+									</h:outputText>
+								</p:column>
+								
+								<p:column styleClass="columnwidth" style="width:20%;text-align:center">
+								 	<p:commandLink value="" styleClass="ui-icon ui-icon-trash" 
+										update=":addEditPosForm:posPanel,:addEditPosForm:salesButtonsPanel"
+										oncomplete="PF('posItemdeleteDig').show()"
+										actionListener="#{posBean.removeItem}"
+										rendered="#{!posBean.posOption.equalsIgnoreCase('refund')}"
+										>
+										<f:attribute name="posBreakdownId" value="#{row}" />
+									    </p:commandLink>
+									
+									
+									<p:commandLink
+										update=":addEditPosForm:posPanel,:addEditPosForm:salesButtonsPanel"
+										action="#{posBean.refundSalesItem(pos) }"
+										rendered="#{posBean.posOption.equalsIgnoreCase('refund') and (!pos.status.equalsIgnoreCase('refund'))}"
+									>
+										<h:graphicImage value="/images/refundIcon.png" width="50px" height="50px"/>
+									</p:commandLink>
+									
+									
+	
+								</p:column>
+							
+							
+						</p:dataTable>
+						</div>
+					</p:outputPanel>
+				</td>
+				
+			</tr>
+			
+			<tr>
+				
+			</tr>
+		
+			<tr>
+				<td style="height:10vh;" >
+					<p:panel id="salesButtonsPanel"  style="background:black">
+				
+					<table style="width:100%;">
+						<tr>
+							<td>
+								<p:commandButton value="NEW SALES"
+									styleClass="salesButton" 
+									update="posPanel,salesButtonsPanel,focus,cardOptionColumn"
+									action="#{posBean.resetPos}" 
+									ajax="true" 
+									>
+								</p:commandButton>
+							</td>
+							
+							<td>
+							
+
+						<p:remoteCommand name="rcRefreshMemory"  action="#{tempFixBean.memoryRefresh}" />
+							<p:commandButton value="CASH DRAWER"
+								update="focus"
+								styleClass="salesButton" type="button"
+								onclick="executePrint('addEditPosForm:testopencashdrawer')" 
+								ajax="true" async="true" 
+								>
+							</p:commandButton>
+							
+							</td>
+							
+							<td rowspan="2" style="width:40%;">
+								<p:commandButton
+									id="paymentButton" 
+									value="PAYMENT" ajax="true"
+									styleClass="salesPaymentButton"
+									disabled="#{posBean.totalAmount le 0}"
+									action="#{posBean.paymentresetSales}"
+									oncomplete="PF('payment').show()"
+									update=":addEditPosForm:paymentgrid,:addEditPosForm:paymentList,:addEditPosForm:paymentgridMaster,:addEditPosForm:printrequestitem"
+									rendered="#{(!posBean.posOption.equalsIgnoreCase('take-away')) and (!posBean.posOption.equalsIgnoreCase('refund'))}"
+									>
+									
+								</p:commandButton>
+								<p:commandButton value="SEND TO KITCHEN"
+									styleClass="takeAway-SendToKitchen-Button"
+        							action="#{posBean.saveKitchenOrder}"
+        							update="posPanel,salesButtonsPanel,focus,cardOptionColumn"
+        							disabled="#{posBean.totalAmount le 0}"
+        							rendered="#{posBean.posOption.equalsIgnoreCase('take-away')}"
+        							oncomplete="PF('kitchenResponseDlg').show()"
+        						/>
+        						
+        						<p:commandButton value="REFUND"
+									styleClass="takeAway-SendToKitchen-Button"
+        							rendered="#{posBean.posOption.equalsIgnoreCase('refund')}"
+        							update="refundConfirmDlg"
+        							oncomplete="PF('refundConfirmDlg').show()"
+        						/>
+        							
+							</td>
+							
+						</tr>
+						
+						<tr>
+							<td>
+								<p:commandButton value="FUNCTIONS"
+									styleClass="salesButton"
+									oncomplete="PF('salesoption').show()"
+									
+									ajax="true" immediate="false">
+								</p:commandButton>
+							</td>
+							
+							<td>
+								
+								
+							<p:commandLink style="width: 50px; " 
+								oncomplete="PF('salesprintDig').show();"
+								ajax="true" 
+								onclick="executePrint('addEditPosForm:printrequestitem')" 
+								>
+									<h:graphicImage value="/images/printer.png" width="90px" height="70px"/>
+									
+								</p:commandLink>
+							
+								
+								
+								
+							</td>
+							
+						</tr>
+						
+					</table>
+				</p:panel>
+				</td>
+			</tr>
+			
+		</tbody>
+		
+		
+	</table>
+	
+	<p:panelGrid style="width:1px" id="testopencashdrawer"  >
+				
+	</p:panelGrid>
+	
+	<p:dialog id="editProduct" header="EXTRAS"
+		widgetVar="editProduct" style="width:90%;" dynamic="true" modal="true" position="center" >
+		<h:panelGrid columns="2">
+			
+			
+			<h:column>
+				<h:outputText value="Remarks : " />
+			</h:column>
+			<h:column>
+					<p:selectManyCheckbox  layout="grid" value="#{posBean.selectedRemarksId}" columns="5">
+        				<f:selectItems value="#{posBean.remarksList}" var="remarks" itemLabel="#{remarks.label}" itemValue="#{remarks.value}" />
+    				</p:selectManyCheckbox>
+			</h:column>
+
+			<h:column>
+				<h:outputText value="Packing : " />
+			</h:column>
+			
+			<h:column>
+				<p:selectBooleanCheckbox value="#{posBean.packing}" styleClass="indivcheckbox" style="width:5vw;height:5vh"/>
+			</h:column>
+
+			<h:column>
+			
+				<p:separator />
+				<p:commandButton value="SAVE"
+					styleClass="itembuttonsmall" style="background:#66ff99"
+					actionListener="#{posBean.saveRemarksToItemPOS}"
+					update=":addEditPosForm:posPanel,:addEditPosForm:salesButtonsPanel,:addEditPosForm:editProduct"
+					oncomplete="PF('editProduct').hide()"
+				>
+				</p:commandButton>
+			</h:column>
+
+			<h:column>
+				<p:separator />
+				<p:commandButton value="CANCEL" style="background:#ffffcc"
+					styleClass="itembuttonsmall hoverBlackText"
+					oncomplete="PF('editProduct').hide()">
+				</p:commandButton>
+			</h:column>
+
+
+
+		</h:panelGrid>
+
+	</p:dialog>
+	
+	<ui:remove>
+	
+	<p:dialog id="selectedProduct"  header="QUANTITY"
+		widgetVar="productQty" style="width:90%;" dynamic="true" position="200,100">
+	
+		<h:panelGrid id="productPanelQty" columns="2">
+
+			<h:column>
+				<h:graphicImage
+					value="/productImages/#{posBean.product.imageDirectory}"
+					style="border:3px solid blue" width="150px" />
+
+			</h:column>
+
+			<h:column>
+
+				<center>
+
+					<h:outputText value="#{posBean.product.productName}"
+						style="color:black;font-size:16px; align:right;font-weight: bold;" />
+				</center>
+			</h:column>
+
+			<h:column colspan="2">
+				<br />
+				<h:outputText value="Quantity : " />
+			</h:column>
+
+			<h:column>
+				<br />
+
+				<p:inputText id="inputSelectedProductQty"
+					value="#{posBean.selectedItemQty}" size="12"
+					onkeypress='return validate(event)' onfocus="this.select();"
+					styleClass="logintxtnumberFormat">
+					<f:convertNumber pattern="#0" />
+				</p:inputText>
+			</h:column>
+			
+			<h:column>
+				<h:outputText value="Remarks : " />
+			</h:column>
+			<h:column>
+				<p:selectOneMenu value="#{posBean.remarksId}">
+					<f:selectItems value="#{posBean.remarksList}"></f:selectItems>
+				</p:selectOneMenu>
+			</h:column>
+
+			<h:column>
+				<h:outputText value="Packing : " />
+			</h:column>
+			
+			<h:column>
+				<p:selectBooleanCheckbox value="#{posBean.packing}" />
+			</h:column>
+
+			<h:column>
+			
+				<p:separator />
+				<p:commandButton value="SAVE"
+					styleClass="itembuttonsmall" style="background:#66ff99"
+					actionListener="#{posBean.selectedProductQty}"
+					update=":addEditPosForm:posPanel,:addEditPosForm:salesButtonsPanel"
+					oncomplete="PF('productQty').hide()"
+					>
+				</p:commandButton>
+			</h:column>
+
+			<h:column>
+				<p:separator />
+				<p:commandButton value="CANCEL" style="background:#ffffcc"
+					styleClass="itembuttonsmall hoverBlackText"
+					oncomplete="PF('productQty').hide()">
+				</p:commandButton>
+			</h:column>
+
+
+
+		</h:panelGrid>
+
+	</p:dialog>
+	</ui:remove>
+	
+	<ui:remove>
+		<h:dataTable id="dataTableCustomProductList" var="pos"		
+			scrollable="true" scrollHeight="100%"  
+			value="#{productBean.quickListProducts}" 
+			paginator="false" 
+			style="width:200px;
+			background-color:#E32526;"
+			>
+				
+			 	<f:facet name="header" style="color:blue;text-align:center">
+			 	<ui:remove>
+	           	<span style="margin-left:0px;padding:0;font-size:130%">
+	           	<p:commandButton style="background:#E32526;border:none" icon="ui-icon-gear" 
+	           	oncomplete="PF('addEditCustomProductList').show()"
+	           	>
+	           	</p:commandButton>
+	           	</span>
+	           	</ui:remove>
+	           	<h:outputText value="Hot List" 
+	           	style="font-size:130%;color:white" />
+	        	</f:facet>
+		        <p:column style="padding:0;" colspan="2">
+					<p:commandButton value="#{pos.productName}"
+					style="width:100%;font-size:150%;height:10vh;background:#fce9e9;" 
+					styleClass="itembuttonsmall" 
+					actionListener="#{posBean.selectProductMenu}"
+					update=":addEditPosForm:posPanel,:addEditPosForm:salesButtonsPanel" 
+					oncomplete="focusOnSalesPanel('#{pos.productName}')"
+					>
+						<f:attribute name="product" value="#{pos}" />
+					</p:commandButton>
+				</p:column>
+				
+			</h:dataTable>
+		</ui:remove>
+	<p:dialog id="hotListDlg" 
+	widgetVar="hotListDlg" >
+	<p:ajax event="close" update="addEditPosForm:focus" />
+	
+	<f:facet name="header">
+	<p:commandButton disabled="true"  icon="ui-icon-star" style="background:none;border:none;color:black;" type="button"/>
+	<h:outputText value="HOT LIST" /> 
+    	</f:facet>
+		<p:dataGrid  
+			var="pos"
+			value="#{productBean.quickListProducts}"
+			id="dataTableCustomProductList" 
+			columns="5" 
+			layout="grid" 
+			rows="18" 
+			paginator="false"
+			paginatorPosition="top"
+		>  
+		
+		<p:commandButton value="#{pos.productName}"
+			style="font-size:100%;height:10vh;background:#fce9e9;" 
+			styleClass="itembuttonsmall" 
+			actionListener="#{posBean.selectProductMenu}"
+			update=":addEditPosForm:posPanel,:addEditPosForm:salesButtonsPanel" 
+			oncomplete="focusOnSalesPanel('#{pos.productName}')"
+		>
+			<f:attribute name="product" value="#{pos}" />
+		</p:commandButton>
+				
+		</p:dataGrid>
+		<p:commandButton value="CLOSE" oncomplete="PF('hotListDlg').hide()"
+		style="width:100px; height:30px;background:#E32526;color:white" 
+	
+		/>
+	</p:dialog>
+	
+	<p:dialog id="addEditCustomProductList1" hideEffect="fade" header="EDIT HOT LIST"
+			widgetVar="addEditCustomProductList" width="60%" dynamic="true" >
+			<p:panelGrid id="customProductGrid"  style="width:100%;" >
+				<p:row style="height:10px">
+					<p:column style="height:10%;text-align:center;background-color:teal;color:white" >
+						<h:outputText value="Item List" />
+					</p:column>
+					<p:column style="width:10%">
+					</p:column>
+					<p:column style="text-align:center;background-color:teal;color:white">
+						<h:outputText value="Hot List" />
+					</p:column>
+				</p:row>
+				<p:row>
+					<p:column style="background-color:#73D3C4">
+					<p:dataTable id="nonQuickListDataTable2"
+					scrollable="true" scrollHeight="200"  
+					var="nQList" 
+					value="#{productBean.nonQuickListProductObjList}"
+					selection="#{productBean.selectedProductList}"
+					rowKey="#{nQList.productId}"
+					selectionMode="multi"
+					>
+						
+						<p:column>
+							<h:outputText value="#{nQList.productName}" />
+						</p:column>
+					</p:dataTable>
+					</p:column>
+					
+					<p:column style="width:15%">
+					<p:commandButton value="ADD" icon="ui-icon-arrowthick-1-e" style="width:100%" 
+							actionListener="#{productBean.addItemToQuickList}" 
+						 update="quickListDatatable2,nonQuickListDataTable2,dataTableCustomProductList">
+						 </p:commandButton>
+						 <br/>
+					<p:commandButton value="REMOVE" icon="ui-icon-arrowthick-1-w" style="width:100%" 
+							actionListener="#{productBean.removeProductFromQuickList}" 
+						 	update="quickListDatatable2,nonQuickListDataTable2,dataTableCustomProductList">
+						</p:commandButton>
+						
+					</p:column>
+					
+					<p:column style="background-color:#73D3C4">
+					<p:dataTable id="quickListDatatable2" 
+					scrollable="true" scrollHeight="200"
+					var="qList" 
+					value="#{productBean.quickListProducts}"
+					selection="#{productBean.selectedProductQuickList}"
+					rowKey="#{qList.productId}"
+					selectionMode="multi"
+					>
+					
+						<p:column>
+							<h:outputText value="#{qList.productName}"/>
+						</p:column>
+
+					</p:dataTable>
+					</p:column>
+					
+				</p:row>
+				<ui:remove>
+				<p:row>
+					<p:column style="text-align:center;background-color:#73D3C4" >
+						<p:commandButton value="Add to Hot List" styleClass="itembuttonsmall"
+							actionListener="#{productBean.addItemToQuickList}" 
+						 update="quickListDatatable2,nonQuickListDataTable2,dataTableCustomProductList">
+						 </p:commandButton>
+						 
+						
+					</p:column>
+					<p:column style="text-align:center;background-color:#73D3C4" >
+					 	<p:commandButton value="Remove from Hot List" styleClass="itembuttonsmall"
+							actionListener="#{productBean.removeProductFromQuickList}" 
+						 	update="quickListDatatable2,nonQuickListDataTable2,dataTableCustomProductList">
+						</p:commandButton>
+						
+					</p:column>
+				</p:row>
+				</ui:remove>
+			</p:panelGrid>
+		</p:dialog>
+		
+					 
+		
+		
+	
+		<ui:include src="/sales/pos/positemdeletedialog.xhtml" />
+		
+		<!-- Sales payment Dialog -->
+		<ui:include src="/sales/pos/salePaymentDialog.xhtml" />
+		
+		
+		<!-- Sales function MODAL -->
+		<ui:include src="/sales/pos/salesOptionsDialog.xhtml" />
+		<!-- Sales function SUB-MODAL -->
+		<ui:include src="/sales/pos/poscashinout.xhtml" />
+		<ui:include src="/sales/pos/posxReport.xhtml" />
+		<ui:include src="/sales/pos/countersalesholdList.xhtml" />
+		<ui:include src="/sales/pos/counterClose.xhtml" />
+		<ui:include src="/sales/pos/addeditsalessearch.xhtml" />
+		<ui:include src="/sales/pos/posdailyReport.xhtml" />
+		<ui:include src="/sales/pos/posadmindailyReport.xhtml" />
+		<ui:include src="/sales/pos/posdailysummaryReport.xhtml" />
+		<ui:include src="/sales/pos/expensesTransaction.xhtml" />
+		<ui:include src="/sales/pos/posprinttemplate.xhtml" />
+		<ui:include src="/sales/pos/dialogs/kitchenorderdlg.xhtml" />
+		<ui:include src="/sales/pos/dialogs/shiftdlg.xhtml" />	
+		<ui:include src="/sales/pos/printtemplate/printtemplateCategoryBased.xhtml" />
+		<ui:include src="/sales/pos/printtemplate/categoryDetailsReportTemplate.xhtml" />
+		
+		<ui:include src="/sales/pos/dialogs/salesOrderViewCategoryBasedDlgs.xhtml" />
+		
+		<ui:include src="/sales/pos/dialogs/splitorderdlg.xhtml" />
+		
+		<ui:include src="/sales/pos/dialogs/discountRateDialog.xhtml" />
+		<ui:include src="/sales/pos/dialogs/discountreportdlg.xhtml" />
+		<ui:include src="/sales/pos/printtemplate/posprintdiscountreporttemplate.xhtml" />
+		
+		<ui:include src="/sales/pos/printtemplate/posprintprebilltemplate.xhtml" />
+		
+		<ui:include src="/sales/pos/dialogs/takeAwayDlg.xhtml" />
+		<ui:include src="/sales/pos/dialogs/sendToKitchenResponseDlg.xhtml" />
+			
+		<!-- Refund  -->
+		<ui:include src="/sales/pos/dialogs/refundConfirmDlg.xhtml" />
+		
+			  
+
+	</h:form>
+
+		<p:dialog id="categorySelectionDlg"  header="SELECT CATEGORY"
+			widgetVar="categorySelectionDlg" model="true" resizable="false" width="80%" height="90%">
+		<div style="background-color:white;height:46vh;overflow:auto;">
+						<p:dataGrid  
+							var="pos"
+							value="#{productCategoryBean.productcategoriesList}"
+							id="dataTablegrid" 
+							columns="4" 
+							layout="grid"
+							rows="12" 
+							paginator="true"
+							paginatorPosition="top"
+							paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} " 
+        					
+						>
+						 	<f:facet name="header">
+					            CATEGORY
+					                <p:commandButton value="RESET" action="#{posBean.resetCategory}" 
+					                	update=":addEditPosForm:dataTablegrid1" 
+					                >
+							    	
+							    </p:commandButton>
+					        </f:facet>
+							<p:commandButton value="#{pos.name}"
+								rendered="#{pos.categoryId==posBean.catId}"
+								styleClass="itembuttonsmall"
+								style="background:#b38f00;color:white;text-transform: uppercase;height:10vh"
+								update=":addEditPosForm:dataTablegrid1"
+								actionListener="#{posBean.selectCategoryMenu}"
+								oncomplete="PF('categorySelectionDlg').hide()"
+								>
+									<f:attribute name="productcat" value="#{pos}" />
+									<f:attribute name="orderMachine" value="cashier" />
+							</p:commandButton>
+									
+							<p:commandButton value="#{pos.name}"
+								rendered="#{pos.categoryId!=posBean.catId}"
+								styleClass="itembuttonsmall"
+								style="background:#F7DC6F;color:black;text-transform: uppercase;height:10vh"
+								update=":addEditPosForm:dataTablegrid1"
+								actionListener="#{posBean.selectCategoryMenu}"
+								oncomplete="PF('categorySelectionDlg').hide()"
+								>
+									<f:attribute name="productcat" value="#{pos}" />
+									<f:attribute name="orderMachine" value="cashier" />
+									
+							</p:commandButton>
+						
+									
+						</p:dataGrid>
+						
+					</div>
+		</p:dialog>
+<script>
+	
+	function handleCashInRequest(xhr, status, args) {  
+	    if(!args.validity) {  
+	        PF('cashinout').jq.effect("shake", { times:5 }, 100);  
+	    }   
+	    else {  
+	        PF('cashinout').hide();  
+	        $('#cashout').fadeOut();  
+	    }  
+	}  
+	
+	function handlePos(xhr, status, args) {  
+	    if(!args.validity) {  
+	        PF('payment').jq.effect("shake", { times:5 }, 100);  
+	    }   
+	    else {  
+	        PF('payment').hide();  
+	       // printBill(); 
+	       var salesOrderId=args.salesOrderId;
+	       var printname=args.printname;
+	       var printServerURL=args.printServerURL;
+	       
+	   
+	     // printMyPanel();
+	     // alert(printname);
+	     // alert(printServerURL);
+	       
+	       // var v=  document.getElementById("appletVisor");
+	      //  v.print(printServerURL,printname); 
+	      
+	      // PF('salesprintDig').show();  
+	       
+	    }  
+	}  
+	
+	
+	function printBill() {  
+	 // var salesOrderId=document.getElementById('addEditPosForm:salesOrderId').value();
+	  //alert(salesOrderId);	
+	  //alert($('#addEditPosForm:salesOrderId').val());	
+	  var v=  document.getElementById("appletVisor");
+	  v.print("/material/PrintKot?salesOrderId=#{posBean.salesOrderId}","Ricoh Aficio MP 3350 PCL6");
+	}  
+	
+	
+	
+	function handlePosCounterPrint(xhr, status, args) {          
+	       var salesOrderId=args.salesOrderId;
+	       var printname=args.printname;
+	       var printServerURL=args.printServerURL;
+	      // alert(printname);
+	       //alert(printServerURL);           
+	     	// var printerServletUrl="/material/PrintKot?salesOrderId="+salesOrderId;
+	        var v=  document.getElementById("appletVisor");
+	        v.print(printServerURL,printname);           
+	}  
+	
+	
+	
+	function print_doc()
+	{
+			jsPrintSetup.setOption('orientation', jsPrintSetup.kPortraitOrientation);
+	
+			jsPrintSetup.printWindow(window.frames[0]);
+			
+			// set top margins in millimeters
+			jsPrintSetup.setOption('marginTop', 15);
+			jsPrintSetup.setOption('marginBottom', 15);
+			jsPrintSetup.setOption('marginLeft', 20);
+			jsPrintSetup.setOption('marginRight', 10);
+			// set page header
+			jsPrintSetup.setOption('headerStrLeft', 'My custom header');
+			jsPrintSetup.setOption('headerStrCenter', '');
+			jsPrintSetup.setOption('headerStrRight', 'PT');
+			// set empty page footer
+			jsPrintSetup.setOption('footerStrLeft', '');
+			jsPrintSetup.setOption('footerStrCenter', '');
+			jsPrintSetup.setOption('footerStrRight', '');
+			
+			// Suppress print dialog
+			jsPrintSetup.setSilentPrint(true);/** Set silent printing */
+			// Do Print
+			jsPrintSetup.print();
+			// Restore print dialog
+			jsPrintSetup.setSilentPrint(false); /** Set silent printing back to false */
+	
+	}
+	
+	
+	
+	
+	
+	function starPrint(canvas, printerIP, successFn, errorFn){
+	var context;
+	if (canvas.getContext){
+	    context = canvas.getContext('2d');
+	}
+	var url='http://'+printerIP+'/StarWebPRNT/SendMessage';
+	var trader = new StarWebPrintTrader({'url':url});
+	trader.onReceive = function (response) {
+		if (response.traderSuccess){
+			
+			successFn();
+		}else{
+			var msg='Printer Error. ';
+	        if (trader.isCoverOpen({traderStatus:response.traderStatus})){
+	        	msg += 'Cover is open';
+	        }else if (trader.isOffLine({traderStatus:response.traderStatus})){
+	        	msg += 'Printer is OffLine';
+	        }else if (trader.isPaperEnd({traderStatus:response.traderStatus})){
+	        	msg += 'End of Paper';
+	        }
+	        else{
+	        	msg += 'Unknown Error';
+	        }
+	        errorFn(msg);
+		}
+			
+	}.bind(this);
+	trader.onError = function (response) {
+	    var msg = 'Print Error. ';
+	    msg += 'Status:' + response.status;
+	    msg += '; ResponseText:' + response.responseText;
+	    errorFn(msg);
+	};
+	try{
+	    var builder = new StarWebPrintBuilder();
+	    var request = '';
+	    request += builder.createBitImageElement({context:context, x:0, y:0, width:canvas.width, height:canvas.height});
+	    request += builder.createInitializationElement();
+	    request += builder.createCutPaperElement({feed:true});
+	    trader.sendMessage({request:request});	                
+	}catch(msg){
+		errorFn(msg);
+		return;
+	}
+	
+	}
+	function printMyPanel(){
+	var printerIp='localhost';
+	var printPanel=document.getElementById('dataTable');
+	html2canvas(printPanel, {
+		allowTaint:true,
+		onrendered: function(canvas) {
+			starPrint(canvas, printerIp,
+					function(){
+				alert('Receipt Printed Succesfully!');
+			}, function(errMsg){
+				alert('Printer error: '+errMsg);
+			});
+		}
+	});
+	
+	}
+	
+	function getSelectionText() {
+		var hStart=0;
+		var hEnd=0;
+	    if (window.getSelection) {
+	        try {
+	            var ta = $(':focus').get(0);
+	            hStart=ta.selectionStart;
+	            hEnd=ta.selectionEnd;
+	            
+	           // return ta.value.substring(ta.selectionStart, ta.selectionEnd);
+	            
+	        } catch (e) {
+	            console.log('Cant get selection text')
+	        }
+	    } 
+	    return [hStart, hEnd];
+	}
+	
+	function focusOnSalesPanel(str){
+		//console.log(str);
+		
+		if(str==42){
+		//	PrimeFaces.focus('addEditPosForm:dataTable:0:priceQty');	
+		}else{
+		//	PrimeFaces.focus('addEditPosForm:dataTable:0:itemcountQty');	
+		}
+		
+		
+	}
+	function focusOnProductSearchInput(){
+		PrimeFaces.focus('addEditPosForm:dataTablegrid1:productSearchInput');
+	}
+	
+
+	
+	function numpadKey(str){
+		
+		
+		var inputArea = $(':focus');
+		
+		if(inputArea.is("input")){
+			var selected=getSelectionText();
+			var isHighlight=0; 
+			if(selected[0]!=selected[1]){
+
+				isHighlight=1;
+			}
+			var prevValue=$(inputArea).prop('value');
+			
+			if(str=='del'){
+				if(isHighlight==1){
+					var val1=prevValue.substring(0,selected[0]);
+					var val2=prevValue.substring(selected[1]);
+					
+					newValue=val1+""+val2;
+					
+
+					newValue=0;
+					
+				}else{
+					if(prevValue.length>0){
+						newValue=prevValue.substring(0,prevValue.length-1);
+					}
+					
+				}
+				
+			}
+			else{
+				if(isHighlight==1){
+					var val1=prevValue.substring(0,selected[0]);
+					var val2=prevValue.substring(selected[1]);
+					newValue=val1+str+val2;
+			
+					console.log(newValue+ " : "+str);
+				}else{
+					newValue=prevValue+str;
+					
+				}
+			}
+			if(newValue==0 || newValue=="" || newValue=="."){
+				newValue=1;
+			}
+			$(inputArea).val("");
+			$(inputArea).val(newValue);
+			
+			
+		}
+		
+		
+		//alert($(focused).attr('id'));
+		//alert(str);
+	}
+	
+	$(document).ready(function() {
+		//onafterprint="myFunction()"
+		$('body').removeClass('vertical-compact-menu');
+		$("#projectHomeContent").removeClass('content-wrapper');	
+	
+		$('#numpadKey button').on('mousedown', 
+		    /** @param {!jQuery.Event} event */ 
+		    function(event) {
+		        event.preventDefault();
+		    }
+		);
+		
+		$('body').keypress(function(event){
+			
+			var keycode = (event.keyCode ? event.keyCode : event.which);
+			if(keycode == '13'){
+				document.getElementById('keypad-div').style.display = 'none';
+				rc_loadKOrder();
+				rc_loadProdut();
+				
+			}
+			
+
+		});
+		
+		
+		
+		$(document).on("click", ".keypad-key", function(event){
+			
+			if($(this).text()=='‑'){
+				
+				
+				
+				var ele=document.getElementById("addEditPosForm:productSearchByCodeInput");
+				if(ele==null){
+					ele=document.getElementById("addEditPosForm:productSearchInput");
+				}
+				var strng=ele.value;
+				ele.value=strng.substring(0,strng.length-1);
+				ele.value+="-";
+			}
+			
+			if($(this).text()=='⏎'){
+				document.getElementById('keypad-div').style.display = 'none';
+				
+				var strng=document.getElementById("addEditPosForm:cardNoid").value;
+				document.getElementById("addEditPosForm:cardNoid").value=strng.substring(0,strng.length-1);
+				
+				if(strng.length>0){
+					rc_loadKOrder();	
+				}
+				
+				
+				var ele=document.getElementById("addEditPosForm:productSearchByCodeInput");
+				if(ele!=null){
+					var strng=document.getElementById("addEditPosForm:productSearchByCodeInput").value;
+					document.getElementById("addEditPosForm:productSearchByCodeInput").value=strng.substring(0,strng.length-1);
+					rc_loadProdut();	
+				}
+				
+				
+				
+			}
+		     
+		});
+        window.onpopstate = function() {
+            window.history.pushState(null, "", window.location.href);
+        };
+		
+	});
+
+	function changeSalesType(str){
+	
+		  $(".cardOptionNormal .ui-button").css("background", "white");
+		  $(".cardOptionNormal .ui-button").css("color", "black");
+
+
+		if (document.getElementById('addEditPosForm:salesType:0').checked) { //  Normal
+			 $(".cardOptionNormal .ui-button:nth-child(1)").css("background", "#E32526");
+			 $(".cardOptionNormal .ui-button:nth-child(1)").css("color", "white");
+		
+		}
+		else if (document.getElementById('addEditPosForm:salesType:1').checked) { //  Merge
+			  $(".cardOptionNormal .ui-button:nth-child(2)").css("background", "#E32526");
+			  $(".cardOptionNormal .ui-button:nth-child(2)").css("color", "white");
+		}else if (document.getElementById('addEditPosForm:salesType:2').checked) { // Split
+			 $(".cardOptionNormal .ui-button:nth-child(3)").css("background", "#E32526");
+			 $(".cardOptionNormal .ui-button:nth-child(3)").css("color", "white");
+
+			//  PF('splitorderdlg').show();  
+		}
+		
+		
+	}
+	
+	function executePrint(elementId){
+		PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(elementId).jqprint();
+		setTimeout(function (){
+
+			rcRefreshMemory(); 
+
+			}, 2000);
+	
+		return false;
+		
+	}
+	
+	function openWin() {
+	    myWindow = window.open("http://software:8080/possystem/mobileIndex.xhtml", "myWindow", "width=200,height=100");   // Opens a new window
+	}
+	
+	
+</script>
+</ui:composition>
+
+

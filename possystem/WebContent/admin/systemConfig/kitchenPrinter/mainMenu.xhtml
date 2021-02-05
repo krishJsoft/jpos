@@ -1,0 +1,90 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui"
+	>
+	<h:form id="kitchenSettingForm">
+	<p:panel id="kitchenPrinterSetting">
+		<p:panelGrid columns="4" styleClass="borderlessGrid" style="border-bottom:2px solid black;">
+			<h:outputText value="PRINT MODE" styleClass="logintxt"/>
+			<h:outputText value=":"/>
+			<p:selectOneMenu id="printMode" 
+				value="#{systemSettingBean.systemConfig.printMode}"
+				style="width:160px; text-align:left;" >
+				<f:selectItem itemValue="single" itemLabel="SINGLE" />
+				<f:selectItem itemValue="multiple" itemLabel="MULTIPLE" />
+			</p:selectOneMenu>
+			<p:commandButton value="UPDATE" action="#{systemSettingBean.updateSystemConfiguration}" />
+			
+		</p:panelGrid>
+		<p:panelGrid id="addEditKitchenPrinter" columns="3" border="0" styleClass="borderlessGrid"
+		>
+		
+			<p:panelGrid columns="2" styleClass="borderlessGrid">
+				<p:selectOneMenu value="#{systemSettingBean.kitchenPrinterId}" style="width:160px; text-align:left;">
+				       	<p:ajax listener="#{systemSettingBean.onKitchenPrinterChange}" update="kitchenSettingForm:printerCategoryDatatable" />
+	       	            <f:selectItem itemLabel="-- SELECT --" itemValue="" />
+				   		<f:selectItems value="#{systemSettingBean.kitchenPrinters}" />
+				</p:selectOneMenu>
+				<p:commandButton  icon="ui-icon-plusthick"
+						update="addEditPrinterGrid,kitchenPrinterDatatable"    
+						action="#{systemSettingBean.loadInstalledPrinterList}" 
+						oncomplete="PF('addEditPrinterDlg').show()"
+				/>
+				</p:panelGrid>
+			<h:outputText styleClass="logintxt" value=""/>
+			
+			<h:outputText styleClass="logintxt" value="ITEM CATEGORY"/>
+			
+			
+			<p:dataTable id="printerCategoryDatatable"
+				scrollable="true" scrollHeight="200" 
+				var="category"
+				value="#{systemSettingBean.assignedPrinterCategory}"
+				selection="#{systemSettingBean.categoryRemoveFromPrinter}"
+				rowKey="#{category.categoryId}"
+				selectionMode="multi"
+				>
+				<p:column>
+					<h:outputText value="#{category.name}" />
+				</p:column>
+			</p:dataTable>
+			<p:panelGrid columns="1" styleClass="borderlessGrid">
+			
+			<p:commandButton value="ADD TO PRINTER" icon="ui-icon-arrowthick-1-w" style="width:100%" 
+			action="#{systemSettingBean.addCategoryToPrinter}" 
+			update="kitchenSettingForm:printerCategoryDatatable,kitchenSettingForm:categoryDatatable"
+			>
+			</p:commandButton>
+			
+			<p:commandButton value="REMOVE FROM PRINTER" icon="ui-icon-arrowthick-1-e" style="width:100%"
+			update="kitchenSettingForm:printerCategoryDatatable,kitchenSettingForm:categoryDatatable"
+			 action="#{systemSettingBean.removeCategoryFromPrinter}" 
+			>
+			</p:commandButton>
+			
+			</p:panelGrid>
+			
+			<p:dataTable id="categoryDatatable"
+					scrollable="true" scrollHeight="200" 
+					var="category"
+					value="#{systemSettingBean.unassignedPrinterCategory}"
+					selection="#{systemSettingBean.categoryAddToPrinter}"
+					rowKey="#{category.categoryId}"
+					selectionMode="multi"
+				>
+				<p:column>
+					<h:outputText value="#{category.name}" />
+				</p:column>
+			</p:dataTable>
+		</p:panelGrid>
+		
+	
+	</p:panel>
+	
+	<ui:include src="/admin/systemConfig/kitchenPrinter/dlgs/addeditprinter.xhtml" />
+	</h:form>
+</ui:composition>

@@ -1,0 +1,46 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui">
+	
+<style>
+	
+.ui-tabs-selected .ui-state-active{
+	background:red;
+}
+</style>
+	<p:panel id="systemConfigurationPanel" header="SYSTEM CONFIGURATION">
+	<h:form id="systemSetting">
+	    <p:tabView orientation="left" id="tabView">
+            <p:ajax event="tabChange"  update="kitchenSettingForm:kitchenPrinterSetting" listener="#{systemSettingBean.onSettingTabChange}" />
+	    
+	        <p:tab id="tab1" title="GENERAL" >  
+	        
+               <p:panel styleClass="" id="generalSettingPanel" header="GENERAL">
+			  	
+					<ui:include src="/admin/systemConfig/generalSetting.xhtml" />
+				
+
+				</p:panel>
+				
+	        </p:tab>
+	        <p:tab id="tab2" title="KITCHEN PRINTER" disabled="#{systemSettingBean.systemConfig.kitchenOrder=='false'}">
+                <p:panel id="kitchenSettingPanel" styleClass="" header="PRINTER">
+                
+		              <ui:include src="/admin/systemConfig/kitchenPrinter/mainMenu.xhtml" />
+				</p:panel>	            
+	        </p:tab>
+	        
+	        <p:tab id="tab3" title="ORDER SCREEN" >
+                <p:panel id="orderScreenSettingPanel" styleClass="" header="ORDER SCREEN">
+		              <ui:include src="/admin/systemConfig/orderScreen/mainMenu.xhtml" />
+				</p:panel>	            
+	        </p:tab>
+	      
+	    </p:tabView>
+	</h:form>
+    </p:panel>
+</ui:composition>

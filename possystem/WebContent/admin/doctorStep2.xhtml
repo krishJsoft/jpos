@@ -1,0 +1,158 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel id="step2panel">
+
+		<h:panelGrid id="addeditclinicgrid" columns="5" width="60%"
+			columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['doctor.label.clinicName']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="clinicName"
+				value="#{doctorClinicBean.doctor.clinicName}" maxlength="50"
+				size="25" />
+			<p:message for="clinicName" styleClass="fieldError" />
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['doctor.label.clinicRegNo']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="clinicRegNo"
+				value="#{doctorClinicBean.doctor.clinicRegNo}" maxlength="50"
+				size="25" />
+			<p:message for="clinicRegNo" styleClass="fieldError" />
+
+
+
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['doctor.label.address']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputTextarea rows="3" cols="25" id="clinicAddress"
+				value="#{doctorClinicBean.doctor.clinicAddress}" />
+			<p:message for="clinicAddress" styleClass="fieldError" />
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['doctor.label.city']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="clinicCity"
+				value="#{doctorClinicBean.doctor.clinicCity}" maxlength="25"
+				size="25" />
+			<p:message for="clinicCity" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['doctor.label.state']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="clinicState"
+				value="#{doctorClinicBean.doctor.clinicState}" maxlength="25"
+				size="25" />
+			<p:message for="clinicState" styleClass="fieldError" />
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['doctor.label.country']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="clinicCountry"
+				value="#{doctorClinicBean.doctor.clinicCountry}" maxlength="25"
+				size="25" />
+			<p:message for="clinicCountry" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['doctor.label.postCode']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="clinicPostCode"
+				value="#{doctorClinicBean.doctor.clinicPostCode}" maxlength="25"
+				size="25" />
+			<p:message for="clinicPostCode" styleClass="fieldError" />
+
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['doctor.label.mobileNo']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="clinicPhoneNo"
+				value="#{doctorClinicBean.doctor.clinicPhoneNo}" maxlength="25"
+				size="25" />
+			<p:message for="clinicPhoneNo" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['doctor.label.clinicFaxNo']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="clinicFaxNo"
+				value="#{doctorClinicBean.doctor.clinicFaxNo}" maxlength="25"
+				size="25" />
+			<p:message for="clinicFaxNo" styleClass="fieldError" />
+
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:panelGrid columns="3">
+				
+				<p:commandButton value="Save" action="#{doctorClinicBean.saveDoctor}"
+					update="doctorPanel" rendered="#{doctorClinicBean.action!='update'}" />
+
+				<p:commandButton value="Update"
+					action="#{doctorClinicBean.updateDoctor}" update="doctorPanel"
+					rendered="#{doctorClinicBean.action=='update'}" />
+					
+					<p:commandButton value="Reset" rendered="#{doctorClinicBean.action!='update'}"
+					action="#{doctorClinicBean.resetStep2}" update="addeditclinicgrid" />
+				
+					
+					<p:commandButton value="Reset"
+					actionListener="#{doctorClinicBean.editDoctor}" update="addeditclinicgrid"
+					rendered="#{doctorClinicBean.action=='update'}">
+					<f:attribute name="doctorClinicId" value="#{doctorClinicBean.doctor.doctorClinicId}" />
+				   </p:commandButton>
+					
+
+				<p:commandButton value="Cancel" ajax="false"
+					action="#{doctorClinicBean.listDoctor}" />
+			</h:panelGrid>
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+
+		</h:panelGrid>
+
+
+
+
+
+
+
+	</p:outputPanel>
+
+
+</ui:composition>
+
+

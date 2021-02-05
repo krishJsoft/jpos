@@ -1,0 +1,140 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:b="http://jboss.com/products/seam/birt"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:head />
+	<script type="text/javascript">
+		//<![CDATA[		
+		function showElement(id) {
+			if (document.getElementById) {
+				obj = document.getElementById(id);				
+					obj.style.display = "";				
+			}
+		}
+		
+		function hideElement(id) {
+			if (document.getElementById) {
+				obj = document.getElementById(id);
+				obj.style.display = "none";				
+			}
+		}
+		
+		function reportValidation() {				
+			document.getElementById('dateFrom').value=document.getElementById('reportForm1:dateFrom1_input').value;
+			document.getElementById('dateTo').value=document.getElementById('reportForm1:dateTo1_input').value;
+		   	document.getElementById('branchRecordId').value=document.getElementById('branchReocrdId1').value;
+			document.getElementById('userId').value=document.getElementById('userId1').value;		
+		   	document.getElementById('branchIds').value=document.getElementById('reportForm1:branchIds1').value;				 	
+			showElement('reportResultGrid');										
+			return true;
+		}
+//]]>
+	</script>
+
+
+	<h:form id="reportForm1">
+
+
+		<h:panelGrid id="reportGrid1" columns="10" border="0" width="70%"
+			columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:calendar navigator="true" id="dateFrom1" size="25"
+				value="#{salesSummaryBean.dateFrom}" pattern="yyyy-mm-dd" />
+			<p:message for="dateFrom1" styleClass="fieldError" />
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:calendar navigator="true" id="dateTo1" size="25"
+				value="#{salesSummaryBean.dateTo}" pattern="yyyy-mm-dd" />
+			<p:message for="dateTo1" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['purchaseorder.label.branchname']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			
+			<p:selectManyMenu id="branchId1" value="#{salesSummaryBean.selectedOptions}"
+				style="width:260px;text-align:left;">				
+				<f:selectItems value="#{commonListBean.branchotherQty}"></f:selectItems>
+				<p:ajax event="click"  listener="#{salesSummaryBean.getBranchListReport}" />
+			</p:selectManyMenu>			
+			<p:message for="branchId1" styleClass="fieldError" />
+
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+			    <h:inputHidden value="#{salesSummaryBean.requestIdsbuf}" id="branchIds1" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+
+
+
+		</h:panelGrid>
+
+	</h:form>
+
+
+
+
+	<form id="reportForm" name="reportForm"
+		action="#{request.getScheme()}://#{request.getServerName()}:#{request.getServerPort()}/#{app['project.instance.name']}/frameset?__report=report/sales/branchSalesSummaryReport.rptdesign"
+		method="post" target="iframeBirt">
+
+
+		 <input	type="hidden" id="dateFrom" name="dateFrom" />
+		 <input type="hidden" id="dateTo" name="dateTo" />
+		 <input type="hidden" id="branchIds" name="branchIds" />
+		 <input type="hidden" id="branchRecordId" name="branchRecordId" />	
+		 <input type="hidden" id="userId" name="userId" />	 
+		 
+		 <h:inputHidden value="#{loginBean.branch.branchtype}" id="branchtype" />
+		 <h:inputHidden value="#{loginBean.branch.branchId}" id="branchReocrdId1" />
+		 <h:inputHidden value="#{loginBean.userId}" id="userId1" />	
+		
+		
+		<h:panelGrid id="reportGrid" columns="10" border="0" width="10%"
+			columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:panelGrid columns="2" border="0"
+				columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+				<p:commandButton value="Report" update="reportGrid,reportResultGrid"
+				onclick="return reportValidation()"   styleClass="logintxtButton" />
+				</h:panelGrid>
+			<h:outputText value="" />
+
+		</h:panelGrid>
+
+		<h:panelGrid id="reportResultGrid" columns="1" border="0" width="100%"
+			style='display:none;bgcolor:#FFFFFF;'>
+			<iframe height="950px" width="100%" name="iframeBirt"
+				style="bgcolor: #FFFFFF;" />
+		</h:panelGrid>
+
+
+
+	</form>
+
+
+</ui:composition>
+
+
+
+
+
+

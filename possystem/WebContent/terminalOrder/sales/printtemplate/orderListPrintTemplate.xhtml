@@ -1,0 +1,148 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://www.eclipse.org/birt/taglibs/birt.tld"
+	xmlns:birt="urn:jsptld:/WEB-INF/tlds/birt.tld">
+	
+<f:loadBundle var="des" basename="META-INF/DesignResources" />
+<f:loadBundle var="msg" basename="META-INF/MessagesResources" />	
+	
+<p:dialog header="Sales Order Detail" resizable="false"
+	widgetVar="salesprintDig" modal="false" height="480" width="330px">
+
+	<p:panelGrid style="width:295px;" id="printrequestitem">
+
+		<p:row>
+			<p:column style="width:100%;" styleClass="alignTop">
+	
+	
+				<table align="center" width="100%" border="1">
+					<tr>
+						<td align="center" colspan="2" bgcolor="black"><font
+							size="2" color="white">Order List</font></td>
+					</tr>
+
+					<tr>
+						<td colspan="2"
+							align="#{des['common.print.align.companyName']}"
+							style="font-weight: bold"><font size="3" color="black">#{loginBean.branch.branchName}
+						</font></td>
+
+					</tr>
+					<tr>
+						<td colspan="2" align="#{des['common.print.align.address']}"
+							class="reporttxt"><h:outputText
+								value="#{loginBean.branch.address}" escape="false" /></td>
+					</tr>
+				</table>
+				
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column style="width:100%;" styleClass="alignTop">
+				<h:panelGrid columns="2" border="0" width="100%"
+					styleClass="borderlessGrid" cellpadding="0" cellspacing="0">
+
+
+					<h:outputText
+						value="Table No : #{orderBean.salesorder.tableName} "
+						styleClass="reporttxt" />
+
+					<h:outputText
+						rendered="#{systemSettingBean.myConfig.systemType.hasCardNo}"
+						value="	Card No  : #{orderBean.salesorder.cardNo} "
+						styleClass="reporttxt" />
+						
+					<h:outputText
+						rendered="#{systemSettingBean.myConfig.paxNo}"
+						value="	Pax  : #{orderBean.salesorder.pax} "
+						styleClass="reporttxt" />
+
+
+				</h:panelGrid>
+			</p:column>
+		</p:row>
+		
+		<p:row>
+			<p:column style="width:100%;">
+										
+		
+				<p:dataTable value="#{orderBean.salesorder.salesorderbreakdowns}"
+					style="width:100%" var="product" styleClass="borderless"
+					headerClass="order-table-header"
+					rowClasses="order-table-odd-row,order-table-even-row">
+	
+					<p:column style="width:60%">
+						<f:facet name="header">Item</f:facet>
+						<h:outputText value="#{product.productName}"
+							styleClass="reporttxt"></h:outputText>
+						<h:outputText rendered='#{product.packing==1}' value="-{Packing}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column style="width:20%;text-align:center">
+						<f:facet name="header">Qty</f:facet>
+						<h:outputText value="#{product.quantity}"
+							styleClass="reporttxt">
+							<f:convertNumber pattern="#" />
+						</h:outputText>
+					</p:column>
+	
+					<p:column style="width:20%;text-align:center" >
+							<f:facet name="header">PRICE</f:facet>
+							<h:outputText value="#{product.subTotal}" styleClass="reporttxt">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+								
+				</p:dataTable>
+
+			</p:column>
+		</p:row>
+
+		<p:row>
+			<p:column style="width:100%;" styleClass="alignTop">
+				<h:panelGrid columns="3" border="0" width="90%" >
+					<h:outputText value="Total " styleClass="reporttxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="RM #{orderBean.salesorder.totalAmount}"
+						styleClass="reporttxt" />
+				</h:panelGrid>
+				
+				<table align="center" width="100%">
+					<tr>
+						<td style="text-align: center"><h:outputText
+								value="#{msg['receipt.label.footer']}" styleClass="reporttxt" />
+						</td>
+					</tr>
+				</table>
+			</p:column>
+		</p:row>
+	</p:panelGrid>
+
+	<br></br>
+	
+	<f:facet name="footer">
+		<h:panelGrid columns="3" style="float:left"
+		columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+		
+				<p:commandButton value="Print"
+					oncomplete="PF('salesprintDig').hide()"
+					type="button" ajax="true" async="true">
+					<p:printer target="printrequestitem" />
+				</p:commandButton>
+
+				<p:commandButton value="Close"
+					oncomplete="PF('salesprintDig').hide()" />
+
+			</h:panelGrid>
+	</f:facet>
+
+</p:dialog>
+
+</ui:composition>
+
+

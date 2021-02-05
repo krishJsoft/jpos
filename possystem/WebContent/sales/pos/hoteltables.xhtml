@@ -1,0 +1,45 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<h:form id="addEditPosForm">
+		<p:outputPanel id="posPanel">
+
+			<p:panelGrid width="100%" id="saleslistDetailgrid">
+				<p:row>
+					<p:column style="width:60%;" styleClass="alignTop" id="listcolumn">
+
+						<p:dataGrid id="dataTablegrid" var="pos" rowIndexVar="row"
+							paginatorPosition="top" scrollable="true" 
+							columns="5" value="#{orderBean.tableList}" paginator="false"
+							rows="100" style="width: 100%"
+							rowsPerPageTemplate="50,75,100,200,300,400">
+
+							<p:commandButton value="#{pos.tableNo}" styleClass="itembuttonsmallbusy btn.btn-round" rendered="#{pos.status=='1'}"
+								actionListener="#{orderBean.menuorder}">
+								<f:attribute name="productcat" value="#{pos}" />
+							</p:commandButton>
+							
+							<p:commandButton value="#{pos.tableNo}" styleClass="itembuttonsmallfree btn.btn-round" rendered="#{pos.status=='0'}"
+								actionListener="#{orderBean.menuorder}">
+								<f:attribute name="productcat" value="#{pos}" />
+							</p:commandButton>
+							
+
+						</p:dataGrid>
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+
+		</p:outputPanel>
+	</h:form>
+
+
+</ui:composition>
+
+

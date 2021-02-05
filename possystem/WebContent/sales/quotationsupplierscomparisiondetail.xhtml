@@ -1,0 +1,603 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditQuotationForm">
+		<p:panel id="quotationListPanel" header="Suppliers' Quotation Comparison">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="quotationListPanel" /></td>
+				</tr>
+			</table>
+
+
+			<p:panelGrid style="width:99%" styleClass="alignTop">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="width:40%;">Quotation Details</p:column>
+						<p:column style="width:60%;">Products</p:column>
+					</p:row>
+				</f:facet>
+
+
+				<p:row>
+					<p:column style="width:40%;" styleClass="alignTop">
+
+						<h:panelGrid id="requestgrid" columns="3" border="0" width="100%"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText value="Quote No" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationNo}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Quotation Date" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationDate}"
+								styleClass="logintxttable">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+
+							<h:outputText value="Quotation Due Date" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationDueDate}"
+								styleClass="logintxttable">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+							<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationNo}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Delivery Terms" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.deliveryTerms}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Payment Terms" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.paymentTerms}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{app['quotationstat.status.neworderlable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.newordervalue']}"
+								styleClass="logintxttable" />
+							<h:outputText
+								value="#{app['quotationstat.status.processedlable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.processedvalue']}"
+								styleClass="logintxttable" />
+							<h:outputText value="#{app['quotationstat.status.orderedlable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.orderedvalue']}"
+								styleClass="logintxttable" />
+						</h:panelGrid>
+
+
+					</p:column>
+
+					<p:column style="width:60%;" styleClass="alignTop">
+						<p:dataTable id="dataTable1" var="quotation" rowIndexVar="row"
+							paginatorPosition="top" scrollable="true" scrollHeight="200"
+							value="#{quotationsupplierBean.quotationbreakdowns}"
+							paginator="false" rows="1000" style="width: 100%"
+							rowsPerPageTemplate="5,10,15,20,25" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+							<p:column styleClass="columnwidth" width="6%">
+								<f:facet name="header">
+									<h:outputText value="Product Code" />
+								</f:facet>
+								<h:outputText value="#{quotation.productCode}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column styleClass="columnwidth" width="25%">
+								<f:facet name="header">
+									<h:outputText value="Product Name" />
+								</f:facet>
+								<h:outputText value="#{quotation.productName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column styleClass="columnwidthn" width="7%">
+								<f:facet name="header">
+									<h:outputText value="Qty." />
+								</f:facet>
+								<h:outputText value="#{quotation.quantityRequired}"
+									styleClass="logintxttable" />
+							</p:column>
+						</p:dataTable>
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+			
+
+			<p:dataTable id="dataTablecom" var="quotation" rowIndexVar="row"
+				paginatorPosition="top" scrollable="true" scrollHeight="300"
+				value="#{quotationsupplierBean.quotationbreakdowns}"
+				paginator="false" rows="1000" style="width: 100%"
+				rowsPerPageTemplate="5,10,15,20,25">
+
+				<p:column styleClass="columnwidth" width="10%">
+					<f:facet name="header">
+						<h:outputText value="Product Code" />
+					</f:facet>
+					<h:outputText value="#{quotation.productCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column styleClass="columnwidth" width="25%">
+					<f:facet name="header">
+						<h:outputText value="Product Name" />
+					</f:facet>
+					<h:outputText value="#{quotation.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidthn" width="10%">
+					<f:facet name="header">
+						<h:outputText value="Qty." />
+					</f:facet>
+					<h:outputText value="#{quotation.quantityRequired}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column width="25%">
+					<f:facet name="header">
+						<h:outputText value="Supplier Price(RM)" />
+					</f:facet>
+					<h:dataTable value="#{quotation.supplierPriceList}" var="column">
+
+						<p:column styleClass="columnwidth" width="20%">
+							<h:outputText value=" #{column.supplierName}"
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column styleClass="columnwidthn" width="7%">
+							<h:outputText value=" #{column.unitPrice}"
+								styleClass="logintxttable" />
+						</p:column>
+
+
+					</h:dataTable>
+				</p:column>
+
+				<p:columns value="#{quotation.supplierPriceList}" var="column">
+					<f:facet name="header">
+						<h:outputText value=" #{column.supplierName}"
+							styleClass="logintxttable" />
+					</f:facet>
+					<h:outputText value=" #{column.unitPrice}"
+						styleClass="logintxttable" />
+				</p:columns>
+
+
+
+			</p:dataTable>
+			
+			<br></br>
+			<p:commandButton value="(RFQ) Quotation List" ajax="false"
+				action="#{quotationsupplierBean.listQuotation}" />
+			
+
+
+
+		</p:panel>
+
+
+		<p:dialog id="declinepurchase" showEffect="fade" hideEffect="fade"
+			header="Decline Quotation" resizable="false" widgetVar="decqDig"
+			modal="true" height="210" width="530">
+
+			<br></br>
+
+			<p:panel id="declineppurchase">
+
+				<h:panelGrid columns="4" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="7" cols="60" id="reminder"
+						autoResize="false" value="#{quotationsupplierBean.remarks}">
+						<p:ajax update="reminder" process="@this" event="change" />
+					</p:inputTextarea>
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="" styleClass="mandatory_text" />
+
+					<h:panelGrid columns="2" border="0" styleClass="bgcolor"
+						cellpadding="0" cellspacing="0"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+						<p:commandButton value="Yes" ajax="true"
+							oncomplete="PF('decqDig').hide();" update="quotationListPanel"
+							action="#{quotationsupplierBean.declineSupplierQuotation}">
+						</p:commandButton>
+						<p:commandButton value="No" oncomplete="PF('decqDig').hide()" />
+
+					</h:panelGrid>
+
+
+				</h:panelGrid>
+
+
+			</p:panel>
+
+		</p:dialog>
+
+
+
+		<p:dialog id="issuepurchase" showEffect="fade" hideEffect="fade"
+			header="Create Purchase Order" resizable="false"
+			widgetVar="purchaseDig" modal="true" height="510" width="90%">
+
+
+			<p:panelGrid style="width:99%" styleClass="alignTop" id="cpurchase">
+
+
+				<p:row>
+					<p:column style="width:30%;" styleClass="alignTop">
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText
+								value="#{quotationsupplierBean.supplierdata.supplierName}"
+								styleClass="logintxt" />
+
+
+							<h:outputText
+								value="#{quotationsupplierBean.supplierdata.address}"
+								styleClass="logintxttable">
+							</h:outputText>
+
+							<h:outputText value="#{quotationsupplierBean.supplierdata.city}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="#{quotationsupplierBean.supplierdata.state}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{quotationsupplierBean.supplierdata.postCode}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{quotationsupplierBean.supplierdata.phoneNo}"
+								styleClass="logintxttable" />
+						</h:panelGrid>
+
+					</p:column>
+
+					<p:column style="width:70%;" styleClass="alignTop">
+
+						<h:panelGrid columns="6" border="0" width="70%"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText value="Quote No" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationNo}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Quotation Date" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationDate}"
+								styleClass="logintxttable">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+
+							<h:outputText value="Quotation Due Date" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationDueDate}"
+								styleClass="logintxttable">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+							<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.quotationNo}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Delivery Terms" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.deliveryTerms}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Payment Terms" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{quotationsupplierBean.quotation.paymentTerms}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{app['quotationstat.status.neworderlable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.newordervalue']}"
+								styleClass="logintxttable" />
+							<h:outputText
+								value="#{app['quotationstat.status.processedlable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.processedvalue']}"
+								styleClass="logintxttable" />
+							<h:outputText value="#{app['quotationstat.status.orderedlable']}"
+								rendered="#{quotationsupplierBean.quotation.status==app['quotationstat.status.orderedvalue']}"
+								styleClass="logintxttable" />
+						</h:panelGrid>
+
+
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column style="width:100%;" styleClass="alignTop" colspan="2">
+
+						<p:dataTable id="supplierdataTable" var="product"
+							rowIndexVar="row" paginatorPosition="top" scrollable="true"
+							scrollHeight="200"
+							value="#{quotationsupplierBean.supplierdata.quotationbreakdownList}"
+							paginator="false" rows="1000" style="width: 100%"
+							rowsPerPageTemplate="5,10,15,20,25">
+
+							<p:columnGroup type="header">
+
+								<p:row>
+
+									<p:column style="width: 5%;" styleClass="logintxtCenter">
+										<f:facet name="header">
+											<h:outputText value="" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:15%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Product Code" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:25%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Product Name" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+
+
+									<p:column style="width:10%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Quantity" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:10%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Unit Price(RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:5%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Tax (%)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:12%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Tax (RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:12%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="SubTotal (RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+								</p:row>
+							</p:columnGroup>
+
+							<p:column style="width: 5%;" styleClass="logintxtCenter">
+
+								<p:selectBooleanCheckbox
+									value="#{quotationsupplierBean.checkMap[product.productId]}">
+									<p:ajax update="supplierdataTable"
+										listener="#{quotationsupplierBean.addPurchasePriceModifyItem(row)}" />
+								</p:selectBooleanCheckbox>
+							</p:column>
+
+							<p:column style="width:15%;" styleClass="columnwidth">
+								<h:outputText value="#{product.productCode}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:25%;" styleClass="columnwidth">
+								<h:outputText value="#{product.productName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+
+								<p:inputText
+									value="#{quotationsupplierBean.itemQty[product.productId]}"
+									size="11" onkeypress='return validate(event)' id="itemQty"
+									styleClass="logintxtnumberFormat">
+									<p:ajax event="blur" update="supplierdataTable"
+										listener="#{quotationsupplierBean.addPurchasePriceModifyItem(row)}" />
+									<f:convertNumber pattern="#0.00" />
+								</p:inputText>
+
+							</p:column>
+
+							<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+								<h:outputText value="#{product.unitPrice}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="width:5%;" styleClass="columnwidthn">
+								<h:outputText value="#{product.taxCode}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="width:12%;" styleClass="columnwidthn">
+								<h:outputText value="#{product.taxAmount}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+							<p:column style="width:12%;" styleClass="logintxtnumberFormat">
+								<h:outputText value="#{product.subTotal}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+
+
+							<p:columnGroup type="footer" rendered="true">
+								<p:row>
+
+									<p:column footerText="Sub Total (RM)"
+										style="text-align:right;width:90%;" colspan="7" width="90%" />
+
+									<p:column style="text-align:right;width:10%;" width="10%">
+										<f:facet name="footer">
+											<h:outputText value="#{quotationsupplierBean.totalAmount}">
+												<f:convertNumber pattern="#0.00" />
+											</h:outputText>
+										</f:facet>
+									</p:column>
+								</p:row>
+
+								<p:row>
+
+									<p:column footerText="Tax (RM)"
+										style="text-align:right;width:90%;" colspan="7" width="90%" />
+
+									<p:column style="text-align:right;width:10%;" width="10%">
+										<f:facet name="footer">
+											<h:outputText value="#{quotationsupplierBean.totalTaxAmount}">
+												<f:convertNumber pattern="#0.00" />
+											</h:outputText>
+										</f:facet>
+									</p:column>
+
+
+								</p:row>
+
+
+
+								<p:row>
+
+									<p:column footerText="Total Amount (RM)"
+										style="text-align:right;width:90%;" colspan="7" width="90%" />
+
+									<p:column style="text-align:right;width:10%;" width="10%">
+										<f:facet name="footer">
+											<h:outputText
+												value="#{quotationsupplierBean.grandTotalAmount}">
+												<f:convertNumber pattern="#0.00" />
+											</h:outputText>
+										</f:facet>
+									</p:column>
+
+								</p:row>
+
+							</p:columnGroup>
+
+
+						</p:dataTable>
+
+
+					</p:column>
+				</p:row>
+
+			</p:panelGrid>
+
+
+			<p:commandButton value="Create PO" ajax="true"
+				oncomplete="PF('issuePO').show();" update="issuePOP">
+			</p:commandButton>
+
+			<p:commandButton value="Close" oncomplete="PF('purchaseDig').hide()" />
+
+
+
+
+		</p:dialog>
+
+
+		<p:dialog id="issuePOid" showEffect="fade" hideEffect="fade"
+			header="PO Issue Confirmation" resizable="false" widgetVar="issuePO"
+			modal="false" height="110" width="400">
+
+
+			<p:panel id="issuePOP">
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="Are you sure want to Issue PO ?  "
+						styleClass="logintxttable" />
+				</h:panelGrid>
+				<br></br>
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+					<p:commandButton value="Yes" ajax="false"
+						oncomplete="PF('issuePO').hide();" update="quotationListPanel"
+						action="#{quotationsupplierBean.savePO}">
+					</p:commandButton>
+					<p:commandButton value="No" oncomplete="PF('issuePO').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

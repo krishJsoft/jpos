@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://www.eclipse.org/birt/taglibs/birt.tld"
+	xmlns:birt="urn:jsptld:/WEB-INF/tlds/birt.tld">
+
+
+	<h:form id="dashboardMasterForm">
+
+		<p:outputPanel id="dashboardPanel">
+
+			<p:panelGrid style="width:100%" styleClass="alignTop">
+
+
+				<p:row>
+					<p:column styleClass="alignTop"
+						style="width:60%;background-color:#edf5f7;">
+
+						<h:panelGrid columns="10" border="0" width="100%" cellpadding="10"
+							cellspacing="10">
+							
+							<h:outputText value="Table No" />
+							<p:inputText value="#{posBean.tableName}" />
+							
+
+							<h:outputText value="Card No" />
+							<p:inputText value="#{posBean.cardNo}" />
+
+							<p:commandButton value="Search" ajax="false"
+								action="#{posBean.getKitchenOrders}">
+							</p:commandButton>
+							</h:panelGrid>
+					</p:column>
+				</p:row>
+
+
+
+				<p:row>
+
+
+
+
+
+					<p:column styleClass="alignTop"
+						style="width:60%;background-color:#edf5f7;">
+
+						<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+							scrollable="true" lazy="false" first="#{salesorderBean.first}"
+							scrollHeight="590" value="#{posBean.kitchedOrder}"
+							paginator="false" rows="100" style="width: 98%"
+							rowsPerPageTemplate="5,10,15,25,50,100"
+							rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+							<p:ajax event="page" listener="#{salesorderBean.onPageChange}" />
+
+							<p:column id="modelHeader" style="width: 7%;">
+								<f:facet name="header">
+									<h:outputText value="SNo" />
+								</f:facet>
+								<h:outputText value="#{row + 1}" styleClass="logintxttable"
+									style="height:25px;" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Table No" />
+								</f:facet>
+								<h:outputText value="#{sales.tableName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Card No" />
+								</f:facet>
+								<h:outputText value="#{sales.cardNo}" styleClass="logintxttable" />
+							</p:column>
+
+
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Status" />
+								</f:facet>
+
+								<h:outputText value="#{app['salesorder.status.neworderlable']}"
+									rendered="#{sales.status==app['salesorder.status.newordervalue']}"
+									styleClass="logintxttable" />
+								<h:outputText value="#{app['salesorder.status.processedlable']}"
+									rendered="#{sales.status==app['salesorder.status.processedvalue']}"
+									styleClass="logintxttable" />
+								<h:outputText value="#{app['salesorder.status.orderedlable']}"
+									rendered="#{sales.status==app['salesorder.status.orderedvalue']}"
+									styleClass="logintxttable" />
+								<h:outputText value="#{app['salesorder.status.paidlable']}"
+									rendered="#{sales.status==app['salesorder.status.paidvalue']}"
+									styleClass="logintxttable" />
+
+							</p:column>
+
+							<p:column style="width: 15%;">
+								<f:facet name="header">Action</f:facet>
+
+								<p:commandButton value="Option"
+									update=":dashboardMasterForm:dataTable,:dashboardMasterForm:orderitemaction"
+									actionListener="#{orderBean.menuorderaction}"
+									oncomplete="PF('orderItemactionDig').show()">
+									<f:attribute name="sales" value="#{sales}" />
+								</p:commandButton>
+
+
+
+							</p:column>
+
+						</p:dataTable>
+
+					</p:column>
+
+				</p:row>
+			</p:panelGrid>
+
+
+
+
+		</p:outputPanel>
+
+		<ui:include src="/sales/pos/orderitemactiondialog.xhtml" />
+
+
+
+	</h:form>
+
+
+</ui:composition>
+
+

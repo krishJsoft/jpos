@@ -1,0 +1,276 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Add Edit Sales Order">
+
+				<h:panelGrid id="addeditsalesPanel" columns="10" width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['product.label.supplierName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="supplierName" effect="fade" editable="false"
+						value="#{deliveryOrderBean.supplierId}"
+						style="width:160px; float :left;" styleClass="selectOneMenu">
+						<f:selectItem itemLabel="Select Supplier" itemValue="0" />
+						<f:selectItems value="#{commonListBean.selectSupplierList}"></f:selectItems>
+
+						<p:ajax update="purchaseOrderId" event="change"
+							listener="#{deliveryOrderBean.loadPurchaseOrderNo}" />
+
+					</p:selectOneMenu>
+					<p:message for="supplierName" styleClass="fieldError" />
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['purchaseorder.label.purchaseorderno']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="purchaseOrderId" effect="fade"
+						editable="false" value="#{deliveryOrderBean.purchaseOrderId}"
+						style="width:160px; float :left;" styleClass="selectOneMenu">
+						<f:selectItem itemLabel="Purchase Order" itemValue="" />
+						<f:selectItems
+							value="#{deliveryOrderBean.selectPurchaseOrderNoList}"></f:selectItems>
+						<p:ajax update="branchId" event="change"
+							listener="#{deliveryOrderBean.loadBranchList}" />
+					</p:selectOneMenu>
+					<p:message for="purchaseOrderId" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['purchaseorder.label.branchname']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="branchId" effect="fade" editable="false"
+						value="#{deliveryOrderBean.branchId}"
+						style="width:160px; float :left;" styleClass="selectOneMenu">
+						<f:selectItem itemLabel="Select Branch" itemValue="" />
+						<f:selectItems value="#{deliveryOrderBean.selectBranchList}"></f:selectItems>
+						<p:ajax update="deliveryPanel" event="change"
+							listener="#{deliveryOrderBean.loadPurchaseOrderItem}" />
+					</p:selectOneMenu>
+					<p:message for="branchId" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['purchaseorder.label.grnno']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText value="#{deliveryOrderBean.grnNo}" size="23"
+						id="grnno" />
+					<p:message for="grnno" styleClass="fieldError" />
+
+
+				</h:panelGrid>
+				<br></br>
+
+
+				<p:dataTable id="branchTable" var="branch" rowIndexVar="branchrow"
+					rendered="#{deliveryOrderBean.purchaseorder.branchModel!=null}"
+					value="#{deliveryOrderBean.purchaseorder.branchModel}"
+					style="width:100%;" >
+
+					<p:column style="width:15%;" styleClass="columnwidthc">
+						<f:facet name="header">
+							<h:outputText value="Delivery Branch" />
+						</f:facet>
+						<br></br>
+						<h:outputText value="#{branch.branchCode}"
+							styleClass="logintxttable" />
+
+						<h:outputText value="#{branch.branchName}"
+							styleClass="logintxttable" />
+						<br></br>
+
+						<h:outputText value="#{branch.address}" styleClass="logintxttable" />
+						<br></br>
+						<h:outputText value="#{branch.emailAddress}"
+							styleClass="logintxttable" />
+
+						<br></br>
+						<h:outputText value="#{branch.faxNo}" styleClass="logintxttable" />
+
+					</p:column>
+
+
+					<p:column style="width:85%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Product Details" />
+						</f:facet>
+						<p:dataTable id="productTable" var="product" scrollable="true"
+							scrollHeight="290" rowIndexVar="productrow" style="width:100%;"
+							value="#{branch.productList}" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}">
+
+							<p:column style="width:8%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Reference No" />
+								</f:facet>
+								<h:outputText value="#{product.referenceNo}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:8%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Product Name" />
+								</f:facet>
+								<h:outputText value="#{product.productName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+
+							<p:column style="width:5%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="UOM" />
+								</f:facet>
+								<h:outputText value="#{product.uomName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column style="width:7%;">
+								<f:facet name="header">
+									<h:outputText value="Total Quantity " />
+								</f:facet>
+								<p:inputText value="#{product.quantityRequired}" size="7"
+									id="quantity" styleClass="logintxtnumberFormat" disabled="true" />
+							</p:column>
+
+							<p:column style="width:7%;">
+								<f:facet name="header">
+									<h:outputText value="Received " />
+								</f:facet>
+								<p:inputText value="#{product.receivedQuantity}" size="7"
+									disabled="true" id="received" styleClass="logintxtnumberFormat" />
+							</p:column>
+
+							<p:column style="width:7%;">
+								<f:facet name="header">
+									<h:outputText value="Balance " />
+								</f:facet>
+								<p:inputText value="#{product.balanceQuantity}" size="7"
+									disabled="true" id="balance" styleClass="logintxtnumberFormat" />
+							</p:column>
+
+
+							<p:column style="width:7%;">
+								<f:facet name="header">
+									<h:outputText value="Receivable " />
+								</f:facet>
+								<p:inputText
+									value="#{deliveryOrderBean.receivalbeQuantity[product.id]}"
+									size="10" onkeypress='return validate(event)' id="receivable"
+									styleClass="logintxtnumberFormat">
+									<p:ajax event="blur"
+										listener="#{deliveryOrderBean.validateQuantity(productrow)}"
+										update="receivable" />
+								</p:inputText>
+								<p:message for="receivable" styleClass="fieldError" />
+							</p:column>
+
+
+							<p:column style="width:7%;">
+								<f:facet name="header">
+									<h:outputText value="Exp Date " />
+								</f:facet>
+								<p:calendar navigator="true" pattern="dd/MM/yyyy"
+									value="#{deliveryOrderBean.receivalbeExpDate[product.id]}"
+									size="9" id="receivableExpDate">
+									<p:ajax event="dateSelect"
+										listener="#{deliveryOrderBean.validateProductExpDate(productrow)}"
+										update="receivableExpDate" />
+								</p:calendar>
+								<p:message for="receivableExpDate" styleClass="fieldError" />
+							</p:column>
+
+
+
+
+
+
+
+
+						</p:dataTable>
+
+					</p:column>
+
+
+				</p:dataTable>
+
+
+				<p:commandButton value="Save" ajax="true"
+					rendered="#{deliveryOrderBean.purchaseorder.branchModel!=null}"
+					oncomplete="PF('deliverycreateDig').show()" update="deliveryPanel" />
+
+				<p:commandButton value="Reset" ajax="true"
+					action="#{deliveryOrderBean.resetDeliveryOrder}"
+					update="deliveryPanel" />
+
+				<p:commandButton value="Cancel" ajax="false"
+					action="#{deliveryOrderBean.listDeliveryOrder}"
+					update="deliveryPanel" />
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		<p:dialog id="modalDialogDeliveryOrderCreate" showEffect="fade"
+			hideEffect="fade" header="GRN Create Confirmation" resizable="false"
+			widgetVar="deliverycreateDig" modal="true" height="150" width="400">
+
+			<br></br>
+
+			<p:panel id="deliverycreate">
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="3" cellspacing="3"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="Are you sure want to create  GRN Order ?  "
+						styleClass="logintxttable" />
+
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+					<p:commandButton value="Create GRN" ajax="true"
+						oncomplete="PF('deliverycreateDig').hide()"
+						rendered="#{loginBean.functionList.contains('Add DeliveryOrder')}"
+						action="#{deliveryOrderBean.saveDeliveryOrder}"
+						update="deliveryPanel">
+					</p:commandButton>
+					<p:commandButton value="Cancel" oncomplete="PF('deliverycreateDig').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

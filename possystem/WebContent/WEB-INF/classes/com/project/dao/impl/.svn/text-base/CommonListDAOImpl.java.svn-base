@@ -1,0 +1,244 @@
+package com.alpha.dao.impl;
+
+import java.io.Serializable;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
+
+import com.alpha.dao.interfaces.ICommonListDAO;
+import com.alpha.hq.model.Autonum;
+import com.alpha.hq.model.Department;
+import com.alpha.hq.model.Designation;
+import com.alpha.hq.model.Function;
+import com.alpha.hq.model.Module;
+import com.alpha.hq.model.Rolefunctionlink;
+
+/**
+ * Gopal Ar , gopalabe@gmail.com , Dec 02-2012
+ */
+
+@Repository("commonListRepository")
+public class CommonListDAOImpl implements ICommonListDAO, Serializable {
+
+	private static final long serialVersionUID = 1L;
+	static Logger logger = Logger.getLogger(CommonListDAOImpl.class);
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Department> getDepartmentList() throws Exception {
+		List<Department> data = null;
+		try {
+			String sqlQuery = " select dept from Department dept";
+			data = em.createQuery(sqlQuery).getResultList();
+		} catch (Exception e) {
+			logger.info("Error in getDepartmentList of CommonListDAOImpl "
+					+ e.toString());
+			throw e;
+		} finally {
+
+		}
+		return data;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Designation> getDesignationList() throws Exception {
+		List<Designation> data = null;
+		try {
+			String sqlQuery = " select desg from Designation desg";
+			data = em.createQuery(sqlQuery).getResultList();
+		} catch (Exception e) {
+			logger.info("Error in getDesignationList of CommonListDAOImpl "
+					+ e.toString());
+			throw e;
+		} finally {
+
+		}
+		return data;
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Module> getModuleList() throws Exception {
+		List<Module> data = null;
+		try {
+			String sqlQuery = " select m from Module m ";
+			data = em.createQuery(sqlQuery).getResultList();
+		} catch (Exception e) {
+			logger.info("Error in getModuleList of CommonListDAOImpl "
+					+ e.toString());
+			throw e;
+		} finally {
+
+		}
+		return data;
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List<Function> getFunctionList(Integer moduleId) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	@Override
+	public List<Function> getFunctionList() throws Exception {
+		List<Function> data = null;
+		try {
+			String sqlQuery = " select f from Function f ";
+			data = em.createQuery(sqlQuery).getResultList();
+		} catch (Exception e) {
+			logger.info("Error in getFunctionList of CommonListDAOImpl "
+					+ e.toString());
+			throw e;
+		} finally {
+
+		}
+		return data;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Rolefunctionlink> getRolefunctionlinkList(Integer roleId)
+			throws Exception {
+		List<Rolefunctionlink> data = null;
+		try {
+			String sqlQuery = " from Rolefunctionslink rf inner join fetch rf.function f where rf.role.roleId = :roleid";
+			data = em.createQuery(sqlQuery).setParameter("roleid", roleId)
+					.getResultList();
+		} catch (Exception e) {
+			logger.info("Error in getRolefunctionlinkList of CommonListDAOImpl "
+					+ e.toString());
+			throw e;
+		} finally {
+
+		}
+		return data;
+	}
+
+	@Override
+	public Autonum getAutonumDetail() throws Exception {
+		Autonum retData = null;
+		String sqlQuery = "select e from Autonum e ";
+		try {
+			retData = (Autonum) em.createQuery(sqlQuery).getSingleResult();
+		} catch (Exception e) {
+			logger.info("Error in getAutonumDetail of CommonListDAOImpl "
+					+ e.toString());
+			throw e;
+		}
+		return retData;
+	}
+
+	@Override
+	public Autonum updateAutonumDetail(Autonum tutonum) throws Exception {
+		try {
+			em.merge(tutonum);
+			return tutonum;
+		} catch (Exception e) {			
+			logger.info("Error in updateAutonumDetail of CommonListDAOImpl "+ e.toString());
+			throw e;
+		} finally {
+			
+		}
+	}
+
+	@Override
+	public void saveDepartment(Department depObj) throws Exception {
+		try {
+			em.persist(depObj);
+			
+		} catch (Exception e) {			
+			logger.info("Error in saveDepartment of CommonListDAOImpl "+ e.toString());
+			throw e;
+		} finally {
+			
+		}
+		
+	}
+
+	@Override
+	public void updateDepartment(Department depObj) throws Exception {
+		try {
+			em.merge(depObj);
+			
+		} catch (Exception e) {			
+			logger.info("Error in updateDepartment of CommonListDAOImpl "+ e.toString());
+			throw e;
+		} finally {
+			
+		}
+		
+	}
+
+	@Override
+	public void deleteDepartment(Department depObj) throws Exception {
+		try {
+			em.remove(depObj);
+			
+		} catch (Exception e) {			
+			logger.info("Error in deleteDepartment of CommonListDAOImpl "+ e.toString());
+			throw e;
+		} finally {
+			
+		}
+		
+	}
+
+	@Override
+	public Department getDepartment(Integer departmentId) throws Exception {
+		Department retData = null;
+		String sqlQuery = "select d from Department d " + " WHERE d.departmentId = :departmentId ";
+		try {
+			retData = (Department) em.createQuery(sqlQuery).setParameter("departmentId", departmentId).getSingleResult();
+
+		} catch (Exception e) {
+			logger.info("Error in getDepartment of CommonListDAOImpl "+ e.toString());
+			throw e;
+		}
+		return retData;
+		
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Department> getDepartmentList(Integer departmentId)
+			throws Exception {
+		List<Department> data = null;
+		try {			
+			StringBuilder buf = new StringBuilder("select d from Department d WHERE 1 = 1");
+
+			if (departmentId !=null && departmentId!=0) {
+				buf.append(" AND d.departmentId =  :departmentId  ");
+			}				
+			Query query = em.createQuery(buf.toString());	
+			
+			if (departmentId !=null && departmentId!=0) {
+				query.setParameter("departmentId", departmentId);
+			}				
+			data = query.getResultList();
+		} catch (Exception e) {
+			logger.info("Error in getDepartmentList of CommonListDAOImpl "	+ e.toString());
+			throw e;
+		} finally {
+
+		}
+		return data;
+	}
+
+	
+
+}

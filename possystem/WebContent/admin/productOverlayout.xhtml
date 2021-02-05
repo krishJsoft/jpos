@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:overlayPanel id="productSearchPanel" for="productBtn" hideEffect="fade" widgetVar="overproduct" showCloseIcon="true" style="width:60%;"
+		dynamic="true"  >
+		<h:panelGroup id="productPanel" stateless="true">			
+		
+				<h:panelGrid id="searchproductgrid" columns="10" border="0"
+					width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Product Code " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="pbarcode" value="#{productBean.barcode}"
+						maxlength="45" size="15" />
+					<p:message for="pbarcode" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Product Name " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="pproductName" value="#{productBean.productName}"
+						maxlength="200" size="20" />
+					<p:message for="pproductName" styleClass="fieldError" />				
+					
+					
+					
+					<h:outputText value=""
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['product.label.categoryName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:panelGrid columns="2" border="0">
+						<p:commandLink id="categoryBtn" value="Select" onclick="PF('overp').show();" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton  ajax="true" icon="ui-icon-search" style="height:22px;"
+							action="#{productBean.searchProduct}" update="productPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+				<p:dataTable id="productdataTable" var="product" rowIndexVar="row" paginatorPosition="top"
+					lazy="true" value="#{productBean.productModel}" scrollable="true"
+					first="#{productBean.first}"  scrollHeight="240" selectionMode="single"
+					paginator="true" rows="10" style="width:100%"
+					rowsPerPageTemplate="10,15,25,50,100,250,500"
+					rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+					<p:ajax event="page" listener="#{productBean.onPageChange}" />	
+					
+					<p:ajax event="rowSelect" listener="#{purchaseRequestBean.selectProduct}"
+						oncomplete="PF('overproduct').hide()"
+						update=":addEditPurchaseRequestForm:productCode,:addEditPurchaseRequestForm:supplierId,:addEditPurchaseRequestForm:purchaseRequestPanel">
+						<f:attribute name="product" value="#{product}" />
+					</p:ajax>		
+
+
+
+					<p:column sortBy="#{product.barcode}" styleClass="columnwidth"
+						width="8%">
+						<f:facet name="header">
+							<h:outputText value="Product Code" />
+						</f:facet>
+						<h:outputText value="#{product.barcode}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{product.productName}" styleClass="columnwidth"
+						width="20%">
+						<f:facet name="header">
+							<h:outputText value="Product Name" />
+						</f:facet>
+						<h:outputText value="#{product.productName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					
+					<p:column sortBy="#{product.categoryName}" styleClass="columnwidth"
+						width="10%">
+						<f:facet name="header">
+							<h:outputText value="Category" />
+						</f:facet>
+						<h:outputText value="#{product.categoryName}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+
+
+				</p:dataTable>
+			
+
+		</h:panelGroup>
+
+	
+	</p:overlayPanel>
+</ui:composition>

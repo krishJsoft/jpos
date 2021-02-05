@@ -1,0 +1,131 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:form id="dailyOnlineOrderReportForm">
+	
+	<p:panel styleClass="mypanel"   id="onlineOrderDailyReportPanel">
+	<f:facet name="header" styleClass="myThemeColor" >
+			<h:outputText value="Daily Online Order Report"  />
+		</f:facet>
+		
+		<br />
+			<h:panelGrid columns="3" border="0" 
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+				
+				<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:calendar navigator="true" size="25"
+					value="#{onlineOrderBean.dailyReportDateFrom}" pattern="#{des['common.date.pattern']}" />
+		
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+				
+				<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:calendar navigator="true" size="25"
+					value="#{onlineOrderBean.dailyReportDateTo}" pattern="#{des['common.date.pattern']}" />
+				
+				<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu value="#{onlineOrderBean.dailyReportDeliveryStatus}" 
+					styleClass="inputCombo">
+					<f:selectItems value="#{commonListBean.deliveryOrderStatusList}"></f:selectItems>
+				</p:selectOneMenu>
+				
+			</h:panelGrid>
+			
+			
+		
+		<br />
+		<p:panel>
+			<p:commandButton value="Search" 
+				action="#{onlineOrderBean.loadOnlineReport}"
+				update="onlineOrderListdataTable,dailyOnlineOrderReportForm:orderreportreportgrid"
+				/>
+			<p:commandButton value="Print" 
+				style="background: #E32526;color:white"
+				oncomplete="PF('orderreportprintdlg').show();">					
+			</p:commandButton>
+		</p:panel>
+		<br />
+			
+		<p:dataTable id="onlineOrderListdataTable" var="order" rowIndexVar="row"
+		scrollable="true" scrollHeight="420"
+		value="#{onlineOrderBean.orderList}" paginator="true"
+		rows="10" style="width: 100%" 
+		rowsPerPageTemplate="5,10,15,25,50,100"
+		rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"  >
+		
+			<p:column id="modelHeader" width="3%">
+				<f:facet name="header">
+					<h:outputText value="#{des['common.table.header.no']}" />
+				</f:facet>
+				<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="8%">
+				<f:facet name="header">
+					<h:outputText value="Order No" />
+				</f:facet>
+				<h:outputText value="#{order.quotationNo}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="Customer Name" />
+				</f:facet>
+				<h:outputText value="#{order.customer.customerName}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="Location" />
+				</f:facet>
+				<h:outputText value="#{order.location}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="5%">
+				<f:facet name="header">
+					<h:outputText value="Status" />
+				</f:facet>
+				
+				<h:outputText
+					value="#{app['deliveryorder.status.neworderlable']}"
+					rendered="#{order.status==app['deliveryorder.status.newordervalue']}"
+					styleClass="logintxttable" />
+					
+				<h:outputText
+					value="#{app['deliveryorder.status.processedlable']}"
+					rendered="#{order.status==app['deliveryorder.status.processedvalue']}"
+					styleClass="logintxttable" />
+					
+				<h:outputText
+					value="#{app['deliveryorder.status.orderedlable']}"
+					rendered="#{order.status==app['deliveryorder.status.orderedvalue']}"
+					styleClass="logintxttable" />
+					
+				<h:outputText
+					value="#{app['deliveryorder.status.closedlable']}"
+					rendered="#{order.status==app['deliveryorder.status.closedvalue']}"
+					styleClass="logintxttable" />
+				
+				<h:outputText
+					value="#{app['deliveryorder.status.cancelledlable']}"
+					rendered="#{order.status==app['deliveryorder.status.cancelledvalue']}"
+					styleClass="logintxttable" />
+					
+			</p:column>
+			
+		</p:dataTable>
+	</p:panel>
+	
+
+	
+	<ui:include src="/reports/onlineorder/orderReport/printtemplate/dailyOnlineOrderReportTemplate.xhtml" />
+</h:form>
+</ui:composition>

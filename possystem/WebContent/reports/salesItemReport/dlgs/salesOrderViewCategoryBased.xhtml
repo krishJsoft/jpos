@@ -1,0 +1,121 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogSalesOrder" header="Category Order Detail"
+		resizable="false" widgetVar="salesDig" modal="true" height="90%"
+		width="88%">
+		 <f:facet name="header">
+		 	Selected Category Order Details for the Month
+       		  <h:outputText value="#{salesorderBean.dateFrom}" >
+	        	<f:convertDateTime pattern="MMMM" />
+	        </h:outputText>
+   		</f:facet>
+
+		<br></br>
+
+
+		<p:panel id="requestitem" styleClass="mytabpanel">
+
+
+			
+
+
+			<br></br>			
+
+			<p:dataTable id="salesTable" var="product" rowIndexVar="productrow"
+				scrollable="true" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}"
+				value="#{salesorderBean.salesorder.salesorderbreakdowns}"
+				style="width:100%;" scrollHeight="250">
+
+
+				<p:column style="width:10%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="Product Code" />
+					</f:facet>
+					<h:outputText value="#{product.productId}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column style="width:25%;" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="Product Name" />
+					</f:facet>
+					<h:outputText value="#{product.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+			
+
+
+				<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+					<f:facet name="header">
+						<h:outputText value="Quantity " />
+					</f:facet>
+					<h:outputText value="#{product.qtty}"
+						>
+						<f:convertNumber pattern="#0" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+					<f:facet name="header">
+						<h:outputText value="Unit Price (#{app['common.currency']})" />
+					</f:facet>
+					<h:outputText value="#{product.unitPrice}"
+						styleClass="logintxttable" />
+				</p:column>
+
+			
+				<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+					<f:facet name="header">
+						<h:outputText value="Tax (#{app['common.currency']})" />
+					</f:facet>
+					<h:outputText value="#{product.taxAmount}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+					<f:facet name="header">
+						<h:outputText value="SubTotal (#{app['common.currency']})" />
+					</f:facet>
+					<h:outputText value="#{product.subTotal}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Print"
+			style="background: #E32526;color:white" 
+			update=":addEditSalesForm:requestitemdetails"
+					oncomplete="PF('salesOrderDetailPrint').show();">					
+				</p:commandButton>
+			<p:commandButton value="Close" oncomplete="PF('salesDig').hide()" />
+
+		</h:panelGrid>
+
+	</p:dialog>
+		
+	
+</ui:composition>

@@ -1,0 +1,176 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Sales History">
+
+
+				<h:panelGrid id="deliveryGrid" columns="10" border="0" width="50%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{salesorderBean.dateFrom}" pattern="dd-MMM-yyyy" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{salesorderBean.dateTo}" pattern="dd-MMM-yyyy" />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{salesorderBean.searchSalesorderbreakdown}"
+							update="salesPanel" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{salesorderBean.resetSalesHistory}"
+							update="salesPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="deliveryTable" var="product"
+					rowIndexVar="productrow" scrollable="false" lazy="true"
+					value="#{salesorderBean.salesorderbreakdownModel}" rows="10"
+					style="width: 100%" paginator="true" first="#{salesorderBean.first}"
+					rowsPerPageTemplate="5,10,15,25,50,100" selectionMode="single"
+					rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}">
+		
+					<p:ajax event="page" listener="#{salesorderBean.onPageChange}"/>
+
+					<p:column style="width:3%; height:17px;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{productrow+1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column style="width:8%;" styleClass="columnwidth" sortBy="#{product.createdDate}">
+						<f:facet name="header">
+							<h:outputText value="Create Date" styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:10%;" styleClass="columnwidth" sortBy="#{product.salesOrderNo}">
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.salesOrderNo}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column style="width:12%;" styleClass="columnwidth" sortBy="#{product.productCode}">
+						<f:facet name="header">
+							<h:outputText value="Product Code" styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.productCode}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column style="width:15%;" styleClass="columnwidth" sortBy="#{product.productName}">
+						<f:facet name="header">
+							<h:outputText value="Product Name" styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.productName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column style="width:5%;" styleClass="columnwidth" sortBy="#{product.uom}">
+						<f:facet name="header">
+							<h:outputText value="UOM" styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.uom}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+						<f:facet name="header">
+							<h:outputText value="Quantity Before" styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.quantityBefore}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+						<f:facet name="header">
+							<h:outputText value="Quantity Sold " styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.quantity}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+						<f:facet name="header">
+							<h:outputText value="Quantity After" styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.quantityAfter}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					
+
+					<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+						<f:facet name="header">
+							<h:outputText value="Unit Price #{app['common.currency']}" styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.unitPrice}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Sub Total #{app['common.currency']}" styleClass="tableheader"/>
+						</f:facet>
+						<h:outputText value="#{product.subTotal}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+
+
+				</p:dataTable>
+
+			</p:panel>
+
+
+		</p:outputPanel>
+
+<ui:include src="/templates/loadingDialog.xhtml" />
+
+	</h:form>
+</ui:composition>
+
+

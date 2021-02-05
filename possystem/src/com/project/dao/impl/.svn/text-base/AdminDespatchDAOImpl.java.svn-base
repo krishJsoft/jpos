@@ -1,0 +1,132 @@
+package com.alpha.dao.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import com.alpha.dao.interfaces.IAdminDespatchDAO;
+import com.alpha.hq.model.Admindespatch;
+
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 16 July 2013
+ * 
+ */
+
+@Repository("adminDespatchRepository")
+public class AdminDespatchDAOImpl implements IAdminDespatchDAO {
+	
+	public static Logger log = LoggerFactory.getLogger(AdminDespatchDAOImpl.class);
+	long l = 0;
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+	public EntityManager getEm() {
+		return em;
+	}
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+	
+	@Override
+	public boolean createNewAdminDespatch(Admindespatch adespatch)
+			throws Exception {
+		try {
+			em.persist(adespatch);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewAdminDespatch AdminDespatchDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updateAdminDespatch(Admindespatch adespatch)
+			throws Exception {
+		try {
+			em.merge(adespatch);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updateAdminDespatch AdminDespatchDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deleteAdminDespatch(Admindespatch adespatch)
+			throws Exception {
+		try {
+			em.remove(adespatch);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteAdminDespatch AdminDespatchDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Admindespatch> findByAdmindespatchList() throws Exception {
+		List<Admindespatch> admindespatch=null;
+		StringBuilder buf = new StringBuilder("SELECT b FROM Admindespatch b ");				
+		try {
+		buf.append(" order by b.despatchType");		
+		Query query = em.createQuery(buf.toString());	
+		admindespatch=query.getResultList();		
+		} 
+		catch (Exception e) {
+			log.info("Error in findByAdmindespatchList AdminDespatchDAOImpl " + e);
+			throw e;
+		}
+		return admindespatch;
+	}
+
+	@Override
+	public Admindespatch getAdminDespatchDetails(Integer despatchId)
+			throws Exception {
+		Admindespatch retData = null;
+		String sqlQuery = "select t from Admindespatch t  WHERE t.despatchId = :despatchId ";
+		try {
+			retData = (Admindespatch) em.createQuery(sqlQuery).setParameter("despatchId", despatchId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getAdminDespatchDetails AdminDespatchDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+	@Override
+	public boolean findAdminDespatchExites(String despatchType, String uom)
+			throws Exception {
+		boolean exits = true;
+		try {
+			String hslQuery = "from Admindespatch p where p.despatchType = :despatchType and p.uom=:uom";
+			Query query = em.createQuery(hslQuery).setParameter("despatchType", despatchType).setParameter("uom", uom);
+			@SuppressWarnings("unchecked")
+			List<Admindespatch> adminDespatchExits = query.getResultList();
+			if (adminDespatchExits.isEmpty()) {
+				exits = false;
+			}
+		} catch (Exception e) {
+			log.info("Error in findAdminDespatchExites AdminDespatchDAOImpl " + e);
+			throw e;
+		}
+		return exits;
+	}
+
+}

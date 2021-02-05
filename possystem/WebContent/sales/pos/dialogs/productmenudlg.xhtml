@@ -1,0 +1,356 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	>
+
+<h:head>
+<style>
+
+.barProductMenu .ui-dialog-header, .barProductMenu .ui-dialog-titlebar {	
+    background: #E32526!important;
+    height:10vh;
+ 
+}
+
+</style>
+<script>
+function validate(evt,value) {
+	  var theEvent = evt || window.event;
+	  var key = theEvent.keyCode || theEvent.which;
+	  key = String.fromCharCode( key );
+	  var regex = /[0-9]/;
+	  
+	  if( !regex.test(key)) {
+		  
+	    theEvent.returnValue = false;
+	    if(theEvent.preventDefault) theEvent.preventDefault();
+	  }
+	  
+	}
+</script>
+</h:head>
+
+<p:dialog id="barproductSearchPanel" hideEffect="fade"
+	styleClass="barProductMenu"
+	modal="true" closable="false"
+	widgetVar="barproductSearchPanel" style="width:10vw;" dynamic="true"
+	position="right top"
+	>
+	<h:panelGroup id="barproductPanel">
+<table style="height:100%">
+<tr>
+<td valign="top">
+	<h:outputText value="TABLE NO : " styleClass="totalValue" style="width:10%;font-size:120%;"/>
+	<h:outputText value="#{posBean.salesorder.tableName}" styleClass="totalValue" style="width:30%;font-size:120%;color:red;" 
+	/>
+</td>
+<td valign="top" align="right">
+		<p:commandButton 
+			value="SAVE"
+			styleClass="itembuttonsmall"
+			style="background:#66ff99"
+			action="#{posBean.saveBarKitchenOrder}"
+			rendered="#{posBean.salesorder.salesOrderId==0 }"
+			update=":addEditPosForm:posPanel,bardataTable3"
+			oncomplete="PF('barproductSearchPanel').hide()"
+		>
+		</p:commandButton>
+		 
+		
+		<p:commandButton value="UPDATE ORDER"
+			styleClass="itembuttonsmall"
+			style="background:#66ff99;width:150px"
+			rendered="#{posBean.salesorder.salesOrderId!=0 }"
+			update=":addEditPosForm:posPanel,bardataTable3"
+			action="#{posBean.updateBarKitchenorder}" ajax="false"
+			disabled="#{posBean.totalAmount==0}"
+			oncomplete="PF('barproductSearchPanel').hide()"
+		>
+		</p:commandButton>
+		<p:commandButton value="PRINT ORDER"
+			styleClass="itembuttonsmall"
+			style="background:#00bfff"
+			rendered="#{posBean.totalAmount>0}"
+			update=":addEditPosForm:posPanel,bardataTable3,:addEditPosForm:printkitchenbill"
+			oncomplete="PF('kitchenprintdlg').show(); "
+		>
+		</p:commandButton>
+		
+		<p:commandButton
+			value="CLOSE"
+			style="background:#ffffcc"
+			action="#{posBean.resetPos}"
+			update=":addEditPosForm:posPanel,bardataTable3"
+			styleClass="itembuttonsmall hoverBlackText"
+			oncomplete="PF('barproductSearchPanel').hide()" 
+			
+		>
+		</p:commandButton>
+</td>
+</tr>
+<tr>
+<td valign="top" style="border:1px solid">
+			
+
+				<h:panelGrid id="barsearchproductgrid" columns="10" border="0"
+					width="100%;height:50vh"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<p:panelGrid width="100%">
+
+						<p:row>
+							<p:column style="width:100%;" styleClass="alignTop"
+								id="barlistcolumn">
+							<div style="height: 23vh; overflow: auto;" >
+								<p:dataGrid id="bardataTablegrid" var="pos" rowIndexVar="row"
+									paginatorPosition="top" scrollable="true" scrollHeight="450"
+									rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}" columns="5"
+									value="#{productCategoryBean.productcategoriesList}"
+									paginator="false" rows="30" style="width: 100%"
+									rowsPerPageTemplate="50,75,100,200,300,400">
+
+
+									<p:commandButton value="#{pos.name}"
+										rendered="#{pos.categoryId==posBean.catId}"
+										styleClass="itembuttonsmall"
+										style="background:#b38f00;color:white"
+										update=":addEditPosForm:bardataTablegrid1,:addEditPosForm:bardataTablegrid"
+										actionListener="#{posBean.selectCategoryMenu}">
+										<f:attribute name="productcat" value="#{pos}" />
+									</p:commandButton>
+
+									<p:commandButton value="#{pos.name}"
+										rendered="#{pos.categoryId!=posBean.catId}"
+										styleClass="itembuttonsmall"
+										style="background:#F7DC6F;color:black"
+										update=":addEditPosForm:bardataTablegrid1,:addEditPosForm:bardataTablegrid"
+										actionListener="#{posBean.selectCategoryMenu}">
+										<f:attribute name="productcat" value="#{pos}" />
+									</p:commandButton>
+
+								</p:dataGrid>
+								</div>
+							</p:column>
+						</p:row>
+
+						<p:row>
+
+
+							<p:column style="width:100%;" styleClass="alignTop"
+								id="barlistcolumn1">
+<div style="height: 50vh; overflow: auto;" >
+								<p:dataGrid id="bardataTablegrid1" var="pos" rowIndexVar="row"
+									paginatorPosition="top" scrollable="true" scrollHeight="450"
+									rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}" columns="5"
+									value="#{productBean.productAll}" paginator="false" rows="40"
+									style="width: 100%" rowsPerPageTemplate="50,75,100,200,300,400">
+	
+		<p:commandLink style="width: 110px; "
+		update=":addEditPosForm:barcode,:addEditPosForm:posProductGrid,:addEditPosForm:posPanel,:addEditPosForm:barselectedProduct"
+		actionListener="#{posBean.selectProductMenuViaPos}"
+		oncomplete="PF('overproduct').hide();PF('barselectedProduct').show()">
+			<h:graphicImage value="/productImages/#{pos.imageDirectory}" width="110px" />
+				<f:attribute name="product" value="#{pos}" />
+		</p:commandLink>
+				
+			<br></br>
+			<p:commandButton value="#{pos.productName}"
+			styleClass="itembuttonsmall"
+			style="background:orange;color:black"
+			update=":addEditPosForm:posPanel,:addEditPosForm:barselectedProduct"			
+			actionListener="#{posBean.selectProductMenuViaPos}"
+			oncomplete="PF('overproduct').hide();PF('barselectedProduct').show()">
+				<f:attribute name="product" value="#{pos}" />
+			</p:commandButton>
+									
+
+								</p:dataGrid>
+			</div>
+							</p:column>
+
+
+						</p:row>
+
+					</p:panelGrid>
+				</h:panelGrid>
+
+
+			
+</td>
+<td valign="top" style="border:1px solid" >
+<div style="height: 80vh; overflow: auto;" >
+	<p:dataTable id="bardataTable3" var="pos" rowIndexVar="row"
+		scrollable="false" scrollHeight="440"
+		rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+		value="#{posBean.salesorderbreakdowns}" paginator="false"
+		rows="500" style="width: 100%;" rowsPerPageTemplate="5,10,15"
+	>
+		<p:columnGroup type="header">
+			<p:row>
+			<p:column style="width:40%;" styleClass="columnwidth">
+				<f:facet name="header">
+					<h:outputText value="ITEM NAME" styleClass="tableheader" />
+				</f:facet>
+			</p:column>
+	
+			<p:column style="width:15%;" styleClass="columnwidth">
+				<f:facet name="header">
+					<h:outputText value="UNIT PRICE" styleClass="tableheader" />
+				</f:facet>
+			</p:column>
+	
+			<p:column style="width:15%;" styleClass="columnwidth">
+				<f:facet name="header">
+					<h:outputText value="QTY" styleClass="tableheader" />
+				</f:facet>
+			</p:column>
+			<p:column style="width:15%;" styleClass="columnwidth">
+				<f:facet name="header">
+					<h:outputText value="PRICE" styleClass="tableheader" />
+				</f:facet>
+			</p:column>
+			<p:column style="width:10%;" styleClass="columnwidth" >
+				<f:facet name="header">
+					
+					<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+				</f:facet>
+			</p:column>
+			<p:column style="width:0px"  >
+			</p:column>
+			
+			</p:row>
+			
+		</p:columnGroup>
+		<p:column  >
+
+		<p:commandLink value="#{pos.productName}"
+			styleClass="logintxttable"
+			>
+		</p:commandLink>
+		
+
+	</p:column>
+	<p:column style="width:10%;" styleClass="logintxtnumberFormat" >
+		<p:inputText value="#{posBean.priceQty[pos.sno]}" size="8"
+			onkeypress='return validate(event)' 
+			styleClass="logintxtnumberFormat"
+			onfocus="this.select();"
+		>
+		<p:ajax event="change"
+			listener="#{posBean.addSalesPriceModifyItem1(row)}"
+			update="bardataTable3"
+			/>
+		<f:convertNumber pattern="#0.00" />
+		</p:inputText>
+	</p:column>
+
+	<p:column  styleClass="logintxtnumberFormat">
+		<p:inputText value="#{posBean.itemcountQty[pos.sno]}" size="8"
+			onkeypress='return validate(event)'
+			disabled="true"
+			styleClass="logintxtnumberFormat"
+			>
+			<f:convertNumber pattern="#0" />
+		</p:inputText>
+
+	</p:column>
+	
+	<p:column  styleClass="logintxtnumberFormat">
+		<h:outputText value="#{pos.subTotal}" size="8"
+			styleClass="logintxtnumberFormat"
+			>
+			<f:convertNumber pattern="#0.00" />
+		</h:outputText>
+	</p:column>
+	<p:column styleClass="columnwidth" rendered="#{pos.status!='ordered'}">
+		<p:commandLink value="" styleClass="ui-icon ui-icon-trash"
+			actionListener="#{posBean.instantRemove}"
+			update="bardataTable3"
+			>
+			<f:attribute name="posBreakdownId" value="#{row}" />
+		</p:commandLink>
+	</p:column>
+	
+	</p:dataTable>
+</div>
+		
+</td>
+</tr>
+
+</table>
+
+</h:panelGroup>
+</p:dialog>
+<p:dialog id="barselectedProduct" hideEffect="fade" header="QUANTITY"
+widgetVar="barselectedProduct" style="width:90%;" dynamic="true" 
+modal="true"
+>
+			
+	<h:panelGrid id="barproductPanelQty" columns="2" >
+	
+		<h:column>
+			<h:graphicImage value="/productImages/#{posBean.product.imageDirectory}" style="border:3px solid blue" width="150px"/>
+						
+		</h:column>
+		
+		<h:column>
+		
+			<center>
+			
+			<h:outputText value="#{posBean.product.productName}"
+				style="color:black;font-size:16px; align:right;font-weight: bold;" />
+				</center>
+		</h:column>
+		
+		<h:column colspan="2">
+		<br/>
+			<h:outputText value="Item Quantity : "/>
+		</h:column>
+		
+		<h:column>
+		<br/>
+		
+			<p:inputText id="barinputSelectedProductQty" value="#{posBean.selectedItemQty}"
+				size="12" onkeypress='return validate(event)'
+				onfocus="this.select();"
+			 styleClass="logintxtnumberFormat">
+				<f:convertNumber pattern="#0" />
+			</p:inputText>
+		</h:column>
+	
+		<h:column>
+			<p:separator/>	
+			<p:commandButton 
+				value="OK"
+				update=":addEditPosForm:bardataTable3,barproductPanel"
+				styleClass="itembuttonsmall"
+				style="background:#66ff99"
+				actionListener="#{posBean.selectedProductQty}"
+				oncomplete="PF('barselectedProduct').hide()" >
+			</p:commandButton>
+		</h:column>
+		
+		<h:column>
+		<p:separator/>
+			<p:commandButton
+				value="CANCEL"
+				style="background:#ffffcc"
+				styleClass="itembuttonsmall hoverBlackText"
+				oncomplete="PF('barselectedProduct').hide()" >
+			</p:commandButton>
+		</h:column>
+
+
+	
+	</h:panelGrid>		
+			
+</p:dialog>
+
+
+</ui:composition>
+
+

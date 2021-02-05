@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:a4j="http://richfaces.org/a4j">
+<f:loadBundle var="app" basename="META-INF/app-config" />
+<f:loadBundle var="msg" basename="META-INF/MessagesResources" />
+<f:loadBundle var="err" basename="META-INF/ErrorsResources" />
+<f:loadBundle var="des" basename="META-INF/DesignResources" />
+<h:head>
+	<title>#{msg['headerpage.lable.title.header']}</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	
+	 <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+            <meta content='text/html; charset=UTF-8' http-equiv="Content-Type"/>
+            <title>#{msg['headerpage.lable.title.header']}</title>
+            <link rel="shortcut icon" type="image/png" href="#{request.contextPath}/images/favicon.png" />
+        </f:facet>
+        
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/default.css" />
+        <link type="text/css" rel="stylesheet" href="#{request.contextPath}/css/syntaxhighlighter/syntaxhighlighter.css" />
+
+		<ui:insert name="head"></ui:insert>
+        
+        <script type="text/javascript">
+            $(function() {$('.sidebar a').hover(function() {$(this).toggleClass('ui-state-hover');})});
+        </script>
+        
+        <script type="text/javascript">
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-12200033-3']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+              var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+              ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+              var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+
+          </script>
+          
+
+	<link
+		href="${facesContext.externalContext.requestContextPath}/resources/css/app.css"
+		rel="stylesheet" type="text/css" />
+
+	<link
+		href="${facesContext.externalContext.requestContextPath}/resources/css/screen.css"
+		rel="stylesheet" type="text/css" />
+
+	<link
+		href="${facesContext.externalContext.requestContextPath}/resources/css/cssFFIx.css"
+		rel="stylesheet" type="text/css" />
+
+	<link type="text/css" rel="stylesheet"
+		href="${facesContext.externalContext.requestContextPath}/resources/css/syntaxhighlighter/syntaxhighlighter.css" />
+
+
+	<link type="text/css" rel="stylesheet"
+		href="#{request.contextPath}/resources/css/default.css" />
+
+
+	<script language="JavaScript" type="text/javascript"
+		src="${facesContext.externalContext.requestContextPath}/resources/js/projectscript.js">
+		
+	</script>
+
+</h:head>
+<h:body>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<br></br>
+	<div id="container">
+		<div id="content">
+			<ui:insert name="content">
+            [Template content will be inserted here]
+         </ui:insert>
+		</div>
+		<div id="footer"></div>
+	</div>
+
+</h:body>
+</html>

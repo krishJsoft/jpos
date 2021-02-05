@@ -1,0 +1,419 @@
+package com.alpha.dao.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.dao.interfaces.IProductDAO;
+import com.alpha.hq.model.Branchstaffmember;
+import com.alpha.hq.model.Product;
+import com.alpha.hq.model.Productprice;
+import com.alpha.hq.model.Productsupplier;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 10 July 2013
+ * 
+ */
+
+@Repository("productRepository")
+public class ProductDAOImpl implements IProductDAO {
+	
+	public static Logger log = LoggerFactory.getLogger(ProductDAOImpl.class);
+	long l = 0;
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+	public EntityManager getEm() {
+		return em;
+	}
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Product> findByProductListAll() throws Exception {		
+		List<Product> data = null;
+		try {
+			String hslQuery = "from Product p inner join fetch p.productcategory pc where p.quantityonHand<p.quantityonalert";
+			Query query = em.createQuery(hslQuery);
+			 data = query.getResultList();			
+		} catch (Exception e) {
+			log.info("Error in findByProductListAll ProductDAOImpl " + e);
+			throw e;
+		}
+		return data;
+	}
+
+	@Override
+	public int getProductCount(Integer categoryId, Integer supplierId,
+			String barcode, String status) throws Exception {
+		int countResult = 0;
+		try {
+			
+			StringBuilder buf = new StringBuilder(
+					"SELECT COUNT(p) FROM Product p   WHERE 1 = 1 ");
+
+			if (categoryId !=null && categoryId !=0) {
+				buf.append(" AND p.productcategory.categoryId =  :categoryId  ");
+			}			
+			if (supplierId !=null && supplierId !=0) 
+			{
+				//buf.append(" AND p.productsuppliers.supplier.supplierId =  :supplierId  ");
+			}			
+			if (barcode != null && barcode != "" && (!barcode.equalsIgnoreCase("0")) && (!barcode.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.barcode =:barcode ");
+			}
+			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.status =:status ");
+			}
+			
+			Query query = em.createQuery(buf.toString());
+
+			if (categoryId !=null && categoryId !=0) 
+			{
+				query.setParameter("categoryId", categoryId);
+			}			
+			if (supplierId !=null && supplierId !=0) 
+			{
+				//query.setParameter("supplierId", supplierId);
+			}
+			if (barcode != null && barcode != "" && (!barcode.equalsIgnoreCase("0")) && (!barcode.equalsIgnoreCase(""))) 
+			{
+				query.setParameter("barcode", barcode);
+			}			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase("")))  
+			{
+				query.setParameter("status", status);
+			}			
+			
+			Number cResults = (Number) query.getSingleResult();
+			countResult = Integer.parseInt(String.valueOf(cResults));
+			}
+		
+			catch (Exception e) {
+			log.info("Error in getProductCount of ProductDAOImpl "
+					+ e.toString());
+			throw e;
+		} 
+
+		return countResult;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Product> getProductList(Integer categoryId, Integer supplierId,
+			String barcode, String status, int start, int howMany)
+			throws Exception {
+			List<Product> data = null;
+			try {			
+			StringBuilder buf = new StringBuilder(
+					"SELECT p FROM Product p   inner join fetch p.productcategory pc WHERE 1 = 1");
+
+			if (categoryId !=null && categoryId !=0) {
+				buf.append(" AND pc.categoryId =  :categoryId  ");
+			}			
+			if (supplierId !=null && supplierId !=0) 
+			{
+				//buf.append(" AND s.supplierId =  :supplierId  ");
+			}			
+			if (barcode != null && barcode != "" && (!barcode.equalsIgnoreCase("0")) && (!barcode.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.barcode =:barcode ");
+			}
+			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.status =:status ");
+			}
+			
+			Query query = em.createQuery(buf.toString());
+
+			if (categoryId !=null && categoryId !=0) 
+			{
+				query.setParameter("categoryId", categoryId);
+			}			
+			if (supplierId !=null && supplierId !=0) 
+			{
+				//query.setParameter("supplierId", supplierId);
+			}
+			if (barcode != null && barcode != "" && (!barcode.equalsIgnoreCase("0")) && (!barcode.equalsIgnoreCase(""))) 
+			{
+				query.setParameter("barcode", barcode);
+			}			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase("")))  
+			{
+				query.setParameter("status", status);
+			}			
+			
+			query.setFirstResult(start);
+			query.setMaxResults(howMany);
+			data = query.getResultList();
+			}
+		
+			catch (Exception e) {
+			log.info("Error in getProductList of ProductDAOImpl "
+					+ e.toString());
+			throw e;
+		} 	
+		return data;
+	}
+
+	@Override
+	public List<Product> getProductListUsingLikeProductCode(String productCode)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Product getProductDetails(int productId) throws Exception {
+		Product retData = null;
+		String sqlQuery = "select t from Product t inner join fetch t.productsuppliers ps join fetch ps.supplier inner join fetch t.productcategory   WHERE t.productId = :productId ";
+		try {
+			retData = (Product) em.createQuery(sqlQuery).setParameter("productId", productId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getProductDetails ProductDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+	
+	@Override
+	public Product getProductPriceDetails(int productId) throws Exception {
+		Product retData = null;
+		String sqlQuery = "select t from Product t inner join fetch t.productprices ps   WHERE t.productId = :productId ";
+		try {
+			retData = (Product) em.createQuery(sqlQuery).setParameter("productId", productId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getProductPriceDetails ProductDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+	
+	@Override
+	public boolean createNewProduct(Product Product) throws Exception {
+		try {
+			em.persist(Product);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewProduct ProductDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updateProduct(Product Product) throws Exception {
+		try {
+			em.merge(Product);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updateProduct ProductDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deleteProduct(Product Product) throws Exception {
+		try {
+			em.remove(Product);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteProduct ProductDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public Product getProductDetailsByBarcode(String barcode) throws Exception {
+		Product retData = null;
+		String sqlQuery = "select t from Product t inner join fetch t.productsuppliers ps join fetch ps.supplier inner join fetch t.productcategory   WHERE t.barcode = :barcode ";
+		try {
+			retData = (Product) em.createQuery(sqlQuery).setParameter("barcode", barcode).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getProductDetailsByBarcode ProductDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+	@Override
+	public boolean findProductExites(String productName) throws Exception {
+		boolean exits = true;
+		try {
+			String hslQuery = "from Product p where p.productName = :productName";
+			Query query = em.createQuery(hslQuery).setParameter("productName", productName);
+			@SuppressWarnings("unchecked")
+			List<Product> productNameExits = query.getResultList();
+			if (productNameExits.isEmpty()) {
+				exits = false;
+			}
+		} catch (Exception e) {
+			log.info("Error in findProductExites ProductDAOImpl " + e);
+			throw e;
+		}
+		return exits;
+	}
+
+	@Override
+	public boolean findbarcodeExites(String barcode) throws Exception {
+		boolean exits = true;
+		try {
+			String hslQuery = "from Product p where p.barcode = :barcode";
+			Query query = em.createQuery(hslQuery).setParameter("barcode", barcode);
+			@SuppressWarnings("unchecked")
+			List<Product> barcodeExits = query.getResultList();
+			if (barcodeExits.isEmpty()) {
+				exits = false;
+			}
+		} catch (Exception e) {
+			log.info("Error in findbarcodeExites ProductDAOImpl " + e);
+			throw e;
+		}
+		return exits;
+	}
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Product> getProductList(String barcode) throws Exception {
+		List<Product> data = null;
+		try {			
+		StringBuilder buf = new StringBuilder("SELECT p FROM Product p  WHERE p.barcode like :barcode ");	
+		Query query = em.createQuery(buf.toString());
+		query.setParameter("barcode", barcode+"%");			
+		data = query.getResultList();
+		}
+	
+		catch (Exception e) {
+		log.info("Error in getProductList By String of ProductDAOImpl "
+				+ e.toString());
+		throw e;
+	} 	
+	return data;
+	}
+
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Productsupplier> getProductSuppliersByBarcode(String barcode) throws Exception {
+		List<Productsupplier> retData = null;
+		String sqlQuery = "select ps from Productsupplier ps join fetch ps.supplier inner join fetch ps.product p WHERE p.barcode = :barcode ";
+		try {
+			retData =  em.createQuery(sqlQuery).setParameter("barcode", barcode).getResultList();
+		} catch (Exception e) {
+			log.info("Error in getProductDetailsByBarcode ProductDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Productprice> getProductpriceByBarcode(String barCode)
+			throws Exception {
+		List<Productprice> retData = null;
+		String sqlQuery = "select pp from Productprice pp inner join fetch pp.product WHERE pp.barCode = :barCode ";
+		try {
+			retData =  em.createQuery(sqlQuery).setParameter("barCode", barCode).getResultList();
+		} catch (Exception e) {
+			log.info("Error in getProductpriceByBarcode ProductDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+	@Transactional
+	@Override
+	public boolean deleteProductPrice(Productprice productprice)
+			throws Exception {
+		try {
+			em.remove(productprice);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteProductPrice ProductDAOImpl " + e);
+			throw e;
+		}
+	}
+	@Override
+	public boolean updateProductPrice(Productprice productprice) throws Exception {
+		try {
+			em.merge(productprice);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updateProductPrice ProductDAOImpl " + e);
+			throw e;
+		}
+	}
+	
+	
+	@Override
+	public Productprice getProductPriceDetailsbyId(int productPriceId) throws Exception {
+		Productprice retData = null;
+		String sqlQuery = "select t from Productprice t inner join fetch t.product    WHERE t.productPriceId = :productPriceId ";
+		try {
+			retData = (Productprice) em.createQuery(sqlQuery).setParameter("productPriceId", productPriceId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getProductPriceDetailsbyId ProductDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+	@Transactional
+	@Override
+	public boolean deleteProductsupplier(Productsupplier productsupplier)
+			throws Exception {
+		try {
+			em.remove(productsupplier);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteProductsupplier ProductDAOImpl " + e);
+			throw e;
+		}
+	}
+	
+	
+	@Override
+	public Productsupplier getProductSupplierDetailsbyId(Integer productsupplierId) throws Exception {
+		Productsupplier retData = null;
+		String sqlQuery = "select t from Productsupplier t  WHERE t.productsupplierId = :productsupplierId ";
+		try {
+			retData = (Productsupplier) em.createQuery(sqlQuery).setParameter("productsupplierId", productsupplierId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getProductSupplierDetailsbyId ProductDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+}

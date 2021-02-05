@@ -1,0 +1,128 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="listProductForm" enctype="multipart/form-data">
+		<p:outputPanel id="productPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="productPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Add/Edit Product">
+
+				<ui:include src="/admin/productStep1.xhtml" />
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		<p:overlayPanel id="categoryPanel" for="categoryBtn" hideEffect="fade"
+			widgetVar="cpanel" dynamic="true">
+			<p:treeTable id="treetable" value="#{commonListBean.rootNode}"
+				scrollable="true" dynamic="true" selectionMode="single"
+				scrollHeight="320" scrollWidth="490" style="width:500px;"
+				selection="#{productCategoryBean.selectedNode}" var="category">
+
+				<p:column headerText="Category Name" style="width:200px;"
+					sortBy="#{category.name}" styleClass="columnwidth">
+					<h:outputText value="#{category.name}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column headerText="Action" style="width:50px;"
+					styleClass="columnwidth">
+					<p:commandLink value="Select" ajax="true"
+						oncomplete="PF('cpanel').hide();" styleClass="logintxttable"
+						actionListener="#{productBean.selectCategoryNew}"
+						update=":listProductForm:categoryName">
+						<f:attribute name="categoryId" value="#{category.categoryId}" />
+					</p:commandLink>
+				</p:column>
+			</p:treeTable>
+		</p:overlayPanel>
+
+
+
+
+		<p:overlayPanel id="tacPanel" for="taxBtn" hideEffect="fade"
+			widgetVar="txpanel" dynamic="true" style="width: 50%">
+
+			<p:dataTable id="taxdataTable" var="tax" rowIndexVar="row"
+				paginatorPosition="top" reflow="true" editable="true"
+				value="#{productBean.taxList}" paginator="false" rows="100"
+				style="width: 100%" rowsPerPageTemplate="5,10,15,25,50,100"
+				rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+				<p:column id="modelHeader" width="3%" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column style="width:2%;" styleClass="columnwidth">
+
+					<f:facet name="header">
+						
+					</f:facet>
+
+					<p:selectBooleanCheckbox
+						value="#{productBean.selectedTax[tax.id]}">
+						<p:ajax
+							listener="#{productBean.selectAddRemoveTaxAmount(row)}"
+							update=":listProductForm:taxCode" />
+					</p:selectBooleanCheckbox>
+				</p:column>
+
+
+
+				<p:column sortBy="#{tax.taxname}" width="10%"
+					styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['tax.label.taxname']}" />
+					</f:facet>
+					<h:outputText value="#{tax.taxname}" styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column sortBy="#{tax.taxvalue}" width="10%"
+					styleClass="logintxtnumberFormat">
+					<f:facet name="header">
+						<h:outputText value="#{msg['tax.label.taxvalue']}" />
+					</f:facet>
+					<h:outputText value="#{tax.taxvalue}"
+						styleClass="logintxtnumberFormat" />
+				</p:column>
+
+
+				<p:column sortBy="#{tax.glcode}" width="10%"
+					styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['tax.label.glcode']}" />
+					</f:facet>
+					<h:outputText value="#{tax.glcode}" styleClass="logintxttable" />
+				</p:column>
+
+
+
+
+			</p:dataTable>
+
+
+		</p:overlayPanel>
+
+
+
+
+
+	</h:form>
+	
+</ui:composition>
+
+

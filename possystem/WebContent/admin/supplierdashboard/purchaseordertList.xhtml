@@ -1,0 +1,98 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditPurchaseRequestForm">
+		<p:outputPanel id="purchaseRequestPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="purchaseRequestPanel" /></td>
+				</tr>
+			</table>
+
+			<br />
+
+
+			<p:dataTable id="dataTable" var="purchase" rowIndexVar="row"
+				scrollable="false" lazy="true"
+				value="#{purchaseOrderBean.purchaseorderModel}" paginator="true"
+				rows="10" style="width: 100%"
+				rowsPerPageTemplate="5,10,15,25,50,100"
+				rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+
+				<p:column id="modelHeader">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column sortBy="#{purchase.companyName}">
+					<f:facet name="header">
+						<h:outputText value="Supplier Name" />
+					</f:facet>
+					<h:outputText value="#{purchase.companyName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Created Date" />
+					</f:facet>
+					<h:outputText value="#{purchase.createdDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</p:column>
+
+
+
+				<p:column sortBy="#{purchase.purchaseOrderNo}">
+					<f:facet name="header">
+						<h:outputText value="Order No" />
+					</f:facet>
+					<h:outputText value="#{purchase.purchaseOrderNo}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column sortBy="#{purchase.totalAmount}"
+					styleClass="logintxtnumberFormat">
+					<f:facet name="header">
+						<h:outputText value="Total Amount" />
+					</f:facet>
+					<h:outputText value="#{purchase.totalAmount}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column sortBy="#{purchase.status}">
+					<f:facet name="header">
+						<h:outputText value="Status" />
+					</f:facet>
+
+
+					<h:outputText value="#{app['purchaseorder.status.neworderlable']}"
+						rendered="#{purchase.status==app['purchaseorder.status.newordervalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['purchaseorder.status.processedlable']}"
+						rendered="#{purchase.status==app['purchaseorder.status.processedvalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['purchaseorder.status.orderedlable']}"
+						rendered="#{purchase.status==app['purchaseorder.status.orderedvalue']}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+			</p:dataTable>
+
+		</p:outputPanel>
+
+
+	</h:form>
+</ui:composition>
+
+

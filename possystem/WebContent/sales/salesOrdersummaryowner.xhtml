@@ -1,0 +1,191 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesPanel">
+			<p:message for="salesPanel" />
+			<p:panel styleClass="mypanel" header="Sales Summary">
+
+
+				<h:panelGrid id="salesGrid" columns="10" border="0" width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					
+			
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{salesorderBean.dateFrom}" pattern="dd/MMM/yyyy hh:mm:ss a" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{salesorderBean.dateTo}" pattern="dd/MMM/yyyy hh:mm:ss a " />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{salesorderBean.searchSalesOrderSummaryowner}" update="dataTable" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{salesorderBean.resetSalesOrderSummaryowner}"
+							update="salesPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+					scrollable="true" scrollHeight="420"
+					value="#{salesorderBean.salesorderlist}" paginator="false"
+					rows="1000000" style="width: 100%" 
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+					<p:column id="modelHeader" width="5%">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+				
+
+					<p:column style="width:7%">
+						<f:facet name="header" >
+							<h:outputText value="Created Date" />
+						</f:facet>
+						<h:outputText value="#{sales.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+				
+					<p:column sortBy="#{sales.salesOrderNo}" style="width:8%">
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" />
+						</f:facet>
+						
+						<f:facet name="footer">
+							<h:outputText value="Total Amount (#{app['common.currency']})" />
+						</f:facet>
+						
+						<h:outputText value="#{sales.salesOrderNo}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column sortBy="#{sales.totalTax}"
+						styleClass="logintxtnumberFormat" style="width:8%">
+						<f:facet name="header">
+							<h:outputText value="Tax Amount (#{app['common.currency']})" />
+						</f:facet>
+						<h:outputText value="#{sales.totalTax}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+						
+						<f:facet name="footer">
+						<p:outputPanel style="float: right">
+							<h:outputText value="#{salesorderBean.totalTaxAmount}" />
+							</p:outputPanel>
+						</f:facet>
+						
+					</p:column>
+					
+
+					<p:column sortBy="#{sales.totalAmount}"
+						styleClass="logintxtnumberFormat" style="width:8%">
+						<f:facet name="header">
+							<h:outputText value="Sales Amount (#{app['common.currency']})" />
+						</f:facet>
+						<h:outputText value="#{sales.totalAmount}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+						
+						<f:facet name="footer">
+						<p:outputPanel style="float: right">
+							<h:outputText value="#{salesorderBean.totalAmount}" />
+							</p:outputPanel>
+						</f:facet>
+						
+					</p:column>
+
+
+					<p:column sortBy="#{sales.status}" style="width:7%">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+
+						<h:outputText value="#{app['salesorder.status.neworderlable']}"
+							rendered="#{sales.status==app['salesorder.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.processedlable']}"
+							rendered="#{sales.status==app['salesorder.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.orderedlable']}"
+							rendered="#{sales.status==app['salesorder.status.orderedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.paidlable']}"
+							rendered="#{sales.status==app['salesorder.status.paidvalue']}"
+							styleClass="logintxttable" />
+
+
+					</p:column>
+
+
+					<p:column style="width: 7%;">
+						<f:facet name="header">Action</f:facet>
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+								update=":addEditSalesForm:requestitem"
+								rendered="#{loginBean.functionList.contains('View SalesOrder')}"
+								actionListener="#{salesorderBean.viewSalesOrder}"
+								oncomplete="PF('salesDig').show()">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+							
+						</p:menuButton>
+
+
+
+					</p:column>
+
+
+				</p:dataTable>
+
+
+
+			</p:panel>
+
+		</p:outputPanel>
+		<ui:include src="/sales/salesApprove.xhtml" />
+		<ui:include src="/sales/salesOrderView.xhtml" />
+		<ui:include src="/templates/loadingDialog.xhtml" />
+	</h:form>
+</ui:composition>
+
+

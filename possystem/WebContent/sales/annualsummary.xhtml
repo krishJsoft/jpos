@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<head></head>
+<style>
+.row_selected{
+background: #E32526;
+}
+</style>
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesPanel">
+			<p:message for="salesPanel" />
+			<p:panel styleClass="mypanel" header="Monthly / Yearly  Sales Report">
+	<br />
+
+				<h:panelGrid id="salesGrid" columns="10" border="0" width="20%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<p:selectOneMenu id="salesyear" value="#{chartBean.salesyear}"
+						style="width:180px; text-align:left;">
+						<f:selectItems value="#{commonListBean.yearList}"></f:selectItems>
+					</p:selectOneMenu>
+
+					<p:commandButton value="Search" ajax="true"
+						action="#{dashboardBean.getSalesRecord}" update="dataTable" />
+
+				
+				</h:panelGrid>
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+					scrollable="true" scrollHeight="480"
+					value="#{dashboardBean.dashList}" paginator="false" rows="1000000"
+					style="width: 100%" rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+					<p:column style="width:3%;" styleClass="columnwidth">
+						<p:selectBooleanCheckbox
+							value="#{dashboardBean.checkmonth[sales.monthName]}">
+							
+						</p:selectBooleanCheckbox>
+					</p:column>
+
+
+					<p:column id="modelHeader" width="5%">
+						<f:facet name="header">
+							<h:outputText value="#{des['common.table.header.no']}" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width:25%">
+						<f:facet name="header">
+							<h:outputText value="Month" />
+						</f:facet>
+
+						<p:commandLink ajax="false" styleClass="logintxttable"
+							value="#{sales.monthName}"
+							actionListener="#{salesorderBean.annualSalesOrder}">
+							<f:attribute name="sales" value="#{sales}" />
+						</p:commandLink>
+
+					</p:column>
+
+
+
+
+
+					<p:column styleClass="logintxtnumberFormat" style="width:15%">
+						<f:facet name="header">
+							<h:outputText value="Sales Amount (#{app['common.currency']})" />
+						</f:facet>
+						<h:outputText value="#{sales.subTotal.subtract(sales.originalTax)}" styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+
+
+
+					</p:column>
+
+					<p:column styleClass="logintxtnumberFormat" style="width:15%">
+						<f:facet name="header">
+							<h:outputText value="Tax Amount (#{app['common.currency']})" />
+						</f:facet>
+						<h:outputText value="#{sales.originalTax}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+
+					</p:column>
+
+
+
+
+				</p:dataTable>
+				<p:commandButton value="Print " id="salesMonthPrintDlgButton" action="#{dashboardBean.printrequiredMonth}"
+				style="background: #E32526;color:white"
+					update="addEditSalesForm:annualdataTable:" >
+				</p:commandButton>
+
+
+			</p:panel>
+
+		</p:outputPanel>
+
+		<ui:include src="/sales/annualprinttemplate.xhtml" />
+		<ui:include src="/sales/salesApprove.xhtml" />
+		<ui:include src="/sales/salesOrderView.xhtml" />
+		<ui:include src="/templates/loadingDialog.xhtml" />
+	</h:form>
+
+	
+	<script>
+	$(document).ready(function(){
+		$('td:nth-child(3)').mouseover(function() {
+	        $(this).addClass('row_selected');
+	    });
+	    $('td:nth-child(3)').mouseout(function() {
+	        $(this).removeClass('row_selected');
+	    });
+
+	    
+	});
+	</script>
+
+</ui:composition>
+
+

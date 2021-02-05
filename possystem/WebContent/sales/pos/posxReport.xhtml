@@ -1,0 +1,230 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogxreport" header="X-Report" widgetVar="xreport"
+		modal="true" height="500" width="60%">
+		<p:outputPanel id="salesoptionxreportPanel">
+			<p:message for="salesoptionxreportPanel" />
+				
+			<p:panel style="height:440px;" styleClass="xreportpanel">
+
+				<table align="center" width="95%" border="0">
+					<tr>
+
+						<td align="left"><h:outputText value="Terminal"
+								styleClass="reporttxtbold"></h:outputText></td>
+						<td align="left"><h:outputText value=":"
+								styleClass="reporttxt"></h:outputText></td>
+						<td align="left"><h:outputText value="#{posBean.poscounter.counterNo}"
+								styleClass="reporttxt"></h:outputText></td>
+
+					</tr>
+
+					<tr>
+
+						<td align="left"><h:outputText value="Printed by"
+								styleClass="reporttxtbold"></h:outputText></td>
+						<td align="left"><h:outputText value=":"
+								styleClass="reporttxt"></h:outputText></td>
+						<td align="left"><h:outputText
+								value="#{loginBean.logdetail.emailAddress}"
+								styleClass="reporttxt"></h:outputText></td>
+
+
+						<td align="right"><h:outputText value=""
+								styleClass="reporttxt"></h:outputText></td>
+						<td align="right"><h:outputText value=""
+								styleClass="reporttxt"></h:outputText></td>
+						<td align="right"><h:outputText value=""
+								styleClass="reporttxt"></h:outputText></td>
+
+					</tr>
+
+
+				</table>
+
+
+
+				<p:dataTable id="xreport" var="sales" rowIndexVar="row" paginator="false" scrollRows="5000"
+					styleClass="order-table" headerClass="order-table-header" scrollHeight="280" scrollable="true"
+					rowClasses="order-table-odd-row,order-table-even-row"
+					value="#{posOptionBean.poscashtransactionListObj}"
+					style="width:100%;">
+
+					<p:column style="width:10%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Date" />
+						</f:facet>
+						<h:outputText value="#{sales.lastupdatedDate}"
+							styleClass="reporttxt">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column style="width:10%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Time" />
+						</f:facet>
+						<h:outputText value="#{sales.lastupdatedDate}"
+							styleClass="reporttxt">
+							<f:convertDateTime pattern="hh:MM:ss aa" />
+						</h:outputText>
+					</p:column>
+
+					<p:column style="width:15%;" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Sales Receipt No" />
+						</f:facet>
+						<h:outputText value="#{sales.salesOrderNo}" styleClass="reporttxt" />
+					</p:column>
+
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Total Amount (RM) " />
+						</f:facet>
+						<h:outputText value="#{sales.creditamount}"  style="text-align:right;"/>
+					</p:column>					
+					
+					<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Paid (RM) " />
+						</f:facet>
+						<h:outputText value="#{sales.receivedAmount}" style="text-align:right;" />
+					</p:column>
+					
+
+				</p:dataTable>			
+
+
+				<table align="center" width="95%" border="0">
+					<tr>
+
+						<td align="left" colspan="3"><h:outputText value=""
+								styleClass="reporttxtbold"></h:outputText></td>
+
+
+						<td align="right"><h:outputText value="Total Transaction(RM)"
+								styleClass="reporttxtbold"></h:outputText></td>
+						<td align="right"><h:outputText value=":"
+								styleClass="reporttxt"></h:outputText></td>
+						<td align="right"><h:outputText
+								value="#{posOptionBean.poscashtransaction.totalAmount}"
+								styleClass="reporttxtbold"></h:outputText></td>
+
+					</tr>
+
+					<tr>
+
+						<td align="left" colspan="3"><h:outputText value=""
+								styleClass="reporttxtbold"></h:outputText></td>
+
+
+						<td align="right"><h:outputText
+								value="Total Credit-Cash In(RM)" styleClass="reporttxtbold"></h:outputText></td>
+						<td align="right"><h:outputText value=":"
+								styleClass="reporttxt"></h:outputText></td>
+						<td align="right"><h:outputText
+								value="#{posOptionBean.poscashtransaction.receivedAmount}"
+								styleClass="reporttxtbold"></h:outputText></td>
+
+					</tr>
+
+					<tr>
+
+						<td align="left" colspan="3"><h:outputText value=""
+								styleClass="reporttxtbold"></h:outputText></td>
+
+
+						<td align="right"><h:outputText
+								value="Total Debit-Cash Out(RM)" styleClass="reporttxtbold"></h:outputText></td>
+						<td align="right"><h:outputText value=":"
+								styleClass="reporttxt"></h:outputText></td>
+						<td align="right"><h:outputText
+								value="#{posOptionBean.poscashtransaction.debitAmount}"
+								styleClass="reporttxtbold"></h:outputText></td>
+
+					</tr>
+
+					<tr>
+
+						<td align="left" colspan="3"><h:outputText value=""
+								styleClass="reporttxtbold"></h:outputText></td>
+
+						<td align="right" colspan="3"><h:outputText
+								value="---------------" styleClass="reporttxtbold"></h:outputText></td>
+					</tr>
+
+
+
+					<tr>
+
+						<td align="left" colspan="3"><h:outputText value=""
+								styleClass="reporttxtbold"></h:outputText></td>
+
+
+						<td align="right"><h:outputText value="Short Amount (RM)"
+								styleClass="reporttxtbold"></h:outputText></td>
+						<td align="right"><h:outputText value=":"
+								styleClass="reporttxt"></h:outputText></td>
+						<td align="right"><h:outputText
+								value="#{posOptionBean.poscashtransaction.balanceAmount}"
+								styleClass="reporttxtbold"></h:outputText></td>
+
+					</tr>
+
+
+
+
+				</table>
+
+
+
+
+				<br></br>
+				
+
+				<table align="center" width="100%" border="0">
+					<tr>
+
+						<td align="left"><h:outputText value="Confirmed by"
+								styleClass="reporttxtbold"></h:outputText></td>
+						<td align="left"><h:outputText value="--------------------"
+								styleClass="reporttxt"></h:outputText></td>
+
+
+						<td align="right"><h:outputText value="Signature"
+								styleClass="reporttxtbold"></h:outputText></td>
+						<td align="right"><h:outputText value="--------------------"
+								styleClass="reporttxt"></h:outputText></td>
+					</tr>
+
+
+				</table>
+			</p:panel>
+
+
+			<br></br>
+			<p:commandButton value="Close" oncomplete="PF('xreport').hide();" styleClass="itembutton"
+				style="width:149px; height:30px; "
+				immediate="true" ajax="true" async="true">
+			</p:commandButton>
+			
+			<p:commandButton value="Print"  styleClass="itembutton"
+				style="width:149px; height:30px; "
+				 ajax="true" async="true">
+				<p:printer target="xreport" />
+			</p:commandButton>
+			
+			
+
+		</p:outputPanel>
+	</p:dialog>
+
+</ui:composition>

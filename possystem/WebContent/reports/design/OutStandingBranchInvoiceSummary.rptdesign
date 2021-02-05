@@ -1,0 +1,1159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <list-property name="propertyBindings">
+        <structure>
+            <property name="name">odaJndiName</property>
+            <property name="id">7</property>
+            <expression name="value" type="javascript">reportContext.getHttpServletRequest().getSession().getServletContext().getInitParameter("BIRT_JNDI_URL")</expression>
+        </structure>
+        <structure>
+            <property name="name">odaDriverClass</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaURL</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaUser</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaAutoCommit</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaIsolationMode</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">odaPassword</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileName</property>
+            <property name="id">7</property>
+        </structure>
+        <structure>
+            <property name="name">OdaConnProfileStorePath</property>
+            <property name="id">7</property>
+        </structure>
+    </list-property>
+    <property name="units">in</property>
+    <property name="iconFile">/templates/blank_report.gif</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <list-property name="libraries">
+        <structure>
+            <property name="fileName">WebContent/report/designs/Permai.rptlibrary</property>
+            <property name="namespace">Permai</property>
+        </structure>
+    </list-property>
+    <parameters>
+        <scalar-parameter name="BranchIDs" id="11">
+            <text-property name="promptText">Enter Branch IDs</text-property>
+            <property name="valueType">static</property>
+            <property name="dataType">string</property>
+            <property name="distinct">true</property>
+            <list-property name="selectionList"/>
+            <property name="paramType">simple</property>
+            <property name="controlType">text-box</property>
+            <structure name="format">
+                <property name="category">Unformatted</property>
+            </structure>
+        </scalar-parameter>
+    </parameters>
+    <data-sources>
+        <oda-data-source extensionID="org.eclipse.birt.report.data.oda.jdbc" name="PermaiDB2" id="7"
+ extends="Permai.PermaiDB2">
+            <list-property name="privateDriverProperties">
+                <ex-property>
+                    <name>metadataBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledMetadataBidiFormatStr</name>
+                </ex-property>
+                <ex-property>
+                    <name>contentBidiFormatStr</name>
+                    <value>ILYNN</value>
+                </ex-property>
+                <ex-property>
+                    <name>disabledContentBidiFormatStr</name>
+                </ex-property>
+            </list-property>
+            <property name="odaDriverClass">com.ibm.db2.jcc.DB2Driver</property>
+            <property name="odaJndiName">jdbc/birtDS</property>
+        </oda-data-source>
+    </data-sources>
+    <data-sets>
+        <oda-data-set extensionID="org.eclipse.birt.report.data.oda.jdbc.JdbcSelectDataSet" name="BranchTreatmentsDataSet" id="8">
+            <list-property name="parameters"/>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">BRANCHID</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">BRANCHNAME</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">AMT30</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">AMT60</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">AMT90</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">ABVEAMT90</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">OS</property>
+                        <property name="dataType">decimal</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <method name="beforeOpen"><![CDATA[this.queryText = this.queryText.replace("branchIDS", params["BranchIDs"].value);
+Packages.java.lang.System.out.println(this.queryText);]]></method>
+            <property name="dataSource">PermaiDB2</property>
+            <list-property name="resultSet">
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">BRANCHID</property>
+                    <property name="nativeName">BRANCHID</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">BRANCHNAME</property>
+                    <property name="nativeName">BRANCHNAME</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">AMT30</property>
+                    <property name="nativeName">AMT30</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">AMT60</property>
+                    <property name="nativeName">AMT60</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">AMT90</property>
+                    <property name="nativeName">AMT90</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">ABVEAMT90</property>
+                    <property name="nativeName">ABVEAMT90</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+                <structure>
+                    <property name="position">7</property>
+                    <property name="name">OS</property>
+                    <property name="nativeName">OS</property>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <xml-property name="queryText"><![CDATA[SELECT D.BRANCHID
+, D.BRANCHNAME
+, SUM(D.AMT30) AS AMT30
+, SUM(D.AMT60) AS AMT60
+, SUM(D.AMT90) AS AMT90
+, SUM(D.ABVEAMT90) AS ABVEAMT90
+, SUM(D.OS) AS OS
+FROM TABLE (
+SELECT A.BRANCHID
+, A.BRANCHNAME
+, ( CASE WHEN ( DAYS(CURRENT DATE) - DAYS(C.INVOICEDATE) ) <= 30
+THEN ( C.NETTPAYABLE - C.AMOUNTPAID )
+ELSE 0
+END ) AS AMT30
+, ( CASE WHEN DAYS(CURRENT DATE) - DAYS(C.INVOICEDATE) > 30
+AND DAYS(CURRENT DATE) - DAYS(C.INVOICEDATE) <= 60
+THEN ( C.NETTPAYABLE - C.AMOUNTPAID )
+ELSE 0
+END ) AS AMT60
+, ( CASE WHEN DAYS(CURRENT DATE) - DAYS(C.INVOICEDATE) > 60
+AND DAYS(CURRENT DATE) - DAYS(C.INVOICEDATE) <= 90
+THEN ( C.NETTPAYABLE - C.AMOUNTPAID )
+ELSE 0
+END ) AS AMT90
+, ( CASE WHEN ( DAYS(CURRENT DATE) - DAYS(C.INVOICEDATE) ) > 90
+THEN ( C.NETTPAYABLE - C.AMOUNTPAID )
+ELSE 0
+END ) AS ABVEAMT90
+, ( C.NETTPAYABLE - C.AMOUNTPAID ) AS OS
+FROM EMERGE.BRANCHES AS A
+, EMERGE.BRANCHINVOICES AS C
+WHERE A.BRANCHID IN (branchIDS)
+AND A.BRANCHID = C.BRANCHID
+AND ( C.INVOICESTATUS = 1
+OR C.INVOICESTATUS = 2
+)
+)
+AS D
+GROUP BY D.BRANCHID,
+D.BRANCHNAME]]></xml-property>
+            <xml-property name="designerValues"><![CDATA[<?xml version="1.0" encoding="UTF-8"?>
+<model:DesignValues xmlns:design="http://www.eclipse.org/datatools/connectivity/oda/design" xmlns:model="http://www.eclipse.org/birt/report/model/adapter/odaModel">
+  <Version>2.0</Version>
+  <design:ResultSets derivedMetaData="true">
+    <design:resultSetDefinitions>
+      <design:resultSetColumns>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>BRANCHID</design:name>
+              <design:position>1</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>BRANCHID</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>BRANCHID</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>BRANCHNAME</design:name>
+              <design:position>2</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>100</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>NotNullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>BRANCHNAME</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>BRANCHNAME</design:label>
+            <design:formattingHints>
+              <design:displaySize>100</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>CONTACTNAME</design:name>
+              <design:position>3</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>255</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>CONTACTNAME</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>CONTACTNAME</design:label>
+            <design:formattingHints>
+              <design:displaySize>255</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>PHNO</design:name>
+              <design:position>4</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>12</design:nativeDataTypeCode>
+            <design:precision>50</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>PHNO</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>PHNO</design:label>
+            <design:formattingHints>
+              <design:displaySize>50</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>DAYS30</design:name>
+              <design:position>5</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>DAYS30</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>DAYS30</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>AMT30</design:name>
+              <design:position>6</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>3</design:nativeDataTypeCode>
+            <design:precision>31</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>AMT30</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>AMT30</design:label>
+            <design:formattingHints>
+              <design:displaySize>33</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>DAYS60</design:name>
+              <design:position>7</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>DAYS60</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>DAYS60</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>AMT60</design:name>
+              <design:position>8</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>3</design:nativeDataTypeCode>
+            <design:precision>31</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>AMT60</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>AMT60</design:label>
+            <design:formattingHints>
+              <design:displaySize>33</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>DAYS90</design:name>
+              <design:position>9</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>DAYS90</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>DAYS90</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>AMT90</design:name>
+              <design:position>10</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>3</design:nativeDataTypeCode>
+            <design:precision>31</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>AMT90</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>AMT90</design:label>
+            <design:formattingHints>
+              <design:displaySize>33</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ABVE90</design:name>
+              <design:position>11</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>4</design:nativeDataTypeCode>
+            <design:precision>10</design:precision>
+            <design:scale>0</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ABVE90</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ABVE90</design:label>
+            <design:formattingHints>
+              <design:displaySize>11</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>ABVEAMT90</design:name>
+              <design:position>12</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>3</design:nativeDataTypeCode>
+            <design:precision>31</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>ABVEAMT90</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>ABVEAMT90</design:label>
+            <design:formattingHints>
+              <design:displaySize>33</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+        <design:resultColumnDefinitions>
+          <design:attributes>
+            <design:identifier>
+              <design:name>OS</design:name>
+              <design:position>13</design:position>
+            </design:identifier>
+            <design:nativeDataTypeCode>3</design:nativeDataTypeCode>
+            <design:precision>31</design:precision>
+            <design:scale>2</design:scale>
+            <design:nullability>Nullable</design:nullability>
+            <design:uiHints>
+              <design:displayName>OS</design:displayName>
+            </design:uiHints>
+          </design:attributes>
+          <design:usageHints>
+            <design:label>OS</design:label>
+            <design:formattingHints>
+              <design:displaySize>33</design:displaySize>
+            </design:formattingHints>
+          </design:usageHints>
+        </design:resultColumnDefinitions>
+      </design:resultSetColumns>
+      <design:criteria/>
+    </design:resultSetDefinitions>
+  </design:ResultSets>
+</model:DesignValues>]]></xml-property>
+        </oda-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="4">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="5">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="6">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="HeaderStyle" id="81">
+            <property name="backgroundAttachment">fixed</property>
+            <property name="backgroundColor">#C0C0C0</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="textAlign">center</property>
+            <property name="verticalAlign">middle</property>
+            <property name="canShrink">true</property>
+        </style>
+        <style name="ColumnStyle" id="82">
+            <property name="borderBottomStyle">none</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">none</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">none</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">none</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="paddingTop">0pt</property>
+            <property name="paddingLeft">0pt</property>
+            <property name="paddingBottom">0pt</property>
+            <property name="paddingRight">0pt</property>
+        </style>
+        <style name="FooterStyle" id="83">
+            <property name="textAlign">right</property>
+        </style>
+        <style name="HeaderLabelStyle" id="141">
+            <property name="fontFamily">"Arial Black"</property>
+            <property name="fontSize">8pt</property>
+        </style>
+        <style name="ColumnDetailStyle" id="223">
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="marginLeft">0pt</property>
+            <property name="marginRight">0pt</property>
+            <property name="paddingTop">1pt</property>
+            <property name="paddingLeft">1pt</property>
+        </style>
+        <style name="PageNumberStyle" id="225">
+            <property name="backgroundPositionX">right</property>
+            <property name="backgroundPositionY">center</property>
+            <property name="fontFamily">"Arial Greek"</property>
+            <structure name="numberFormat">
+                <property name="category">General Number</property>
+                <property name="pattern">General Number</property>
+            </structure>
+        </style>
+        <style name="CornerColumnStyle" id="251">
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopWidth">thin</property>
+        </style>
+        <style name="ReportHeaderStyle" id="265">
+            <property name="fontSize">12pt</property>
+            <property name="fontStyle">italic</property>
+            <property name="textUnderline">underline</property>
+        </style>
+        <style name="HeaderTitleStyle" id="329">
+            <property name="fontSize">12pt</property>
+            <property name="fontWeight">bold</property>
+            <property name="textAlign">center</property>
+        </style>
+        <style name="RightAlign" id="363">
+            <property name="textAlign">right</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <property name="type">a4</property>
+            <property name="orientation">landscape</property>
+            <property name="headerHeight">1.8in</property>
+            <page-footer>
+                <grid id="366">
+                    <property name="height">0.71875in</property>
+                    <property name="width">11.03125in</property>
+                    <column id="367">
+                        <property name="width">8.864583333333334in</property>
+                    </column>
+                    <column id="332">
+                        <property name="width">0.5208333333333334in</property>
+                    </column>
+                    <column id="333">
+                        <property name="width">1.6458333333333333in</property>
+                    </column>
+                    <row id="368">
+                        <property name="height">0.28125in</property>
+                        <cell id="369"/>
+                        <cell id="370">
+                            <label id="361">
+                                <text-property name="text">Page</text-property>
+                            </label>
+                        </cell>
+                        <cell id="371">
+                            <grid id="346">
+                                <property name="width">3.6145833333333335in</property>
+                                <column id="347">
+                                    <property name="width">0.65625in</property>
+                                </column>
+                                <column id="348">
+                                    <property name="width">0.10416666666666667in</property>
+                                </column>
+                                <column id="349">
+                                    <property name="width">2.8541666666666665in</property>
+                                </column>
+                                <row id="350">
+                                    <cell id="372">
+                                        <auto-text id="352">
+                                            <property name="style">RightAlign</property>
+                                            <property name="type">page-number</property>
+                                        </auto-text>
+                                    </cell>
+                                    <cell id="373">
+                                        <text id="374">
+                                            <property name="contentType">plain</property>
+                                            <text-property name="content"><![CDATA[/]]></text-property>
+                                        </text>
+                                    </cell>
+                                    <cell id="375">
+                                        <auto-text id="376">
+                                            <property name="type">total-page</property>
+                                        </auto-text>
+                                    </cell>
+                                </row>
+                            </grid>
+                        </cell>
+                    </row>
+                    <row id="377">
+                        <cell id="378"/>
+                        <cell id="379">
+                            <label id="380">
+                                <text-property name="text">Date</text-property>
+                            </label>
+                        </cell>
+                        <cell id="381">
+                            <text id="382">
+                                <property name="contentType">html</property>
+                                <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                            </text>
+                        </cell>
+                    </row>
+                    <row id="342">
+                        <cell id="343"/>
+                        <cell id="383"/>
+                        <cell id="345"/>
+                    </row>
+                </grid>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <text id="318">
+            <property name="contentType">html</property>
+            <text-property name="content"><![CDATA[<script type="text/javascript">
+    
+    function hideToc(){
+        var toc=document.getElementsByName("toc");
+        if( toc.length > 0 ){
+            toc[0].style.display='none';
+        }
+        var expt=document.getElementsByName("export");
+        if( expt.length > 0 ){
+            expt[0].style.display='none';
+        }
+        var expt=document.getElementsByName("printServer");
+        if( expt.length > 0 ){
+            expt[0].style.display='none';
+        }
+        
+          var expt=document.getElementsByName("parameter");
+        if( expt.length > 0 ){
+            expt[0].style.display='none';
+        }
+        
+    }
+    hideToc();
+</script>]]></text-property>
+        </text>
+        <data id="328">
+            <property name="style">HeaderTitleStyle</property>
+            <property name="fontFamily">"Arial"</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">TitleVariable</property>
+                    <text-property name="displayName">TitleVariable</text-property>
+                    <expression name="expression" type="javascript">vars["TitleVariable"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <property name="resultSetColumn">TitleVariable</property>
+        </data>
+        <table id="242">
+            <property name="marginTop">45pt</property>
+            <property name="marginLeft">2pt</property>
+            <property name="marginBottom">20pt</property>
+            <property name="marginRight">2pt</property>
+            <property name="canShrink">false</property>
+            <property name="width">11.135416666666666in</property>
+            <property name="dataSet">BranchTreatmentsDataSet</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">BranchId</property>
+                    <text-property name="displayName">BranchId</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["BRANCHID"]</expression>
+                    <property name="dataType">integer</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">BranchName</property>
+                    <text-property name="displayName">BranchName</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["BRANCHNAME"]</expression>
+                    <property name="dataType">string</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">30Amt</property>
+                    <text-property name="displayName">30Amt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AMT30"]</expression>
+                    <property name="dataType">float</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">60Amt</property>
+                    <text-property name="displayName">60Amt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AMT60"]</expression>
+                    <property name="dataType">float</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">90Amt</property>
+                    <text-property name="displayName">90Amt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AMT90"]</expression>
+                    <property name="dataType">float</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">abve90Amt</property>
+                    <text-property name="displayName">abve90Amt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ABVEAMT90"]</expression>
+                    <property name="dataType">float</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">OS</property>
+                    <text-property name="displayName">OS</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["OS"]</expression>
+                    <property name="dataType">float</property>
+                </structure>
+                <structure>
+                    <property name="name">30Amt_1</property>
+                    <text-property name="displayName">30Amt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AMT30"]</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">60Amt_1</property>
+                    <text-property name="displayName">60Amt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AMT60"]</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">90Amt_1</property>
+                    <text-property name="displayName">90Amt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["AMT90"]</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">abve90Amt_1</property>
+                    <text-property name="displayName">abve90Amt</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["ABVEAMT90"]</expression>
+                    <property name="dataType">decimal</property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">TotalOS</property>
+                    <text-property name="displayName">TotalOS</text-property>
+                    <property name="dataType">float</property>
+                    <property name="aggregateFunction">SUM</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">dataSetRow["OS"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">SNo</property>
+                    <property name="dataType">integer</property>
+                    <property name="aggregateFunction">RUNNINGCOUNT</property>
+                    <list-property name="arguments">
+                        <structure>
+                            <property name="name">Expression</property>
+                            <expression name="value" type="javascript">row["BranchId"]</expression>
+                        </structure>
+                    </list-property>
+                    <property name="allowExport">true</property>
+                </structure>
+                <structure>
+                    <property name="name">OS_1</property>
+                    <text-property name="displayName">OS</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["OS"]</expression>
+                    <property name="dataType">decimal</property>
+                </structure>
+            </list-property>
+            <property name="pageBreakInterval">50</property>
+            <column id="21">
+                <property name="width">0.4895833333333333in</property>
+            </column>
+            <column id="22">
+                <property name="width">4.427083333333333in</property>
+            </column>
+            <column id="66">
+                <property name="width">0.896in</property>
+            </column>
+            <column id="137">
+                <property name="width">0.896in</property>
+            </column>
+            <column id="189">
+                <property name="width">0.896in</property>
+            </column>
+            <column id="202">
+                <property name="width">0.8958333333333334in</property>
+            </column>
+            <column id="214">
+                <property name="width">1.0416666666666667in</property>
+            </column>
+            <header>
+                <row id="48">
+                    <property name="height">0.2708333333333333in</property>
+                    <property name="style">HeaderStyle</property>
+                    <cell id="50">
+                        <property name="style">HeaderStyle</property>
+                    </cell>
+                    <cell id="51">
+                        <property name="style">HeaderStyle</property>
+                    </cell>
+                    <cell id="53">
+                        <property name="colSpan">4</property>
+                        <property name="rowSpan">1</property>
+                        <property name="style">HeaderStyle</property>
+                        <label id="174">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">Transaction Amount</text-property>
+                        </label>
+                    </cell>
+                    <cell id="210">
+                        <property name="style">HeaderStyle</property>
+                    </cell>
+                </row>
+                <row id="337">
+                    <property name="style">HeaderStyle</property>
+                    <cell id="338">
+                        <property name="style">HeaderStyle</property>
+                        <label id="33">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="marginTop">7pt</property>
+                            <text-property name="text">Sl No</text-property>
+                        </label>
+                    </cell>
+                    <cell id="339">
+                        <property name="style">HeaderStyle</property>
+                        <label id="160">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">Branch Name</text-property>
+                        </label>
+                    </cell>
+                    <cell id="44">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">1</property>
+                        <property name="style">HeaderStyle</property>
+                        <label id="180">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">Last 30 days</text-property>
+                        </label>
+                        <label id="243">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">   RM  </text-property>
+                        </label>
+                    </cell>
+                    <cell id="129">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">1</property>
+                        <property name="style">HeaderStyle</property>
+                        <label id="245">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">30 - 60 days</text-property>
+                        </label>
+                        <label id="246">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text"> RM  </text-property>
+                        </label>
+                    </cell>
+                    <cell id="69">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">1</property>
+                        <property name="style">HeaderStyle</property>
+                        <label id="247">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">60 -90 days</text-property>
+                        </label>
+                        <label id="248">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">RM  </text-property>
+                        </label>
+                    </cell>
+                    <cell id="194">
+                        <property name="colSpan">1</property>
+                        <property name="rowSpan">1</property>
+                        <property name="style">HeaderStyle</property>
+                        <label id="249">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">Last 1 Year</text-property>
+                        </label>
+                        <label id="250">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">RM   </text-property>
+                        </label>
+                    </cell>
+                    <cell id="211">
+                        <property name="style">HeaderStyle</property>
+                        <label id="221">
+                            <property name="style">HeaderLabelStyle</property>
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontSize">10pt</property>
+                            <property name="fontWeight">bold</property>
+                            <text-property name="text">Outstanding Amount  (RM)</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="10">
+                    <property name="height">0.6875in</property>
+                    <cell id="12">
+                        <property name="style">ColumnDetailStyle</property>
+                        <data id="354">
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="paddingRight">3pt</property>
+                            <property name="textAlign">center</property>
+                            <property name="display">block</property>
+                            <property name="resultSetColumn">SNo</property>
+                        </data>
+                    </cell>
+                    <cell id="13">
+                        <property name="style">ColumnDetailStyle</property>
+                        <property name="textAlign">left</property>
+                        <property name="verticalAlign">middle</property>
+                        <data id="315">
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="borderBottomColor">#000000</property>
+                            <property name="borderBottomWidth">medium</property>
+                            <property name="borderLeftColor">#000000</property>
+                            <property name="borderLeftWidth">medium</property>
+                            <property name="paddingLeft">3pt</property>
+                            <property name="resultSetColumn">BranchName</property>
+                        </data>
+                    </cell>
+                    <cell id="64">
+                        <property name="style">ColumnDetailStyle</property>
+                        <property name="verticalAlign">middle</property>
+                        <data id="385">
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="paddingRight">3pt</property>
+                            <structure name="numberFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">#,##0.00</property>
+                            </structure>
+                            <property name="textAlign">right</property>
+                            <property name="resultSetColumn">30Amt</property>
+                        </data>
+                    </cell>
+                    <cell id="135">
+                        <property name="style">ColumnDetailStyle</property>
+                        <property name="paddingRight">3pt</property>
+                        <property name="textAlign">right</property>
+                        <property name="verticalAlign">middle</property>
+                        <data id="330">
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="paddingRight">1pt</property>
+                            <structure name="numberFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">#,##0.00</property>
+                            </structure>
+                            <property name="textAlign">right</property>
+                            <property name="resultSetColumn">60Amt</property>
+                        </data>
+                    </cell>
+                    <cell id="187">
+                        <property name="style">ColumnDetailStyle</property>
+                        <property name="paddingRight">3pt</property>
+                        <property name="textAlign">right</property>
+                        <property name="verticalAlign">middle</property>
+                        <data id="331">
+                            <property name="fontFamily">"Arial"</property>
+                            <structure name="numberFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">#,##0.00</property>
+                            </structure>
+                            <property name="resultSetColumn">90Amt</property>
+                        </data>
+                    </cell>
+                    <cell id="200">
+                        <property name="style">ColumnDetailStyle</property>
+                        <property name="paddingRight">3pt</property>
+                        <property name="textAlign">right</property>
+                        <property name="verticalAlign">middle</property>
+                        <data id="335">
+                            <property name="fontFamily">"Arial"</property>
+                            <structure name="numberFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">#,##0.00</property>
+                            </structure>
+                            <property name="resultSetColumn">abve90Amt</property>
+                        </data>
+                    </cell>
+                    <cell id="212">
+                        <property name="style">CornerColumnStyle</property>
+                        <property name="paddingRight">3pt</property>
+                        <property name="textAlign">right</property>
+                        <property name="verticalAlign">middle</property>
+                        <data id="351">
+                            <property name="fontFamily">"Arial"</property>
+                            <structure name="numberFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">#,##0.00</property>
+                            </structure>
+                            <property name="resultSetColumn">OS</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="15">
+                    <property name="style">FooterStyle</property>
+                    <cell id="17"/>
+                    <cell id="18"/>
+                    <cell id="65"/>
+                    <cell id="136"/>
+                    <cell id="188">
+                        <property name="colSpan">2</property>
+                        <property name="rowSpan">1</property>
+                        <text id="305">
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontWeight">bold</property>
+                            <property name="contentType">auto</property>
+                            <text-property name="content"><![CDATA[Total Outstanding (RM)]]></text-property>
+                        </text>
+                    </cell>
+                    <cell id="213">
+                        <property name="paddingRight">0pt</property>
+                        <property name="verticalAlign">middle</property>
+                        <data id="353">
+                            <property name="fontFamily">"Arial"</property>
+                            <property name="fontWeight">bold</property>
+                            <structure name="numberFormat">
+                                <property name="category">Custom</property>
+                                <property name="pattern">#,##0.00</property>
+                            </structure>
+                            <property name="resultSetColumn">TotalOS</property>
+                        </data>
+                    </cell>
+                </row>
+            </footer>
+        </table>
+    </body>
+    <property name="pageVariables">
+        <variable-element name="TitleVariable">
+            <expression name="value" type="javascript">"Outstanding Branch Invoice Summary"</expression>
+            <property name="type">report</property>
+        </variable-element>
+    </property>
+</report>

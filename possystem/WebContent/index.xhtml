@@ -1,0 +1,311 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+	>
+
+	<f:loadBundle var="app" basename="META-INF/app-config" />
+	<f:loadBundle var="msg" basename="META-INF/MessagesResources" />
+	<f:loadBundle var="err" basename="META-INF/ErrorsResources" />
+	<f:loadBundle var="des" basename="META-INF/DesignResources" />
+
+	<h:head>
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>JSOFT POS</title>
+		</f:facet>
+		<link rel="shortcut icon" type="image/x-icon" href="#{request.contextPath}/images/favicon.ico"/>
+		<meta name="viewport"
+			content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+
+		<link type="text/css" rel="stylesheet"
+			href="./PrimeFaces Spark_files/core-layout.css" />
+		<link type="text/css" rel="stylesheet"
+			href="./PrimeFaces Spark_files/font-awesome.css" />
+		<link type="text/css" rel="stylesheet"
+			href="./PrimeFaces Spark_files/animate.css" />
+		<link type="text/css" rel="stylesheet"
+			href="./PrimeFaces Spark_files/spark-layout-blue.css" />
+		<script type="text/javascript"
+			src="./PrimeFaces Spark_files/layout.js"></script>
+
+
+		<link
+			href="${facesContext.externalContext.requestContextPath}/resources/css/cssFFIx.css"
+			rel="stylesheet" type="text/css" />
+
+		<script language="JavaScript" type="text/javascript"
+			src="${facesContext.externalContext.requestContextPath}/resources/js/projectscript.js">
+		
+	</script>
+	<script>
+
+		function getScreenSize() {
+		    // ...
+		    var width = getWidth();
+		    document.getElementById("loginForm:sWidth").value = width;
+		}
+		
+		function getWidth() {
+			  return Math.max(
+			    document.body.scrollWidth,
+			    document.documentElement.scrollWidth,
+			    document.body.offsetWidth,
+			    document.documentElement.offsetWidth,
+			    document.documentElement.clientWidth
+			  );
+			}
+	</script>
+	<style>
+	td{
+	//border:1px solid black;
+	}
+
+	
+	.ui-panelgrid tr,
+	.ui-panelgrid td { border: 0 !important; }
+	
+	.ui-panelgrid tr,
+	.ui-panelgrid td { background: transparent !important; }
+	
+	.keypad-key {
+	    font-size: 4em ;
+	    font-weight:bold;
+	    height:9vh ;
+	    width: 8vw ;
+	    
+	}
+	.keypad-spacebar{
+		width: 46vw ;
+	}
+	button.keypad-key.ui-state-default{
+		background:#060606;
+		color:white;
+		border:2px solid cyan;
+	}
+	#keypad-div{
+		border:10px solid gray;
+	}
+
+	</style>
+	</h:head>
+
+	<h:outputStylesheet name="app.css" library="css" />
+	<h:outputScript target="head" name="showMessage.js" library="js" />
+<script language='javascript'>
+function autoLogin(){
+	var urlParams = new URLSearchParams(window.location.search);
+
+	//var username=urlParams.get('username');
+
+	if(urlParams.has('username')){
+		rc();
+		window.location.href = "http://localhost:8080/possystem/projectHome.xhtml";
+	}
+	
+}
+
+
+</script>
+<h:body onload="autoLogin();">
+
+	<h:form id="loginForm">
+	<p:messages id="messages" showDetail="true" closable="true">
+    </p:messages>
+	<f:metadata>
+        <f:viewParam name="username" />
+        <f:viewParam name="password" />
+        <f:viewParam name="branchId" />
+    </f:metadata>
+ 		<p:remoteCommand name="rc"  action="#{loginBean.setLoginDetails(username,password,branchId)}" />
+    	<h:inputHidden id="sWidth" value="#{loginBean.screenWidth}" />
+
+		<br></br>
+		<br></br>
+		<br></br>
+<div style="background-image: url('${facesContext.externalContext.requestContextPath}/images/jpos.png');background-repeat: no-repeat;background-size:70vw 90vh ;background-position: center;" >
+<center>
+
+	<table  style="height:90%;width:70vw;border-collapse:collapse;padding:0;margin:0;">
+		<tr>
+			<td   style="background:cyan;height:5%;width:30%;border-radius:0px 25px 0px 25px;text-align:center">
+				<h:outputText value="#{app['system.info.name']} #{app['system.info.version']}"/>
+			</td>
+			
+			<td colspan="2" style="text-align:right">
+			
+				<p:commandButton value="SIGN UP" oncomplete="PF('registerDlg').show()"
+	    	 		icon="ui-icon-pencil" style="background: blue;color:white;font-weight:bold" 
+	    	 		 rendered="#{app['system.host.isOnline']=='true'}"
+	             >
+	            </p:commandButton>
+          
+			</td>
+		</tr>
+		<tr>
+			<td style="height:90%;width:60%" colspan="2">
+				
+			</td>
+			<td >
+				<p:panelGrid id="loginPanel" >
+					<ui:include src="/loginPanel.xhtml" />
+					
+				</p:panelGrid>
+			</td>
+			
+		</tr>
+	
+	</table>
+	<h:outputText value="#{app['common.contact.email.support']}" style="text-transform: uppercase;" />
+</center>
+		
+		
+</div>		
+
+</h:form>
+<h:form>
+<p:dialog id="registerDlg" 
+	widgetVar="registerDlg" 
+	width="40vw" 
+	height="45vh"
+	modal="true"
+	resizable="false"
+>
+		 <p:wizard >
+	        <p:tab id="personal" title="Personal">
+	            <p:panel header="Personal Details">
+	                <p:messages />
+	                <h:panelGrid columns="4" columnClasses="label, value">
+	                
+	                	<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+	                    <h:outputText value="First Name" />
+	                    <h:outputText value=":" />
+	                    <p:inputText  value="#{registrationBean.firstName}" style="color:black" required="true" label="First Name"/>
+	 
+	 					<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+	                    <h:outputText value="Last Name" />
+	                    <h:outputText value=":" />
+	                    <p:inputText value="#{registrationBean.lastName}" style="color:black"  required="true"  label="Last Name"/>
+	 
+	 					<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+	                    <h:outputText required="true" value="Contact No" />
+	                    <h:outputText value=":" />
+	                    <p:inputText value="#{registrationBean.contactNo}" style="color:black"  required="true" label="Contact No"/>
+	                    
+	 					<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+	                    <h:outputText required="true" value="Email Address" />
+	                    <h:outputText value=":" />
+	                    <p:inputText value="#{registrationBean.emailAddress}" style="color:black"  required="true" label="Email Address" />
+	                    
+	                </h:panelGrid>
+	            </p:panel>
+	        </p:tab>
+	        
+	        
+	        <p:tab id="address" title="Shop">
+	            <p:panel header="Shop Details">
+	                <p:messages />
+	                <h:panelGrid columns="4" columnClasses="label, value">
+	                
+	                    <h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+	                    <h:outputText value="Shop Name" />
+	                    <h:outputText value=":" />
+	                    <p:inputText value="#{registrationBean.shopName}" style="color:black"  required="true" label="Shop Name"/>
+	 
+	                   <h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+	                    <h:outputText value="Registration No" />
+	                    <h:outputText value=":" />
+	                    <p:inputText value="#{registrationBean.shopRegistrationNumber}" style="color:black"  required="true" label="Registration No"/>
+	                    
+	                    <h:outputText value="" />
+	                    <h:outputText value="Address" />
+	                    <h:outputText value=":" />
+	                    <p:inputTextarea rows="4" cols="30" 
+						value="#{registrationBean.shopAddress}" label="Address" />
+	                    
+	                </h:panelGrid>
+	            </p:panel>
+        	</p:tab>
+        	
+        	 <p:tab id="confirm" title="Confirmation">
+	            <p:panel header="Confirmation">
+	        
+	                <h:panelGrid id="confirmation" columns="3" columnClasses="grid,grid,grid">
+	                     <h:panelGrid columns="3" columnClasses="label, value">
+	                        <h:outputText value="First Name " styleClass="logintxt"/>
+	                        <h:outputText value=":" />
+	                        <h:outputText value="#{registrationBean.firstName}" styleClass="outputLabel"/>
+	 
+	                        <h:outputText value="Last Name" styleClass="logintxt"/>
+	                        <h:outputText value=":" />
+	                        <h:outputText value="#{registrationBean.lastName}" styleClass="outputLabel"/>
+	 
+	                        <h:outputText value="Contact No" styleClass="logintxt"/>
+	                        <h:outputText value=":" />
+	                        <h:outputText value="#{registrationBean.contactNo}" styleClass="outputLabel"/>
+	                        
+	                        <h:outputText value="Email Address" styleClass="logintxt"/>
+	                        <h:outputText value=":" />
+	                        <h:outputText value="#{registrationBean.emailAddress}" styleClass="outputLabel"/>
+                    	</h:panelGrid>
+                    	
+                    	<h:panelGrid columns="1">
+                    	 	<h:outputText value="" />
+                    	 	<h:outputText value="" />
+                    	 	<h:outputText value="" />
+                    	 	<h:outputText value="" />
+                    	</h:panelGrid>
+                    	
+                    	 <h:panelGrid columns="3" columnClasses="label, value">
+	                        <h:outputText value="Shop Name " styleClass="logintxt"/>
+	                        <h:outputText value=":" />
+	                        <h:outputText value="#{registrationBean.shopName}" styleClass="outputLabel"/>
+	 
+	                        <h:outputText value="Shop Address" styleClass="logintxt"/>
+	                        <h:outputText value=":" />
+	                        <h:outputText value="#{registrationBean.shopAddress}" styleClass="outputLabel"/>
+	 
+	                        <h:outputText value="Registration No" styleClass="logintxt"/>
+	                        <h:outputText value=":" />
+	                        <h:outputText value="#{registrationBean.shopRegistrationNumber}" styleClass="outputLabel"/>
+	                        
+	                        <h:outputText value="" />
+	                        <h:outputText value="" />
+	                        <h:outputText value="" />
+	                        
+                    	</h:panelGrid>
+                    	
+	                </h:panelGrid>
+	 
+	                <p:commandButton value="Submit"  action="#{registrationBean.save}" ajax="false"/>
+	            </p:panel>
+        	</p:tab>
+        	
+        </p:wizard>
+	</p:dialog>	
+</h:form>
+</h:body>
+
+</ui:composition>
+
+
+
+
+

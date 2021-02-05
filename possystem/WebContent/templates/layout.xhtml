@@ -1,0 +1,64 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<f:loadBundle var="app" basename="META-INF/app-config" />
+<f:loadBundle var="msg" basename="META-INF/MessagesResources" />
+<f:loadBundle var="err" basename="META-INF/ErrorsResources" />
+<f:loadBundle var="des" basename="META-INF/DesignResources" />
+
+<h:head>
+	<title>Permai Clinic</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link
+		href="${facesContext.externalContext.requestContextPath}/resources/css/app.css"
+		rel="stylesheet" type="text/css" />
+
+	<link
+		href="${facesContext.externalContext.requestContextPath}/resources/css/screen.css"
+		rel="stylesheet" type="text/css" />
+
+	<link
+		href="${facesContext.externalContext.requestContextPath}/resources/css/cssFFIx.css"
+		rel="stylesheet" type="text/css" />
+
+	<link type="text/css" rel="stylesheet"
+		href="${facesContext.externalContext.requestContextPath}/resources/css/syntaxhighlighter/syntaxhighlighter.css" />
+
+	<link
+		href="${facesContext.externalContext.requestContextPath}/styles/style.css"
+		rel="stylesheet" type="text/css" />
+	<script language="JavaScript" type="text/javascript"
+		src="${facesContext.externalContext.requestContextPath}/js/timer.js">
+		
+	</script>
+</h:head>
+<h:body>
+	<h:form id="permaiHomeForm">
+		<div id="containerlayout">
+
+			<ui:insert name="header">
+				<ui:include src="/templates/header.xhtml" />
+			</ui:insert>
+
+
+
+			<div id="content">
+				<ui:insert name="content">
+					<ui:include src="#{permaiHome.contenttpage}" />
+				</ui:insert>
+			</div>
+
+			<div id="footer">
+				<p>
+					All Rights. Version 1.0<br />
+				</p>
+
+			</div>
+		</div>
+	</h:form>
+</h:body>
+</html>

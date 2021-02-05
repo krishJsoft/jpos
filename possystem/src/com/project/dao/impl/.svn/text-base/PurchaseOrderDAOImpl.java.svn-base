@@ -1,0 +1,328 @@
+package com.alpha.dao.impl;
+
+import java.util.Date;
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import com.alpha.dao.interfaces.IPurchaseOrderDAO;
+import com.alpha.hq.model.Purchaseorder;
+import com.alpha.hq.model.Purchaseorderbreakdown;
+import com.alpha.hq.model.Purchaserequest;
+import com.alpha.hq.model.Purchaserequestbreakdown;
+
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 12 Aug 2013
+ */
+
+@Repository("purchaseOrderRepository")
+public class PurchaseOrderDAOImpl implements IPurchaseOrderDAO {
+	
+	public static Logger log = LoggerFactory.getLogger(PurchaseOrderDAOImpl.class);
+	long l = 0;
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+	public EntityManager getEm() {
+		return em;
+	}
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}	
+	
+	@Override
+	public List<Purchaseorder> findByPurchaseorderListAll() throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getPurchaseorderCount(String purchaseOrderNo,Integer supplierId,
+			Date dateFrom, Date dateTo, String status) throws Exception {
+		int countResult = 0;
+		try {
+			
+			StringBuilder buf = new StringBuilder(
+					"SELECT COUNT(p) FROM Purchaseorder p   WHERE 1 = 1 ");
+
+			if ((dateFrom != null) && (dateFrom != null)) {
+				buf.append("  AND p.createdDate between  :dateFrom and :dateTo   ");
+			}							
+					
+			if (purchaseOrderNo != null && purchaseOrderNo != "" && (!purchaseOrderNo.equalsIgnoreCase("0")) && (!purchaseOrderNo.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.purchaseOrderNo =:purchaseOrderNo ");
+			}
+			
+			if (supplierId !=null && supplierId !=0) {
+				buf.append(" AND p.supplier.supplierId =  :supplierId  ");
+			}		
+			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase(""))) 
+			{
+				buf.append(" AND  p.status =:status ");
+			}
+			
+			Query query = em.createQuery(buf.toString());
+
+			if ((dateFrom != null) && (dateTo != null))
+			{
+				query.setParameter("dateFrom", dateFrom);
+				query.setParameter("dateTo", dateTo);
+			}
+			if (supplierId !=null && supplierId !=0) 
+			{
+				query.setParameter("supplierId", supplierId);
+			}	
+			
+			if (purchaseOrderNo != null && purchaseOrderNo != "" && (!purchaseOrderNo.equalsIgnoreCase("0")) && (!purchaseOrderNo.equalsIgnoreCase(""))) 
+			{
+				query.setParameter("purchaseOrderNo", purchaseOrderNo);
+			}			
+			if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase("")))  
+			{
+				query.setParameter("status", status);
+			}			
+			
+			Number cResults = (Number) query.getSingleResult();
+			countResult = Integer.parseInt(String.valueOf(cResults));
+			}		
+			catch (Exception e) {
+			log.info("Error in getPurchaseorderCount of PurchaseOrderDAOImpl "
+					+ e.toString());
+			throw e;
+		} 
+
+		return countResult;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchaseorder> getPurchaseorderList(String purchaseOrderNo,Integer supplierId,
+			Date dateFrom, Date dateTo, String status,
+			int start, int howMany) throws Exception {
+		List<Purchaseorder> data = null;
+		try {			
+		StringBuilder buf = new StringBuilder(
+				"select t from Purchaseorder t inner join fetch t.supplier s  WHERE 1 = 1 ");
+
+		if ((dateFrom != null) && (dateFrom != null)) {
+			buf.append("  AND t.createdDate between  :dateFrom and :dateTo   ");
+		}		
+		if (supplierId !=null && supplierId !=0) {
+			buf.append(" AND s.supplierId =  :supplierId  ");
+		}				
+		if (purchaseOrderNo != null && purchaseOrderNo != "" && (!purchaseOrderNo.equalsIgnoreCase("0")) && (!purchaseOrderNo.equalsIgnoreCase(""))) 
+		{
+			buf.append(" AND  t.purchaseOrderNo =:purchaseOrderNo ");
+		}		
+		if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase(""))) 
+		{
+			buf.append(" AND  t.status =:status ");
+		}
+		
+		Query query = em.createQuery(buf.toString());
+
+		if ((dateFrom != null) && (dateTo != null))
+		{
+			query.setParameter("dateFrom", dateFrom);
+			query.setParameter("dateTo", dateTo);
+		}		
+		if (purchaseOrderNo != null && purchaseOrderNo != "" && (!purchaseOrderNo.equalsIgnoreCase("0")) && (!purchaseOrderNo.equalsIgnoreCase(""))) 
+		{
+			query.setParameter("purchaseOrderNo", purchaseOrderNo);
+		}			
+		if (supplierId !=null && supplierId !=0) 
+		{
+			query.setParameter("supplierId", supplierId);
+		}		
+		if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase("")))  
+		{
+			query.setParameter("status", status);
+		}			
+
+		query.setFirstResult(start);
+		query.setMaxResults(howMany);
+		data = query.getResultList();
+		}	
+		catch (Exception e) {
+		log.info("Error in getPurchaseorderList of PurchaseOrderDAOImpl "
+				+ e.toString());
+		throw e;
+	} 	
+	return data;
+	}
+
+	@Override
+	public Purchaseorder getPurchaseorderDetails(Integer purchaseOrderId)
+			throws Exception {
+		Purchaseorder retData = null;
+		String sqlQuery = "select t from Purchaseorder t inner join fetch t.purchaseorderbreakdowns inner join fetch t.supplier  WHERE t.purchaseOrderId = :purchaseOrderId ";
+		try {
+			retData = (Purchaseorder) em.createQuery(sqlQuery).setParameter("purchaseOrderId", purchaseOrderId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getPurchaseorderDetails PurchaseOrderDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+	@Override
+	public boolean createNewPurchaseorder(Purchaseorder purchaseorder)
+			throws Exception {
+		try {
+			em.persist(purchaseorder);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewPurchaseorder PurchaseOrderDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updatePurchaseorder(Purchaseorder purchaseorder)
+			throws Exception {
+		try {
+			em.merge(purchaseorder);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updatePurchaseorder PurchaseOrderDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deletePurchaseorder(Purchaseorder purchaseorder)
+			throws Exception {
+		try {
+			em.remove(purchaseorder);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deletePurchaseorder PurchaseOrderDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchaseorderbreakdown> getPurchaseorderbreakdownList(
+			Integer branchId,Integer purchaseOrderId) throws Exception {
+		List<Purchaseorderbreakdown> purchaseorder=null;
+		String sqlQuery="select t from Purchaseorderbreakdown t  inner join fetch t.product inner join fetch t.purchaseorder  po inner join fetch t.branch b   WHERE po.purchaseOrderId=:purchaseOrderId and b.branchId=:branchId";
+		try {			
+			Query query = em.createQuery(sqlQuery).setParameter("purchaseOrderId", purchaseOrderId).setParameter("branchId", branchId);
+			purchaseorder=query.getResultList();
+			
+			} catch (Exception e) {
+				log.info("Error in getPurchaseorderbreakdownList PurchaseOrderDAOImpl " + e);
+				throw e;
+			}
+			return purchaseorder;
+	}
+
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchaseorderbreakdown> getPurchaseorderBranchList(
+			Integer purchaseOrderId) throws Exception {
+		List<Purchaseorderbreakdown> purchaseorder=null;
+		String sqlQuery="select t from Purchaseorderbreakdown t inner join fetch t.branch  WHERE t.purchaseorder.purchaseOrderId=:purchaseOrderId group by t.branch.branchId";
+		try {			
+			Query query = em.createQuery(sqlQuery).setParameter("purchaseOrderId", purchaseOrderId);
+			purchaseorder=query.getResultList();
+			
+			} catch (Exception e) {
+				log.info("Error in getPurchaseorderBranchList PurchaseOrderDAOImpl " + e);
+				throw e;
+			}
+			return purchaseorder;
+	}
+
+	
+	
+	
+	@Override
+	public boolean deletePurchaseorderbreakdown(
+			Purchaseorderbreakdown purchaseorderbreakdown) throws Exception {
+		try {
+			em.remove(purchaseorderbreakdown);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deletePurchaseorderbreakdown PurchaseOrderDAOImpl " + e);
+			throw e;
+		}
+	}
+	@Override
+	public Purchaseorder getPurchaseorderDetails(String purchaseOrderNo)
+			throws Exception {
+		Purchaseorder retData = null;
+		String sqlQuery = "select t from Purchaseorder t inner join fetch t.supplier  WHERE t.purchaseOrderNo = :purchaseOrderNo ";
+		try {
+			retData = (Purchaseorder) em.createQuery(sqlQuery).setParameter("purchaseOrderNo", purchaseOrderNo).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getPurchaseorderDetails by purchaseOrderNo PurchaseOrderDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Purchaseorder> getPurchaseorderList(Integer supplierId,
+			String status) throws Exception {
+		List<Purchaseorder> data = null;
+		try {			
+		StringBuilder buf = new StringBuilder(
+				"select t from Purchaseorder t inner join fetch t.supplier s  WHERE 1 = 1 ");
+			
+		if (supplierId !=null && supplierId !=0) {
+			buf.append(" AND s.supplierId =  :supplierId  ");
+		}				
+			
+		if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase(""))) 
+		{
+			buf.append(" AND  t.status =:status ");
+		}
+		
+		Query query = em.createQuery(buf.toString());		
+				
+		if (supplierId !=null && supplierId !=0) 
+		{
+			query.setParameter("supplierId", supplierId);
+		}		
+		if (status != null && status != "" && (!status.equalsIgnoreCase("0")) && (!status.equalsIgnoreCase("")))  
+		{
+			query.setParameter("status", status);
+		}			
+
+		data = query.getResultList();
+		}	
+		catch (Exception e) {
+		log.info("Error in getPurchaseorderList of PurchaseOrderDAOImpl "
+				+ e.toString());
+		throw e;
+	} 	
+	return data;
+	}
+
+}

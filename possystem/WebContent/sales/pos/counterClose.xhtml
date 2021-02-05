@@ -1,0 +1,150 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogCountercloseOuy" header="Counter Close"
+		widgetVar="counetclose" modal="true" height="400" width="840">
+
+		<p:outputPanel id="salesoptioncounterclosePanel">
+			<p:message
+			for="salesoptioncounterclosePanel" />
+
+	
+			<p:panel
+				style="width:800px; height:360px; align:center;background-image: url('images/contentpagebg.jpg');background-repeat: repeat-x;">
+				
+
+				<h:panelGrid columns="3" border="0" styleClass="bgcolor"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+				<h:outputText value="Date"
+					styleClass="countertotalValue" />
+				<h:outputText value=":" />
+			<p:calendar navigator="true" id="shiftDate" size="25"
+				value="#{posOptionBean.shiftDate}" pattern="#{des['common.date.pattern']}" >
+				
+				 <p:ajax event="dateSelect" listener="#{posOptionBean.counterCloseData}" update="salesoptioncounterclosePanel" />
+				</p:calendar>
+					
+				<h:outputText value="Shift"
+						styleClass="countertotalValue" />
+				<h:outputText value=":" />	
+				<h:selectOneMenu id="shiftID"
+					 value="#{posOptionBean.shiftId}"
+					style="width:230px; text-align:left;"
+					styleClass="form-control hide_search">
+					<f:selectItems value="#{commonListBean.shiftList}"></f:selectItems>
+					<p:ajax update="salesoptioncounterclosePanel" listener="#{posOptionBean.counterCloseData}"/>
+					
+				</h:selectOneMenu>
+					
+
+					<h:outputText value="Total Credit-Cash In(RM) "
+						styleClass="countertotalValue" />
+					<h:outputText value=":" />
+					<h:inputText
+						value="#{posOptionBean.poscashtransaction.creditamount}"
+						disabled="true" size="15" styleClass="totalValue"
+						style="color:#035E62;font-size:18px;text-align:right;" />
+
+
+					<h:outputText value="Total Debit-Cash Out(RM)"
+						styleClass="countertotalValue" />
+					<h:outputText value=":" />
+					<h:inputText
+						value="#{posOptionBean.poscashtransaction.debitAmount}"
+						disabled="true" size="15" styleClass="totalValue"
+						style="color:#035E62;font-size:18px;text-align:right;" />
+						
+						
+					<h:outputText value="Total Sales(RM)"
+						styleClass="countertotalValue" />
+					<h:outputText value=":" />
+					<h:inputText
+						value="#{posOptionBean.poscashtransaction.salesamount}"
+						disabled="true" size="15" styleClass="totalValue"
+						style="color:#035E62;font-size:18px;text-align:right;" />
+						
+					<h:outputText value="Total Expenses(RM)"
+						styleClass="countertotalValue" />
+					<h:outputText value=":" />
+					<h:inputText
+						value="#{posOptionBean.totalExpenses}"
+						disabled="true" size="15" styleClass="totalValue"
+						style="color:#035E62;font-size:18px;text-align:right;" />
+
+					
+
+					<h:outputText value="Balance Amount (RM)"
+						styleClass="countertotalValue" />
+					<h:outputText value=":" />
+					<h:inputText
+						value="#{posOptionBean.poscashtransaction.creditamount
+						+posOptionBean.poscashtransaction.salesamount
+						-posOptionBean.poscashtransaction.debitAmount
+						-posOptionBean.totalExpenses}"
+						disabled="true" size="15" styleClass="totalValue"
+						style="color:#035E62;font-size:18px;text-align:right;" />
+
+				
+				</h:panelGrid>
+
+				<br> </br>
+				<br></br>
+				<br></br>
+				
+				<h:panelGrid columns="3" border="0">
+
+					<p:commandButton value="Cancel" onclick="PF('counetclose').hide();" styleClass="itembutton"
+						style="width:149px; height:40px; "
+						immediate="true" ajax="true" async="true">
+					</p:commandButton>
+<ui:remove>
+					<p:commandButton value="X - Report" oncomplete="PF('xreport').show()" styleClass="itembutton"
+						update=":addEditPosForm:salesoptionxreportPanel"
+						action="#{posOptionBean.pdf()}"
+						style="width:149px; height:40px; "
+						ajax="true">
+					</p:commandButton>
+
+
+					<p:commandButton value="Close Counter"
+						oncomplete="PF('counetclose').hide();" styleClass="itembutton"
+						action="#{posOptionBean.counterClose}"
+						style="width:149px; height:40px; "
+						ajax="false" async="true"
+						disabled="#{posOptionBean.paymentConfirm}">
+					</p:commandButton>
+					
+					
+</ui:remove>
+
+			<p:commandButton value="Print" styleClass="itembutton"
+					style="width:149px; height:40px; " ajax="true" async="true">
+					<p:printer target="counterCloseReportprintrequestitem" />
+				</p:commandButton>
+
+				</h:panelGrid>
+
+
+
+			</p:panel>
+
+							<ui:include src="/sales/pos/printtemplate/closeCounterTemplate.xhtml" />	
+				
+		</p:outputPanel>
+
+	</p:dialog>
+				
+
+
+
+
+</ui:composition>

@@ -1,0 +1,295 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditSalesForm">
+		<p:panel id="salesPanel" header="Search Customer Sales Summary">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesPanel" /></td>
+				</tr>
+			</table>
+
+			<h:panelGrid id="salesGrid" columns="10" border="0" width="70%"
+				columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:calendar navigator="true" id="dateFrom" size="25"
+					value="#{salesSummaryBean.dateFrom}" pattern="dd/MMM/yyyy" />
+				<p:message for="dateFrom" styleClass="fieldError" />
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:calendar navigator="true" id="dateTo" size="25"
+					value="#{salesSummaryBean.dateTo}" pattern="dd/MMM/yyyy" />
+				<p:message for="dateTo" styleClass="fieldError" />
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['quotation.label.customerName']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:autoComplete id="customerName" maxResults="5" size="25"
+					converter="customerConverter" maxlength="15"
+					value="#{salesSummaryBean.customer}"
+					completeMethod="#{salesSummaryBean.getCustomerName}" var="c"
+					itemLabel="#{c.customerName}" itemValue="#{c}">>
+						<p:column>  
+                    	#{c.customerId} - #{c.customerName}   
+                		</p:column>
+				</p:autoComplete>
+				<p:message for="customerName" styleClass="fieldError" />
+
+
+
+
+
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:panelGrid columns="2" border="0"
+					columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+					<p:commandButton value="Search" ajax="true"
+						action="#{salesSummaryBean.searchCustomerSalesSummary}"
+						update="salesPanel" />
+
+					<p:commandButton value="Reset" ajax="true"
+						action="#{salesSummaryBean.resetCustomerSalesSummary}"
+						update="salesPanel" />
+				</h:panelGrid>
+				<h:outputText value="" />
+
+			</h:panelGrid>
+
+
+
+			<br />
+
+
+			<p:dataTable id="salesTable" var="sales" paginatorPosition="top"
+				binding="#{salesSummaryBean.dataList}"
+				value="#{salesSummaryBean.branchSalesSummaryModel}"
+				rowIndexVar="salesrow" scrollable="false" lazy="true"
+				paginator="true" rows="10" style="width: 100%;"
+				rowsPerPageTemplate="5,10,15,25,50,100"
+				>
+
+
+				<p:ajax event="rowToggle"
+					listener="#{salesSummaryBean.viewCustomerSalesSummaryDetail}"
+					update="salesTableDetail">
+				</p:ajax>
+
+				<p:columnGroup type="header">
+
+					<p:row>
+
+
+
+						<p:column style="width:40%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Customer Name" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:10%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Quantity Sold" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:10%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Ext Price (RM)" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+
+						<p:column style="width:10%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Ext Cost (RM)" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:15%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Ext Margin Amount (RM)"
+									styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:15%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Margin (%)" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+					</p:row>
+				</p:columnGroup>
+
+
+
+				<p:column style="width:40%;" styleClass="columnwidth">
+					<h:outputText value="#{sales.customerName}" styleClass="logintxt" />
+					<p:rowToggler />
+				</p:column>
+
+				<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+					<h:outputText value="#{sales.totalQuantity}" styleClass="logintxt"
+						id="totalQuantity" />
+				</p:column>
+
+				<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+					<h:outputText value="#{sales.normalPriceTotal}"
+						id="normalPriceTotal" styleClass="logintxt">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+					<h:outputText value="#{sales.purchasePriceTotal}"
+						id="purchasePriceTotal" styleClass="logintxt">
+						<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+				</p:column>
+
+				<p:column style="width:15%;" styleClass="logintxtnumberFormat">
+					<h:outputText value="#{sales.marginTotal}" styleClass="logintxt"
+						id="marginTotal">
+						<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+				</p:column>
+
+				<p:column style="width:15%;" styleClass="logintxtnumberFormat">
+					<h:outputText value="#{sales.margin}" styleClass="logintxt"
+						id="margin">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:columnGroup type="footer">
+
+				</p:columnGroup>
+
+
+
+				<p:rowExpansion>
+					<p:panel header="Sales Details">
+
+						<p:dataTable id="salesTableDetail" var="product"
+							paginatorPosition="top" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+							value="#{salesSummaryBean.branchSalesModel1}" rowIndexVar="row"
+							scrollable="true"  paginator="false" rows="50000"
+							scrollHeight="200" style="width: 100%"
+							rowsPerPageTemplate="2,5,10,15,25,50,100,250,500">
+
+
+
+							<p:columnGroup type="header">
+
+
+								<p:row>
+									<p:column style="width:39%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Sales Description"
+												styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:10%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Quantity Sold" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:10%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Ext Price (RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+
+									<p:column style="width:10%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Ext Cost (RM)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:16%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Ext Margin Amount (RM)"
+												styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+									<p:column style="width:14%;" styleClass="columnwidth">
+										<f:facet name="header">
+											<h:outputText value="Margin (%)" styleClass="tableheader" />
+										</f:facet>
+									</p:column>
+
+								</p:row>
+							</p:columnGroup>
+
+
+							<p:column style="width:40%;" styleClass="columnwidth">
+								<h:outputText
+									value="#{product.productCode} - #{product.productName} "
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+								<h:outputText value="#{product.totalQuantity}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+								<h:outputText value="#{product.normalPriceTotal}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+							</p:column>
+
+							<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+								<h:outputText value="#{product.purchasePriceTotal}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+							</p:column>
+
+							<p:column style="width:16%;" styleClass="logintxtnumberFormat">
+								<h:outputText value="#{product.marginTotal}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+									</h:outputText>
+							</p:column>
+
+							<p:column style="width:14%;" styleClass="logintxtnumberFormat">
+								<h:outputText value="#{product.margin}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+						</p:dataTable>
+					</p:panel>
+
+
+
+				</p:rowExpansion>
+
+			</p:dataTable>
+
+
+
+		</p:panel>
+		<ui:include src="/templates/loadingDialog.xhtml" />
+	</h:form>
+</ui:composition>
+
+

@@ -1,0 +1,193 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel id="step1panel">
+
+		<h:panelGrid id="addeditsuppliergrid" columns="5" width="60%"
+			columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.supplierName']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="supplierName"
+				value="#{supplierBean.supplier.supplierName}" maxlength="50"
+				size="25" />
+			<p:message for="supplierName" styleClass="fieldError" />
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.supplierCode']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="supplierCode"
+				value="#{supplierBean.supplier.supplierCode}" maxlength="6"
+				size="25" />
+			<p:message for="supplierCode" styleClass="fieldError" />
+
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.companyRegNo']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="companyRegNo"
+				value="#{supplierBean.supplier.companyRegNo}" maxlength="25"
+				size="25" />
+			<p:message for="companyRegNo" styleClass="fieldError" />
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.contactPerson']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="contactPerson"
+				value="#{supplierBean.supplier.contactPerson}" maxlength="25"
+				size="25" />
+			<p:message for="contactPerson" styleClass="fieldError" />
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.contactPersonNumber']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="contactPersonNumber"
+				value="#{supplierBean.supplier.contactPersonNumber}" maxlength="25"
+				size="25" />
+			<p:message for="contactPersonNumber" styleClass="fieldError" />
+
+
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.address']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputTextarea rows="3" cols="25" id="address"
+				value="#{supplierBean.supplier.address}" />
+			<p:message for="address" styleClass="fieldError" />
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.city']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="city" value="#{supplierBean.supplier.city}"
+				maxlength="25" size="25" />
+			<p:message for="city" styleClass="fieldError" />
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.state']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="state" value="#{supplierBean.supplier.state}"
+				maxlength="25" size="25" />
+			<p:message for="state" styleClass="fieldError" />
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.country']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="country" value="#{supplierBean.supplier.country}"
+				maxlength="25" size="25" />
+			<p:message for="country" styleClass="fieldError" />
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.postCode']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="postCode" value="#{supplierBean.supplier.postCode}"
+				maxlength="25" size="25" />
+			<p:message for="postCode" styleClass="fieldError" />
+
+
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.faxNo']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="faxNo" value="#{supplierBean.supplier.faxNo}"
+				maxlength="25" size="25" />
+			<p:message for="faxNo" styleClass="fieldError" />
+
+			<h:outputText value="" styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.phoneNo']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="phoneNo"
+				value="#{supplierBean.supplier.phoneNo}" maxlength="25" size="25" />
+			<p:message for="phoneNo" styleClass="fieldError" />
+
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.email']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="emailAddress" value="#{supplierBean.supplier.email}"
+				maxlength="25" size="25" />
+			<p:message for="emailAddress" styleClass="fieldError" />
+
+			<h:outputText value=""
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['supplier.label.websiteName']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="websiteName" value="#{supplierBean.supplier.websiteName}"
+				maxlength="25" size="25" />
+			<p:message for="websiteName" styleClass="fieldError" />
+
+
+
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:outputText value="" />
+			<h:panelGrid columns="3">
+				<p:commandButton value="Reset" action="#{supplierBean.resetStep1}"  rendered="#{supplierBean.action!='update'}"
+					update="supplierPanel" />
+					
+					<p:commandButton value="Reset"
+					actionListener="#{supplierBean.editSupplier}" update="supplierPanel"
+					rendered="#{supplierBean.action=='update'}">
+					<f:attribute name="supplierId" value="#{supplierBean.supplier.supplierId}" />
+				   </p:commandButton>
+
+				<p:commandButton value="Cancel" ajax="false"
+					action="#{supplierBean.listSupplier}" />
+			</h:panelGrid>
+			<h:outputText value="" />
+
+			<h:outputText value="" />
+			<h:outputText value="" />
+
+
+		</h:panelGrid>
+
+
+
+
+
+
+
+	</p:outputPanel>
+
+
+</ui:composition>
+
+

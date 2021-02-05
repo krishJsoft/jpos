@@ -1,0 +1,48 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog showEffect="fade" hideEffect="fade" header=" Order  Action"
+		resizable="false" widgetVar="orderItemactionDig" modal="true"
+		height="120" width="430">
+
+		<br></br>
+
+		<p:panel id="orderitemaction">
+
+			<h:panelGrid columns="3" border="0" width="100%" styleClass="bgcolor"
+				cellpadding="1" cellspacing="1"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<p:commandButton value="Edit" ajax="false" update="dashboardPanel"
+					action="#{orderBean.menuorderedit}" 
+					oncomplete="PF('orderItemactionDig').hide();">
+				</p:commandButton>
+
+				<p:commandButton value="Re-Print" ajax="true" update="dashboardPanel"
+					action="#{posBean.remarksItemConfirm}"
+					oncomplete="PF('orderItemactionDig').hide();">
+				</p:commandButton>
+
+				<p:commandButton value="Close" update="dashboardPanel"
+					oncomplete="PF('orderItemactionDig').hide();" />
+
+			</h:panelGrid>
+
+
+
+		</p:panel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

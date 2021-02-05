@@ -1,0 +1,333 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:jsf="http://xmlns.jcp.org/jsf"
+	>
+
+
+<p:dialog id="splitorderdlg" 
+	styleClass="splitOrdertMenu"
+	 closable="false"
+	widgetVar="splitorderdlg" width="100vw" height="60vh" dynamic="true"
+	position="left top"
+	>
+	<p:outputPanel id="splitorderPanel">
+		<table  style="border-collapse: separate">
+			<tr>
+			<td>
+				<h:panelGrid columns="2">
+					<h:outputText value="Card NO" styleClass="totalValue"
+						readonly="true"
+						style="color:#035E62;font-size:14px;">					
+					</h:outputText>
+					<h:inputText id="tableNoIdSplit" value="#{posBean.cardNo}"
+						maxlength="17" size="18"
+						style="color:#035E62;font-size:20px;text-align:center;">
+											
+						<p:ajax listener="#{posBean.loadBarKitchenOrderforSaleSplit}"
+						update="splitorderPanel"
+						event="change" />
+					</h:inputText>
+				</h:panelGrid>
+			</td>
+			<td>
+				<p:commandButton
+					value="CLOSE"
+					style="background:#ffffcc"
+					action="#{posBean.resetPos}"
+					update=":addEditPosForm:posPanel,splitDataTable"
+					styleClass="itembuttonsmall hoverBlackText"
+					oncomplete="PF('splitorderdlg').hide()"
+				>
+				</p:commandButton>
+			</td>
+			<td>
+			
+			</td>
+			</tr>
+			<tr>
+			<td valign="top" rowspan="2" style="border-right: 2px solid #E32526;border-bottom: 2px solid #E32526;border-left: 2px solid #E32526;border-bottom-left-radius:25px;border-bottom-right-radius:25px">
+			<div style="height: 70vh; overflow: auto;"  >
+				<p:dataTable id="splitDataTable" var="pos" rowIndexVar="row"
+				scrollable="true" 
+				rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+				value="#{posBean.salesordersplitbreakdowns}" paginator="false"
+				rows="500" style="width: 100%" rowsPerPageTemplate="5,10,15"
+							
+				>
+					<p:columnGroup type="header">
+						<p:row>
+
+							<p:column style="width:5%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="SNo" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+							
+							<p:column style="width:25%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Item Name" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+						
+
+							<p:column style="width:10%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Qty" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+
+					
+						<ui:remove>
+							<p:column style="width:10%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+								</f:facet>
+							</p:column>
+							</ui:remove>
+							<p:column style="width:10%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="SPLIT"  />
+								</f:facet>
+							</p:column>
+						</p:row>
+					</p:columnGroup>
+					<p:column id="splitModelHeader" styleClass="columnwidth">
+
+								<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column styleClass="columnwidth" style="width:25%;">
+								<h:outputText value="#{pos.productName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							
+
+
+
+							<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+
+								<h:outputText value="#{pos.quantity}" size="8"
+									onkeypress='return validate(event)' id="splitItemcountQty"
+									styleClass="logintxtnumberFormat"
+									
+									>
+									<f:convertNumber pattern="#0" />
+								</h:outputText>
+
+							</p:column>
+
+					
+<ui:remove>
+					<p:column styleClass="columnwidth" style="width:15%;">
+
+						<p:commandButton value="Remove" styleClass="button-yellow"
+							update=":addEditPosForm:requestitemsplitdelete"
+							actionListener="#{posBean.removeItemFromSplit}"
+							oncomplete="PF('posItemdeleteSplitDig').show()">
+							<f:attribute name="posBreakdownId" value="#{row}" />
+						</p:commandButton>
+
+					</p:column>
+					</ui:remove>
+					<p:column styleClass="columnwidth" style="width:15%;">
+						<p:commandButton value="ADD" styleClass="button-yellow"
+							update="addEditPosForm:splitPaymentDataTable,splitDataTable,addEditPosForm:splitPaymentButton"
+							actionListener="#{posBean.addToSalesSplit}"
+							>
+							<f:attribute name="posBreakdownId" value="#{row}" />
+							<f:attribute name="posbreakdown" value="#{pos}" />
+							
+						</p:commandButton>
+					</p:column>
+					
+				</p:dataTable>
+				</div>
+			</td>
+			<td >
+			<ui:remove>
+			<p:commandButton id="productBtn2" value="ALL ITEM"
+				styleClass="itembuttonsmall"
+				style="height:50px;width:100%" 
+				action="#{productCategoryBean.loadAllValidCategory}"
+				oncomplete="PF('overproduct').show();" />
+			</ui:remove>
+			</td>
+			
+			<td valign="top">
+				<p:panel id="splitPaymentButton">
+					<p:commandButton value="SAVE SPLIT" ajax="true"
+						styleClass="itembuttonsmall"
+						style="width:200px; height:40px; background:#66ff99;"
+						action="#{posBean.saveSplitOrder}"
+						
+						rendered="#{posBean.totalAmount>0 and posBean.salesordersplitbreakdowns.size()!=0}"
+						update=":addEditPosForm:paymentgrid,:addEditPosForm:paymentList,:addEditPosForm:paymentgridMaster,:addEditPosForm:printrequestitem,,:addEditPosForm:splitPaymentDataTable,addEditPosForm:splitPaymentButton">
+					</p:commandButton>
+					<h:outputText value="Split ID : #{posBean.currentTableName}#{posBean.salesorderSplit.splitInc}" />
+				</p:panel>
+			</td>
+			</tr>
+			
+			
+			
+			<tr>
+			<td valign="top" >
+				<h:dataTable id="dataTableCustomProductList2" var="pos"					
+					scrollable="true" scrollHeight="100%"  
+					value="#{productBean.quickListProducts}" paginator="false" style="width:200px;background-color:#E32526;">
+					<f:facet name="header" style="color:blue">
+			           
+			           	<h:outputText value="Quick List" 
+			           	style="font-size:130%;color:white" />
+		        	</f:facet>
+		 	
+			        <p:column style="padding:0;" colspan="2">
+						<p:commandButton value="#{pos.productName}"
+						style="width:100%;font-size:150%;height:10vh;background:#fce9e9;" 
+							styleClass="itembuttonsmall" 
+							update="addEditPosForm:splitPaymentDataTable"				
+							actionListener="#{posBean.selectProductMenu}"
+							oncomplete="PF('overproduct').hide();PF('productQty').show()">
+								<f:attribute name="product" value="#{pos}" />
+							</p:commandButton>
+					</p:column>
+						
+				</h:dataTable>
+			
+			</td>
+			<td valign="top" style="border-right: 2px solid green;border-bottom: 2px solid green;border-left: 2px solid green;border-bottom-left-radius:25px;border-bottom-right-radius:25px;" >
+			<div style="height: 70vh; overflow: auto;" >
+				<p:dataTable id="splitPaymentDataTable" var="pos" rowIndexVar="row"
+				scrollable="true" 
+				rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+				value="#{posBean.salesorderbreakdowns}" paginator="false"
+				rows="500" style="width: 100%" rowsPerPageTemplate="5,10,15"
+					
+				>
+					<p:columnGroup type="header">
+						<p:row>
+
+							<p:column style="width:5%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="SNo" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+							
+							<p:column style="width:25%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Item Name" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+							<p:column style="width:15%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Unit Price" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+
+							<p:column style="width:10%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Qty" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+
+							<p:column style="width:15%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Price" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+
+							<p:column style="width:15%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+								</f:facet>
+							</p:column>
+						</p:row>
+					</p:columnGroup>
+					<p:column  styleClass="columnwidth">
+
+								<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+							</p:column>
+
+
+						
+
+							<p:column styleClass="columnwidth" style="width:25%;">
+								<h:outputText value="#{pos.productName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column styleClass="logintxtnumberFormat" style="width:15%;">
+
+								<p:inputText value="#{posBean.priceQty[pos.sno]}" size="8"
+									 
+									styleClass="logintxtnumberFormat"
+									onfocus="this.select();"
+									>
+									<p:ajax event="change"
+										listener="#{posBean.addSalesPriceModifyItem1(row)}"
+										update=":addEditPosForm:splitPaymentDataTable,:addEditPosForm:splitorderPanel" />
+									<f:convertNumber pattern="#0.00" />
+								</p:inputText>
+							</p:column>
+
+						<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+
+								<h:outputText value="#{pos.quantity}" size="8"
+									onkeypress='return validate(event)' id="splitItemcountQty"
+									styleClass="logintxtnumberFormat"
+									
+									>
+									<f:convertNumber pattern="#0" />
+								</h:outputText>
+
+							</p:column>
+
+
+					<p:column styleClass="logintxtnumberFormat" style="width:15%;">
+						<h:outputText value="#{pos.subTotal}" size="8"
+							styleClass="logintxtnumberFormat"
+							>
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+
+
+
+							<p:column styleClass="columnwidth" style="width:5%;">
+
+								<p:commandButton value="Remove SPLIT" styleClass="button-yellow"
+									update=":addEditPosForm:splitDataTable,:addEditPosForm:splitPaymentDataTable,addEditPosForm:splitPaymentButton" 
+									actionListener="#{posBean.removeItem}"
+									action="#{posBean.removeItemFromSplitPaymentConfirm}"
+									>
+									<f:attribute name="posBreakdownId" value="#{row}" />
+								</p:commandButton>
+
+							</p:column>
+				</p:dataTable>
+				</div>
+				
+				</td>
+				</tr>
+			</table>
+	</p:outputPanel>
+</p:dialog>
+
+
+</ui:composition>
+
+

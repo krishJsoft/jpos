@@ -1,0 +1,331 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogSalesOrder" header="Sales Order Detail"
+		resizable="false" widgetVar="salesDig" modal="false" height="480"
+		width="95%">
+
+
+		<p:panel id="requestitem" styleClass="mytabpanel">
+
+
+			<p:panelGrid style="width:99%" styleClass="alignTop">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="width:25%;">Branch/Customer</p:column>
+						<p:column style="width:75%;">Products Details</p:column>
+					</p:row>
+				</f:facet>
+
+
+				<p:row>
+					
+
+					<p:column style="width:25%;" styleClass="alignTop">
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							rendered="#{salesorderBean.salesorder.salesType=='1'}"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+
+
+							<h:outputText
+								value="#{salesorderBean.salesorder.branch.branchName}"
+								styleClass="logintxt" />
+
+							<h:outputText value="#{salesorderBean.salesorder.branch.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="#{salesorderBean.salesorder.branch.city}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="#{salesorderBean.salesorder.branch.state}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{salesorderBean.salesorder.branch.postCode}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="#{salesorderBean.salesorder.branch.phoneNo}"
+								styleClass="logintxttable" />
+						</h:panelGrid>
+
+
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							rendered="#{salesorderBean.salesorder.salesType=='2' or salesorderBean.salesorder.salesType=='3'}"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+							<h:outputText
+								value="#{salesorderBean.salesorder.customer.customerName} , #{salesorderBean.salesorder.customer.identificationCompanyRegNo}"
+								styleClass="logintxt" />
+
+							<h:outputText
+								value="#{salesorderBean.salesorder.customer.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="#{salesorderBean.salesorder.customer.city}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{salesorderBean.salesorder.customer.state} - #{salesorderBean.salesorder.customer.postCode}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value=" #{salesorderBean.salesorder.customer.phoneNo}"
+								styleClass="logintxttable" />
+
+
+						</h:panelGrid>
+
+					</p:column>
+					
+					
+					<p:column style="width:75%;" styleClass="alignTop">
+
+
+						<h:panelGrid id="requestgrid" columns="6" border="0" width="90%"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText value="Branch/Customer Name" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{salesorderBean.salesorder.customerBranchName}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Request User" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{salesorderBean.salesorder.createdBy}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Created Date" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{salesorderBean.salesorder.createdDate}"
+								styleClass="logintxttable">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+							<h:outputText value="Sales Order No" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{salesorderBean.salesorder.salesOrderNo}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Quote/GRN No" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{salesorderBean.salesorder.quoteNo}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{salesorderBean.salesorder.remarks}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Sales Type" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="Branch"
+								rendered="#{salesorderBean.salesorder.salesType=='1'}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Customer/Quotation" 
+								rendered="#{salesorderBean.salesorder.salesType=='2'}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Customer/POS"
+								rendered="#{salesorderBean.salesorder.salesType=='3'}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+
+							<h:outputText value="#{app['salesorder.status.neworderlable']}"
+								rendered="#{salesorderBean.salesorder.status==app['salesorder.status.newordervalue']}"
+								styleClass="logintxttable" />
+							<h:outputText value="#{app['salesorder.status.processedlable']}"
+								rendered="#{salesorderBean.salesorder.status==app['salesorder.status.processedvalue']}"
+								styleClass="logintxttable" />
+							<h:outputText value="#{app['salesorder.status.orderedlable']}"
+								rendered="#{salesorderBean.salesorder.status==app['salesorder.status.orderedvalue']}"
+								styleClass="logintxttable" />
+							<h:outputText value="#{app['salesorder.status.paidlable']}"
+								rendered="#{salesorderBean.salesorder.status==app['salesorder.status.paidvalue']}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Total Amount (#{app['common.currency']})" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{salesorderBean.salesorder.totalAmount}"
+								styleClass="logintxttable" />
+						</h:panelGrid>
+					</p:column>
+					
+
+				</p:row>
+
+
+				<p:row>
+					<p:column style="width:25%;" styleClass="alignTop">
+
+						<p:dataTable scrollable="true" scrollHeight="190"
+							value="#{salesorderBean.salesorder.pospayments}" var="sales"
+							rowIndexVar="row" rows="30"
+							rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+							<p:column style="width: 10%;">
+								<f:facet name="header">SNo</f:facet>
+								<h:outputText value="#{row+1}" styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width: 30%;" styleClass="logintxtnumberFormat">
+								<f:facet name="header">Payment Type </f:facet>
+								<h:outputText value="#{sales.amountType}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width: 10%;" styleClass="logintxtnumberFormat">
+								<f:facet name="header">Qty</f:facet>
+								<h:outputText value="#{sales.quantity}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width: 30%;" styleClass="logintxtnumberFormat">
+								<f:facet name="header">Total Amount</f:facet>
+								<h:outputText value="#{sales.subTotal}"
+									styleClass="logintxttable" />
+							</p:column>
+
+						</p:dataTable>
+
+
+
+					</p:column>
+
+
+					<p:column style="width:75%;">
+
+
+
+						<p:dataTable id="salesTable" var="product"
+							rowIndexVar="productrow" scrollable="true"
+							value="#{salesorderBean.salesorder.salesorderbreakdowns}"
+							style="width:100%;" scrollHeight="190">
+
+							<p:column style="width:10%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Product Code" />
+								</f:facet>
+								<h:outputText value="#{product.productCode}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column style="width:25%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Product Name" />
+								</f:facet>
+								<h:outputText value="#{product.productName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column style="width:5%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="UOM" />
+								</f:facet>
+								<h:outputText value="#{product.uom}" styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+								<f:facet name="header">
+									<h:outputText value="Quantity " />
+								</f:facet>
+								<h:outputText value="#{product.quantity}"
+									styleClass="logintxttable" />
+							</p:column>
+
+
+							<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+								<f:facet name="header">
+									<h:outputText value="Unit Price (#{app['common.currency']})" />
+								</f:facet>
+								<h:outputText value="#{product.unitPrice}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+								<f:facet name="header">
+									<h:outputText value="Tax (%)" />
+								</f:facet>
+								<h:outputText value="#{product.taxCode}"
+									styleClass="logintxttable" >
+									<f:convertNumber pattern="#0" />
+								</h:outputText>
+							</p:column>
+
+							<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+								<f:facet name="header">
+									<h:outputText value="Tax (#{app['common.currency']})" />
+								</f:facet>
+								<h:outputText value="#{product.taxAmount}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+
+
+							<p:column styleClass="logintxtnumberFormat" style="width:10%;">
+								<f:facet name="header">
+									<h:outputText value="SubTotal (#{app['common.currency']})" />
+								</f:facet>
+								<h:outputText value="#{product.subTotal}"
+									styleClass="logintxttable">
+									<f:convertNumber pattern="#0.00" />
+								</h:outputText>
+							</p:column>
+						</p:dataTable>
+
+
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+
+
+		</p:panel>
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Close" oncomplete="PF('salesDig').hide()" />
+
+
+
+		</h:panelGrid>
+
+
+
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

@@ -1,0 +1,221 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+		xmlns:h="http://java.sun.com/jsf/html"
+		
+		xmlns:f="http://java.sun.com/jsf/core"
+		xmlns:ui="http://java.sun.com/jsf/facelets"
+		xmlns:p="http://primefaces.org/ui">
+<style>
+.ui-picklist .ui-picklist-list {
+    height: 300px;
+    margin: 0;
+    overflow: auto;
+    padding: 0;
+}
+
+</style>
+		<p:outputPanel id="step1panel">
+	
+	
+	 
+			<p:panelGrid id="addeditproductgrid" columns="5" border="0" styleClass="borderlessGrid"
+				rowStyleClass="#{row mod 2 == 0 ? null : 'old'}" width="60%"
+				columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+	
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+					styleClass="mandatory_text" />
+				<h:outputText value="#{msg['product.label.productName']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="productName"
+					value="#{productBean.product.productName}" maxlength="100" size="25" />
+				<p:message for="productName" styleClass="fieldError" />
+	
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['product.label.productCode']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+	
+				<h:panelGrid columns="2" styleClass="borderlessGrid">
+					<p:inputText id="barcode" value="#{productBean.product.barcode}"
+						maxlength="25" size="25">
+	
+					</p:inputText>
+	
+				</h:panelGrid>
+	
+				<p:message for="barcode" styleClass="fieldError" />
+	
+	
+	
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+					styleClass="mandatory_text" />
+				<h:outputText value="#{msg['product.label.categoryName']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+	
+				<h:panelGrid columns="2" border="0">
+					<p:inputText id="categoryName" value="#{productBean.categoryName}"
+						maxlength="55" size="25" disabled="true" />
+					<p:commandButton id="categoryBtn" icon="ui-icon-search" />
+				</h:panelGrid>
+				<p:message for="categoryName" styleClass="fieldError" />
+	
+	
+	<ui:remove>
+	
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText
+					value="#{msg['product.label.purchasePrice']} (#{app['common.currency']})"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="purchasePrice"
+					value="#{productBean.product.purchasePrice}"
+					styleClass="logintxtnumberFormat" maxlength="25" size="25"
+					onkeypress='return validate(event)'>
+				</p:inputText>
+				
+				<p:message for="purchasePrice" styleClass="fieldError" />
+	</ui:remove>		
+	
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText
+					value="#{msg['product.label.normalPrice']} (#{app['common.currency']})"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="normalPrice"
+					value="#{productBean.product.normalPrice}"
+					styleClass="logintxtnumberFormat" maxlength="25" size="25"
+					onkeypress='return validate(event)'>
+					   <p:ajax event="blur" update="packingPrice" listener="#{productBean.defaultPackingPrice}"></p:ajax>
+				</p:inputText>
+				
+				<p:message for="normalPrice" styleClass="fieldError" />
+				
+				
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText
+					value="#{msg['product.label.packingPrice']} (#{app['common.currency']})"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="packingPrice"
+					value="#{productBean.product.packingPrice}"
+					styleClass="logintxtnumberFormat" maxlength="25" size="25"
+					onkeypress='return validate(event)'>
+					  
+				</p:inputText>
+				<p:message for="packingPrice" styleClass="fieldError" />
+				
+	
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="Tax Type" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu value="#{productBean.product.taxType}" id="taxtype"
+					styleClass="inputCombo" style="width:250px; text-align:left;">
+					<f:selectItem itemLabel="Inclusive" itemValue="Inclusive" />
+					<f:selectItem itemLabel="Exclusive" itemValue="Exclusive" />
+				</p:selectOneMenu>
+				<p:message for="taxtype" styleClass="fieldError" />
+	
+				<h:outputText value="#{msg['common.mantetary.symbol']}"
+					styleClass="mandatory_text" />
+				<h:outputText value="#{msg['product.label.taxCode']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+	
+				<h:panelGrid columns="2" border="0">
+					<p:inputText id="taxCode" value="#{productBean.product.taxCode}"
+						disabled="true" styleClass="logintxtnumberFormat" maxlength="25"
+						size="25" onkeypress='return validate(event)'>
+					</p:inputText>
+					<p:commandButton id="taxBtn" icon="ui-icon-search"
+						action="#{productBean.getBranchTaxList}" update="taxdataTable" />
+				</h:panelGrid>
+				<p:message for="taxCode" styleClass="fieldError" />
+	
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="SET ITEM" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:panelGrid>
+					<p:selectBooleanCheckbox id="isSetItem" value="#{productBean.product.setItem}">
+	       		            <p:ajax  listener="#{productBean.editSetItem}" update="addeditproductgrid"/>
+	        		</p:selectBooleanCheckbox>
+	        		<p:pickList id="setItemPickList" value="#{productBean.dualList}" 
+						var="product" 
+					 	showCheckbox="true"
+					 	rendered="#{productBean.product.setItem=='true'}"
+		                itemValue="#{product}" 
+		                itemLabel="#{product.productName}"
+		                showSourceFilter="true" showTargetFilter="true" 
+		                filterMatchMode="contains" converter="pickListProductConverter" responsive="true">
+		        
+				        <f:facet name="sourceCaption">List Of Item</f:facet>
+				        <f:facet name="targetCaption">Main Dish</f:facet>			 
+				        <p:column style="width:85%;background:#DFBE2D">
+				            <h:outputText value="#{product.productName}" />
+				        </p:column>
+			    	</p:pickList>
+				        		
+				</h:panelGrid>
+			 	
+				<h:outputText value="" styleClass="mandatory_text" />
+				
+	
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['purchaserequest.label.productDesc']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputTextarea rows="5" cols="35" id="productDesc"
+					autoResize="false" value="#{productBean.product.productDesc}" />
+				<p:message for="productDesc" styleClass="fieldError" />
+	
+			
+			 <h:outputText value="" styleClass="mandatory_text" />
+			 
+			<h:outputText value="#{msg['product.label.productImage']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+			
+				<p:fileUpload id="image"  value="#{productBean.image}" mode="simple" 
+					skinSimple="true" description="Image of the product"/>
+				<p:message for="image" styleClass="fieldError" />	
+			</p:panelGrid>
+	
+	
+	
+			<table align="right" width="100%" border="0">
+				<tr>
+					<td align="right"><p:commandButton value="Save" ajax="false"
+							action="#{productBean.saveProduct}" update="productPanel"
+							rendered="#{productBean.action!='update'}" /> 
+							
+							<p:commandButton
+							value="Update" update="productPanel" ajax="false"
+							rendered="#{productBean.action=='update'}"
+							action="#{productBean.updateProduct}" />
+							
+							 <p:commandButton
+							rendered="#{productBean.action!='update'}" value="Reset"
+							ajax="false" action="#{productBean.resetProduct}"
+							update="productPanel" />
+							
+							 <p:commandButton value="Reset"
+							actionListener="#{productBean.editProduct}" ajax="false"
+							update="productPanel" rendered="#{productBean.action=='update'}">
+	
+							<f:attribute name="productId" value="#{productBean.productId}" />
+						</p:commandButton> 
+						
+						<p:commandButton value="Cancel"
+							action="#{productBean.listvoidProduct}" ajax="false"
+							update="addeditproductgrid2" /></td>
+				</tr>
+			</table>
+	
+	</p:outputPanel>
+	
+	
+	
+	
+	</ui:composition>
+	
+	

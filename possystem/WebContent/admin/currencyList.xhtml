@@ -1,0 +1,125 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:my="http://java.sun.com/jsf/composite/components"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head />
+
+
+	<h:form id="listCurrencyForm">
+
+		<p:panel id="searchCurrency" styleClass="limitedHeightDiv">
+
+			<br />
+			<br />
+
+			<p:dataTable id="currencyDataTable" var="currencyList"
+				rowIndexVar="row" value="#{currencyBean.currencyInfoList}"
+				paginator="true" rows="7" style="width:100%"
+				paginatorTemplate="{CurrentPageReport}  {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+				rowsPerPageTemplate="5,10,15">
+
+
+
+				<p:column style="width:50px">
+					<f:facet name="header">
+						<h:outputText value="No." />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxt"
+						style="valign:top;" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Currency Name" />
+					</f:facet>
+					<h:outputText value="#{currencyList.currencyName}"
+						styleClass="logintxttable" style="valign:top;" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Currency Code" />
+					</f:facet>
+					<h:outputText value="#{currencyList.currencyCode}"
+						styleClass="logintxttable" style="valign:top;" />
+				</p:column>
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Currency Unit" />
+					</f:facet>
+					<h:outputText value="#{currencyList.currencyUnit}"
+						styleClass="logintxttable" style="valign:top;" />
+				</p:column>
+
+				<p:column style="width:50px">
+					<f:facet name="header">
+						<h:outputText value="Delete" />
+					</f:facet>
+					<a4j:commandLink actionListener="#{currencyBean.onClick_Delete}"
+						reRender="confirmPaneCurrency"
+						oncomplete="#{rich:component('confirmPaneCurrency')}.show();">
+						<h:graphicImage value="resources/images/delete.gif" alt="delete" />
+						<f:attribute value="#{currencyList.idCurrency}"
+							name="deleteCurrency" />
+					</a4j:commandLink>
+				</p:column>
+			</p:dataTable>
+
+
+			<p:commandButton value="New Currency"
+				action="#{currencyBean.addNewCurrency()}" ajax="false"
+				styleClass="loginText" />
+		</p:panel>
+
+		<br />
+
+		<br />
+
+
+
+
+		<rich:popupPanel id="confirmPaneCurrency" modal="true"
+			rendered="#{!currencyBean.userAssignedForRole}" autosized="true"
+			width="600" height="200" resizeable="false">
+
+			<f:facet name="header">
+				<h:outputText value="Delete Confirmation " />
+			</f:facet>
+			<br></br>
+			<br></br>
+
+			<p:outputPanel ajaxRendered="true">
+				<h:panelGrid styleClass="logintxtuserhome" columns="1"
+					id="currencyDeleteconfirm"
+					columnClasses="columnLeft width-120px, columnLeft width-120px, columnLeft width-220px">
+					<h:outputText
+						value="Are you sure, you want to delete the Currency? " />
+
+				</h:panelGrid>
+
+				<h:panelGrid styleClass="logintxtuserhome" columns="2"
+					id="br1deleteconfirm1"
+					columnClasses="columnLeft width-120px, columnLeft width-120px, columnLeft width-220px">
+
+					<p:commandButton value="Yes"
+						actionListener="#{currencyBean.deleteCurrencyConfirm}"
+						rendered="#{!currencyBean.userAssignedForRole}"
+						update="listCurrencyForm, confirmPaneCurrency"
+						onclick="#{rich:component('confirmPaneCurrency')}.hide();" />
+
+					<p:commandButton value="Cancel"
+						rendered="#{!currencyBean.userAssignedForRole}"
+						onclick="#{rich:component('confirmPaneCurrency')}.hide();" />
+
+
+				</h:panelGrid>
+			</p:outputPanel>
+
+		</rich:popupPanel>
+	</h:form>
+</ui:composition>

@@ -1,0 +1,163 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="dashboardMasterForm">
+		<p:panel id="dashboardMasterpanel" styleClass="limitedHeightDiv"
+			border="1">
+			<h:panelGrid id="dashboardMastergrid" columns="2" border="0"
+				columnClasses="alignTop,alignTop" cellpadding="4">
+
+				<p:panel id="salesMasterpanel">
+
+					<h:panelGrid id="salesMastergrid" columns="2" border="0"
+						cellpadding="4" columnClasses="alignTop,alignTop">
+						<p:panel id="yeardetailsMasterpanel">
+
+							<h:panelGrid id="salestotalMastergrid" columns="3" border="0"
+								cellpadding="10" columnClasses="alignTop,alignTop">
+
+								<h:outputText value="Year" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+
+								<h:outputText value="Total Sales" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="Number of Sales"
+									styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="Average  Sales" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="Largest  Sales" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+
+							</h:panelGrid>
+						</p:panel>
+						<p:panel id="graphpanel">
+							<h:panelGrid id="graphpanelgrid" columns="1" border="0"
+								cellpadding="10" columnClasses="alignTop">
+								<p:barChart id="basic" value="#{chartBean.categoryModel}"
+									legendPosition="ne" title="Basic Bar Chart" min="0" max="200"
+									style="height:250px;width:500px" />
+							</h:panelGrid>
+
+						</p:panel>
+					</h:panelGrid>
+
+
+					<h:panelGrid id="dashboardtopgrid" columns="2" border="0"
+						cellpadding="4"
+						columnClasses="columnLeft width-70%, columnLeft width-30%">
+						<p:panel id="top10productdetailsMasterpanel">
+						Product sales
+						</p:panel>
+						<p:panel id="top10vendorspanel">
+						Vendors
+						</p:panel>
+					</h:panelGrid>
+
+				</p:panel>
+
+				<p:panel id="salesbymonthMasterpanel">
+					<h:panelGrid id="salesbymonthgrid" columns="1" border="0"
+						cellpadding="4"
+						columnClasses="columnLeft width-70%, columnLeft width-30%">
+						<p:panel id="firstquarter">
+							<h:panelGrid id="firstquartergrid" columns="3" border="0"
+								cellpadding="4"
+								columnClasses="columnLeft width-70%, columnLeft width-30%">
+
+								<h:outputText value="January" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="February" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="March  " styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+							</h:panelGrid>
+
+
+						</p:panel>
+						<p:panel id="secondquarter">
+							<h:panelGrid id="secondquartergrid" columns="3" border="0"
+								cellpadding="4"
+								columnClasses="columnLeft width-70%, columnLeft width-30%">
+
+								<h:outputText value="April" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="May" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="June  " styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+							</h:panelGrid>
+						</p:panel>
+
+						<p:panel id="thirdquarter">
+							<h:panelGrid id="thirdquartergrid" columns="3" border="0"
+								cellpadding="4"
+								columnClasses="columnLeft width-70%, columnLeft width-30%">
+
+								<h:outputText value="July" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="Augest" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="September  " styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+							</h:panelGrid>
+						</p:panel>
+
+						<p:panel id="fourthquarter">
+							<h:panelGrid id="fourthquartergrid" columns="3" border="0"
+								cellpadding="4"
+								columnClasses="columnLeft width-70%, columnLeft width-30%">
+
+								<h:outputText value="October" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="November" styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+								<h:outputText value="December  " styleClass="dashboardValue"></h:outputText>
+								<h:outputText value=":" />
+								<h:outputText value="#{salesListBean.salesobj.orderNo}" />
+
+							</h:panelGrid>
+						</p:panel>
+					</h:panelGrid>
+				</p:panel>
+
+
+			</h:panelGrid>
+		</p:panel>
+	</h:form>
+</ui:composition>

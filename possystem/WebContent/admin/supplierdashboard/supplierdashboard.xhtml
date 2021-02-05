@@ -1,0 +1,30 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="supplierDashboard" header="Supplier Detail "
+		resizable="false" widgetVar="supplierDig" modal="true" height="490"
+		width="1000">
+		<br></br>
+
+
+		<p:tabView id="tabView" dynamic="true" cache="false"
+			styleClass="mytabpanel" activeIndex="#{supplierBean.activeIndex1}">
+
+			<p:ajax event="tabChange" listener="#{supplierBean.onSupplierTabChange}"
+				update="tabView" />
+
+			<p:tab title="Supplier Details" id="branchView">
+				<ui:include src="/admin/supplierdashboard/supplierview.xhtml" />
+			</p:tab>
+
+
+		</p:tabView>
+
+
+
+	</p:dialog>
+</ui:composition>

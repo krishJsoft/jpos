@@ -1,0 +1,24 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:overlayPanel id="categoryPanel" for="categoryBtn" hideEffect="fade" widgetVar="overp"
+		dynamic="true">
+		<p:treeTable id="treetable" value="#{commonListBean.rootNode}"
+				 scrollable="true" dynamic="true" 
+				selectionMode="checkbox" scrollHeight="330" scrollWidth="490" style="width:500px;"
+				selection="#{productCategoryBean.selectedNodes}" var="category">
+				<f:facet name="footer">
+				<p:commandButton value="Select" ajax="true" actionListener="#{productBean.selectCategoryList}" oncomplete="PF('overp').hide()"
+				style="background-image: url('resources/images/greenButton.jpg'); width:400px; height:30px; "/>  
+				</f:facet>
+				<p:column headerText="Category Name" style="width:200px;" styleClass="columnwidth">
+					<h:outputText value="#{category.name}" styleClass="logintxttable"/>
+				</p:column>			
+
+			</p:treeTable>		
+	</p:overlayPanel>
+</ui:composition>

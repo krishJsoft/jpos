@@ -1,0 +1,227 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="listProductForm">
+		<p:outputPanel id="productPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="productPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Add/Edit Products Price">
+
+
+				<h:panelGrid id="searchproductgrid" columns="5" border="0"
+					width="60%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" />
+					<h:outputText value="Product Code " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText id="barcode" value="#{productBean.barcode}"
+						styleClass="logintxt" />
+					<h:outputText value="" />
+
+					<h:outputText value="" />
+					<h:outputText value="Product Name " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{productBean.productprice.productName}"
+						styleClass="logintxt" />
+					<h:outputText value="" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="UOM " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:outputText value="#{productBean.productprice.uom}"
+						styleClass="logintxt" />
+					<h:outputText value="" />
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Minimum Quantity " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="quantityFrom" onkeypress='return validateonlyNumber(event)' styleClass="logintxtnumberFormat"
+						disabled="#{productBean.productCodedisable}"
+						
+						value="#{productBean.quantityFrom}" maxlength="15" size="25" />
+					<p:message for="quantityFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Discount Amount #{app['common.currency']} "
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="discountAmount" styleClass="logintxtnumberFormat"
+						onkeypress='return validate(event)'
+						value="#{productBean.discountAmount}" maxlength="5" size="25">						
+					</p:inputText>
+					<p:message for="discountAmount" styleClass="fieldError" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+
+						<p:commandButton value="Add" ajax="true"
+							rendered="#{productBean.action!='update'}"
+							action="#{productBean.addPriceItem}" update="productPanel" />
+
+						<p:commandButton value="Update" ajax="true"
+							rendered="#{productBean.action=='update'}"
+							action="#{productBean.updateProductPrice}" update="productPanel" />
+
+
+					</h:panelGrid>
+					<h:outputText value="" />
+
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="product" rowIndexVar="row"
+					scrollable="true" scrollHeight="210"
+					value="#{productBean.pricelist}" paginator="false" rows="30"
+					style="width: 100%" rowsPerPageTemplate="5,10,15"
+					rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+
+
+
+
+					<p:column sortBy="#{product.quantityFrom}"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Minimum Quantity" />
+						</f:facet>
+						<h:outputText value="#{product.quantityFrom}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{product.unitPrice}"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Unit Price #{app['common.currency']}" />
+						</f:facet>
+						<h:outputText value="#{product.unitPrice}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+
+
+					<p:column sortBy="#{product.discountAmount}"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Discount #{app['common.currency']}" />
+						</f:facet>
+						<h:outputText value="#{product.discountAmount}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+
+
+					<p:column sortBy="#{product.discountPrice}"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Discounted Price #{app['common.currency']}" />
+						</f:facet>
+						<h:outputText value="#{product.discountPrice}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						
+						<h:commandLink value="Edit" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('Edit Product')}"
+							actionListener="#{productBean.editProductPrice}">
+							<f:attribute name="productPriceId" value="#{row}" />
+						</h:commandLink>
+
+						<h:graphicImage value="resources/images/cal_forward.gif"
+							rendered="#{loginBean.functionList.contains('Edit Product') and product.quantityFrom.doubleValue()!=1.00}" />
+
+						<p:commandLink value="Remove" styleClass="logintxttable"
+							rendered="#{product.quantityFrom.doubleValue()!=1.00}"
+							update=":listProductForm:dataTable,:listProductForm:requestitemdelete"
+							actionListener="#{productBean.removeItem}"
+							oncomplete="PF('priceItemdeleteDig').show()">
+							<f:attribute name="priceBreakdownId" value="#{row}" />
+						</p:commandLink>
+
+
+					</p:column>
+
+				</p:dataTable>
+
+
+			</p:panel>
+
+			<p:commandButton value="Update" ajax="false"
+				action="#{productBean.saveProductPrice}" />
+			<p:commandButton value="Reset" ajax="true"
+				action="#{productBean.searchProductPrice}" update="productPanel" />
+			<p:commandButton value="Cancel" ajax="false"
+				action="#{productBean.listProduct}" />
+
+			<p:dialog id="modelpriceitemdelete" showEffect="fade"
+				hideEffect="fade" header="Pricing Item Delete Confirmation"
+				resizable="false" widgetVar="priceItemdeleteDig" modal="true"
+				height="100" width="360">
+
+				<br></br>
+
+				<p:panel id="requestitemdelete">
+
+					<h:panelGrid columns="1" border="0" width="100%"
+						styleClass="bgcolor" cellpadding="1" cellspacing="1"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+						<h:outputText value="Are you sure want to Delete Item ? "
+							styleClass="logintxttable" />
+					</h:panelGrid>
+
+					<br></br>
+
+					<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+						columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+						<p:commandButton value="Delete" ajax="false"
+							action="#{productBean.removeItemConfirm}">
+						</p:commandButton>
+						<p:commandButton value="Cancel"
+							onclick="PF('priceItemdeleteDig').hide()" />
+
+					</h:panelGrid>
+				</p:panel>
+
+			</p:dialog>
+
+
+
+
+		</p:outputPanel>
+
+	</h:form>
+
+
+
+</ui:composition>
+
+

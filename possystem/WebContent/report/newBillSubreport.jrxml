@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="newBillSubreport" pageWidth="216" pageHeight="802" columnWidth="216" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4c2e416a-b45e-4ee6-8818-89b58aa37394">
+	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="productName" class="java.lang.String"/>
+	<field name="productCode" class="java.lang.String"/>
+	<field name="quantity" class="java.lang.Integer"/>
+	<field name="unitPrice" class="java.math.BigDecimal"/>
+	<field name="subTotal" class="java.math.BigDecimal"/>
+	<field name="taxAmount" class="java.math.BigDecimal"/>
+	<field name="discountAmount" class="java.math.BigDecimal"/>
+	<variable name="grandTotal" class="java.math.BigDecimal" calculation="Sum">
+		<variableExpression><![CDATA[$F{subTotal}]]></variableExpression>
+		<initialValueExpression><![CDATA[0.00]]></initialValueExpression>
+	</variable>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<columnHeader>
+		<band height="4" splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band height="39" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="194" height="14" uuid="989e9a92-123c-4917-b6ab-4dd2e85f19c3"/>
+				<textElement>
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productName}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="14" width="73" height="12" uuid="48161c21-4b3c-4af3-ac07-5ab31f8f557b"/>
+				<textElement>
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{productCode}]]></textFieldExpression>
+			</textField>
+			<textField pattern="###0">
+				<reportElement x="73" y="14" width="31" height="12" uuid="e7c5a224-249f-4587-a0b8-0eb18d988751"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="104" y="14" width="36" height="12" uuid="6a046422-a5b2-4c9e-93f3-c6656299348d"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{unitPrice}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00">
+				<reportElement x="140" y="14" width="54" height="12" uuid="3ce2f834-e9ec-4b9d-8bd1-5c953c5c03da"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{subTotal}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="26" width="28" height="12" uuid="11ae6229-c281-45c2-8999-d79854bc90c8"/>
+				<textElement>
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<text><![CDATA[Tax :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="28" y="26" width="33" height="12" uuid="4fa15887-f77d-4673-9a8e-23e0ba85c1b0"/>
+				<textElement textAlignment="Left">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{taxAmount}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="73" y="26" width="38" height="12" uuid="bf5fe40a-882d-4571-82cc-2f256fa0bab1"/>
+				<textElement>
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<text><![CDATA[Discount :]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="111" y="26" width="29" height="12" uuid="cd9f048c-67e9-450d-a13d-f9d9fc1de535"/>
+				<textElement textAlignment="Right">
+					<font fontName="SansSerif" size="7"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{discountAmount}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="7" splitType="Stretch">
+			<line>
+				<reportElement x="0" y="3" width="194" height="1" uuid="011eb147-4ee3-4f9d-b829-a99d14c6179c"/>
+			</line>
+		</band>
+	</columnFooter>
+</jasperReport>

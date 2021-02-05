@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEdituomForm">
+		<p:outputPanel id="uomPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="uomPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search UOM Types">
+
+				<h:panelGrid id="addedituomgrid" columns="5" border="0" width="60%"
+					rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}"
+					columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['uom.label.UOMName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="UOMName"
+						value="#{productCategoryBean.uomtypeModel.UOMName}" maxlength="45"
+						size="25" />
+					<p:message for="UOMName" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Description" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="3" cols="25" id="description"
+						value="#{productCategoryBean.uomtypeModel.description}" />
+					<p:message for="description" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+
+
+
+					<h:panelGrid columns="3">
+						<p:commandButton value="Save" ajax="false"
+							action="#{productCategoryBean.saveUOM}" update="uomPanel"
+							rendered="#{productCategoryBean.action!='update'}" />
+						<p:commandButton value="Update" update="uomPanel" ajax="false"
+							rendered="#{productCategoryBean.action=='update'}"
+							action="#{productCategoryBean.updateUOM}" />
+
+						<p:commandButton value="Reset"
+							rendered="#{productCategoryBean.action!='update'}"
+							action="#{productCategoryBean.resetUOM}" ajax="false"
+							update="addedituomgrid" />
+
+						<p:commandButton value="Reset"
+							actionListener="#{productCategoryBean.editUom}" update="uomPanel"
+							rendered="#{productCategoryBean.action=='update'}">
+							<f:attribute name="UOMId"
+								value="#{productCategoryBean.uomtypeModel.UOMId}" />
+						</p:commandButton>
+
+						<p:commandButton value="Cancel"
+							rendered="#{productCategoryBean.action=='update'}"							
+							action="#{productCategoryBean.resetUOM}" ajax="false"
+							update="uomPanel" />
+
+					</h:panelGrid>
+					<h:outputText value="" />
+				</h:panelGrid>
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="uom" rowIndexVar="row"
+					editable="true" value="#{productCategoryBean.uomtypeModelListObj}"
+					paginator="true" rows="13" style="width: 60%"
+					rowsPerPageTemplate="5,10,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row+1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{uom.UOMName}">
+						<f:facet name="header">
+							<h:outputText value="UOM" />
+						</f:facet>
+						<h:outputText value="#{uom.UOMName}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Description" />
+						</f:facet>
+						<h:outputText value="#{uom.description}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column
+						rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}">
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<h:commandLink value="Edit" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('Edit UOM')}"
+							actionListener="#{productCategoryBean.editUom}">
+							<f:attribute name="UOMId" value="#{uom.UOMId}" />
+						</h:commandLink>
+					</p:column>
+
+				</p:dataTable>
+
+
+
+
+
+			</p:panel>
+
+
+
+
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

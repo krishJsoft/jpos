@@ -1,0 +1,239 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	
+
+	<h:form id="listBranchForm">
+		<p:outputPanel id="branchPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="branchPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Add/Edit Branch"
+				id="branchPanel1">
+
+
+
+
+
+				<h:panelGrid id="addeditbranchgrid" columns="5" border="0"
+					width="60%"
+					columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.branchName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="branchName"
+						value="#{branchBean.branch.branchName}" maxlength="45" size="25" />
+					<p:message for="branchName" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.branchCode']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="branchCode"
+						value="#{branchBean.branch.branchCode}" maxlength="15" size="25" />
+					<p:message for="branchCode" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.address']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea rows="3" cols="25" id="address"
+						value="#{branchBean.branch.address}" />
+					<p:message for="address" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.city']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="city" value="#{branchBean.branch.city}"
+						maxlength="25" size="25" />
+					<p:message for="city" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.state']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="state" value="#{branchBean.branch.state}"
+						maxlength="25" size="25" />
+					<p:message for="state" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.country']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="country" value="#{branchBean.branch.country}"
+						maxlength="25" size="25" />
+					<p:message for="country" styleClass="fieldError" />
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.postCode']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="postCode" value="#{branchBean.branch.postCode}"
+						maxlength="25" size="25" />
+					<p:message for="postCode" styleClass="fieldError" />
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.phoneNo']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="phoneNo" value="#{branchBean.branch.phoneNo}"
+						maxlength="25" size="25" />
+					<p:message for="phoneNo" styleClass="fieldError" />
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.contactPerson']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="contactPerson"
+						value="#{branchBean.branch.contactPerson}" maxlength="25"
+						size="25" />
+					<p:message for="contactPerson" styleClass="fieldError" />
+
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.faxNo']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="faxNo" value="#{branchBean.branch.faxNo}"
+						maxlength="25" size="25" />
+					<p:message for="faxNo" styleClass="fieldError" />
+
+
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.emailAddress']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="emailAddress"
+						value="#{branchBean.branch.emailAddress}" maxlength="55" size="25" />
+					<p:message for="emailAddress" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.franchiseeFee']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="franchiseeFee" styleClass="logintxtnumberFormat"
+						onkeypress='return validate(event)'
+						value="#{branchBean.branch.franchiseeFee}" maxlength="25"
+						size="25" />
+					<p:message for="franchiseeFee" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.licensefee']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="fixedLicenseFee" styleClass="logintxtnumberFormat"
+						onkeypress='return validate(event)'
+						value="#{branchBean.branch.fixedLicenseFee}" maxlength="25"
+						size="25" />
+					<p:message for="fixedLicenseFee" styleClass="fieldError" />
+					
+					
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.Status']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" value="#{branchBean.branch.status}"
+						styleClass="inputCombo" style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Active" itemValue="1" />
+						<f:selectItem itemLabel="InActive" itemValue="0" />
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+
+
+				</h:panelGrid>
+
+				<br />
+
+
+				<table align="center" width="100%" border="0">
+					<tr>
+						<td align="center"><p:commandButton value="Save"
+								action="#{branchBean.saveBranch}" update="branchPanel"
+								rendered="#{branchBean.action!='update'}" /> <p:commandButton
+								value="Update" update="branchPanel"
+								rendered="#{branchBean.action=='update'}"
+								action="#{branchBean.updateBranch}" /> <p:commandButton
+								rendered="#{branchBean.action!='update'}" value="Reset"
+								action="#{branchBean.resetBranch}" update="addeditbranchgrid" />
+
+							<p:commandButton value="Reset"
+								actionListener="#{branchBean.editBranch}" update="branchPanel"
+								rendered="#{branchBean.action=='update'}">
+								<f:attribute name="branchId"
+									value="#{branchBean.branch.branchId}" />
+							</p:commandButton> <p:commandButton value="Cancel"
+								action="#{branchBean.listBranch}" ajax="false"
+								update="addeditbranchgrid" /></td>
+					</tr>
+
+
+				</table>
+
+
+
+				<br />
+
+			</p:panel>
+		</p:outputPanel>
+
+		<p:ajaxStatus onstart="statusDialog.show();" 
+			onsuccess="statusDialog.hide();" />
+
+		<p:dialog modal="true" widgetVar="statusDialog"
+			header="Loading Please Wait... it take few minutes " width="250" draggable="false"
+			closable="false">
+			<p:graphicImage value="/resources/images/ajaxloadingbar.gif"
+				style="width:200px;" />
+		</p:dialog>
+
+
+	</h:form>
+</ui:composition>
+
+

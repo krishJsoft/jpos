@@ -1,0 +1,178 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="categorySalesDlg" header="Sales Category Search"
+		widgetVar="categorySalesDlg" modal="true" height="480px" width="80%">
+
+
+
+		<p:outputPanel id="categorySalesPanel">
+			
+			<p:panel header="Search Sales Category">
+
+
+				<h:panelGrid id="categorysalesGrid" columns="10" border="0" width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="categoryDateFrom" size="25"
+						value="#{salesorderBean.dateFrom}" pattern="dd/MMM/yyyy"
+						
+						>
+					</p:calendar>
+					<p:message for="categoryDateTo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="categoryDateTo" size="25"
+						value="#{salesorderBean.dateTo}" pattern="dd/MMM/yyyy" />
+					<p:message for="categoryDateTo" styleClass="fieldError" />
+
+							
+					
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+						update="categorySalesDataTable2,cats"
+							action="#{salesorderBean.searchSalesOrderSummaryCategoryBased}"
+							/>
+					</h:panelGrid>
+					<h:outputText value="" />
+<p:panel id="cats">
+					<h:outputText value="date : #{salesorderBean.dateFrom}" />
+
+</p:panel>
+				</h:panelGrid>
+
+
+				<br />
+				<p:dataTable id="categorySalesDataTable2" var="salesbd" rowIndexVar="row"
+					scrollable="true" scrollHeight="420"
+					value="#{salesorderBean.salesorderbreakdowns}" paginator="false"
+					rows="1000000" style="width: 100%" 
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+					<p:column id="modelHeader" width="5%">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+					<p:column style="width:30%">
+						<f:facet name="header">
+							<h:outputText value="Product Category"/>
+						</f:facet>
+					</p:column>
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Quantity"/>
+						</f:facet>
+						<f:facet name="footer">
+							<h:outputText value="Total Amount (#{app['common.currency']})" />
+						</f:facet>
+						
+						<h:outputText value="#{salesbd.qtty}"
+							>
+							<f:convertNumber pattern="#0" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Sales Amount (#{app['common.currency']})"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.unitPrice}"
+							styleClass="logintxttable">
+							
+						</h:outputText>
+						
+						<f:facet name="footer">
+						<p:outputPanel style="float: right">
+							<h:outputText value="#{salesorderBean.totalAmount}" />
+							</p:outputPanel>
+						</f:facet>
+					</p:column>
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Tax Amount (#{app['common.currency']})"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.taxAmount}"
+							styleClass="logintxttable">
+							
+						</h:outputText>
+						
+						<f:facet name="footer">
+						<p:outputPanel style="float: right">
+							<h:outputText value="#{salesorderBean.totalTaxAmount}" />
+							</p:outputPanel>
+						</f:facet>
+					</p:column>
+					
+				</p:dataTable>
+
+				
+			</p:panel>
+
+			<p:commandButton value="Close" oncomplete="PF('categorySalesDlg').hide()"
+				update="focus"
+				style=" width:100px; height:30px; " />
+		</p:outputPanel>
+
+
+
+		<p:dialog showEffect="fade" hideEffect="fade"
+			header="Sales Order Delete Confirmation" resizable="false"
+			widgetVar="salesorderdeleteDig" modal="false" height="160"
+			width="450">
+
+			<br></br>
+
+			<p:panel>
+
+				<h:panelGrid columns="1" border="0" width="90%" styleClass="bgcolor"
+					cellpadding="1" cellspacing="1"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<h:outputText value="Are you sure you want to Delete Sales Order  "
+						styleClass="logintxttable" />
+
+					<h:outputText value="#{salesorderBean.salesorder.salesOrderNo}"
+						styleClass="logintxttable" />
+
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+
+
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

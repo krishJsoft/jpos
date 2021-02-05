@@ -1,0 +1,151 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="dailySalesReportForm">
+		<p:panel styleClass="mypanel" id="dailySalesReportPanel">
+			<f:facet name="header" styleClass="myThemeColor">
+				<h:outputText value="Daily Sales By Payment Type" />
+			</f:facet>
+
+			<br />
+			<h:panelGrid columns="4" border="0"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:calendar navigator="true" id="dateFrom" size="25"
+					value="#{salesorderBean.dailyReportDateFrom}"
+					pattern="#{des['common.date.pattern']}" />
+				<p:message for="dateFrom" styleClass="fieldError" />
+
+				
+
+				<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:calendar navigator="true" id="dateTo" size="25"
+					value="#{salesorderBean.dailyReportDateTo}"
+					pattern="#{des['common.date.pattern']}" />
+				<p:message for="dateTo" styleClass="fieldError" />
+
+				<h:outputText value="Payment Type" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu id="paymentType" value="#{salesorderBean.salesorder.paymentType}"
+					style="width:160px; text-align:left;">
+					<f:selectItem itemLabel="Select Type" itemValue="" />
+					<f:selectItem itemLabel="Cash" itemValue="Cash" />
+					<f:selectItem itemLabel="Card" itemValue="Card" />
+					<f:selectItem itemLabel="Cheque" itemValue="Cheque" />
+					<f:selectItem itemLabel="Voucher" itemValue="Voucher" />
+					<f:selectItem itemLabel="Loyalty" itemValue="Loyalty" />
+					<f:selectItem itemLabel="Grab Pay" itemValue="GrabPay" />					
+				</p:selectOneMenu>
+				<p:message for="paymentType" styleClass="fieldError" />
+
+
+
+				<h:outputText value="Sales By" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu id="salesRep" value="#{salesorderBean.salesorder.salesRep}"
+					style="width:160px; text-align:left;">
+					<f:selectItem itemLabel="Select Sales Rep" itemValue="" />
+						<f:selectItems value="#{commonListBean.staffcasherList}"></f:selectItems>			
+				</p:selectOneMenu>
+				<p:message for="salesRep" styleClass="fieldError" />
+
+
+
+			</h:panelGrid>
+
+			<br />
+			<p:panel>
+				<p:commandButton value="Search" ajax="true"
+					update="dailySalesReportPanel,dailySalesReportForm:salesitemreportgrid"
+					action="#{salesorderBean.dailySalesReport}" />
+				<p:commandButton value="Print"
+					style="background: #E32526;color:white"
+					oncomplete="PF('salesreportprintdlg').show();">
+				</p:commandButton>
+			</p:panel>
+			<br />
+
+
+			<p:dataTable id="categorySalesDataTable" var="salesbd"
+				rowIndexVar="row" scrollable="true" scrollHeight="420"
+				value="#{salesorderBean.salesReport}" paginator="true" rows="10"
+				style="width: 100%" rowsPerPageTemplate="5,10,15,25,50,100"
+				rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+				<p:column id="modelHeader" width="5%">
+					<f:facet name="header">
+						<h:outputText value="#{des['common.table.header.no']}" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column width="15%" sortBy="#{salesbd.createdDate}">
+					<f:facet name="header">
+						<h:outputText value="Date" />
+					</f:facet>
+					<h:outputText value="#{salesbd.createdDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="#{des['common.date.pattern']}" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:10%">
+					<f:facet name="header">
+						<h:outputText value="Sales Amount (#{app['common.currency']})" />
+					</f:facet>
+					<h:outputText
+						value="#{salesbd.totalAmount.subtract(salesbd.totalTax)}"
+						styleClass="logintxttable">
+
+					</h:outputText>
+
+				</p:column>
+				<p:column style="width:10%">
+					<f:facet name="header">
+						<h:outputText value="Tax Amount (#{app['common.currency']})" />
+					</f:facet>
+					<h:outputText value="#{salesbd.totalTax}"
+						styleClass="logintxttable">
+
+					</h:outputText>
+
+
+				</p:column>
+
+				<p:column style="width: 7%;">
+					<f:facet name="header">Action</f:facet>
+					<p:menuButton value="Options">
+
+						<p:menuitem value="View" styleClass="logintxttable"
+							update="dailySalesReportForm:salesinvoicelistpanel,dailySalesReportForm:dailyinvoicereportprintrequestitem"
+							actionListener="#{salesorderBean.dailyInvoiceList}"
+							oncomplete="PF('salesIncoiceListDlg').show()">
+							<f:attribute name="sales" value="#{salesbd}" />
+						</p:menuitem>
+					</p:menuButton>
+				</p:column>
+
+			</p:dataTable>
+		</p:panel>
+
+
+		<ui:include
+			src="/reports/salesReport/printtemplate/dailySalesReportTemplate.xhtml" />
+		<ui:include
+			src="/reports/salesReport/printtemplate/posprinttemplate.xhtml" />
+		<ui:include
+			src="/reports/salesReport/printtemplate/dailyInvoiceReportTemplate.xhtml" />
+
+		<ui:include src="/reports/salesReport/dlgs/invoiceListDlg.xhtml" />
+		<ui:include src="/reports/salesReport/dlgs/salesOrderSearchView.xhtml" />
+
+
+
+	</h:form>
+</ui:composition>

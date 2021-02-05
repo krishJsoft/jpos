@@ -1,0 +1,205 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel id="step1pane2">
+
+		<h:panelGrid id="addeditproductgrid2" columns="5" width="50%"
+			rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}"
+			columnClasses="columnLeft width-5px, columnLeft width-80px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+			<h:outputText value="#{msg['common.mantetary.symbol']}"
+				styleClass="mandatory_text" />
+			<h:outputText value="#{msg['product.label.supplierName']}"
+				styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<h:panelGrid columns="2">
+				<p:selectOneMenu id="supplierName" effect="fade" editable="false"
+					disabled="#{productBean.productCodedisable}"
+					value="#{productBean.product.supplierId}"
+					style="width:160px; float :left;" styleClass="selectOneMenu">
+					<f:selectItem itemLabel="Select Supplier" itemValue="0" />
+					<f:selectItems value="#{commonListBean.selectSupplierList}"></f:selectItems>
+				</p:selectOneMenu>
+
+			</h:panelGrid>
+			<p:message for="supplierName" styleClass="fieldError" />
+
+
+			<h:outputText value="*" styleClass="mandatory_text" />
+			<h:outputText value="Supplier Price" styleClass="logintxt"></h:outputText>
+			<h:outputText value=":" />
+			<p:inputText id="supplierpurchasePrice"
+				value="#{productBean.product.supplierpurchasePrice}"
+				styleClass="logintxtnumberFormat" maxlength="25" size="25"
+				onkeypress='return validate(event)'>
+			</p:inputText>
+
+			<p:message for="supplierpurchasePrice" styleClass="fieldError" />
+
+
+			<p:commandButton value="Add" ajax="true"
+				rendered="#{productBean.supplieraction!='update'}"
+				action="#{productBean.addSupplierItem}" update="productPanel" />
+
+			<p:commandButton value="Update" ajax="true"
+				rendered="#{productBean.supplieraction=='update'}"
+				action="#{productBean.updateSupplierItemConfirm}"
+				update="productPanel" />
+
+			<p:commandButton value="Reset" ajax="true"
+				rendered="#{productBean.supplieraction=='update'}"
+				action="#{productBean.resetSupplierItem}" update="productPanel" />
+
+
+
+		</h:panelGrid>
+
+
+		<br />
+		<br />
+
+
+		<p:dataTable id="dataTable" var="supplier" rowIndexVar="row"
+			rendered="#{productBean.supplierlist.size()!=0}" scrollable="true"
+			scrollHeight="200" value="#{productBean.supplierlist}"
+			paginator="false" rows="20" style="width: 60%"
+			rowsPerPageTemplate="5,10,15"
+			rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+			<p:column id="modelHeader" width="3%">
+				<f:facet name="header">
+					<h:outputText value="SNo" />
+				</f:facet>
+				<h:outputText value="#{row + 1}" styleClass="logintxttable"/>
+			</p:column>
+
+			<p:column sortBy="#{supplier.supplierName}" width="20%">
+				<f:facet name="header">
+					<h:outputText value="Supplier Name" />
+				</f:facet>
+				<h:outputText value="#{supplier.supplierName}" styleClass="logintxttable"/>
+			</p:column>
+
+
+
+			<p:column styleClass="logintxtnumberFormat"
+				rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}"
+				sortBy="#{supplier.purchasePrice}" width="10%">
+				<f:facet name="header">
+					<h:outputText value="Supplier Price" />
+				</f:facet>
+				<h:outputText value="#{supplier.purchasePrice}" styleClass="logintxttable">
+					<f:convertNumber pattern="#0.00" />
+				</h:outputText>
+			</p:column>
+
+
+
+			<p:column width="25%">
+				<f:facet name="header">
+					<h:outputText value="Supplier Address" />
+				</f:facet>
+				<h:outputText value="#{supplier.supplierAddress}" styleClass="logintxttable"/>
+			</p:column>
+
+
+			<p:column style="width: 10%;"
+				rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}">
+				<f:facet name="header">Action</f:facet>
+
+
+				<h:panelGrid columns="6" border="0" styleClass="borderlessGrid">
+					<p:commandLink value="Edit" styleClass="ui-icon ui-icon-pencil"
+						title="Edit" update=":listProductForm:addeditproductgrid2"
+						actionListener="#{productBean.editSupplierItem}">
+						<f:attribute name="supplierId" value="#{row}" />
+					</p:commandLink>
+
+					<h:graphicImage value="resources/images/cal_forward.gif" />
+
+
+					<p:commandLink value="Remove" styleClass="ui-icon ui-icon-trash"
+						title="Remove" update=":listProductForm:requestitemdelete"
+						actionListener="#{productBean.removeSupplierItem}"
+						oncomplete="supplierItemdeleteDig.show()">
+						<f:attribute name="supplierId" value="#{row}" />
+					</p:commandLink>
+				</h:panelGrid>
+
+
+			</p:column>
+
+
+		</p:dataTable>
+
+
+
+
+		<table align="right" width="100%" border="0">
+			<tr>
+				<td align="right"><p:commandButton value="Save"
+						action="#{productBean.saveProduct}" update="productPanel"
+						rendered="#{productBean.action!='update'}" /> <p:commandButton
+						value="Update" update="productPanel"
+						rendered="#{productBean.action=='update'}"
+						action="#{productBean.updateProduct}" /> <p:commandButton
+						rendered="#{productBean.action!='update'}" value="Reset"
+						action="#{productBean.resetProduct}" update="addeditproductgrid2" />
+
+					<p:commandButton value="Reset"
+						actionListener="#{productBean.editProduct}" update="productPanel"
+						rendered="#{productBean.action=='update'}">
+						<f:attribute name="productId" value="#{productBean.productId}" />
+					</p:commandButton> <p:commandButton value="Cancel"
+						action="#{productBean.listvoidProduct}" ajax="false"
+						update="addeditproductgrid2" /></td>
+			</tr>
+
+
+		</table>
+		
+
+		<p:dialog showEffect="fade" hideEffect="fade"
+			header="Supplier Delete Confirmation" resizable="false"
+			widgetVar="supplierItemdeleteDig" modal="true" height="90"
+			width="340">
+
+			<br></br>
+	
+
+				<h:panelGrid columns="1" border="0" width="100%" id="requestitemdelete"
+					styleClass="bgcolor" cellpadding="1" cellspacing="1"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+					<h:outputText value="Are you sure want to Delete Item ? "
+						styleClass="logintxttable" />
+
+					<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+						columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+						<p:commandButton value="Delete" ajax="true"
+							oncomplete="supplierItemdeleteDig.hide();"
+							update=":listProductForm:productPanel"
+							action="#{productBean.removeSupplierItemConfirm}">
+						</p:commandButton>
+						<p:commandButton value="Cancel"
+							onclick="supplierItemdeleteDig.hide()" />
+
+					</h:panelGrid>
+				</h:panelGrid>			
+
+		</p:dialog>
+
+
+
+
+	</p:outputPanel>
+
+
+</ui:composition>
+
+

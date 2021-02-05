@@ -1,0 +1,42 @@
+package com.alpha.dao.interfaces;
+
+import java.util.Date;
+import java.util.List;
+
+import com.alpha.hq.model.Purchaserequest;
+import com.alpha.hq.model.Purchaserequestbreakdown;
+
+public interface IPurchaserequestDAO {
+
+	
+	public List<Purchaserequest> findByPurchaserequestListAll() throws Exception;
+
+	public int getPurchaserequestCount(String referenceNo, Integer branchId, Date dateFrom,Date dateTo, String status) throws Exception;
+
+	public List<Purchaserequest> getPurchaserequestList(String referenceNo,Integer branchId, Date dateFrom,Date dateTo, String status, int start, int howMany)
+			throws Exception;	
+	
+	public List<Purchaserequest> getPurchaserequestList(List<Integer> ids, Integer supplierId,Integer branchId)	throws Exception;	
+	
+	public Purchaserequest getPurchaserequestDetails(Integer purchaseRequestId) throws Exception;
+
+	public boolean createNewPurchaserequest(Purchaserequest purchaserequest) throws Exception;
+
+	public boolean updatePurchaserequest(Purchaserequest purchaserequest) throws Exception;
+	
+	public boolean deletePurchaserequest(Purchaserequest Purchaserequest) throws Exception;
+	
+	public Purchaserequest getPurchaserequestDetailsByNo(String referenceNo) throws Exception;
+	
+	public boolean deletePurchaserequestbreakdown(Purchaserequestbreakdown purchaserequestbreakdown) throws Exception;
+
+	public List<Purchaserequestbreakdown> getPurchaserequestbreakdownList(List<Integer> requestIds)	throws Exception;	
+	
+	public List<Object[]> getPurchaserequestbreakdownListByProduct(List<Integer> requestIds) throws Exception;
+
+	public List<Purchaserequestbreakdown> getPurchaserequestbreakdownListAll(List<Integer> ids , Integer branchId,Integer supplierId) throws Exception;
+	
+	public Purchaserequestbreakdown getPurchaserequestbreakdown(Integer purchaseRequestBreakdownId) throws Exception;
+			
+	public List<Purchaserequestbreakdown> createPurchaseorderModel(List<Integer> requestIds ,Integer supplierId) throws Exception;
+}

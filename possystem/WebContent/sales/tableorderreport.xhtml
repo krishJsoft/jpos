@@ -1,0 +1,185 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://www.eclipse.org/birt/taglibs/birt.tld"
+	xmlns:birt="urn:jsptld:/WEB-INF/tlds/birt.tld">
+
+
+	<h:form id="dashboardMasterForm">
+
+		<p:outputPanel id="dashboardPanel">
+
+			<p:panelGrid style="width:100%" styleClass="alignTop">
+
+
+				<p:row>
+					<p:column styleClass="alignTop"
+						style="width:60%;">
+
+						<h:panelGrid columns="4" border="0" width="100%" cellpadding="10"
+							cellspacing="10" styleClass="borderLessGrid">
+
+							<h:outputText value="Date From" />
+							<p:calendar navigator="true" id="dateFrom" size="25"
+								value="#{posBean.dateFrom}" pattern="dd/MMM/yyyy" />
+
+							<h:outputText value="Date To" />
+							<p:calendar navigator="true" id="dateTo" size="25"
+								value="#{posBean.dateTo}" pattern="dd/MMM/yyyy" />
+
+
+							<h:outputText value="Table No" />
+							<p:inputText value="#{posBean.tableName}" size="25" />
+
+
+							<h:outputText value="Card No" />
+							<p:inputText value="#{posBean.cardNo}" size="25" />
+
+							<p:commandButton value="Search" ajax="false"
+								action="#{posBean.getKitchenOrderReport}">
+							</p:commandButton>
+						</h:panelGrid>
+					</p:column>
+				</p:row>
+
+
+
+				<p:row>
+
+
+                   
+
+
+					<p:column styleClass="alignTop"
+						style="width:100%;">
+
+						<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+							scrollable="true" lazy="false" first="#{salesorderBean.first}"
+							scrollHeight="590" value="#{posBean.kitchedOrder}"
+							paginator="false" rows="100" style="width: 100%"
+							rowsPerPageTemplate="5,10,15,25,50,100"
+							rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+							<p:ajax event="page" listener="#{salesorderBean.onPageChange}" />
+
+							<p:column id="modelHeader" style="width: 7%;">
+								<f:facet name="header">
+									<h:outputText value="SNo" />
+								</f:facet>
+								<h:outputText value="#{row + 1}" styleClass="logintxttable"
+									style="height:25px;" />
+							</p:column>
+
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Staff Id" />
+								</f:facet>
+								<h:outputText value="#{sales.createdBy}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Date" />
+								</f:facet>
+								<h:outputText value="#{sales.createdDate}"
+									styleClass="logintxttable">
+									<f:convertDateTime pattern="dd/MMM/yyyy" />
+								</h:outputText>
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Time" />
+								</f:facet>
+								<h:outputText value="#{sales.createdDate}"
+									styleClass="logintxttable">
+									<f:convertDateTime pattern="hh:mm:ss a" />
+								</h:outputText>
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Order No" />
+								</f:facet>
+								<h:outputText value="#{sales.salesOrderNo}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Table No" />
+								</f:facet>
+								<h:outputText value="#{sales.tableName}"
+									styleClass="logintxttable" />
+							</p:column>
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Card No" />
+								</f:facet>
+								<h:outputText value="#{sales.cardNo}" styleClass="logintxttable" />
+							</p:column>
+
+
+
+							<p:column>
+								<f:facet name="header">
+									<h:outputText value="Status" />
+								</f:facet>
+
+								<h:outputText value="#{app['salesorder.status.neworderlable']}"
+									rendered="#{sales.status==app['salesorder.status.newordervalue']}"
+									styleClass="logintxttable" />
+								<h:outputText value="#{app['salesorder.status.processedlable']}"
+									rendered="#{sales.status==app['salesorder.status.processedvalue']}"
+									styleClass="logintxttable" />
+								<h:outputText value="#{app['salesorder.status.orderedlable']}"
+									rendered="#{sales.status==app['salesorder.status.orderedvalue']}"
+									styleClass="logintxttable" />
+								<h:outputText value="#{app['salesorder.status.paidlable']}"
+									rendered="#{sales.status==app['salesorder.status.paidvalue']}"
+									styleClass="logintxttable" />
+
+							</p:column>
+
+							<p:column style="width: 15%;">
+								<f:facet name="header">Action</f:facet>
+
+								<p:menuButton value="Options">
+
+
+
+									<p:menuitem value="View"
+										update=":dashboardMasterForm:requestitem"
+										actionListener="#{orderBean.menuorderaction}"
+										oncomplete="PF('salesDig').show()">
+										<f:attribute name="sales" value="#{sales}" />
+									</p:menuitem>
+								</p:menuButton>
+							</p:column>
+
+						</p:dataTable>
+
+					</p:column>
+
+				</p:row>
+			</p:panelGrid>
+
+
+
+
+		</p:outputPanel>
+
+		<ui:include src="/sales/tableOrderView.xhtml" />
+
+
+	</h:form>
+
+
+</ui:composition>
+
+

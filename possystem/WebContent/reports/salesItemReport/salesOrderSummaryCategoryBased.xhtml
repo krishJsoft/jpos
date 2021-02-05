@@ -1,0 +1,126 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+
+<h:form id="addEditSalesForm">
+	<p:outputPanel id="salesPanel">
+			<p:message for="salesPanel" />
+			<p:panel styleClass="mypanel">
+			 <f:facet name="header">
+			 	Category / Item Report by 
+		        <h:outputText value="#{salesorderBean.dateFrom}" >
+		        	<f:convertDateTime pattern="MMMM" />
+		        </h:outputText>
+		    </f:facet>
+<br />
+		
+		<p:dataTable id="dataTable2" var="salesbd" rowIndexVar="row"
+					scrollable="true" scrollHeight="420"
+					value="#{salesorderBean.salesorderbreakdowns}" paginator="false"
+					rows="1000000" style="width: 100%" 
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+					<p:column id="modelHeader" width="5%">
+						<f:facet name="header">
+							<h:outputText value="#{des['common.table.header.no']}" />
+						</f:facet>
+						
+						
+						
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column style="width:30%">
+						<f:facet name="header">
+							<h:outputText value="Product Category"/>
+						</f:facet>
+						
+						<h:outputText value="#{salesbd.categoryName}"
+							styleClass="logintxttable">	
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Quantity"/>
+						</f:facet>
+						<f:facet name="footer">
+							<h:outputText value="Total Amount (#{app['common.currency']})" />
+						</f:facet>
+						
+						<h:outputText value="#{salesbd.qtty}"
+							>
+							<f:convertNumber pattern="#0" />
+						</h:outputText>
+					</p:column>
+					
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Sales Amount (#{app['common.currency']})"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.unitPrice.subtract(salesbd.taxAmount)}"
+							styleClass="logintxttable">
+							
+						</h:outputText>
+						
+						<f:facet name="footer">
+						<p:outputPanel style="float: right">
+							<h:outputText value="#{salesorderBean.totalAmount.subtract(salesorderBean.totalTaxAmount)}" />
+							</p:outputPanel>
+						</f:facet>
+					</p:column>
+					
+					
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Tax Amount (#{app['common.currency']})"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.taxAmount}"
+							styleClass="logintxttable">
+							
+						</h:outputText>
+						
+						<f:facet name="footer">
+						<p:outputPanel style="float: right">
+							<h:outputText value="#{salesorderBean.totalTaxAmount}" />
+							</p:outputPanel>
+						</f:facet>
+					</p:column>
+					
+					<p:column style="width: 7%;">
+						<f:facet name="header">Action</f:facet>
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+								update=":addEditSalesForm:requestitem"
+								rendered="#{loginBean.functionList.contains('View SalesOrder')}"
+								actionListener="#{salesorderBean.viewSalesOrderCategoryBased}"
+								oncomplete="PF('salesDig').show()">
+								<f:attribute name="sales" value="#{salesbd}" />
+							</p:menuitem>
+						</p:menuButton>
+					</p:column>
+					
+					</p:dataTable>
+					
+			<br/>
+		<p:commandButton value="Print"
+		style="background: #E32526;color:white" 
+			oncomplete="PF('categoryitemprintdlg').show();">					
+		</p:commandButton>
+				
+		</p:panel>
+		</p:outputPanel>		
+		<ui:include src="/reports/salesItemReport/printtemplate/annualmonthprinttemplateCategoryBased.xhtml" />
+		<ui:include src="/reports/salesItemReport/printtemplate/salesOrderDetailPrintCategoryBased.xhtml" />
+		<ui:include src="/reports/salesItemReport/printtemplate/annualmonthprinttemplateCategoryitem.xhtml" />
+		
+		<ui:include src="/reports/salesItemReport/dlgs/salesOrderViewCategoryBased.xhtml" />
+		</h:form>
+</ui:composition>
+
+

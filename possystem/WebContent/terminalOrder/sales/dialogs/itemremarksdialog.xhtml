@@ -1,0 +1,64 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+	<p:dialog id="itemRemarksDlg" showEffect="fade"
+		hideEffect="fade" header="REMARKS"
+		resizable="false" widgetVar="itemRemarksDlg"
+		modal="true"
+		width="50vw">
+		
+		<p:panelGrid style="width:100%;border-style:hidden" >
+			<p:row>
+				<p:column style="width:20%">
+					<h:outputText value="REMARKS" />
+				</p:column>
+				
+				<p:column style="width:80%">
+				
+				  	<p:selectManyCheckbox id="grid" layout="grid" value="#{posBean.selectedRemarksId}" columns="#{loginBean.columnGrid}">
+        				<f:selectItems value="#{posBean.remarksList}" var="remarks" itemLabel="#{remarks.label}" itemValue="#{remarks.value}" />
+    				</p:selectManyCheckbox>
+				</p:column>
+			</p:row>
+			
+			<p:row rendered="#{posBean.item.product.packingPrice > 0}" >
+				<p:column>
+					<h:outputText value="PACKING" />
+				</p:column>
+				
+				<p:column>
+					<p:selectBooleanCheckbox value="#{posBean.packing}" />
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>
+					<p:commandButton value="SAVE" 
+						action="#{orderBean.saveRemarksToItem}"
+						oncomplete="PF('itemRemarksDlg').hide()"
+						update=":terminalOrderForm:itemRemarksDlg,:terminalOrderForm:orderListDataTable"
+					>
+					</p:commandButton>
+				</p:column>
+				
+				<p:column>
+					<p:commandButton value="CANCEL" 
+						oncomplete="PF('itemRemarksDlg').hide()" 
+					/>
+				</p:column>
+			</p:row>
+		</p:panelGrid>
+			
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

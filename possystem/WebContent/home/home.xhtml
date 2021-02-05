@@ -1,0 +1,49 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel id="shortcutitemlist" style="background-color: #DDDDDD;">
+
+		<h:panelGrid id="shortcutitemlistgrid" columns="1" border="0"
+			cellpadding="10">
+
+			<p:commandButton value="Sales Order" ajax="false"
+				action="#{salesBean.newSalesOrder}"
+				rendered="#{loginBean.functionList.contains('Add Sales') or loginBean.functionList.contains('Edit Sales') or loginBean.functionList.contains('View Sales')  or loginBean.functionList.contains('Delete Sales') }"
+				style="width:190px; height:80px; ">
+			</p:commandButton>
+
+
+			<p:commandButton value="Purchase Order" ajax="false"
+				rendered="#{loginBean.functionList.contains('Add Purchase') or loginBean.functionList.contains('Edit Purchase') or loginBean.functionList.contains('View Purchase')  or loginBean.functionList.contains('Delete Purchase') }"
+				style="width:190px; height:80px; ">
+			</p:commandButton>
+
+
+			<p:commandButton value="Delivery Order" ajax="false"
+				rendered="#{loginBean.functionList.contains('Add Delivery') or loginBean.functionList.contains('Edit Delivery') or loginBean.functionList.contains('View Delivery')  or loginBean.functionList.contains('Delete Delivery') }"
+				action="#{deliveryBean.newDeliveryOrder}"
+				style="width:190px; height:80px; ">
+			</p:commandButton>
+
+
+			<p:commandButton value="Stock" ajax="false"
+				rendered="#{loginBean.functionList.contains('Add Product') or loginBean.functionList.contains('Edit Product') or loginBean.functionList.contains('View Product')  or loginBean.functionList.contains('Delete Product') }"
+				action="#{salesBean.removeSalesItem}"
+				style="width:190px; height:80px; ">
+			</p:commandButton>
+
+			<p:commandButton value="BarCode" ajax="false"
+				rendered="#{loginBean.functionList.contains('Add Sales') or loginBean.functionList.contains('Edit Sales') or loginBean.functionList.contains('View Sales')  or loginBean.functionList.contains('Delete Sales') }"
+				action="#{salesBean.newSalesBarCode}"
+				style="width:190px; height:80px; ">
+			</p:commandButton>
+
+
+		</h:panelGrid>
+	</p:outputPanel>
+
+</ui:composition>

@@ -1,0 +1,152 @@
+package com.alpha.model.datamodel.stock;
+
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
+import com.alpha.model.datamodel.purchase.PurchaserequestBranchModel;
+
+public class DeliveryorderModel {
+
+	private int deliveryOrderId;
+
+	private String createdBy;
+
+	private Date createdDate;
+
+	private String deliveryOrderNo;
+
+	private Date lastModifiedDate;
+
+	private Date purchaseOrderDate;
+
+	private String purchaseOrderNo;
+
+	private String remarks;
+
+	private String status;
+
+	private BigDecimal totalAmount;
+
+	private String companyName;
+
+	private int supplierId;
+
+	private List<DeliveryorderbreakdownModel> deliveryorderbreakdowns;
+
+	private List<PurchaserequestBranchModel> branchModel;
+
+	public int getDeliveryOrderId() {
+		return deliveryOrderId;
+	}
+
+	public void setDeliveryOrderId(int deliveryOrderId) {
+		this.deliveryOrderId = deliveryOrderId;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public String getDeliveryOrderNo() {
+		return deliveryOrderNo;
+	}
+
+	public void setDeliveryOrderNo(String deliveryOrderNo) {
+		this.deliveryOrderNo = deliveryOrderNo;
+	}
+
+	public Date getLastModifiedDate() {
+		return lastModifiedDate;
+	}
+
+	public void setLastModifiedDate(Date lastModifiedDate) {
+		this.lastModifiedDate = lastModifiedDate;
+	}
+
+	public Date getPurchaseOrderDate() {
+		return purchaseOrderDate;
+	}
+
+	public void setPurchaseOrderDate(Date purchaseOrderDate) {
+		this.purchaseOrderDate = purchaseOrderDate;
+	}
+
+	public String getPurchaseOrderNo() {
+		return purchaseOrderNo;
+	}
+
+	public void setPurchaseOrderNo(String purchaseOrderNo) {
+		this.purchaseOrderNo = purchaseOrderNo;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public BigDecimal getTotalAmount() {
+		return totalAmount;
+	}
+
+	public void setTotalAmount(BigDecimal totalAmount) {
+		this.totalAmount = totalAmount;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public int getSupplierId() {
+		return supplierId;
+	}
+
+	public void setSupplierId(int supplierId) {
+		this.supplierId = supplierId;
+	}
+
+	public List<DeliveryorderbreakdownModel> getDeliveryorderbreakdowns() {
+		return deliveryorderbreakdowns;
+	}
+
+	public void setDeliveryorderbreakdowns(
+			List<DeliveryorderbreakdownModel> deliveryorderbreakdowns) {
+		this.deliveryorderbreakdowns = deliveryorderbreakdowns;
+	}
+
+	public List<PurchaserequestBranchModel> getBranchModel() {
+		return branchModel;
+	}
+
+	public void setBranchModel(List<PurchaserequestBranchModel> branchModel) {
+		this.branchModel = branchModel;
+	}
+
+}

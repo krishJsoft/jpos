@@ -1,0 +1,149 @@
+package com.alpha.dao.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+
+import com.alpha.dao.interfaces.ISupplierDAO;
+import com.alpha.hq.model.Supplier;
+
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 25 June 2013
+ * 
+ */
+
+@Repository("supplierRepository")
+public class SupplierDAOImpl implements ISupplierDAO {
+	
+	public static Logger log = LoggerFactory.getLogger(SupplierDAOImpl.class);
+	long l = 0;
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+	public EntityManager getEm() {
+		return em;
+	}
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+	
+	
+	@Override
+	public boolean createNewSupplier(Supplier supplier) throws Exception {
+		try {
+			em.persist(supplier);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewSupplier SupplierDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updateSupplier(Supplier supplier) throws Exception {
+		try {
+			em.merge(supplier);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updateSupplier SupplierDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deleteSupplier(Supplier supplier) throws Exception {
+		try {
+			em.remove(supplier);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteSupplier SupplierDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Supplier> findBySupplierList(String companyRegNo, String Status)
+			throws Exception {
+		List<Supplier> supplierList=null;
+		StringBuilder buf = new StringBuilder("SELECT b FROM Supplier b  WHERE 1 = 1 ");
+				
+		try {
+			
+		if (companyRegNo !=null && (!companyRegNo.equalsIgnoreCase(""))) {
+			buf.append(" AND b.companyRegNo =  :companyRegNo  ");
+		}	
+		
+		if (Status !=null && (!Status.equalsIgnoreCase(""))) {
+			buf.append(" And b.status = :status ");
+		}		
+		
+		buf.append(" order by b.companyName");
+		
+		Query query = em.createQuery(buf.toString());		
+		
+		if (companyRegNo !=null && (!companyRegNo.equalsIgnoreCase(""))) {
+			query.setParameter("companyRegNo", companyRegNo);
+		}	
+		
+		if (Status !=null && (!Status.equalsIgnoreCase(""))) {
+			query.setParameter("status", Status);
+		}		 
+		supplierList=query.getResultList();
+		
+		} catch (Exception e) {
+			log.info("Error in findBySupplierList SupplierDAOImpl " + e);
+			throw e;
+		}
+		return supplierList;
+	}
+
+	@Override
+	public Supplier getSupplierDetails(Integer supplierId) throws Exception {
+		Supplier retData = null;
+		String sqlQuery = "select t from Supplier t   WHERE t.supplierId = :supplierId ";
+		try {
+			retData = (Supplier) em.createQuery(sqlQuery).setParameter("supplierId", supplierId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getSupplierDetails SupplierDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+	@Override
+	public boolean findSupplierCompanyRegNoExites(String companyRegNo)
+			throws Exception {
+		boolean exits = true;
+		try {
+			String hslQuery = "from Supplier p where p.companyRegNo = :companyRegNo";
+			Query query = em.createQuery(hslQuery).setParameter("companyRegNo", companyRegNo);
+			@SuppressWarnings("unchecked")
+			List<Supplier> companyRegNoExits = query.getResultList();
+			if (companyRegNoExits.isEmpty()) {
+				exits = false;
+			}
+		} catch (Exception e) {
+			log.info("Error in findSupplierCompanyRegNoExites SupplierDAOImpl " + e);
+			throw e;
+		}
+		return exits;
+	}
+
+}

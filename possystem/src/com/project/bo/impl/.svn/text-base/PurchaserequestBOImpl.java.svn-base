@@ -1,0 +1,789 @@
+package com.alpha.bo.impl;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.IPurchaserequestBO;
+import com.alpha.dao.interfaces.IBranchDAO;
+import com.alpha.dao.interfaces.ICommonListDAO;
+import com.alpha.dao.interfaces.IProductDAO;
+import com.alpha.dao.interfaces.IPurchaserequestDAO;
+import com.alpha.hq.model.Autonum;
+import com.alpha.hq.model.Branch;
+import com.alpha.hq.model.Product;
+import com.alpha.hq.model.Productsupplier;
+import com.alpha.hq.model.Purchaserequest;
+import com.alpha.hq.model.Purchaserequestbreakdown;
+import com.alpha.hq.model.Supplier;
+import com.alpha.model.datamodel.ProductModel;
+import com.alpha.model.datamodel.ProductsupplierModel;
+import com.alpha.model.datamodel.purchase.PurchaseorderModel;
+import com.alpha.model.datamodel.purchase.PurchaseorderbreakdownsModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestBranchModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestConsolidateModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestbreakdownModel;
+
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 17 July 2013
+ */
+
+@Service("purchaseRequestBO")
+public class PurchaserequestBOImpl implements IPurchaserequestBO {
+	
+	public static Logger log = LoggerFactory.getLogger(PurchaserequestBOImpl.class);
+
+	@Resource(name = "purchaseRequestRepository")
+	private IPurchaserequestDAO purchaseRequestRepository;
+	
+	@Resource(name = "commonListRepository")
+	private ICommonListDAO commonListRepository;
+	
+	@Resource(name = "branchRepository")
+	private IBranchDAO branchRepository;
+	
+	@Resource(name = "productRepository")
+	private IProductDAO productRepository;
+	
+	@Override
+	public List<PurchaserequestModel> findByPurchaserequestListAll()
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getPurchaserequestCount(String referenceNo, Integer branchId,
+			Date dateFrom, Date dateTo, String status) throws Exception {
+		try {
+			return purchaseRequestRepository.getPurchaserequestCount(referenceNo, branchId, dateFrom, dateTo, status);
+		} catch (Exception e) {
+			log.info("Error in getPurchaserequestCount of PurchaserequestBOImpl "+ e.toString());
+			throw e;
+		}
+	}
+
+	@Override
+	public List<PurchaserequestModel> getPurchaserequestList(
+			String referenceNo, Integer branchId, Date dateFrom, Date dateTo,
+			String status, int start, int howMany) throws Exception {
+			List<PurchaserequestModel> purchaserequestObjList = new ArrayList<PurchaserequestModel>();
+			List<PurchaserequestbreakdownModel> purchaserequestbreakdownList = new ArrayList<PurchaserequestbreakdownModel>();
+			PurchaserequestbreakdownModel data=null;
+		try {
+		List<Purchaserequest> purchaserequestList = purchaseRequestRepository.getPurchaserequestList(referenceNo, branchId, dateFrom, dateTo, status, start, howMany);
+
+		for (Purchaserequest purchaserequest : purchaserequestList) {
+			
+			PurchaserequestModel purchaserequestObj = new PurchaserequestModel();
+			purchaserequestObj.setBranchId(purchaserequest.getBranch().getBranchId());
+			purchaserequestObj.setBranchName(purchaserequest.getBranch().getBranchName());
+			purchaserequestObj.setCreatedBy(purchaserequest.getCreatedBy());
+			purchaserequestObj.setCreatedDate(purchaserequest.getCreatedDate());
+			purchaserequestObj.setDeliveryDate(purchaserequest.getDeliveryDate());
+			purchaserequestObj.setDeliveryType(purchaserequest.getDeliveryType());
+			purchaserequestObj.setLastModifiedDate(purchaserequest.getLastModifiedDate());
+			purchaserequestObj.setLastPurchaseOrderNo(purchaserequest.getLastPurchaseOrderNo());
+			purchaserequestObj.setPurchaseRequestId(purchaserequest.getPurchaseRequestId());
+			purchaserequestObj.setPurchaseType(purchaserequest.getPurchaseType());
+			purchaserequestObj.setQuantityRequired(purchaserequest.getQuantityRequired());
+			purchaserequestObj.setReason(purchaserequest.getReason());
+			purchaserequestObj.setReferenceNo(purchaserequest.getReferenceNo());
+			purchaserequestObj.setRemarks(purchaserequest.getRemarks());
+			purchaserequestObj.setStatus(purchaserequest.getStatus());			
+			
+			int id = 0;			
+			purchaserequestbreakdownList = new ArrayList<PurchaserequestbreakdownModel>();
+			
+		/*	for(Purchaserequestbreakdown tempdata :purchaserequest.getPurchaserequestbreakdowns() )
+			{
+				data=new PurchaserequestbreakdownModel();
+				
+				data.setContactPerson(tempdata.getSupplier().getCompanyName());
+				data.setDiscount(tempdata.getDiscount());
+				data.setDiscountAmount(tempdata.getDiscountAmount());
+				data.setProductId(tempdata.getProduct().getProductId());
+				data.setProductName(tempdata.getProduct().getProductName());
+				data.setProductCode(tempdata.getProduct().getBarcode());
+				data.setProductDesc(tempdata.getProduct().getProductDesc());
+				data.setPurchaseRequestBreakdownId(tempdata.getPurchaseRequestBreakdownId());
+				data.setPurchaseRequestId(purchaserequestObj.getPurchaseRequestId());
+				data.setQuantityRequired(tempdata.getQuantityRequired());
+				data.setSupplierId(tempdata.getSupplier().getSupplierId());	
+				data.setUomName(tempdata.getProduct().getUom());
+				data.setSubTotal(tempdata.getSubTotal());
+				data.setUnitPrice(tempdata.getUnitPrice());
+				data.setId(id + "");
+				purchaserequestbreakdownList.add(data);
+				id = id + 1;
+			}
+			
+			
+			purchaserequestObj.setPurchaserequestbreakdowns(purchaserequestbreakdownList);*/
+			purchaserequestObjList.add(purchaserequestObj);
+		}
+		}
+		catch(Exception e)
+		{
+			log.info("Error in getPurchaserequestList of PurchaserequestBOImpl "+ e.toString());
+			throw e;
+		}
+		return purchaserequestObjList;
+	}
+
+	@Override
+	public List<PurchaserequestModel> getPurchaserequestList(List<Integer> ids)
+			throws Exception {
+		List<PurchaserequestModel> purchaserequestObjList = new ArrayList<PurchaserequestModel>();
+		List<PurchaserequestbreakdownModel> purchaserequestbreakdownList = new ArrayList<PurchaserequestbreakdownModel>();
+		PurchaserequestbreakdownModel data=null;
+	try {
+	List<Purchaserequest> purchaserequestList = purchaseRequestRepository.getPurchaserequestList(ids,1,1);
+
+	for (Purchaserequest purchaserequest : purchaserequestList) {
+		
+		PurchaserequestModel purchaserequestObj = new PurchaserequestModel();
+		purchaserequestObj.setBranchId(purchaserequest.getBranch().getBranchId());
+		purchaserequestObj.setCreatedBy(purchaserequest.getCreatedBy());
+		purchaserequestObj.setCreatedDate(purchaserequest.getCreatedDate());
+		purchaserequestObj.setDeliveryDate(purchaserequest.getDeliveryDate());
+		purchaserequestObj.setDeliveryType(purchaserequest.getDeliveryType());
+		purchaserequestObj.setLastModifiedDate(purchaserequest.getLastModifiedDate());
+		purchaserequestObj.setLastPurchaseOrderNo(purchaserequest.getLastPurchaseOrderNo());
+		purchaserequestObj.setPurchaseRequestId(purchaserequest.getPurchaseRequestId());
+		purchaserequestObj.setPurchaseType(purchaserequest.getPurchaseType());
+		purchaserequestObj.setQuantityRequired(purchaserequest.getQuantityRequired());
+		purchaserequestObj.setReason(purchaserequest.getReason());
+		purchaserequestObj.setReferenceNo(purchaserequest.getReferenceNo());
+		purchaserequestObj.setRemarks(purchaserequest.getRemarks());
+		purchaserequestObj.setStatus(purchaserequest.getStatus());	
+		
+		
+		int id = 0;			
+		purchaserequestbreakdownList = new ArrayList<PurchaserequestbreakdownModel>();
+		
+		for(Purchaserequestbreakdown tempdata :purchaserequest.getPurchaserequestbreakdowns() )
+		{
+			data=new PurchaserequestbreakdownModel();
+			
+			data.setContactPerson(tempdata.getSupplier().getCompanyName());
+			data.setDiscount(tempdata.getDiscount());
+			data.setDiscountAmount(tempdata.getDiscountAmount());
+			data.setProductId(tempdata.getProduct().getProductId());
+			data.setProductName(tempdata.getProduct().getProductName());
+			data.setProductCode(tempdata.getProduct().getBarcode());
+			data.setProductDesc(tempdata.getProduct().getProductDesc());
+			data.setPurchaseRequestBreakdownId(tempdata.getPurchaseRequestBreakdownId());
+			data.setPurchaseRequestId(purchaserequestObj.getPurchaseRequestId());
+			data.setQuantityRequired(tempdata.getQuantityRequired());
+			data.setSupplierId(tempdata.getSupplier().getSupplierId());				
+			data.setSubTotal(tempdata.getSubTotal());
+			data.setUnitPrice(tempdata.getUnitPrice());
+			data.setUomName(tempdata.getProduct().getUom());
+			data.setId(id + "");
+			purchaserequestbreakdownList.add(data);
+			id = id + 1;
+		}
+		
+		
+		purchaserequestObj.setPurchaserequestbreakdowns(purchaserequestbreakdownList);
+		purchaserequestObjList.add(purchaserequestObj);
+	}
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getPurchaserequestList of PurchaserequestBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaserequestObjList;
+	}
+
+	@Override
+	public PurchaserequestModel getPurchaserequestDetails(
+			Integer purchaseRequestId) throws Exception {
+		List<PurchaserequestbreakdownModel> purchaserequestbreakdownList = new ArrayList<PurchaserequestbreakdownModel>();
+		Purchaserequest purchaserequest=null;
+		PurchaserequestModel purchaserequestObj = new PurchaserequestModel();
+	try {
+		purchaserequest = purchaseRequestRepository.getPurchaserequestDetails(purchaseRequestId);
+	
+		purchaserequestObj.setBranchId(purchaserequest.getBranch().getBranchId());
+		purchaserequestObj.setBranchName(purchaserequest.getBranch().getBranchName());
+		purchaserequestObj.setCreatedBy(purchaserequest.getCreatedBy());
+		purchaserequestObj.setCreatedDate(purchaserequest.getCreatedDate());
+		purchaserequestObj.setDeliveryDate(purchaserequest.getDeliveryDate());
+		purchaserequestObj.setDeliveryType(purchaserequest.getDeliveryType());
+		purchaserequestObj.setLastModifiedDate(purchaserequest.getLastModifiedDate());
+		purchaserequestObj.setLastPurchaseOrderNo(purchaserequest.getLastPurchaseOrderNo());
+		purchaserequestObj.setPurchaseRequestId(purchaserequest.getPurchaseRequestId());
+		purchaserequestObj.setPurchaseType(purchaserequest.getPurchaseType());
+		purchaserequestObj.setQuantityRequired(purchaserequest.getQuantityRequired());
+		purchaserequestObj.setReason(purchaserequest.getReason());
+		purchaserequestObj.setReferenceNo(purchaserequest.getReferenceNo());
+		purchaserequestObj.setRemarks(purchaserequest.getRemarks());
+		purchaserequestObj.setStatus(purchaserequest.getStatus());		
+		
+		int id = 0;			
+		purchaserequestbreakdownList = new ArrayList<PurchaserequestbreakdownModel>();
+		
+		for(Purchaserequestbreakdown tempdata :purchaserequest.getPurchaserequestbreakdowns() )
+		{
+			PurchaserequestbreakdownModel data=new PurchaserequestbreakdownModel();
+			
+			data.setContactPerson(tempdata.getSupplier().getCompanyName());
+			data.setDiscount(tempdata.getDiscount());
+			data.setDiscountAmount(tempdata.getDiscountAmount());
+			data.setProductId(tempdata.getProduct().getProductId());
+			data.setProductName(tempdata.getProduct().getProductName());
+			data.setProductCode(tempdata.getProduct().getBarcode());
+			data.setProductDesc(tempdata.getProduct().getProductDesc());
+			data.setPurchaseRequestBreakdownId(tempdata.getPurchaseRequestBreakdownId());
+			data.setPurchaseRequestId(purchaserequestObj.getPurchaseRequestId());
+			data.setQuantityRequired(tempdata.getQuantityRequired());
+			data.setSupplierId(tempdata.getSupplier().getSupplierId());				
+			data.setSubTotal(tempdata.getSubTotal());
+			data.setUnitPrice(tempdata.getUnitPrice());
+			data.setUomName(tempdata.getProduct().getUom());
+			data.setId(id + "");
+			purchaserequestbreakdownList.add(data);
+			id = id + 1;
+		}		
+		
+		purchaserequestObj.setPurchaserequestbreakdowns(purchaserequestbreakdownList);
+		
+	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getPurchaserequestList of PurchaserequestBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaserequestObj;
+	
+	}
+
+	@Transactional
+	@Override
+	public boolean createNewPurchaserequest(PurchaserequestModel purchaserequest)
+			throws Exception {
+		List<Purchaserequestbreakdown> purchaserequestbreakdownList = new ArrayList<Purchaserequestbreakdown>();		
+		boolean saveSuccess = false;
+		Purchaserequest purchaserequestObj = new Purchaserequest();
+		
+	try {
+		Autonum autoNum = commonListRepository.getAutonumDetail();
+		
+		Branch branch = new Branch();
+		branch.setBranchId(purchaserequest.getBranchId());
+		purchaserequestObj.setBranch(branch);		
+		
+		purchaserequestObj.setCreatedBy(purchaserequest.getCreatedBy());
+		purchaserequestObj.setCreatedDate(purchaserequest.getCreatedDate());
+		purchaserequestObj.setDeliveryDate(purchaserequest.getDeliveryDate());
+		purchaserequestObj.setDeliveryType(purchaserequest.getDeliveryType());
+		purchaserequestObj.setLastModifiedDate(purchaserequest.getLastModifiedDate());
+		purchaserequestObj.setLastPurchaseOrderNo(purchaserequest.getLastPurchaseOrderNo());
+		purchaserequestObj.setPurchaseRequestId(purchaserequest.getPurchaseRequestId());
+		purchaserequestObj.setPurchaseType(purchaserequest.getPurchaseType());
+		purchaserequestObj.setQuantityRequired(purchaserequest.getQuantityRequired());
+		purchaserequestObj.setReason(purchaserequest.getReason());
+		
+		purchaserequestObj.setReferenceNo("PR".concat(String.valueOf(purchaserequest.getBranchId())) + StringUtils.leftPad(autoNum.getPurchaseRequest() + "", 15, "0"));	
+		
+		purchaserequestObj.setRemarks(purchaserequest.getRemarks());
+		purchaserequestObj.setStatus(purchaserequest.getStatus());			
+		
+		
+		purchaserequestbreakdownList = new ArrayList<Purchaserequestbreakdown>();
+		
+		
+		for(PurchaserequestbreakdownModel tempdata :purchaserequest.getPurchaserequestbreakdowns() )
+		{
+			Purchaserequestbreakdown data=new Purchaserequestbreakdown();
+			
+			Supplier supplier = new Supplier();
+			supplier.setContactPerson(tempdata.getContactPerson());
+			supplier.setSupplierId(tempdata.getSupplierId());				
+			data.setSupplier(supplier);
+			
+			data.setDiscount(tempdata.getDiscount());
+			data.setDiscountAmount(tempdata.getDiscountAmount());
+			
+			Product product = new Product();			
+			product.setProductId(tempdata.getProductId());
+			product.setProductName(tempdata.getProductName());
+			data.setProduct(product);
+			
+			data.setProductName(tempdata.getProductName());			
+			data.setPurchaserequest(purchaserequestObj);		
+			data.setQuantityRequired(tempdata.getQuantityRequired());			
+			data.setSubTotal(tempdata.getSubTotal());
+			data.setUnitPrice(tempdata.getUnitPrice());
+			
+			purchaserequestbreakdownList.add(data);
+			
+		}		
+		
+		purchaserequestObj.setPurchaserequestbreakdowns(purchaserequestbreakdownList);
+		
+		autoNum.setPurchaseRequest(autoNum.getPurchaseRequest()+1);
+		autoNum=commonListRepository.updateAutonumDetail(autoNum);		
+		saveSuccess=purchaseRequestRepository.createNewPurchaserequest(purchaserequestObj);
+	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in createNewPurchaserequest of PurchaserequestBOImpl "+ e.toString());
+		throw e;
+	}
+	return saveSuccess;
+	}
+
+	@Transactional
+	@Override
+	public boolean updatePurchaserequest(PurchaserequestModel purchaserequest)
+			throws Exception {
+		List<Purchaserequestbreakdown> purchaserequestbreakdownList = new ArrayList<Purchaserequestbreakdown>();		
+		boolean updateSuccess = false;
+		
+		List<Integer> itemIds = new  ArrayList<Integer>();
+		Purchaserequest purchaserequestObj = purchaseRequestRepository.getPurchaserequestDetails(purchaserequest.getPurchaseRequestId());
+	try {
+		
+		Branch branch = new Branch();
+		branch.setBranchId(purchaserequest.getBranchId());
+		purchaserequestObj.setBranch(branch);		
+		
+		purchaserequestObj.setCreatedBy(purchaserequest.getCreatedBy());
+		purchaserequestObj.setCreatedDate(purchaserequest.getCreatedDate());
+		purchaserequestObj.setDeliveryDate(purchaserequest.getDeliveryDate());
+		purchaserequestObj.setDeliveryType(purchaserequest.getDeliveryType());
+		purchaserequestObj.setLastModifiedDate(purchaserequest.getLastModifiedDate());
+		purchaserequestObj.setLastPurchaseOrderNo(purchaserequest.getLastPurchaseOrderNo());
+		purchaserequestObj.setPurchaseRequestId(purchaserequest.getPurchaseRequestId());
+		purchaserequestObj.setPurchaseType(purchaserequest.getPurchaseType());
+		purchaserequestObj.setQuantityRequired(purchaserequest.getQuantityRequired());
+		purchaserequestObj.setReason(purchaserequest.getReason());
+		purchaserequestObj.setReferenceNo(purchaserequest.getReferenceNo());
+		purchaserequestObj.setRemarks(purchaserequest.getRemarks());
+		purchaserequestObj.setStatus(purchaserequest.getStatus());			
+		
+		
+		purchaserequestbreakdownList = new ArrayList<Purchaserequestbreakdown>();	
+		
+		for(Purchaserequestbreakdown newItem : purchaserequestObj.getPurchaserequestbreakdowns()){
+			itemIds.add(newItem.getPurchaseRequestBreakdownId());
+		}			
+		for (PurchaserequestbreakdownModel tempdata : purchaserequest.getPurchaserequestbreakdowns()) {								 
+			
+			if(itemIds.contains(tempdata.getPurchaseRequestBreakdownId()))
+			{	
+				for(Purchaserequestbreakdown newItem1 : purchaserequestObj.getPurchaserequestbreakdowns()){
+					if(newItem1.getPurchaseRequestBreakdownId()==tempdata.getPurchaseRequestBreakdownId())
+					{	
+						Supplier supplier = new Supplier();
+						supplier.setContactPerson(tempdata.getContactPerson());
+						supplier.setSupplierId(tempdata.getSupplierId());				
+						newItem1.setSupplier(supplier);						
+						
+						newItem1.setDiscount(tempdata.getDiscount());
+						newItem1.setDiscountAmount(tempdata.getDiscountAmount());						
+						
+						Product product = new Product();			
+						product.setProductId(tempdata.getProductId());
+						product.setProductName(tempdata.getProductName());
+						newItem1.setProduct(product);
+						
+						newItem1.setPurchaserequest(purchaserequestObj);		
+						newItem1.setQuantityRequired(tempdata.getQuantityRequired());			
+						newItem1.setSubTotal(tempdata.getSubTotal());
+						newItem1.setUnitPrice(tempdata.getUnitPrice());
+						purchaserequestbreakdownList.add(newItem1);
+					}
+				}					
+			}
+			else
+			{									
+				Purchaserequestbreakdown data= new Purchaserequestbreakdown();	
+				Supplier supplier = new Supplier();
+				supplier.setContactPerson(tempdata.getContactPerson());
+				supplier.setSupplierId(tempdata.getSupplierId());				
+				data.setSupplier(supplier);
+				
+				data.setDiscount(tempdata.getDiscount());
+				data.setDiscountAmount(tempdata.getDiscountAmount());
+				
+				Product product = new Product();			
+				product.setProductId(tempdata.getProductId());
+				product.setProductName(tempdata.getProductName());
+				data.setProduct(product);
+				
+				data.setPurchaserequest(purchaserequestObj);		
+				data.setQuantityRequired(tempdata.getQuantityRequired());			
+				data.setSubTotal(tempdata.getSubTotal());
+				data.setUnitPrice(tempdata.getUnitPrice());
+				
+				purchaserequestbreakdownList.add(data);
+				
+			}
+		} 
+		
+		purchaserequestObj.setPurchaserequestbreakdowns(purchaserequestbreakdownList);
+		updateSuccess=purchaseRequestRepository.updatePurchaserequest(purchaserequestObj);
+	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in updatePurchaserequest of PurchaserequestBOImpl "+ e.toString());
+		throw e;
+	}
+	return updateSuccess;
+	}
+
+	@Transactional
+	@Override
+	public boolean deletePurchaserequest(PurchaserequestModel Purchaserequest)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public PurchaserequestModel getPurchaserequestDetailsByNo(String referenceNo)
+			throws Exception {
+		List<PurchaserequestbreakdownModel> purchaserequestbreakdownList = new ArrayList<PurchaserequestbreakdownModel>();
+		Purchaserequest purchaserequest=null;
+		PurchaserequestModel purchaserequestObj = new PurchaserequestModel();
+	try {
+		purchaserequest = purchaseRequestRepository.getPurchaserequestDetailsByNo(referenceNo);
+	
+		purchaserequestObj.setBranchId(purchaserequest.getBranch().getBranchId());
+		purchaserequestObj.setBranchName(purchaserequest.getBranch().getBranchName());
+		purchaserequestObj.setCreatedBy(purchaserequest.getCreatedBy());
+		purchaserequestObj.setCreatedDate(purchaserequest.getCreatedDate());
+		purchaserequestObj.setDeliveryDate(purchaserequest.getDeliveryDate());
+		purchaserequestObj.setDeliveryType(purchaserequest.getDeliveryType());
+		purchaserequestObj.setLastModifiedDate(purchaserequest.getLastModifiedDate());
+		purchaserequestObj.setLastPurchaseOrderNo(purchaserequest.getLastPurchaseOrderNo());
+		purchaserequestObj.setPurchaseRequestId(purchaserequest.getPurchaseRequestId());
+		purchaserequestObj.setPurchaseType(purchaserequest.getPurchaseType());
+		purchaserequestObj.setQuantityRequired(purchaserequest.getQuantityRequired());
+		purchaserequestObj.setReason(purchaserequest.getReason());
+		purchaserequestObj.setReferenceNo(purchaserequest.getReferenceNo());
+		purchaserequestObj.setRemarks(purchaserequest.getRemarks());
+		purchaserequestObj.setStatus(purchaserequest.getStatus());		
+		
+		int id = 0;			
+		purchaserequestbreakdownList = new ArrayList<PurchaserequestbreakdownModel>();
+		
+		for(Purchaserequestbreakdown tempdata :purchaserequest.getPurchaserequestbreakdowns() )
+		{
+			PurchaserequestbreakdownModel data=new PurchaserequestbreakdownModel();
+			
+			data.setContactPerson(tempdata.getSupplier().getCompanyName());
+			data.setDiscount(tempdata.getDiscount());
+			data.setDiscountAmount(tempdata.getDiscountAmount());
+			data.setProductId(tempdata.getProduct().getProductId());
+			data.setProductName(tempdata.getProduct().getProductName());
+			data.setProductCode(tempdata.getProduct().getBarcode());
+			data.setProductDesc(tempdata.getProduct().getProductDesc());
+			data.setPurchaseRequestBreakdownId(tempdata.getPurchaseRequestBreakdownId());
+			data.setPurchaseRequestId(purchaserequestObj.getPurchaseRequestId());
+			data.setQuantityRequired(tempdata.getQuantityRequired());
+			data.setSupplierId(tempdata.getSupplier().getSupplierId());				
+			data.setSubTotal(tempdata.getSubTotal());
+			data.setUnitPrice(tempdata.getUnitPrice());
+			data.setUomName(tempdata.getProduct().getUom());
+			
+			data.setId(id + "");
+			purchaserequestbreakdownList.add(data);
+			id = id + 1;
+		}		
+		
+		purchaserequestObj.setPurchaserequestbreakdowns(purchaserequestbreakdownList);
+		
+	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getPurchaserequestDetailsByNo of PurchaserequestBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaserequestObj;
+	}
+
+	@Transactional
+	@Override
+	public boolean deletePurchaserequestbreakdown(
+			PurchaserequestbreakdownModel purchaserequestbreakdown)
+			throws Exception {
+		boolean deleteSuccess = false;		
+		try {			
+			Purchaserequestbreakdown PurchaserequestbreakdownObj= new Purchaserequestbreakdown();
+			PurchaserequestbreakdownObj=purchaseRequestRepository.getPurchaserequestbreakdown(purchaserequestbreakdown.getPurchaseRequestBreakdownId());
+			deleteSuccess = purchaseRequestRepository.deletePurchaserequestbreakdown(PurchaserequestbreakdownObj);			
+			}
+		catch (Exception e) {
+			log.info("Error in deletePurchaserequestbreakdown PurchaserequestBOImpl " + e);
+			throw e;
+		}
+		return deleteSuccess;
+	}
+
+	@Override
+	public List<PurchaserequestConsolidateModel> getPurchaserequestbreakdownList(
+			List<Integer> requestIds , List<Integer> branchIds) throws Exception {
+		List<PurchaserequestConsolidateModel> purchaserequestConsolidateList = new ArrayList<PurchaserequestConsolidateModel>();
+		List<PurchaserequestBranchModel> branchList = new ArrayList<PurchaserequestBranchModel>();
+		List<PurchaserequestbreakdownModel> productList  =new ArrayList<PurchaserequestbreakdownModel>();
+		PurchaserequestBranchModel branch = new PurchaserequestBranchModel();
+
+	try {
+		List<Purchaserequestbreakdown> tempdataList=purchaseRequestRepository.getPurchaserequestbreakdownList(requestIds);
+		//List<Purchaserequestbreakdown> tempdataList=purchaseRequestRepository.getPurchaserequestbreakdownList(ids);
+			
+		
+	
+		List<Purchaserequestbreakdown> tempdataList1=null;
+		
+		purchaserequestConsolidateList = new ArrayList<PurchaserequestConsolidateModel>();
+		int id = 0;		
+		for(Purchaserequestbreakdown tempdata :tempdataList)
+		{
+			PurchaserequestConsolidateModel data=new PurchaserequestConsolidateModel();
+			branchList = new ArrayList<PurchaserequestBranchModel>();
+			
+			data.setSupplierId(tempdata.getSupplier().getSupplierId());
+			data.setAddress(tempdata.getSupplier().getAddress());
+			data.setCompanyName(tempdata.getSupplier().getCompanyName());
+			data.setContactPerson(tempdata.getSupplier().getContactPerson());
+			data.setCity(tempdata.getSupplier().getCity());
+			data.setContactPersonNumber(tempdata.getSupplier().getContactPerson());						
+			
+			for(Integer branchIdTemp:branchIds)
+			{
+			List<Purchaserequestbreakdown> branchDistList=purchaseRequestRepository.getPurchaserequestbreakdownListAll(requestIds,branchIdTemp,tempdata.getSupplier().getSupplierId());
+			
+			if(branchDistList!=null && branchDistList.size()!=0)
+			{
+			Branch b=branchRepository.getBranchDetails(branchIdTemp);
+			branch = new PurchaserequestBranchModel();
+			productList  =new ArrayList<PurchaserequestbreakdownModel>();
+			
+			branch.setAddress(b.getAddress());
+			branch.setBranchName(b.getBranchName());
+										
+				for(Purchaserequestbreakdown productData:branchDistList)
+				{
+				PurchaserequestbreakdownModel product = new PurchaserequestbreakdownModel();
+				product.setProductId(productData.getProduct().getProductId());	
+				product.setProductName(productData.getProductName());
+				product.setQuantityRequired(productData.getQuantityRequired());
+				product.setReferenceNo(productData.getPurchaserequest().getReferenceNo());
+				product.setUomName(productData.getProduct().getUom());
+				product.setProductDesc(productData.getProduct().getProductDesc());
+				productList.add(product);
+				}
+				
+			
+			branch.setProductList(productList);
+			branchList.add(branch);
+			
+			}
+			
+			}
+			data.setBranchList(branchList);
+			purchaserequestConsolidateList.add(data);		
+			
+		}
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getPurchaserequestbreakdownList of PurchaserequestBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaserequestConsolidateList;
+	}
+
+	
+	
+	
+
+	@Override
+	public List<PurchaserequestbreakdownModel> getPurchaserequestbreakdownListAll(
+			List<Integer> ids) throws Exception {
+		List<PurchaserequestbreakdownModel> purchaserequestConsolidateList = new ArrayList<PurchaserequestbreakdownModel>();
+		
+		try {
+			List<Purchaserequestbreakdown> tempdataList=purchaseRequestRepository.getPurchaserequestbreakdownListAll(ids,1,1);
+			
+			purchaserequestConsolidateList = new ArrayList<PurchaserequestbreakdownModel>();
+			int id = 0;		
+			for(Purchaserequestbreakdown tempdata :tempdataList)
+			{
+				PurchaserequestbreakdownModel data=new PurchaserequestbreakdownModel();
+				
+				
+				data.setDiscount(tempdata.getDiscount());
+				data.setDiscountAmount(tempdata.getDiscountAmount());
+				data.setProductId(tempdata.getProduct().getProductId());
+				data.setProductName(tempdata.getProduct().getProductName());
+				data.setProductCode(tempdata.getProduct().getBarcode());
+				data.setPurchaseRequestBreakdownId(tempdata.getPurchaseRequestBreakdownId());
+				data.setPurchaseRequestId(tempdata.getPurchaserequest().getPurchaseRequestId());
+				data.setQuantityRequired(tempdata.getQuantityRequired());
+				
+				data.setSupplierId(tempdata.getSupplier().getSupplierId());	
+				data.setSupplierAddress(tempdata.getSupplier().getAddress());
+				data.setContactPerson(tempdata.getSupplier().getCompanyName());
+				
+				data.setSubTotal(tempdata.getSubTotal());
+				data.setUnitPrice(tempdata.getUnitPrice());
+				data.setUomName(tempdata.getProduct().getUom());
+				
+				data.setBranchAddress(tempdata.getPurchaserequest().getBranch().getAddress());
+				data.setBranchId(tempdata.getPurchaserequest().getBranch().getBranchId());
+				data.setBranchName(tempdata.getPurchaserequest().getBranch().getBranchName());
+				
+				
+				
+				
+				data.setId(id + "");				
+				purchaserequestConsolidateList.add(data);
+				id = id + 1;
+			}			
+		
+		}
+		catch(Exception e)
+		{
+			log.info("Error in getPurchaserequestbreakdownList of PurchaserequestBOImpl "+ e.toString());
+			throw e;
+		}
+		return purchaserequestConsolidateList;
+	}
+
+	@Override
+	public List<PurchaserequestbreakdownModel> getPurchaserequestbreakdownListByProduct(
+			List<Integer> requestIds) throws Exception {
+		List<PurchaserequestbreakdownModel> purchaserequestConsolidateList = new ArrayList<PurchaserequestbreakdownModel>();
+		
+		try {
+			List<Object[]> tempdataList=purchaseRequestRepository.getPurchaserequestbreakdownListByProduct(requestIds);
+			
+			purchaserequestConsolidateList = new ArrayList<PurchaserequestbreakdownModel>();
+			int id = 0;		
+			for(Object[] tempdata :tempdataList)
+			{
+				PurchaserequestbreakdownModel data=new PurchaserequestbreakdownModel();
+				
+				
+			
+				Purchaserequestbreakdown r = (Purchaserequestbreakdown) tempdata[0];
+			    int count = ((Number) tempdata[1]).intValue();
+				data.setQuantityRequired(count);
+				data.setProductName(r.getProduct().getProductName());
+				data.setProductCode(r.getProduct().getBarcode());
+				data.setUomName(r.getProduct().getUom());
+				data.setId(id + "");				
+				purchaserequestConsolidateList.add(data);
+				id = id + 1;
+			}			
+		
+		}
+		catch(Exception e)
+		{
+			log.info("Error in getPurchaserequestbreakdownList of PurchaserequestBOImpl "+ e.toString());
+			throw e;
+		}
+		return purchaserequestConsolidateList;
+	}
+
+	@Transactional
+	@Override
+	public boolean approvePurchaserequest(PurchaserequestModel purchaserequest)
+			throws Exception {
+		boolean updateSuccess = false;	
+		try {						
+			Purchaserequest purchaserequestObj = purchaseRequestRepository.getPurchaserequestDetails(purchaserequest.getPurchaseRequestId());
+			purchaserequestObj.setStatus(purchaserequest.getStatus());
+			updateSuccess=purchaseRequestRepository.updatePurchaserequest(purchaserequestObj);
+			}
+		catch (Exception e) {
+			log.info("Error in approvePurchaserequest PurchaserequestBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	}
+
+	@Override
+	public List<PurchaseorderModel> createPurchaseorderList(List<Integer> requestIds) throws Exception {
+		List<PurchaseorderModel> purchaseorderConsolidateList = new ArrayList<PurchaseorderModel>();		
+		List<PurchaseorderbreakdownsModel> productList  =new ArrayList<PurchaseorderbreakdownsModel>();
+		
+	try {
+		List<Purchaserequestbreakdown> tempdataList=purchaseRequestRepository.getPurchaserequestbreakdownList(requestIds);
+		
+		purchaseorderConsolidateList = new ArrayList<PurchaseorderModel>();
+		int id = 0;		
+		for(Purchaserequestbreakdown tempdata :tempdataList)
+		{
+			PurchaseorderModel data=new PurchaseorderModel();
+			BigDecimal totalAmount =new BigDecimal(0.00);			
+			productList  =new ArrayList<PurchaseorderbreakdownsModel>();
+			data.setSupplierId(tempdata.getSupplier().getSupplierId());
+			data.setCreatedBy("");
+			data.setCreatedDate(new Date());
+			data.setEmail(tempdata.getSupplier().getEmail());
+			data.setLastModifiedDate(new Date());				
+			
+			List<Purchaserequestbreakdown> branchDistList=purchaseRequestRepository.createPurchaseorderModel(requestIds,tempdata.getSupplier().getSupplierId());
+			
+			if(branchDistList!=null && branchDistList.size()!=0)
+			{
+									
+				for(Purchaserequestbreakdown productData:branchDistList)
+				{					
+				PurchaseorderbreakdownsModel product = new PurchaseorderbreakdownsModel();
+				product.setProductId(productData.getProduct().getProductId());	
+				product.setProductName(productData.getProductName());
+				product.setQuantity(productData.getQuantityRequired());
+				product.setBranchId(productData.getPurchaserequest().getBranch().getBranchId());
+				product.setReferenceNo(productData.getPurchaserequest().getReferenceNo());
+				Product p = productRepository.getProductDetails(productData.getProduct().getProductId());
+				product.setUnitPrice(p.getPurchasePrice());
+				product.setSubTotal(p.getPurchasePrice().multiply(new BigDecimal(productData.getQuantityRequired())));				
+				totalAmount=totalAmount.add(product.getSubTotal());				
+				
+				productList.add(product);
+				}		
+			}
+			
+			data.setTotalAmount(totalAmount);
+			data.setPurchaseorderbreakdowns(productList);
+			purchaseorderConsolidateList.add(data);		
+			
+		}
+	}
+	catch(Exception e)
+	{
+		log.info("Error in createPurchaseorderList of PurchaserequestBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaseorderConsolidateList;
+	}
+	
+}

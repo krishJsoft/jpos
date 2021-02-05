@@ -1,0 +1,373 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogcustomerinvoice"
+		header="View Branch/Customer Invoice Details" resizable="false"
+		widgetVar="invoiceDig" modal="true" height="90%" width="85%">
+
+
+		<br></br>
+
+
+		<p:panel id="requestitem" styleClass="mytabpanel">
+
+
+
+			<p:panelGrid style="width:99%" styleClass="alignTop" id="invoicegrid">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="width:30%;">Invoice To</p:column>
+						<p:column style="width:70%;">Invoice Details</p:column>
+					</p:row>
+				</f:facet>
+
+
+				<p:row>
+					<p:column style="width:30%;" styleClass="alignTop">
+
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							rendered="#{branchInvoiceBean.branchinvoice.invoiceType=='1'}"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.branch.branchName}"
+								styleClass="logintxt" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.branch.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.branch.city}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.branch.state} - #{branchInvoiceBean.branchinvoice.branch.postCode}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value=" #{branchInvoiceBean.branchinvoice.branch.phoneNo}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							rendered="#{branchInvoiceBean.branchinvoice.invoiceType=='2'}"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.customer.customerName}"
+								styleClass="logintxt" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.customer.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.customer.city}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.customer.state} - #{branchInvoiceBean.branchinvoice.customer.postCode}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value=" #{branchInvoiceBean.branchinvoice.customer.phoneNo}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+					</p:column>
+
+
+					<p:column style="width:70%;" styleClass="alignTop">
+
+						<h:panelGrid columns="6" border="0" width="90%"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+
+							<h:outputText value="Generated User" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.createdBy}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Created Date" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.createdDate}"
+								styleClass="logintxttable">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+							<h:outputText value="Sales Order No" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.salesOrderNo}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Invoice No" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.invoiceNo}"
+								styleClass="logintxttable" />
+
+
+
+							<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+
+							<h:outputText
+								value="#{app['purchaseorder.status.neworderlable']}"
+								rendered="#{branchInvoiceBean.branchinvoice.status==app['branchinvoice.status.newordervalue']}"
+								styleClass="logintxttable" />
+							<h:outputText
+								value="#{app['purchaseorder.status.processedlable']}"
+								rendered="#{branchInvoiceBean.branchinvoice.status==app['branchinvoice.status.processedvalue']}"
+								styleClass="logintxttable" />
+							<h:outputText value="#{app['purchaseorder.status.orderedlable']}"
+								rendered="#{branchInvoiceBean.branchinvoice.status==app['branchinvoice.status.orderedvalue']}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Total Amount (RM)" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{branchInvoiceBean.branchinvoice.totalAmount}"
+								styleClass="logintxttable" />
+
+
+
+						</h:panelGrid>
+
+						<h:panelGrid columns="6" border="0" width="50%"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+							<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{branchInvoiceBean.branchinvoice.remarks}"
+								styleClass="logintxttable" />
+
+
+						</h:panelGrid>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+
+			<p:dataTable id="salesTable" var="product" rowIndexVar="productrow"
+				scrollable="true" rowStyleClass="#{productrow mod 2 == 0 ? 'old1' : 'old'}"
+				value="#{branchInvoiceBean.branchinvoice.branchinvoicebreakdowns}"
+				style="width:100%;" scrollHeight="150">
+
+
+				<p:columnGroup type="header">
+
+					<p:row>
+						<p:column style="width:10%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Product Code" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:15%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Product Name" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:10%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="UOM" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+
+						<p:column style="width:10%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Quantity" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:10%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Unit Price(RM)" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+
+
+						<p:column style="width:6%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Tax (%)" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+						<p:column style="width:15%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="Tax (RM)" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+
+						<p:column style="width:10%;" styleClass="columnwidth">
+							<f:facet name="header">
+								<h:outputText value="SubTotal (RM)" styleClass="tableheader" />
+							</f:facet>
+						</p:column>
+
+					</p:row>
+				</p:columnGroup>
+
+				<p:column style="width:10%;" styleClass="columnwidth">
+					<h:outputText value="#{product.productCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:15%;" styleClass="columnwidth">
+					<h:outputText value="#{product.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:6%;" styleClass="columnwidth">
+					<h:outputText value="#{product.uom}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+					<h:outputText value="#{product.quantity}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+					<h:outputText value="#{product.unitPrice}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column style="width:6%;" styleClass="columnwidthn">
+					<h:outputText value="#{product.taxCode}" styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+				<p:column style="width:7%;" styleClass="columnwidthn">
+					<h:outputText value="#{product.taxAmount}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+
+
+
+				<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+					<h:outputText value="#{product.subTotal}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+				<p:columnGroup type="footer">
+					<p:row>
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="Product Sub Total (RM)"
+							style="text-align:right" />
+						<p:column
+							footerText="#{branchInvoiceBean.branchinvoice.invoiceAmount}"
+							style="text-align:right" />
+					</p:row>
+
+					<p:row>
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="Tax (RM)" style="text-align:right" />
+						<p:column footerText="#{branchInvoiceBean.branchinvoice.tax}"
+							style="text-align:right" />
+					</p:row>
+
+					<p:row>
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="Despatch Amount (RM)"
+							style="text-align:right" />
+						<p:column
+							footerText="#{branchInvoiceBean.branchinvoice.dispatchAmount}"
+							style="text-align:right" />
+					</p:row>
+
+					<p:row>
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="" style="text-align:right" />
+						<p:column footerText="Total Amount (RM)" style="text-align:right" />
+						<p:column
+							footerText="#{branchInvoiceBean.branchinvoice.totalAmount}"
+							style="text-align:right" />
+					</p:row>
+
+				</p:columnGroup>
+
+
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Close" oncomplete="PF('invoiceDig').hide()" />
+
+
+
+		</h:panelGrid>
+
+
+
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

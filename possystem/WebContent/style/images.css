@@ -1,0 +1,35 @@
+/* CSS Document */
+
+.login_top_shadow{
+background-image:url(../images/login_shadow_top.jpg);
+background-position:bottom center;
+background-repeat:no-repeat;
+}
+.login_bot_shadow{
+background-image:url(../images/login_shadow_bottom.jpg);
+background-position:top center;
+background-repeat:no-repeat;
+}
+
+.menu_bg{
+background-image:url(../images/menu_bg.jpg);
+background-position:top center;
+background-repeat:repeat-x;
+}
+
+.bg_green_grid{
+background-image:url(../images/bg_green_grid.jpg);
+background-position:top center;
+}
+.bank_bg{
+background-image:url(../images/bg_bank_selected.jpg);
+background-position:top right;
+background-repeat:no-repeat;
+background-color:#1c4803;
+}
+.table_head{
+background-image:url(../images/table_head.jpg);
+background-position:top left;
+background-repeat:repeat-x;
+font-weight:bold;
+}

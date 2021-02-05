@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:outputPanel>
+
+		<br></br>
+
+		<p:fieldset legend="Tax Info">
+
+			<h:panelGrid columns="5" border="0" width="50%"
+				styleClass="borderlessGrid"
+				columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['customerinvoice.taxship.taxingScheme']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu id="taxingScheme"
+					value="#{customerInvoiceBean.customerinvoice.invoicetaxship.taxingScheme}"
+					style="width:160px; text-align:left;">
+					<f:selectItem itemLabel="Select Taxing Scheme" itemValue="" />
+					<f:selectItem itemLabel="No Tax" itemValue="0" />
+					<f:selectItem itemLabel="5" itemValue="5" />
+					<f:selectItem itemLabel="10" itemValue="10" />
+				</p:selectOneMenu>
+				<p:message for="taxingScheme" styleClass="fieldError" />
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText
+					value="#{msg['customerinvoice.taxship.pricingCurrency']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu id="pricingCurrency"
+					value="#{customerInvoiceBean.customerinvoice.invoicetaxship.pricingCurrency}"
+					style="width:160px; text-align:left;">
+					<f:selectItem itemLabel="Select Pricing Currency" itemValue="" />
+					<f:selectItem itemLabel="MYR" itemValue="0" />
+				</p:selectOneMenu>
+				<p:message for="pricingCurrency" styleClass="fieldError" />
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText
+					value="#{msg['customerinvoice.taxship.requireShipDate']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:calendar navigator="true" id="requireShipDate" size="25"
+					value="#{customerInvoiceBean.customerinvoice.invoicetaxship.requireShipDate}"
+					pattern="dd/MMM/yyyy" />
+				<p:message for="requireShipDate" styleClass="fieldError" />
+
+
+			</h:panelGrid>
+			
+			<br></br>
+
+		</p:fieldset>
+
+			
+			<br></br>
+
+
+		<p:fieldset legend="Shipping Info">
+
+			<h:panelGrid columns="5" border="0" width="50%"
+				styleClass="borderlessGrid"
+				columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['customerinvoice.taxship.recipient']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="recipient" value="#{customerInvoiceBean.customerinvoice.invoicetaxship.recipient}"
+					maxlength="25" size="25" />
+				<p:message for="recipient" styleClass="fieldError" />
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['customerinvoice.taxship.address']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputTextarea rows="3" cols="25" id="address"
+					value="#{customerInvoiceBean.customerinvoice.invoicetaxship.address}" />
+				<p:message for="address" styleClass="fieldError" />
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['customerinvoice.taxship.city']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="city" value="#{customerInvoiceBean.customerinvoice.invoicetaxship.city}"
+					maxlength="25" size="25" />
+				<p:message for="city" styleClass="fieldError" />
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['customerinvoice.taxship.state']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="state" value="#{customerInvoiceBean.customerinvoice.invoicetaxship.state}"
+					maxlength="25" size="25" />
+				<p:message for="state" styleClass="fieldError" />
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['customerinvoice.taxship.country']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="country" value="#{customerInvoiceBean.customerinvoice.invoicetaxship.country}"
+					maxlength="25" size="25" />
+				<p:message for="country" styleClass="fieldError" />
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['customerinvoice.taxship.postCode']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="postCode" value="#{customerInvoiceBean.customerinvoice.invoicetaxship.postCode}"
+					maxlength="25" size="25" />
+				<p:message for="postCode" styleClass="fieldError" />
+
+			</h:panelGrid>
+			
+			<br></br>
+
+		</p:fieldset>
+
+
+
+	</p:outputPanel>
+
+</ui:composition>
+
+

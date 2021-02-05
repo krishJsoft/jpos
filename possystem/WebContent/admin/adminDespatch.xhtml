@@ -1,0 +1,129 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="listaDespatchForm">
+		<p:outputPanel id="despatchPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="despatchPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Admin Despatch">
+
+				<h:panelGrid id="addeditdespatchgrid" columns="5" border="0"
+					width="60%"
+					columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['adespatch.label.despatchType']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="despatchType"
+						value="#{adminDespatchBean.despatchType}" maxlength="45"
+						size="25" />
+					<p:message for="despatchType" styleClass="fieldError" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0">
+						<p:commandButton value="Search" ajax="true"
+							action="#{adminDespatchBean.searchDespatch}" update="despatchPanel" />
+						<p:commandButton value="Reset" ajax="true"
+							action="#{adminDespatchBean.resetSearchDespatch}" update="despatchPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="despatch" rowIndexVar="row"
+					value="#{adminDespatchBean.adespatchListObj}" paginator="true"
+					rows="10" style="width: 100%"
+					rowsPerPageTemplate="5,10,15,25,50,100,250,500"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+
+					<p:column id="modelHeader">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{despatch.despatchType}">
+						<f:facet name="header">
+							<h:outputText value="Despatch Type" />
+						</f:facet>
+						<h:outputText value="#{despatch.despatchType}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{despatch.specification}" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Specification" />
+						</f:facet>
+						<h:outputText value="#{despatch.specification}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column sortBy="#{despatch.unitPrice}"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Unit Price (RM)" />
+						</f:facet>
+						<h:outputText value="#{despatch.unitPrice}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+					</p:column>
+
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						<h:commandLink value="Edit" styleClass="logintxttable"
+							rendered="#{loginBean.functionList.contains('Edit Product')}"
+							actionListener="#{adminDespatchBean.editDespatch}">
+							<f:attribute name="despatchId" value="#{despatch.despatchId}" />
+						</h:commandLink>
+					</p:column>
+
+				</p:dataTable>
+
+
+				<table align="center" width="100%">
+					<tr>
+						<td align="left"><p:commandButton value="Add New Despatch"
+								ajax="false" action="#{adminDespatchBean.newDespatch}"
+								update="dataTable" /></td>
+					</tr>
+
+
+				</table>
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

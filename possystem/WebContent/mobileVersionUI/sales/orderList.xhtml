@@ -1,0 +1,374 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core"
+	xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+
+	<h:head>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<meta charset="utf-8" />
+
+		<f:loadBundle var="app" basename="META-INF/app-config" />
+		<f:loadBundle var="msg" basename="META-INF/MessagesResources" />
+		<f:loadBundle var="err" basename="META-INF/ErrorsResources" />
+		<f:loadBundle var="des" basename="META-INF/DesignResources" />
+
+
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+		<f:facet name="first">
+			<meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+			<meta content='text/html; charset=UTF-8' http-equiv="Content-Type" />
+			<title>Jsoft POS</title>
+		</f:facet>
+		<meta charset="utf-8"></meta>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"></meta>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta name="viewport" content="width=device-width, initial-scale=1"></meta>
+		<meta name="description" content=""></meta>
+		<meta name="author" content=""></meta>
+
+
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/css/bootstrap.min.css" />
+
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/fonts/icomoon.css" />
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/fonts/flag-icon-css/css/flag-icon.min.css" />
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/vendors/css/sliders/slick/slick.css" />
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/vendors/css/extensions/pace.css" />
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/vendors/css/ui/prism.min.css" />
+
+
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/css/bootstrap-extended.min.css" />
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/css/app.min.css" />
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/css/colors.min.css" />
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/assets/css/style.css" />
+
+
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/css/core/menu/menu-types/vertical-compact-menu.min.css" />
+		<link rel="stylesheet" type="text/css"
+			href="${facesContext.externalContext.requestContextPath}/app-assets/css/core/menu/menu-types/vertical-overlay-menu.min.css" />
+
+
+
+
+		<link
+			href="${facesContext.externalContext.requestContextPath}/resources/css/cssFFIx.css"
+			rel="stylesheet"></link>
+
+		<style>
+.menuListHeader {
+	text-align: center;
+	font-size: 150%;
+	border-top-left-radius: 40px;
+	border-top-right-radius: 40px;
+	padding: 0;
+	font-weight: bold;
+	background: #1F618D;
+	height: 10vh;
+	vertical-align: top;
+}
+
+.addOrderButton {
+	font-color: #ffffff;
+	color: #ffffff;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, sans-serif;
+	background: green; //
+	width: 100%;
+	font-weight: bold;
+	font-size: 125%;
+}
+
+.tableSelectionGrid {
+	
+}
+
+.tableButton {
+	font-color: #ffffff;
+	color: #ffffff;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+		'Helvetica Neue', Arial, sans-serif;
+}
+
+.free {
+	background: #287ab8;
+}
+
+.busy {
+	background: #ff8000;
+}
+
+.footerPanel {
+	position: relative;
+	bottom: 1%;
+	background-color: black;
+	width: 100%;
+}
+
+.footerButtonPanel {
+	position: fixed;
+	bottom: 1%;
+	background-color: black;
+	width: 100%;
+}
+
+.keypad-key {
+	font-size: 3em !important;
+	width: 120px !important;
+}
+</style>
+		<script>
+function validate(evt,value) {
+	  var theEvent = evt || window.event;
+	  var key = theEvent.keyCode || theEvent.which;
+	  key = String.fromCharCode( key );
+	  var regex = /[0-9]/;
+	  
+	  if( !regex.test(key)) {
+		  
+	    theEvent.returnValue = false;
+	    if(theEvent.preventDefault) theEvent.preventDefault();
+	  }
+	  
+	}
+
+
+
+function executePrintCustomer(elementId){
+	
+	PrimeFaces.expressions.SearchExpressionFacade.resolveComponentsAsSelector(elementId).jqprint();
+	setTimeout(function (){
+
+		rcRefreshMemory(); 
+
+		}, 2000);
+
+	return false;
+	
+}
+
+
+</script>
+
+	</h:head>
+	<body onload="detectScreen()">
+		<h:form id="mobileOrderListForm">
+			<p:commandButton value="ADD ORDER" styleClass="addOrderButton"
+				rendered="#{orderBean.orderAction=='edit'}"
+				action="#{posBean.addOrder}" icon="fa fa-plus">
+			</p:commandButton>
+			<div style="">
+				<p:panel styleClass="menuListHeader">
+					<p:panelGrid style="width:100%;border-style:hidden">
+
+
+
+						<p:row style="background:transparent;background-color:transparent">
+
+							
+							<p:column style="width:80%">
+								<h:outputText value="ORDER LIST" style="color:white" />
+							</p:column>
+
+							<p:column>
+
+								<p:commandLink oncomplete="PF('quickMenuDlg').show()">
+									<i class="fa fa-list-alt fa-5x"
+										style="font-size: 48px; color: orange"></i>
+								</p:commandLink>
+
+
+							</p:column>
+						</p:row>
+
+					</p:panelGrid>
+
+				</p:panel>
+				<div style="height: 73vh; overflow: auto;">
+					<p:dataTable id="dataTable" var="pos" rowIndexVar="row"
+						scrollable="false" scrollHeight="440"
+						rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+						value="#{posBean.salesorderbreakdowns}" paginator="false"
+						rows="500" style="width: 100%;" rowsPerPageTemplate="5,10,15"
+						emptyMessage="No order found">
+
+
+
+						<p:columnGroup type="header">
+							<p:row>
+
+
+
+								<p:column style="width:40%;" styleClass="columnwidth">
+									<f:facet name="header">
+										<h:outputText value="ITEM NAME" styleClass="tableheader" />
+									</f:facet>
+								</p:column>
+
+
+
+								<p:column style="width:25%;" styleClass="columnwidth">
+									<f:facet name="header">
+										<h:outputText value="QTY" styleClass="tableheader" />
+									</f:facet>
+								</p:column>
+
+								<p:column style="width:10%;" styleClass="columnwidth">
+									<f:facet name="header">
+
+										<h:outputText value="" styleClass="ui-icon ui-icon-trash" />
+									</f:facet>
+								</p:column>
+								<p:column style="width:0px">
+								</p:column>
+
+							</p:row>
+
+						</p:columnGroup>
+
+						<p:column style="width:40%;">
+
+							<p:commandLink
+								value="#{pos.productName} -#{app['common.currency']} #{pos.subTotal}"
+								styleClass="logintxttable" update=":mobileOrderListForm"
+								actionListener="#{posBean.listItemBreakdowns}"
+								rendered="#{pos.status!='ordered'}">
+								<f:attribute name="posBreakdownId" value="#{row}" />
+							</p:commandLink>
+							<h:outputText
+								value="#{pos.productName} - #{app['common.currency']} #{pos.subTotal}"
+								styleClass="logintxttable" rendered="#{pos.status=='ordered'}" />
+
+
+						</p:column>
+
+
+						<p:column styleClass="logintxtnumberFormat">
+
+							<c:choose>
+
+								<c:when
+									test="${fn:containsIgnoreCase(request.getHeader('User-Agent'), 'Android')=='false'}">
+									<p:keyboard value="#{posBean.itemcountQty[pos.sno]}" size="5"
+										onfocus="this.select();" id="itemcountQty"
+										disabled="#{pos.status=='ordered'}" layout="custom"
+										layoutTemplate="123,456,789,0-back">
+										<p:ajax event="change"
+											update="dataTable,:mobileOrderListForm:orderListDataTable,:mobileOrderListForm:totalPanel"
+											listener="#{posBean.addSalesPriceModifyItem1(row)}" />
+										<f:convertNumber pattern="#0" />
+									</p:keyboard>
+								</c:when>
+
+								<c:otherwise>
+									<p:inputText value="#{posBean.itemcountQty[pos.sno]}" size="5"
+										onkeypress='validate(event,this.value)' id="itemcountQty"
+										onfocus="this.select();" styleClass="logintxtnumberFormat"
+										disabled="#{pos.status=='ordered'}">
+
+										<p:ajax event="change"
+											update="dataTable,:mobileOrderListForm:orderListDataTable,:mobileOrderListForm:totalPanel"
+											listener="#{posBean.addSalesPriceModifyItem1(row)}" />
+										<f:convertNumber pattern="#0" />
+									</p:inputText>
+								</c:otherwise>
+
+							</c:choose>
+
+
+						</p:column>
+
+
+
+
+						<p:column styleClass="columnwidth"
+							rendered="#{pos.status!='ordered'}">
+							<p:commandLink value="" styleClass="ui-icon ui-icon-trash"
+								update="dataTable,:mobileOrderListForm:orderListDataTable,:mobileOrderListForm:totalPanel,:mobileOrderListForm:footerId"
+								actionListener="#{posBean.instantRemove}">
+								<f:attribute name="posBreakdownId" value="#{row}" />
+							</p:commandLink>
+						</p:column>
+
+
+						<p:column>
+							<p:subTable id="remarksDataTable" var="subItem"
+								rowIndexVar="remarksRow" scrollable="true" scrollHeight="440"
+								onevent="reloadTable" value="#{posBean.remarksItemBreakdowns}"
+								paginator="false" rows="500" style="width: 100%"
+								rowsPerPageTemplate="5,10,15"
+								rendered="#{posBean.viewSubList=='true' and posBean.subListId==row}">
+								<h:outputText value="abc" />
+								<p:column style="visibility: hidden">
+
+								</p:column>
+								<p:column colspan="2">
+									<p:panelGrid columns="2" style="border-style:hidden !important">
+										<h:outputText value="#{subItem.remarks.remarksName}"></h:outputText>
+										<p:commandButton value="EDIT"
+											oncomplete="PF('itemRemarksDlg').show()"
+											update="mobileOrderListForm:itemRemarksDlg"
+											actionListener="#{posBean.editRemarks}">
+											<f:attribute name="subItemId" value="#{subItem.sno}" />
+										</p:commandButton>
+									</p:panelGrid>
+								</p:column>
+
+							</p:subTable>
+						</p:column>
+
+					</p:dataTable>
+				</div>
+
+
+				<p:panelGrid id="totalPanel"
+					style="width:100%;background:transparent">
+
+					<p:row>
+						<p:column
+							style="background:#1F618D  ;color:white;align:center;text-align:center;font-weight:bold">
+							<h:outputText
+								value="TOTAL AMOUNT : #{app['common.currency']} #{posBean.totalAmount}" />
+						</p:column>
+
+					</p:row>
+				</p:panelGrid>
+			</div>
+
+
+
+
+
+			<ui:include src="/mobileVersionUI/sales/contentFooter.xhtml" />
+			<ui:include
+				src="/mobileVersionUI/sales/dialogs/positemdeletedialog.xhtml" />
+			<ui:fragment rendered="#{posBean.salesorderbreakdowns.size()!=0}">
+				<ui:include
+					src="/mobileVersionUI/sales/dialogs/itemremarksdialog.xhtml" />
+			</ui:fragment>
+			<ui:include
+				src="/mobileVersionUI/sales/dialogs/quickmenudialog.xhtml" />
+			<ui:include src="/mobileVersionUI/sales/dialogs/tableCardNoDlg.xhtml" />
+
+
+
+		</h:form>
+
+	</body>
+
+</ui:composition>
+
+

@@ -1,0 +1,664 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+
+	<h:form id="listProductForm">
+		<p:outputPanel id="productPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="productPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Add/Edit Product Bundle">
+
+				<p:fieldset legend="Product Master Details" toggleable="true"
+					toggleSpeed="500">
+
+					<h:panelGrid id="addeditproductgrid" columns="10" border="0"
+						rowStyleClass="#{row mod 2 == 0 ? null : 'old'}" width="90%"
+						columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.productName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="productName"
+							value="#{productBean.product.productName}" maxlength="100"
+							size="25" />
+						<p:message for="productName" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.productCode']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="barcode" value="#{productBean.product.barcode}"
+							maxlength="25" size="25" />
+						<p:message for="barcode" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.brandName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="brandName"
+							value="#{productBean.product.brandName}" maxlength="100"
+							size="25" />
+						<p:message for="brandName" styleClass="fieldError" />
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.categoryName']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+
+						<h:panelGrid columns="2" border="0">
+							<p:inputText id="categoryName"
+								value="#{productBean.categoryName}" maxlength="55" size="25"
+								disabled="true" />
+							<p:commandButton id="categoryBtn" icon="ui-icon-search" onclick="PF('cpanel').show();"/>
+						</h:panelGrid>
+						<p:message for="categoryName" styleClass="fieldError" />
+
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.uom']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:selectOneMenu id="uom" effect="fade" editable="false"
+							value="#{productBean.product.uom}"
+							style="width:160px; float :left;" styleClass="selectOneMenu">
+							<f:selectItem itemLabel="Select UOM Type" itemValue="" />
+							<f:selectItems value="#{commonListBean.selectUomList}"></f:selectItems>
+						</p:selectOneMenu>
+						<p:message for="uom" styleClass="fieldError" />
+
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.quantityonHand']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="quantityonHand"
+							value="#{productBean.product.quantityonHand}"
+							styleClass="logintxtnumberFormat" maxlength="25" size="25"
+							onkeypress='return validateonlyNumber(event)' />
+						<p:message for="quantityonHand" styleClass="fieldError" />
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.reorderPoint']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="quantityonalert"
+							value="#{productBean.product.quantityonalert}"
+							styleClass="logintxtnumberFormat" maxlength="25" size="25"
+							onkeypress='return validateonlyNumber(event)' />
+						<p:message for="quantityonalert" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText
+							value="#{msg['product.label.normalPrice']} #{app['common.currency']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="normalPrice"
+							value="#{productBean.product.normalPrice}"
+							styleClass="logintxtnumberFormat" maxlength="25" size="25"
+							onkeypress='return validate(event)'>
+						</p:inputText>
+						<p:message for="normalPrice" styleClass="fieldError" />
+
+						<h:outputText value="#{msg['common.mantetary.symbol']}"
+							styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.taxCode']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="taxCode" value="#{productBean.product.taxCode}"
+							styleClass="logintxtnumberFormat" maxlength="25" size="25"
+							onkeypress='return validate(event)'>
+						</p:inputText>
+						<p:message for="taxCode" styleClass="fieldError" />
+
+						
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText
+							value="#{msg['product.label.salesrepPrice']} #{app['common.currency']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="salesrepPrice"
+							value="#{productBean.product.salesrepPrice}"
+							styleClass="logintxtnumberFormat" maxlength="25" size="25"
+							onkeypress='return validate(event)'>
+						</p:inputText>
+						<p:message for="salesrepPrice" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="#{msg['product.label.customerPoint']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputText id="customerPoint" styleClass="logintxtnumberFormat"
+							onkeypress='return validate(event)'
+							value="#{productBean.product.customerPoint}" maxlength="10"
+							size="25" />
+						<p:message for="customerPoint" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:selectOneMenu id="status" value="#{productBean.product.status}"
+							styleClass="inputCombo" style="width:160px; float :left;">
+							<f:selectItem itemLabel="Active" itemValue="1" />
+							<f:selectItem itemLabel="InActive" itemValue="2" />
+						</p:selectOneMenu>
+						<p:message for="status" styleClass="fieldError" />
+
+						<h:outputText value="" styleClass="mandatory_text" />
+						<h:outputText value="#{msg['purchaserequest.label.productDesc']}"
+							styleClass="logintxt"></h:outputText>
+						<h:outputText value=":" />
+						<p:inputTextarea rows="3" cols="35" id="productDesc"
+							autoResize="false" value="#{productBean.product.productDesc}" />
+						<p:message for="productDesc" styleClass="fieldError" />
+
+					</h:panelGrid>
+				</p:fieldset>
+
+				<p:separator />
+
+
+				<p:fieldset legend="Bundle Items" toggleable="true"
+					toggleSpeed="500">
+
+
+					<p:panelGrid style="width:99%" id="purchaseRequestProductGrid"
+						styleClass="alignTop">
+						<f:facet name="header">
+							<p:row>
+								<p:column style="width:17%;">Add Product</p:column>
+								<p:column style="width:83%;">Products Details</p:column>
+							</p:row>
+						</f:facet>
+
+						<p:row>
+							<p:column style="width:17%;" styleClass="alignTop">
+
+								<h:panelGrid id="purchaseRequestAddGrid" columns="1" border="0"
+									styleClass="borderlessGrid" width="100%"
+									columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+									<h:panelGrid columns="2">
+										<p:commandButton id="productBtn" icon="ui-icon-search"
+											onclick="PF('overproduct').show();" style="height:22px;"
+											update="productPanel1" />
+
+										<h:outputText
+											value="#{msg['purchaserequest.label.productName']}"
+											styleClass="logintxt"></h:outputText>
+									</h:panelGrid>
+
+
+									<p:autoComplete id="productCode" maxResults="500" size="25"
+										converter="productNameConverter" maxlength="100"
+										minQueryLength="3" dropdown="false" scrollHeight="250"
+										queryDelay="2" disabled="#{quotationBean.productCodedisable}"
+										value="#{productBean.productb}"
+										completeMethod="#{commonListBean.getAllProductListByName}"
+										var="p" itemLabel="#{p.productName}" itemValue="#{p}">
+										<p:column>  
+                   					 #{p.barcode} - #{p.uom} - #{p.productName}
+                					</p:column>
+										<p:ajax event="itemSelect"
+											listener="#{productBean.handleSelect}"											 />
+									</p:autoComplete>
+
+
+									<h:outputText value="#{msg['purchaserequest.label.itemCount']}"
+										styleClass="logintxt"></h:outputText>
+
+									<p:inputText id="itemCount"
+										value="#{productBean.itemCount}" maxlength="15"
+										size="25" />
+
+									<h:panelGrid columns="2" border="0"
+										columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+										<p:commandButton value="Add" ajax="true"
+											rendered="#{productBean.itemaction!='update'}"
+											action="#{productBean.addBundleItem}"
+											update="productPanel" />
+
+										<p:commandButton value="Update" ajax="true"
+											rendered="#{productBean.itemaction=='update'}"
+											action="#{productBean.updateBundleProduct}"
+											update="productPanel" />
+
+										<p:commandButton value="Reset" ajax="true"
+											action="#{productBean.resetBundleItem}"
+											update="productPanel" />
+									</h:panelGrid>
+
+
+								</h:panelGrid>
+							</p:column>
+
+							<p:column style="width:83%;">
+
+
+								<p:dataTable id="dataTable" var="purchase" rowIndexVar="row"
+									scrollable="true" scrollHeight="280"
+									value="#{productBean.productbundleList}"
+									paginator="false" rows="500" style="width: 100%"
+									rowsPerPageTemplate="5,10,15">
+
+
+
+									<p:columnGroup type="header">
+										<p:row>
+
+											<p:column style="width:3%;" styleClass="columnwidth">
+												<f:facet name="header">
+													<h:outputText value="SNo" styleClass="tableheader" />
+												</f:facet>
+											</p:column>
+										
+
+
+											<p:column style="width:8%;" styleClass="columnwidth">
+												<f:facet name="header">
+													<h:outputText value="Product Code" styleClass="tableheader" />
+												</f:facet>
+											</p:column>
+
+											<p:column style="width:15%;" styleClass="columnwidth">
+												<f:facet name="header">
+													<h:outputText value="Product Name" styleClass="tableheader" />
+												</f:facet>
+											</p:column>
+
+											<p:column style="width:6%;" styleClass="columnwidth">
+												<f:facet name="header">
+													<h:outputText value="UOM" styleClass="tableheader" />
+												</f:facet>
+											</p:column>
+
+
+
+											<p:column style="width:7%;" styleClass="columnwidth">
+												<f:facet name="header">
+													<h:outputText value="Quantity Reqd."
+														styleClass="tableheader" />
+												</f:facet>
+											</p:column>
+
+
+
+											<p:column style="width:6%;" styleClass="columnwidth">
+												<f:facet name="header">
+													<h:outputText value="Action" />
+												</f:facet>
+											</p:column>
+										</p:row>
+									</p:columnGroup>
+
+
+
+
+									<p:column id="modelHeader" width="5%" styleClass="columnwidth"
+										style="height:15px;">
+										<f:facet name="header">
+											<h:outputText value="SNo" />
+										</f:facet>
+										<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+									</p:column>
+									
+
+									<p:column sortBy="#{purchase.product.barcode}" width="12%"
+										styleClass="columnwidth">
+										<h:outputText value="#{purchase.product.barcode}"
+											styleClass="logintxttable" />
+									</p:column>
+
+
+									<p:column sortBy="#{purchase.product.productName}" width="20%"
+										styleClass="columnwidth">
+										<h:outputText value="#{purchase.product.productName}"
+											styleClass="logintxttable" />
+									</p:column>
+
+									<p:column sortBy="#{purchase.product.uom}" width="10%"
+										styleClass="columnwidth">
+										<h:outputText value="#{purchase.product.uom}"
+											styleClass="logintxttable" />
+									</p:column>
+
+
+									<p:column sortBy="#{purchase.quantity}" width="10%"
+										styleClass="logintxtnumberFormat">
+										<h:outputText value="#{purchase.quantity}"
+											styleClass="logintxttable" />
+									</p:column>
+
+
+									<p:column width="8%" styleClass="columnwidth">
+
+										<h:panelGrid columns="10" border="0"
+											styleClass="borderlessGrid">
+											<p:commandLink value="" styleClass="ui-icon ui-icon-pencil"
+												title="Edit"
+												update=":listProductForm:productPanel"
+												rendered="#{loginBean.functionList.contains('Edit PurchaseRequest')}"
+												actionListener="#{productBean.editBundleProduct}">
+												<f:attribute name="purchaseRequestBreakdownId"
+													value="#{row}" />
+											</p:commandLink>
+
+											<h:graphicImage value="resources/images/cal_forward.gif"
+												rendered="#{loginBean.functionList.contains('Edit PurchaseRequest')}" />
+
+
+											<p:commandLink value="" styleClass="ui-icon ui-icon-trash"
+												title="Remove"
+												update=":listProductForm:dataTable,:listProductForm:requestitemdelete"
+												actionListener="#{productBean.removeBundleItem}"
+												oncomplete="PF('purchaseItemdeleteDig').show()">
+												<f:attribute name="purchaseRequestBreakdownId"
+													value="#{row}" />
+											</p:commandLink>
+										</h:panelGrid>
+									</p:column>
+
+
+
+								</p:dataTable>
+							</p:column>
+						</p:row>
+
+
+
+
+
+					</p:panelGrid>
+
+
+				</p:fieldset>
+
+
+				<p:dialog id="modelcategoryitemdelete" showEffect="fade"
+					hideEffect="fade" header="Category Delete Confirmation"
+					resizable="false" widgetVar="categoryItemdeleteDig" modal="true"
+					height="100" width="360">
+
+					<br></br>
+
+					<p:panel id="requestitemdelete1">
+
+						<h:panelGrid columns="1" border="0" width="100%"
+							styleClass="bgcolor" cellpadding="1" cellspacing="1"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+							<h:outputText value="Are you sure want to Delete Category ? "
+								styleClass="logintxttable" />
+						</h:panelGrid>
+
+						<br></br>
+
+						<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+							columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+							<p:commandButton value="Delete" ajax="false"
+								action="#{productCategoryBean.deleteCategory}">
+							</p:commandButton>
+							<p:commandButton value="Cancel"
+								onccomplete="PF('categoryItemdeleteDig').hide()" />
+
+						</h:panelGrid>
+					</p:panel>
+
+				</p:dialog>
+
+
+
+
+				<table align="right" width="100%" border="0">
+					<tr>
+						<td align="right"><p:commandButton value="Save"
+								action="#{productBean.saveProductBundle}" update="productPanel"
+								rendered="#{productBean.action!='update'}" /> <p:commandButton
+								value="Update" update="productPanel"
+								rendered="#{productBean.action=='update'}"
+								action="#{productBean.updateProduct}" /> <p:commandButton
+								rendered="#{productBean.action!='update'}" value="Reset"
+								ajax="false" action="#{productBean.resetProduct}"
+								update="productPanel" /> <p:commandButton value="Reset"
+								actionListener="#{productBean.editProduct}" ajax="false"
+								update="productPanel" rendered="#{productBean.action=='update'}">
+
+								<f:attribute name="productId" value="#{productBean.productId}" />
+							</p:commandButton> <p:commandButton value="Cancel"
+								action="#{productBean.listvoidProduct}" ajax="false"
+								update="addeditproductgrid2" /></td>
+					</tr>
+				</table>
+
+
+
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		<p:overlayPanel  for="categoryBtn" hideEffect="fade"
+			widgetVar="cpanel" dynamic="true">
+			<p:treeTable id="treetable" value="#{commonListBean.rootNode}"
+				scrollable="true" dynamic="true" selectionMode="single"
+				scrollHeight="320" scrollWidth="490" style="width:500px;"
+				selection="#{productCategoryBean.selectedNode}" var="category">
+
+				<p:column headerText="Category Name" style="width:200px;"
+					sortBy="#{category.name}" styleClass="columnwidth">
+					<h:outputText value="#{category.name}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column headerText="Action" style="width:50px;"
+					styleClass="columnwidth">
+					<p:commandLink value="Select" ajax="true"
+						oncomplete="PF('cpanel').hide();" styleClass="logintxttable"
+						actionListener="#{productBean.selectCategoryNew}"
+						update=":listProductForm:categoryName">
+						<f:attribute name="categoryId" value="#{category.categoryId}" />
+					</p:commandLink>
+				</p:column>
+			</p:treeTable>
+		</p:overlayPanel>
+
+
+
+
+
+		<p:overlayPanel id="productSearchPanel" for="productBtn" hideEffect="fade" widgetVar="overproduct" showCloseIcon="true" style="width:70%;"
+		dynamic="true"  >
+		<h:panelGroup id="productPanel1" stateless="true">			
+		
+				<h:panelGrid id="searchproductgrid" columns="25" border="0"
+					width="100%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Product Code " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="pbarcode" value="#{productBean.barcode}"
+						maxlength="45" size="15" />
+					<p:message for="pbarcode" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Product Name " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="pproductName" value="#{productBean.productName}"
+						maxlength="200" size="20" />
+					<p:message for="pproductName" styleClass="fieldError" />
+					
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Brand Name " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="bbrandName" value="#{productBean.brandName}"
+						maxlength="200" size="20" />
+					<p:message for="bbrandName" styleClass="fieldError" />
+					
+					
+					<h:outputText value=""
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['product.label.categoryName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<h:panelGrid columns="2" border="0">
+						<p:commandLink id="categoryBtn1" value="Select" onclick="PF('overp').show();" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton  ajax="true" icon="ui-icon-search" style="height:22px;"
+							action="#{productBean.searchProduct}" update="productPanel1" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+				<p:dataTable id="productdataTable" var="product" rowIndexVar="row" paginatorPosition="top"
+					lazy="true" value="#{productBean.productModel}" scrollable="true"
+					first="#{productBean.first}"  scrollHeight="200" selectionMode="single"
+					paginator="true" rows="10" style="width:100%"
+					rowsPerPageTemplate="10,15,25,50,100,250,500"
+					rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+					<p:ajax event="page" listener="#{productBean.onPageChange}" />	
+					
+					<p:ajax event="rowSelect" listener="#{productBean.selectProduct1}"
+						oncomplete="PF('overproduct').hide()"
+						update=":listProductForm:productCode,:listProductForm:productPanel">
+						<f:attribute name="product" value="#{product}" />
+					</p:ajax>		
+
+
+
+					<p:column sortBy="#{product.barcode}" styleClass="columnwidth"
+						width="8%">
+						<f:facet name="header">
+							<h:outputText value="Product Code" />
+						</f:facet>
+						<h:outputText value="#{product.barcode}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{product.productName}" styleClass="columnwidth"
+						width="20%">
+						<f:facet name="header">
+							<h:outputText value="Product Name" />
+						</f:facet>
+						<h:outputText value="#{product.productName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+
+					
+					<p:column sortBy="#{product.brandName}" styleClass="columnwidth"
+						width="10%">
+						<f:facet name="header">
+							<h:outputText value="Brand" />
+						</f:facet>
+						<h:outputText value="#{product.brandName}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column sortBy="#{product.categoryName}" styleClass="columnwidth"
+						width="10%">
+						<f:facet name="header">
+							<h:outputText value="Category" />
+						</f:facet>
+						<h:outputText value="#{product.categoryName}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+
+					<p:column width="4%">
+						<f:facet name="header">
+							<h:outputText value="UOM Type" />
+						</f:facet>
+						<h:outputText value="#{product.uom}" styleClass="logintxttable" />
+					</p:column>
+		
+
+				</p:dataTable>
+			
+
+		</h:panelGroup>
+
+	
+	</p:overlayPanel>
+	
+	
+	<p:overlayPanel  for="categoryBtn1" hideEffect="fade" widgetVar="overp"
+		dynamic="true">
+		<p:treeTable  value="#{commonListBean.rootNode}"
+				 scrollable="true" dynamic="true" 
+				selectionMode="checkbox" scrollHeight="330" scrollWidth="490" style="width:500px;"
+				selection="#{productCategoryBean.selectedNodes}" var="category">
+				<f:facet name="header">
+				<p:commandButton value="Select" ajax="true" actionListener="#{productBean.selectCategoryList}" oncomplete="PF('overp').hide()"
+				style="background-image: url('resources/images/greenButton.jpg'); width:400px; height:30px; "/>  
+				</f:facet>
+				<p:column headerText="Category Name" style="width:200px;" styleClass="columnwidth">
+					<h:outputText value="#{category.name}" styleClass="logintxttable"/>
+				</p:column>			
+
+			</p:treeTable>		
+	</p:overlayPanel>
+	
+		
+	<p:dialog id="modelpurchaseitemdelete" showEffect="fade"
+		hideEffect="fade" header="Product Bundle Item Delete Confirmation"
+		resizable="false" widgetVar="purchaseItemdeleteDig" modal="true"
+		height="100" width="360">
+
+		<br></br>
+
+		<p:panel id="requestitemdelete">
+
+			<h:panelGrid columns="1" border="0" width="100%" styleClass="bgcolor"
+				cellpadding="1" cellspacing="1"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+				<h:outputText
+					value="Are you sure want to Delete Item ? "
+					styleClass="logintxttable" />
+			</h:panelGrid>
+
+			<br></br>
+
+			<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+				
+				<p:commandButton value="Delete" ajax="true"  update="productPanel" oncomplete="PF('purchaseItemdeleteDig').hide()"
+					action="#{productBean.removeBundleItemConfirm}">
+				</p:commandButton>
+				<p:commandButton value="Cancel"
+					oncomplete="PF('purchaseItemdeleteDig').hide()" />
+
+			</h:panelGrid>
+		</p:panel>
+
+	</p:dialog>
+
+
+	</h:form>
+</ui:composition>
+
+

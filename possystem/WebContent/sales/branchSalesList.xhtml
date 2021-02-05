@@ -1,0 +1,229 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesListPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesListPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Branch Sales List">
+				<h:panelGrid id="quotationListGrid" columns="10" border="0"
+					width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{branchsaleBean.dateFrom}" pattern="dd/MM/yyyy" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{branchsaleBean.dateTo}" pattern="dd/MM/yyyy" />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" style="width:160px; float :left;"
+						value="#{branchsaleBean.status}" styleClass="inputCombo">
+						<f:selectItem itemValue="" itemLabel="Select Status"></f:selectItem>
+						<f:selectItems value="#{commonListBean.salesStatusList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{branchsaleBean.searchSales}" update="salesListPanel" />
+						<p:commandButton value="Reset" ajax="true"
+							action="#{branchsaleBean.resetSalesSearch}"
+							update="salesListPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+				<br />
+
+				<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+					scrollable="false" lazy="true"
+					value="#{branchsaleBean.branchsaleModel}" paginator="true"
+					rows="10" style="width: 100%" selectionMode="single"
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+
+
+					<p:column style="width:80px;">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Sales Date" />
+						</f:facet>
+						<h:outputText value="#{sales.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Branch Name" />
+						</f:facet>
+						<h:outputText value="#{sales.branch.branchName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" />
+						</f:facet>
+						<h:outputText value="#{sales.salesNo}" styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Amount(RM)" />
+						</f:facet>
+						<h:outputText value="#{sales.totalAmount}"
+							styleClass="logintxttable">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{sales.status}">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText value="#{app['salesorder.status.neworderlable']}"
+							rendered="#{sales.status==app['salesorder.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.processedlable']}"
+							rendered="#{sales.status==app['salesorder.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['salesorder.status.orderedlable']}"
+							rendered="#{sales.status==app['salesorder.status.orderedvalue']}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column style="width: 10%;" id="action">
+						<f:facet name="header">Action</f:facet>
+
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View"
+								rendered="#{loginBean.functionList.contains('View SalesOrder')}"
+								actionListener="#{branchsaleBean.viewSales}"
+								oncomplete="PF('salesDig').show()"
+								update=":addEditSalesForm:requestitem" icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchsalesId}" />
+							</p:menuitem>
+
+							<p:menuitem value="Edit" ajax="false"
+								rendered="#{loginBean.functionList.contains('Edit SalesOrder') and sales.status==app['salesorder.status.newordervalue']}"
+								actionListener="#{branchsaleBean.editSales}" icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchsalesId}" />
+							</p:menuitem>
+
+							<p:menuitem value="Approve" ajax="true"
+								oncomplete="PF('salesProcessDig').show()"
+								update=":addEditSalesForm:requestapprove"
+								rendered="#{loginBean.functionList.contains('Approve SalesOrder') and sales.status==app['salesorder.status.newordervalue']}"
+								actionListener="#{branchsaleBean.approveSales}"
+								icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchsalesId}" />
+							</p:menuitem>
+
+							<p:menuitem value="Invoice" ajax="false"
+								rendered="#{loginBean.functionList.contains('Add Branches Invoices')  and sales.status==app['salesorder.status.processedvalue'] and sales.branchStatus=='2' }"
+								actionListener="#{branchInvoiceBean.generateBranchsalesInvoice}"
+								icon="ui-icon-disk">
+								<f:attribute name="sales" value="#{sales}" />
+							</p:menuitem>
+
+							<p:menuitem value="Print" ajax="true"
+								rendered="#{loginBean.functionList.contains('Print SalesOr5der')}"
+								actionListener="#{branchsaleBean.printSales}"
+								icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchsalesId}" />
+							</p:menuitem>
+
+						</p:menuButton>
+
+
+					</p:column>
+				</p:dataTable>
+
+				<br />
+				<p:commandButton value="New Branch Sales" ajax="false"
+					rendered="#{loginBean.functionList.contains('Add SalesOrder')}"
+					action="#{branchsaleBean.newSales}" update="salesListPanel" />
+			</p:panel>
+
+
+
+			<p:dialog id="modalDialogQuotationApprove" showEffect="fade"
+				hideEffect="fade" header="Branch Sales Approve Confirmation"
+				resizable="false" widgetVar="salesProcessDig" modal="true"
+				height="130" width="400">
+
+				<br></br>
+
+				<p:panel id="requestapprove">
+
+					<h:panelGrid columns="1" border="0" width="90%"
+						styleClass="bgcolor" cellpadding="3" cellspacing="3"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="Are you sure you want to approve ? "
+							styleClass="logintxttable" />
+					</h:panelGrid>
+
+					<br></br>
+
+					<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+						columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+						<p:commandButton value="Approve" ajax="false"
+							rendered="#{loginBean.functionList.contains('Approve SalesOrder')}"
+							action="#{branchsaleBean.approveSalesConfirm}">
+						</p:commandButton>
+						<p:commandButton value="Cancel" oncomplete="PF('salesProcessDig').hide()" />
+
+					</h:panelGrid>
+				</p:panel>
+
+			</p:dialog>
+
+		</p:outputPanel>
+		<ui:include src="/sales/branchSalesView.xhtml" />
+		<ui:include src="/templates/loadingDialog.xhtml" />
+	</h:form>
+</ui:composition>
+
+

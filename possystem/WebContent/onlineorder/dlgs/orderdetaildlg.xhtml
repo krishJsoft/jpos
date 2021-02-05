@@ -1,0 +1,215 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+<style>
+.ui-outputlabel{
+	font-weight:bold;
+}
+td:nth-child(2),td:nth-child(5){
+	text-align:center;
+}
+
+td{
+//border:1px solid black;
+
+}
+</style>
+<p:dialog id="orderDetaildlg" header="Order Details"
+	resizable="false" widgetVar="orderDetaildlg" modal="false" height="480"
+	width="60%">
+	<p:panel styleClass="mypanel" >
+		
+		<table width="100%" style="border:1px solid black">
+			<tr>
+			
+				<td width="12%">
+					<p:outputLabel value="Customer Name" > </p:outputLabel>
+				</td>
+				
+				<td width="2%" >
+					<p:outputLabel value=":" > </p:outputLabel>
+				</td>
+				
+				<td width="30%">
+					<h:outputText value="#{onlineOrderBean.orderDetail.customer.customerName}" />
+				</td>
+				
+				<td width="10%" >
+					<p:outputLabel value="Ordered Date" > </p:outputLabel>
+				</td>
+				
+				<td width="2%" >
+					<p:outputLabel value=":" > </p:outputLabel>
+				</td>
+				
+				<td width="20%" >
+					<h:outputText value="#{onlineOrderBean.orderDetail.createdDate}" >
+						<f:convertDateTime pattern="#{des['common.date.pattern']}" />
+					</h:outputText>
+				</td>
+				
+			</tr>
+			
+			
+			<tr >
+				
+				
+				<td >
+					<p:outputLabel value="Delivery Address" > </p:outputLabel>
+				</td>
+				
+				<td >
+					<p:outputLabel value=":" > </p:outputLabel>
+				</td>
+				
+				<td colspan="4" style="border-right:1px solid black;">
+					<h:outputText value="#{onlineOrderBean.orderDetail.deliveryAddress}" />
+				</td>
+				
+			
+			</tr>
+			<tr>
+				<td  >
+					<p:outputLabel value="Phone No"> </p:outputLabel>
+				</td>
+				
+				<td >
+					<p:outputLabel value=":" > </p:outputLabel>
+				</td>
+				
+				<td  >
+					<h:outputText value="#{onlineOrderBean.orderDetail.customer.phoneNo}" />
+				</td>
+				
+				<td >
+					<p:outputLabel value="Email Address"> </p:outputLabel>
+				</td>
+				
+				<td >
+					<p:outputLabel value=":" > </p:outputLabel>
+				</td>
+				
+				<td >
+					<h:outputText value="#{onlineOrderBean.orderDetail.customer.emailAddress}" />
+				</td>
+				
+			</tr>
+			
+			<tr>
+				<td >
+					<p:outputLabel value="Delivery Time"> </p:outputLabel>
+				</td>
+				
+				<td >
+					<p:outputLabel value=":" > </p:outputLabel>
+				</td>
+				
+				<td >
+					<h:outputText value="#{onlineOrderBean.orderDetail.deliveryTime}" >
+						<f:convertDateTime pattern="#{des['common.date.time.pattern']}" />
+					</h:outputText>
+				</td>
+				
+				<td >
+				
+					<p:outputLabel value="Status"> </p:outputLabel>
+				</td>
+				
+				<td  >
+					<p:outputLabel value=":" > </p:outputLabel>
+				</td>
+				
+				<td >
+			
+					<p:selectOneMenu  value="#{onlineOrderBean.orderDetail.status}" 
+						disabled="#{onlineOrderBean.orderDetail.status==0}"
+						style="width:180px; text-align:left;">
+						<f:selectItems value="#{commonListBean.deliveryOrderStatusList}"></f:selectItems>
+					</p:selectOneMenu>
+			
+				
+				</td>
+				
+			</tr>
+			
+			<tr>
+				
+			
+				
+				<td >
+					<p:outputLabel value="Total Amount (#{app['common.currency']})"> </p:outputLabel>
+				</td>
+				
+				<td  >
+					<p:outputLabel value=":" > </p:outputLabel>
+				</td>
+				
+				<td  colspan="4" style="border-right:1px solid black;">
+					<h:outputText value="#{onlineOrderBean.orderDetail.totalAmount}" />
+				</td>
+				
+			</tr>
+			<tr>
+				<td colspan="6" align="center" >
+						<p:commandButton value="UPDATE" ajax="false" 
+						update="orderlistForm"
+						action="#{onlineOrderBean.updateorderstatus}"/>
+						
+						<p:commandButton value="CLOSE"  
+						oncomplete="PF('orderDetaildlg').hide()"
+						/>
+				</td>
+			</tr>
+			
+		</table>
+	
+		<p:dataTable id="onlineDetailsdataTable" var="obd" rowIndexVar="row"
+		scrollable="true" scrollHeight="200"
+		value="#{onlineOrderBean.orderDetail.quotationbreakdowns}" paginator="true"
+		rows="6" style="width: 100%" 
+		rowsPerPageTemplate="5,10,15,25,50,100"
+		rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"  >
+		
+			<p:column id="modelHeader" width="3%">
+				<f:facet name="header">
+					<h:outputText value="#{des['common.table.header.no']}" />
+				</f:facet>
+				<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="60%">
+				<f:facet name="header">
+					<h:outputText value="Product Name" />
+				</f:facet>
+				<h:outputText value="#{obd.productName}" styleClass="logintxttable" />
+			</p:column>
+			
+			<p:column  width="10%">
+				<f:facet name="header">
+					<h:outputText value="Quantity" />
+				</f:facet>
+				<h:outputText value="#{obd.quantity}" styleClass="logintxttable" >
+					<f:convertNumber pattern="#0" />
+				</h:outputText>
+			</p:column>
+			
+		</p:dataTable>
+		
+		
+		
+	</p:panel>
+
+
+</p:dialog>
+
+
+
+
+
+</ui:composition>

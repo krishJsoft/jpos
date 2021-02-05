@@ -1,0 +1,111 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://www.eclipse.org/birt/taglibs/birt.tld"
+	xmlns:birt="urn:jsptld:/WEB-INF/tlds/birt.tld">
+
+<style>
+	
+</style>
+<p:dialog id="kitchenlistdlg" hideEffect="fade" header="ORDER LIST"
+			widgetVar="kitchenlistdlg" width="45%"  height="30vh"
+			dynamic="true" 
+			>
+			<p:ajax event="close" update="posPanel,addEditPosForm:focus" />
+			
+	<div style="text-align:right">
+		<p:commandButton value="CLOSE"
+			style="background:#ffffcc"
+			styleClass="itembuttonsmall hoverBlackText"
+		oncomplete="PF('kitchenlistdlg').hide()">
+		</p:commandButton>
+		</div>
+	<p:dataTable id="dataTableKitchenOrder" var="sales" rowIndexVar="row"    
+		scrollable="true" lazy="false" first="#{salesorderBean.first}"
+		scrollHeight="250" value="#{posBean.kitchedOrder}"
+		paginator="false" rows="100" style="width: 100%"
+		rowsPerPageTemplate="5,10,15,25,50,100"
+		rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+		
+		<p:ajax event="page" listener="#{salesorderBean.onPageChange}" />
+
+		<p:column id="modelHeader" style="width: 10%;" >
+			<f:facet name="header">
+				<h:outputText value="NO" />
+			</f:facet>
+			<h:outputText value="#{row + 1}" styleClass="logintxttable"
+				style="height:25px;" />
+		</p:column>
+
+		<p:column style="width:20%;text-align:center" sortBy="#{sales.tableName}" rendered="#{systemSettingBean.myConfig.systemType.hasTableNo==true}">
+			<f:facet name="header">
+				<h:outputText value="TABLE NO." />
+			</f:facet>
+			<h:outputText value="#{sales.tableName}"
+				styleClass="logintxttable" />
+				<h:outputText value=" {#{sales.cardNo}}"
+				rendered="#{sales.tableName.contains('Take Away')}"
+				styleClass="logintxttable" />
+		</p:column>
+
+		<p:column style="width:20%;text" sortBy="#{sales.cardNo}" rendered="#{systemSettingBean.myConfig.systemType.hasCardNo==true}">
+			<f:facet name="header">
+				<h:outputText value="CARD NO" />
+				
+			</f:facet>
+			<h:outputText value="#{sales.cardNo}" styleClass="logintxttable" />
+			
+		</p:column>
+		
+		<p:column style="width:20%;text" >
+			<f:facet name="header">
+				<h:outputText value="CUSTOMER NAME" />
+				
+			</f:facet>
+			<h:outputText value="#{sales.customerName}" styleClass="logintxttable" />
+			
+		</p:column>
+		
+		<p:column style="width:20%;text" sortBy="#{sales.totalAmount}">
+			<f:facet name="header">
+				<h:outputText value="AMOUNT" />
+			</f:facet>
+			<h:outputText value="#{sales.totalAmount}" styleClass="logintxttable" >
+				<f:convertNumber type="currency" currencySymbol="(#{app['common.currency']}) " locale="en_US" />
+			</h:outputText>
+			
+		</p:column>
+		
+		<p:column style="width:20%;text" sortBy="#{sales.totalAmount}">
+			<f:facet name="header">
+				<h:outputText value="STAFF" />
+			</f:facet>
+			<h:outputText value="#{sales.createdBy}" styleClass="logintxttable" >
+			</h:outputText>
+			
+		</p:column>
+		
+		<p:column style="width:20%;text" rendered="#{systemSettingBean.myConfig.systemType.advanceBillOption==true}">
+			<f:facet name="header">
+				<h:outputText value="BILL" />
+			</f:facet>
+				<p:commandButton value="PRINT BILL"
+					styleClass="itembuttonsmall"
+					style="background:#00bfff"
+					update=":addEditPosForm:posprintprebill"
+					actionListener="#{posBean.viewKitchenOrder}" 
+					oncomplete="PF('posprintprebilldlg').show(); "
+				>
+					<f:attribute name="sales" value="#{sales}" />
+				</p:commandButton>
+		</p:column>
+	</p:dataTable>
+
+		
+</p:dialog>
+
+</ui:composition>
+
+

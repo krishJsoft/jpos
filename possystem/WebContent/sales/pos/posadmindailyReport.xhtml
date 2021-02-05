@@ -1,0 +1,220 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog header="Daily-Report" widgetVar="dailyadminreport" modal="true"
+		height="500" width="330px">
+		<p:outputPanel id="salesoptiondailyadminreportPanel">
+			<p:message for="salesoptiondailyadminreportPanel" />
+
+
+
+			<h:panelGrid columns="1" border="0" styleClass="bgcolor"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+				<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+				<p:calendar navigator="true" id="dateFrom2" size="20"
+					update="dateFrom2" process="@this"
+					value="#{posOptionBean.dateFrom}" pattern="dd/MMM/yyyy hh:mm:ss a" />
+
+
+				<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+				<p:calendar navigator="true" id="dateTo2" size="20" update="dateTo2"
+					process="@this" value="#{posOptionBean.dateTo}"
+					pattern="dd/MMM/yyyy hh:mm:ss a" />
+
+				<p:panelGrid columns="2" styleClass="borderlessGrid">
+					<p:commandButton value="Search"
+						update=":addEditPosForm:salesoptiondailyadminreportPanel,:addEditPosForm:dailyadminprintrequestitem"
+						styleClass="itembutton" action="#{posOptionBean.dailyadminreport}"
+						style="width:100px; height:30px; " ajax="true">
+					</p:commandButton>
+
+					<p:commandButton value="Reset"
+						update=":addEditPosForm:salesoptiondailyadminreportPanel,:addEditPosForm:dailyadminprintrequestitem"
+						styleClass="itembutton" action="#{posOptionBean.dailyadminreportReset}"
+						style="width:100px; height:30px; " ajax="true">
+					</p:commandButton>
+				</p:panelGrid>
+
+
+			</h:panelGrid>
+
+
+
+			<p:panelGrid style="width:270px" styleClass="alignTop"
+				id="dailyadminprintrequestitem">
+
+				<p:row>
+					<p:column style="width:100%;" styleClass="alignTop">
+
+
+						<table align="center" width="100%">
+
+							<tr>
+								<td align="center"><font size="2" color="black">Daily
+										Report </font></td>
+							</tr>
+
+							<tr>
+								<td align="center"><font size="3" color="black">-----------------------------------------------
+								</font></td>
+							</tr>
+
+
+							<tr>
+								<td align="left"><font size="3" color="black">#{loginBean.branch.branchName}</font>
+								</td>
+							</tr>
+							<tr>
+								<td align="left"><font size="1" color="black">#{loginBean.branch.address}</font>
+								</td>
+							</tr>
+
+							<tr>
+								<td align="left"><font size="3" color="black"><h:outputText
+											value="#{posOptionBean.dateFrom}" styleClass="reporttxt">
+
+										</h:outputText></font></td>
+							</tr>
+
+							<tr>
+								<td align="center"><font size="3" color="black">-----------------------------------------------
+								</font></td>
+							</tr>
+
+						</table>
+					</p:column>
+				</p:row>
+
+				<p:row>
+					<p:column style="width:100%;" styleClass="logintxtnumberFormat">
+						<h:panelGrid columns="2" border="0" styleClass="borderlessGrid">
+
+							<h:outputText value="GST No : " styleClass="reporttxt" />
+
+							<h:outputText value="#{app['project.gst.number']}"
+								styleClass="reporttxt" />
+
+							<h:outputText value=" REG No : " styleClass="reporttxt" />
+
+							<h:outputText value=" #{app['project.reg.number']}"
+								styleClass="reporttxt" />
+
+							<h:outputText value="Terminal : " styleClass="reporttxt" />
+							<h:outputText value="#{posBean.poscounter.counterNo}"
+								styleClass="reporttxt"></h:outputText>
+							<h:outputText value="Print by : " styleClass="reporttxt" />
+							<h:outputText value="#{loginBean.logdetail.emailAddress}"
+								styleClass="reporttxt"></h:outputText>
+
+
+
+
+
+						</h:panelGrid>
+					</p:column>
+				</p:row>
+
+<!--
+				<p:row>
+					<p:column style="width:100%;" styleClass="alignTop">
+
+						<p:dataGrid id="dailyadminreport" var="sales" rowIndexVar="row"
+							paginator="false" styleClass="order-table"
+							headerClass="order-table-header" scrollHeight="280"
+							scrollable="true" columns="1" rows="3000"
+							rowClasses="order-table-odd-row,order-table-even-row"
+							value="#{posOptionBean.salesOrder}"
+							style="width:100%;">
+
+
+							<h:panelGrid columns="2" border="0" styleClass="borderlessGrid">
+
+
+
+								<h:outputText value=" #{sales.salesOrderNo}"
+									styleClass="reporttxt" />
+
+								<h:outputText value=" :   #{sales.totalAmount}"
+									style="text-align:left;" styleClass="reporttxt" />
+
+							</h:panelGrid>
+						</p:dataGrid>
+					</p:column>
+				</p:row>
+-->
+				<p:row>
+					<p:column style="width:100%;" styleClass="logintxtnumberFormat">
+						<h:panelGrid columns="2" border="0" styleClass="borderlessGrid">
+
+
+							<h:outputText value="Cash Collection " styleClass="reporttxt" />
+
+							<h:outputText value="" styleClass="reporttxt" />
+
+
+							<h:outputText value="Total Amount  (RM) "
+								styleClass="reporttxt" />
+							<h:outputText
+								value="#{posOptionBean.poscashtransaction.totalAmount} "
+								styleClass="reporttxt" />
+							
+							<h:outputText value="Total Sales (RM) " styleClass="reporttxt" />
+							<h:outputText
+								value="#{posOptionBean.poscashtransaction.salesamount} "
+								styleClass="reporttxt" />
+
+							<h:outputText value="Total GST (RM) " styleClass="reporttxt" />
+							<h:outputText
+								value="#{posOptionBean.poscashtransaction.totalTax} "
+								styleClass="reporttxt" />
+						</h:panelGrid>
+					</p:column>
+				</p:row>
+				
+				<p:row>
+				<p:column style="width:100%;">
+					<p:panelGrid columns="2" border="0" width="90%"
+						styleClass="borderlessGrid" cellpadding="1" cellspacing="1"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+						<h:outputText value="Print by : " styleClass="reporttxt"/>
+						<h:outputText value="#{loginBean.logdetail.emailAddress}" styleClass="reporttxt"/>
+					</p:panelGrid>
+				</p:column>
+			</p:row>
+			
+			</p:panelGrid>
+
+
+
+
+
+
+			<br></br>
+			<p:panelGrid columns="2" styleClass="borderlessGrid">
+				<p:commandButton value="Close"
+					oncomplete="PF('dailyadminreport').hide();" styleClass="itembutton"
+					style="width:100px; height:30px; " immediate="true" ajax="true"
+					async="true">
+				</p:commandButton>
+
+				<p:commandButton value="Print" styleClass="itembutton"
+					style="width:100px; height:30px; " ajax="true" async="true">
+					<p:printer target="dailyadminprintrequestitem" />
+				</p:commandButton>
+			</p:panelGrid>
+
+
+
+		</p:outputPanel>
+	</p:dialog>
+
+</ui:composition>

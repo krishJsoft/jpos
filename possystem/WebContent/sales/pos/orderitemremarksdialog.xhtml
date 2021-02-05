@@ -1,0 +1,77 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog showEffect="fade" hideEffect="fade" header=" Item  Remarks"
+		resizable="false" widgetVar="orderItemremarskDig" modal="true"
+		height="260" width="460">
+
+		<br></br>
+
+		<p:panel id="orderitemremarks">
+
+			<h:panelGrid columns="3" border="0" width="100%" styleClass="bgcolor"
+				cellpadding="1" cellspacing="1"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText value="ITEM " styleClass="logintxttable" />
+
+				<h:outputText value=":" styleClass="logintxttable" />
+
+				<h:outputText value="#{posBean.item.productName}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="Quantity " styleClass="logintxttable" />
+
+				<h:outputText value=":" styleClass="logintxttable" />
+
+
+				<h:outputText value="#{posBean.item.quantity}"
+					styleClass="logintxttable" />
+
+				<h:outputText value="Remarks" styleClass="logintxttable" />
+
+				<h:outputText value=":" styleClass="logintxttable" />
+
+				
+				
+				<h:outputText value="" styleClass="logintxttable" />
+				<h:outputText value="" styleClass="logintxttable" />
+				<h:outputText value="" styleClass="logintxttable" />
+				
+
+				<h:outputText value="" styleClass="logintxttable" />
+				<h:outputText value="" styleClass="logintxttable" />
+				<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+					<p:commandButton value="Update" ajax="true" update="posPanel"
+						action="#{posBean.remarksItemConfirm}"
+						oncomplete="PF('orderItemremarskDig').hide();">
+					</p:commandButton>
+
+					<p:commandButton value="Close"
+						oncomplete="PF('orderItemremarskDig').hide();" />
+
+				</h:panelGrid>
+
+
+			</h:panelGrid>
+
+			
+
+		</p:panel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

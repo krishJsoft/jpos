@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="messageForm">
+		<p:outputPanel id="pageContentPanel">
+
+			<p:panel styleClass="limitedHeightDiv">
+				<h:panelGrid id="newmessagegrid" columns="5" border="0"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="*" styleClass="mandatory_text" />
+					<h:outputText value="Message  " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputTextarea style="width:220px;height:70px;"
+						effectDuration="400" id="message"
+						value="#{messageTemplateBean.messageObj.messagevalue}" />
+					<p:message for="message" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid id="newmessagebuttongrid" columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Save"
+							action="#{messageTemplateBean.saveMessage}"
+							update="newmessagegrid" />
+
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+			</p:panel>
+		</p:outputPanel>
+	</h:form>
+</ui:composition>
+
+

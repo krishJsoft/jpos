@@ -1,0 +1,118 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog header="Sales Order Detail" resizable="false"
+		widgetVar="monthsalesprintDig" modal="false" height="480"
+		width="267px">
+
+
+
+		<p:panelGrid style="width:260px" styleClass="alignTop"
+			id="annualmonthreportprintrequestitem">
+
+			<p:row>
+				<p:column style="width:100%;">
+
+
+
+					<table align="center" width="100%">
+						
+						<tr>
+							<td align="center" style="font-weight:bold"><font size="2" color="black">
+									Monthly Report Category Based   <br /> 
+									( #{salesorderBean.sales.monthName} 
+									#{chartBean.salesyear} )	
+									</font></td>
+							
+						</tr>
+						<tr>
+							<td align="left"><font size="3" color="black">------------------------------------------
+							</font></td>
+						</tr>
+						<tr>
+							<td align="#{des['common.print.align.companyName']}" style="font-weight:bold"><font size="3" color="black">#{loginBean.branch.branchName}</font>
+							</td>
+						</tr>
+						<tr>
+							<td align="#{des['common.print.align.address']}" class="reporttxt"><h:outputText value="#{loginBean.branch.address}"  escape="false" />
+							</td>
+						</tr>
+					</table>
+
+				</p:column>
+			</p:row>
+
+
+			<p:row>
+			
+				<p:column style="width:100%;">
+
+					<p:dataGrid id="annualmonthdataTableCategoryBased" var="salesbd" rowIndexVar="row"
+						scrollable="true" scrollHeight="420"
+						value="#{salesorderBean.salesorderbreakdowns}" paginator="false"
+						rows="1000000" style="width: 100%" columns="1"
+						rowsPerPageTemplate="5,10,15,25,50,100"
+						rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+
+						<h:panelGrid columns="2" border="0" styleClass="borderlessGrid"
+							cellpadding="0" cellspacing="0">
+
+							<h:outputText style="font-weight:bold" value="#{salesbd.categoryName}" styleClass="reporttxt">
+								<f:convertDateTime pattern="dd-MMM-yyyy" />
+							</h:outputText>
+
+							<h:outputText value="- Qty : #{salesbd.qtty}"
+								styleClass="reporttxt" style="text-align:right;" >
+								<f:convertNumber pattern="#0" />
+							</h:outputText>
+
+						</h:panelGrid>
+					</p:dataGrid>
+				</p:column>
+			</p:row>
+
+			<p:row>
+				<p:column style="width:100%;">
+					<p:panelGrid columns="2" border="0" width="90%"
+						styleClass="borderlessGrid" cellpadding="1" cellspacing="1"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+						<h:outputText value="Print by : " styleClass="reporttxt" />
+						<h:outputText value="#{loginBean.logdetail.emailAddress}" styleClass="reporttxt" />
+					</p:panelGrid>
+				</p:column>
+			</p:row>
+
+
+		</p:panelGrid>
+
+		<br></br>
+		<f:facet name="footer">
+			<h:panelGrid columns="3" style="float:left"
+				columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+				<p:commandButton value="Print"
+					oncomplete="PF('monthsalesprintDig').hide()">
+					<p:printer target="annualmonthreportprintrequestitem" />
+				</p:commandButton>
+
+				<p:commandButton value="Close"
+					oncomplete="PF('monthsalesprintDig').hide()" />
+
+			</h:panelGrid>
+		</f:facet>
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

@@ -1,0 +1,39 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<rich:popupPanel id="developmentUnderProcess" maxHeight="800"
+		maxWidth="800" modal="true" height="450" width="900"
+		header="Development Detail" style="background-color: #FFFFFF;">
+		<h:form id="formDevelopmentUnderProcess">
+			<h:panelGrid columns="3" cellpadding="5" id="treatmentViewProcess">
+
+
+				<h:outputText value="Cool" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<h:outputText
+					value="Development Still Under Progress... , Please try next time, Thanks"
+					styleClass="logintxtResult" />
+
+
+			</h:panelGrid>
+
+
+
+			<a4j:commandButton value="Close" styleClass="logintxtButton"
+				onclick="#{rich:component('developmentUnderProcess')}.hide(); return false;"></a4j:commandButton>
+
+
+
+		</h:form>
+	</rich:popupPanel>
+
+</ui:composition>
+
+
+

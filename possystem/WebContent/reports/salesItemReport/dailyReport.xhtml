@@ -1,0 +1,131 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:form id="categoryReportForm">
+	<p:panel styleClass="mypanel" header="Category / Item Report by Daily" id="salesItemDailyReportPanel">
+	<br />
+	<h:panelGrid columns="4" border="0" 
+		columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+		<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+		<h:outputText value=":" />
+		<p:calendar navigator="true" id="dateFrom" size="25"
+			value="#{salesorderBean.dateFrom}" pattern="#{des['common.date.pattern']}" />
+		<p:message for="dateFrom" styleClass="fieldError" />
+		
+		<h:outputText value="" />
+		<h:outputText value="" />
+		<h:outputText value="" />
+		<h:outputText value="" />
+		
+		<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+		<h:outputText value=":" />
+		<p:calendar navigator="true" id="dateTo" size="25"
+			value="#{salesorderBean.dateTo}" pattern="#{des['common.date.pattern']}" />
+		<p:message for="dateTo" styleClass="fieldError" />
+	</h:panelGrid>		
+		<br />
+		<p:panel>
+		<p:commandButton value="Search" ajax="true"
+			update="salesItemDailyReportPanel,categoryReportprintDigprintrequestitem,categoryItemprintrequestitem"
+			action="#{salesorderBean.searchSalesOrderSummaryCategoryDateBased}" 
+			/>
+			
+		<ui:remove>	
+		<p:commandButton value="Print"
+			 
+			oncomplete="PF('categoryReportprintDig').show();">					
+		</p:commandButton>	
+		</ui:remove>
+		<p:commandButton value="Print"
+			style="background: #E32526;color:white" 
+			oncomplete="PF('categoryitemprintdlg').show();">					
+		</p:commandButton>
+		</p:panel>
+		<br />
+		<p:dataTable id="categorySalesDataTable" var="salesbd" rowIndexVar="row"
+					scrollable="true" scrollHeight="420"
+					value="#{salesorderBean.salesorderbreakdowns}" paginator="true"
+					rows="15" style="width: 100%" 
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"  >
+					<p:column id="modelHeader" width="5%">
+						<f:facet name="header">
+							<h:outputText value="#{des['common.table.header.no']}" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column style="width:30%" sortBy="#{salesbd.categoryName}">
+						<f:facet name="header">
+							<h:outputText value="Product Category"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.categoryName}"
+							styleClass="logintxttable">	
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Quantity"/>
+						</f:facet>
+						
+						
+						<h:outputText value="#{salesbd.qtty}"
+							>
+							<f:convertNumber pattern="#0" />
+						</h:outputText>
+					</p:column>
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Sales Amount (#{app['common.currency']})"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.unitPrice.subtract(salesbd.taxAmount)}"
+							styleClass="logintxttable">
+							
+						</h:outputText>
+						
+						
+					</p:column>
+					<p:column style="width:10%">
+						<f:facet name="header">
+							<h:outputText value="Tax Amount (#{app['common.currency']})"/>
+						</f:facet>
+						<h:outputText value="#{salesbd.taxAmount}"
+							styleClass="logintxttable">
+							
+						</h:outputText>
+						
+						
+					</p:column>
+					
+					<p:column style="width: 7%;">
+						<f:facet name="header">Action</f:facet>
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+								update="categoryReportForm:requestcategoryitem,categoryReportForm:categoryOrderDetailPrintRequestItem"
+								actionListener="#{salesorderBean.viewSalesOrderCategoryBased}"
+								oncomplete="PF('salesCategoryDlg').show()"
+								>
+								<f:attribute name="sales" value="#{salesbd}" />
+							</p:menuitem>
+						</p:menuButton>
+					</p:column>
+					
+				</p:dataTable>
+	</p:panel>
+	
+	<ui:include src="/reports/salesItemReport/printtemplate/categorytemplate.xhtml" />
+	<ui:include src="/reports/salesItemReport/printtemplate/categoryItemReport.xhtml" />
+	<ui:include src="/reports/salesItemReport/printtemplate/categoryDetailsReportTemplate.xhtml" />
+	
+	
+	<ui:include src="/reports/salesItemReport/dlgs/categoryItemDetails.xhtml" />
+	
+	
+</h:form>
+</ui:composition>

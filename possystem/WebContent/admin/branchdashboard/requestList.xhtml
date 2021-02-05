@@ -1,0 +1,119 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditPurchaseRequestForm">
+		<p:outputPanel id="purchaseRequestPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="purchaseRequestPanel" /></td>
+				</tr>
+			</table>
+
+			<br />
+
+			<p:dataTable id="dataTable" var="purchase" rowIndexVar="row"
+				scrollable="false" lazy="true"
+				value="#{purchaseRequestBean.purchaserequestModel}" paginator="true"
+				rows="10" style="width: 100%"
+				rowsPerPageTemplate="5,10,15,25,50,100"
+				rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+
+
+
+				<p:column id="modelHeader" style="height:15px;">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+
+
+
+				<p:column sortBy="#{purchase.branchName}">
+					<f:facet name="header">
+						<h:outputText value="Branch Name" />
+					</f:facet>
+					<h:outputText value="#{purchase.branchName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column>
+					<f:facet name="header">
+						<h:outputText value="Created Date" />
+					</f:facet>
+					<h:outputText value="#{purchase.createdDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column sortBy="#{purchase.deliveryDate}">
+					<f:facet name="header">
+						<h:outputText value="Delivery Date" />
+					</f:facet>
+					<h:outputText value="#{purchase.deliveryDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy" />
+					</h:outputText>
+				</p:column>
+
+
+
+				<p:column sortBy="#{purchase.referenceNo}">
+					<f:facet name="header">
+						<h:outputText value="Reference No" />
+					</f:facet>
+					<h:outputText value="#{purchase.referenceNo}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column sortBy="#{purchase.status}">
+					<f:facet name="header">
+						<h:outputText value="Status" />
+					</f:facet>
+
+
+					<h:outputText
+						value="#{app['purchaserequest.status.neworderlable']}"
+						rendered="#{purchase.status==app['purchaserequest.status.newordervalue']}"
+						styleClass="logintxttable" />
+					<h:outputText
+						value="#{app['purchaserequest.status.processedlable']}"
+						rendered="#{purchase.status==app['purchaserequest.status.processedvalue']}"
+						styleClass="logintxttable" />
+					<h:outputText value="#{app['purchaserequest.status.orderedlable']}"
+						rendered="#{purchase.status==app['purchaserequest.status.orderedvalue']}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column style="width: 15%;">
+					<f:facet name="header">Action</f:facet>
+					<h:commandLink value="Edit" styleClass="logintxttable"
+						rendered="#{loginBean.functionList.contains('Edit PurchaseRequest') and purchase.status==app['purchaserequest.status.newordervalue']}"
+						actionListener="#{purchaseRequestBean.editPurchaseRequest}">
+						<f:attribute name="purchaseRequestId"
+							value="#{purchase.purchaseRequestId}" />
+					</h:commandLink>
+
+				</p:column>
+
+			</p:dataTable>
+
+
+
+		</p:outputPanel>
+
+		<ui:include src="/purchase/purchaseRequestView.xhtml" />
+		<ui:include src="/templates/loadingDialog.xhtml" />
+
+	</h:form>
+</ui:composition>
+
+

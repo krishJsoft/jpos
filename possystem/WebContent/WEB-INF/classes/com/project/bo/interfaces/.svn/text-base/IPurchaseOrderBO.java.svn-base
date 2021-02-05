@@ -1,0 +1,45 @@
+package com.alpha.bo.interfaces;
+
+import java.util.Date;
+import java.util.List;
+
+import com.alpha.hq.model.Purchaseorder;
+import com.alpha.hq.model.Purchaseorderbreakdown;
+import com.alpha.model.datamodel.purchase.PurchaseorderModel;
+import com.alpha.model.datamodel.purchase.PurchaseorderbreakdownsModel;
+
+public interface IPurchaseOrderBO {
+
+	
+	public List<PurchaseorderModel> findByPurchaseorderListAll() throws Exception;
+
+	public int getPurchaseorderCount(String purchaseOrderNo,Integer supplierId, Date dateFrom,Date dateTo, String status) throws Exception;
+
+	public List<PurchaseorderModel> getPurchaseorderList(String purchaseOrderNo,Integer supplierId, Date dateFrom,Date dateTo, String status, int start, int howMany)
+			throws Exception;	
+	
+	public List<PurchaseorderModel> getPurchaseorderList(Integer supplierId,String status) throws Exception;	
+	
+	public PurchaseorderModel getPurchaseorderDetails(Integer purchaseOrderId) throws Exception;
+
+	public PurchaseorderModel getPurchaseorderMasterDetails(Integer purchaseOrderId) throws Exception;
+	
+	public PurchaseorderModel getPurchaseorderDetailforDelivery(Integer purchaseOrderId,List<Integer> branchId) throws Exception;
+	
+	public boolean createNewPurchaseorder(PurchaseorderModel purchaseorder) throws Exception;
+	
+	public boolean createBulkPurchaseorder(List<PurchaseorderModel> purchaseorder,List<Integer> requestIds) throws Exception;
+	
+
+	public boolean updatePurchaseorder(PurchaseorderModel purchaseorder) throws Exception;
+	
+	public boolean deletePurchaseorder(PurchaseorderModel purchaseorder) throws Exception;
+	
+	public List<PurchaseorderbreakdownsModel> getPurchaseorderbreakdownList(List<Integer> requestIds)	throws Exception;	
+	
+	public List<PurchaseorderbreakdownsModel> getPurchaseorderBranchList(Integer purchaseOrderId) throws Exception;	
+	
+	public boolean deletePurchaseorderbreakdown(PurchaseorderbreakdownsModel purchaseorderbreakdown) throws Exception;		
+	
+	public boolean approvePurchaseorder(PurchaseorderModel purchaseorder) throws Exception;
+}

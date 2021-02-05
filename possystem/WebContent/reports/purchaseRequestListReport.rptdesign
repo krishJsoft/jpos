@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<report xmlns="http://www.eclipse.org/birt/2005/design" version="3.2.23" id="1">
+    <property name="createdBy">Eclipse BIRT Designer Version 4.2.2.v201301221637 Build &lt;4.2.2.v20130206-1509></property>
+    <property name="units">in</property>
+    <method name="initialize"><![CDATA[importPackage(Packages.org.springframework.context);
+importPackage(Packages.org.springframework.web.context.support );
+
+
+purchaserequestDetailsTotalCount=0;
+purchaserequestDetailsCurrentIndex=0;
+
+var sc = reportContext.getHttpServletRequest().getSession().getServletContext();
+var spring = WebApplicationContextUtils.getWebApplicationContext(sc);
+
+var purchaseRequestBO= spring.getBean("purchaseRequestBO");
+purchaserequestList=purchaseRequestBO.getPurchaserequestList
+(params["referenceNo"],
+params["branchId"],
+params["dateFrom"],
+params["dateTo"],
+params["status"]);
+
+if(purchaserequestList==null )
+ {
+ 	purchaserequestDetailsTotalCount=0;
+ } 
+ else
+ { 		
+ purchaserequestDetailsTotalCount=purchaserequestList.size();	 	
+ }
+
+]]></method>
+    <property name="iconFile">/templates/first_report.gif</property>
+    <property name="cheatSheet">org.eclipse.birt.report.designer.ui.cheatsheet.firstreport</property>
+    <property name="bidiLayoutOrientation">ltr</property>
+    <property name="imageDPI">96</property>
+    <data-sources>
+        <script-data-source name="appDS" id="922">
+            <list-property name="userProperties">
+                <structure>
+                    <property name="name">script_type</property>
+                    <property name="type">string</property>
+                    <property name="default">me.prettyprint.hector</property>
+                </structure>
+            </list-property>
+        </script-data-source>
+    </data-sources>
+    <data-sets>
+        <script-data-set name="purchaserequestList" id="924">
+            <list-property name="resultSetHints">
+                <structure>
+                    <property name="position">0</property>
+                    <property name="name">purchaseRequestId</property>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="position">1</property>
+                    <property name="name">createdBy</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">2</property>
+                    <property name="name">createdDate</property>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="position">3</property>
+                    <property name="name">referenceNo</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">4</property>
+                    <property name="name">status</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">5</property>
+                    <property name="name">branchName</property>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="position">6</property>
+                    <property name="name">branchId</property>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <list-property name="columnHints">
+                <structure>
+                    <property name="columnName">purchaseRequestId</property>
+                    <text-property name="displayName">PurchaseRequestId</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">createdBy</property>
+                    <text-property name="displayName">Created By</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">createdDate</property>
+                    <text-property name="displayName">createdDate</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">referenceNo</property>
+                    <text-property name="displayName">referenceNo</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">status</property>
+                    <text-property name="displayName">status</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">branchName</property>
+                    <text-property name="displayName">branchName</text-property>
+                </structure>
+                <structure>
+                    <property name="columnName">branchId</property>
+                    <text-property name="displayName">branchId</text-property>
+                </structure>
+            </list-property>
+            <structure name="cachedMetaData">
+                <list-property name="resultSet">
+                    <structure>
+                        <property name="position">1</property>
+                        <property name="name">purchaseRequestId</property>
+                        <property name="dataType">integer</property>
+                    </structure>
+                    <structure>
+                        <property name="position">2</property>
+                        <property name="name">createdBy</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">3</property>
+                        <property name="name">createdDate</property>
+                        <property name="dataType">date-time</property>
+                    </structure>
+                    <structure>
+                        <property name="position">4</property>
+                        <property name="name">referenceNo</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">5</property>
+                        <property name="name">status</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">6</property>
+                        <property name="name">branchName</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                    <structure>
+                        <property name="position">7</property>
+                        <property name="name">branchId</property>
+                        <property name="dataType">string</property>
+                    </structure>
+                </list-property>
+            </structure>
+            <property name="dataSource">appDS</property>
+            <method name="open"><![CDATA[purchaserequestDetailsTotalCount=0;
+]]></method>
+            <method name="fetch"><![CDATA[
+if(purchaserequestDetailsCurrentIndex==purchaserequestDetailsTotalCount)
+	return false;
+	
+row["purchaseRequestId"]=purchaserequestList.get(purchaserequestDetailsCurrentIndex).getPurchaseRequestId();
+row["createdBy"]=purchaserequestList.get(purchaserequestDetailsCurrentIndex).getCreatedBy();
+row["createdDate"]=purchaserequestList.get(purchaserequestDetailsCurrentIndex).getCreatedDate();
+row["referenceNo"]=purchaserequestList.get(purchaserequestDetailsCurrentIndex).getReferenceNo();
+row["status"]=purchaserequestList.get(purchaserequestDetailsCurrentIndex).getStatus();
+row["branchName"]=purchaserequestList.get(purchaserequestDetailsCurrentIndex).getBranchName();
+row["branchId"]=purchaserequestList.get(purchaserequestDetailsCurrentIndex).getBranchId();
+
+purchaserequestDetailsCurrentIndex++;
+return true;
+]]></method>
+        </script-data-set>
+    </data-sets>
+    <styles>
+        <style name="report" id="110">
+            <property name="fontFamily">sans-serif</property>
+            <property name="fontSize">10pt</property>
+        </style>
+        <style name="crosstab-cell" id="246">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+        <style name="crosstab" id="247">
+            <property name="borderBottomColor">#CCCCCC</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">1pt</property>
+            <property name="borderLeftColor">#CCCCCC</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">1pt</property>
+            <property name="borderRightColor">#CCCCCC</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">1pt</property>
+            <property name="borderTopColor">#CCCCCC</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">1pt</property>
+        </style>
+    </styles>
+    <page-setup>
+        <simple-master-page name="Simple MasterPage" id="2">
+            <page-footer>
+                <text id="3">
+                    <property name="contentType">html</property>
+                    <text-property name="content"><![CDATA[<value-of>new Date()</value-of>]]></text-property>
+                </text>
+            </page-footer>
+        </simple-master-page>
+    </page-setup>
+    <body>
+        <label id="250">
+            <property name="backgroundColor">#FFFFFF</property>
+            <property name="fontWeight">bold</property>
+            <property name="borderBottomStyle">solid</property>
+            <property name="borderBottomWidth">thin</property>
+            <property name="borderLeftStyle">solid</property>
+            <property name="borderLeftWidth">thin</property>
+            <property name="borderRightStyle">solid</property>
+            <property name="borderRightWidth">thin</property>
+            <property name="borderTopStyle">solid</property>
+            <property name="borderTopWidth">thin</property>
+            <property name="paddingTop">3pt</property>
+            <property name="paddingLeft">3pt</property>
+            <property name="paddingBottom">3pt</property>
+            <property name="paddingRight">3pt</property>
+            <text-property name="text">Purchase Request                   Date From : Date To  : 		</text-property>
+        </label>
+        <table id="925">
+            <property name="dataSet">purchaserequestList</property>
+            <list-property name="boundDataColumns">
+                <structure>
+                    <property name="name">purchaseRequestId</property>
+                    <text-property name="displayName">PurchaseRequestId</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["purchaseRequestId"]</expression>
+                    <property name="dataType">integer</property>
+                </structure>
+                <structure>
+                    <property name="name">createdBy</property>
+                    <text-property name="displayName">Created By</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["createdBy"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">createdDate</property>
+                    <text-property name="displayName">createdDate</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["createdDate"]</expression>
+                    <property name="dataType">date-time</property>
+                </structure>
+                <structure>
+                    <property name="name">referenceNo</property>
+                    <text-property name="displayName">referenceNo</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["referenceNo"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">status</property>
+                    <text-property name="displayName">status</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["status"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">branchName</property>
+                    <text-property name="displayName">branchName</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["branchName"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+                <structure>
+                    <property name="name">branchId</property>
+                    <text-property name="displayName">branchId</text-property>
+                    <expression name="expression" type="javascript">dataSetRow["branchId"]</expression>
+                    <property name="dataType">string</property>
+                </structure>
+            </list-property>
+            <column id="964"/>
+            <column id="965"/>
+            <column id="966"/>
+            <column id="967"/>
+            <column id="968"/>
+            <column id="969"/>
+            <column id="970"/>
+            <header>
+                <row id="926">
+                    <cell id="927">
+                        <label id="928">
+                            <text-property name="text">PurchaseRequestId</text-property>
+                        </label>
+                    </cell>
+                    <cell id="929">
+                        <label id="930">
+                            <text-property name="text">Created By</text-property>
+                        </label>
+                    </cell>
+                    <cell id="931">
+                        <label id="932">
+                            <text-property name="text">Created Date</text-property>
+                        </label>
+                    </cell>
+                    <cell id="933">
+                        <label id="934">
+                            <text-property name="text">Reference No</text-property>
+                        </label>
+                    </cell>
+                    <cell id="935">
+                        <label id="936">
+                            <text-property name="text">Status</text-property>
+                        </label>
+                    </cell>
+                    <cell id="937">
+                        <label id="938">
+                            <text-property name="text">Branch Name</text-property>
+                        </label>
+                    </cell>
+                    <cell id="939">
+                        <label id="940">
+                            <text-property name="text">BranchId</text-property>
+                        </label>
+                    </cell>
+                </row>
+            </header>
+            <detail>
+                <row id="941">
+                    <cell id="942">
+                        <data id="943">
+                            <property name="resultSetColumn">purchaseRequestId</property>
+                        </data>
+                    </cell>
+                    <cell id="944">
+                        <data id="945">
+                            <property name="resultSetColumn">createdBy</property>
+                        </data>
+                    </cell>
+                    <cell id="946">
+                        <data id="947">
+                            <property name="resultSetColumn">createdDate</property>
+                        </data>
+                    </cell>
+                    <cell id="948">
+                        <data id="949">
+                            <property name="resultSetColumn">referenceNo</property>
+                        </data>
+                    </cell>
+                    <cell id="950">
+                        <data id="951">
+                            <property name="resultSetColumn">status</property>
+                        </data>
+                    </cell>
+                    <cell id="952">
+                        <data id="953">
+                            <property name="resultSetColumn">branchName</property>
+                        </data>
+                    </cell>
+                    <cell id="954">
+                        <data id="955">
+                            <property name="resultSetColumn">branchId</property>
+                        </data>
+                    </cell>
+                </row>
+            </detail>
+            <footer>
+                <row id="956">
+                    <cell id="957"/>
+                    <cell id="958"/>
+                    <cell id="959"/>
+                    <cell id="960"/>
+                    <cell id="961"/>
+                    <cell id="962"/>
+                    <cell id="963"/>
+                </row>
+            </footer>
+        </table>
+    </body>
+</report>

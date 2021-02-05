@@ -1,0 +1,102 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:c="http://java.sun.com/jsp/jstl/core">
+<style>
+
+</style>
+<body>
+
+	<p:keyboard id="productSearchInput" 
+		value="#{productBean.productNameFilter}" 
+	 	style="height:6vh;border-radius:50px;" size="55"
+	 	onclick="this.value=''"
+		layout="custom" 
+		layoutTemplate="1234567890-back,-space-QWERTYUIOP&#x2011;,-space-space-ASDFGHJKL,-space-space-space-ZXCVBNM&#x2e;,-space-space-space-space-space-space-spacebar"
+	 	rendered="#{systemSettingBean.myConfig.orderScreenProductSearchBy=='name'}"
+	>
+			<p:ajax event="change" 
+			update=":terminalOrderForm:productSelectionDataGrid,:terminalOrderForm:orderListDataTable"
+			listener="#{productBean.filterProductByName}" />
+ 	</p:keyboard>
+ 	
+ 	<p:watermark for="productSearchInput" value="Search by product name" id="watermark" />
+
+	<p:keyboard id="productSearchByCodeInput" 
+		value="#{productBean.productCodeFilter}" 
+		style="height:6vh;border-radius:50px;" size="55"
+		onclick="this.value=''"
+	    layout="custom"
+	    layoutTemplate="1234567890-back,-space-QWERTYUIOP&#x2011;,-space-space-ASDFGHJKL-&#x23ce;,-space-space-space-ZXCVBNM&#x2e;,-space-space-space-space-space-space-spacebar"
+	    rendered="#{systemSettingBean.myConfig.orderScreenProductSearchBy=='code'}"
+	 />
+
+		<!-- 
+		<p:inputText 
+			id="productSearchByCodeInput"
+ 			value="#{productBean.productCodeFilter}" 
+ 			style="height:6vh;border-radius:50px;" size="35"
+		    onfocus="this.value=''"
+		 />
+	 -->
+	 
+	 	<p:watermark for="productSearchByCodeInput" value="Search by product code" />
+		<p:remoteCommand name="rc_loadProdut"	
+			update=":terminalOrderForm:productSelectionDataGrid,:terminalOrderForm:orderListDataTable" 
+			action="#{productBean.filterProductByCode}" 
+		/>
+		<p:remoteCommand name="rc_updateSearchInput"	
+			update=":terminalOrderForm:productSearchByCodeInput" 
+		/>	
+		
+
+		
+</body>
+<script>
+$(document).ready(function() {
+	
+	$('body').keypress(function(event){
+		
+		var keycode = (event.keyCode ? event.keyCode : event.which);
+		if(keycode == '13'){
+			event.preventDefault();
+			document.getElementById('keypad-div').style.display = 'none';
+			rc_loadProdut();
+		}
+		
+
+	});
+	
+	$(document).on("click", ".keypad-key", function(event){
+		
+		if($(this).text()=='‑'){
+			
+			
+			var ele=document.getElementById("terminalOrderForm:productSearchByCodeInput");
+			if(ele==null){
+				ele=document.getElementById("terminalOrderForm:productSearchInput");
+			}
+			var strng=ele.value;
+			console.log(strng);
+			ele.value=strng.substring(0,strng.length-1);
+			ele.value+="-";
+			
+		}
+		
+		if($(this).text()=='⏎'){
+			document.getElementById('keypad-div').style.display = 'none';
+			
+			var strng=document.getElementById("terminalOrderForm:productSearchByCodeInput").value;
+			document.getElementById("terminalOrderForm:productSearchByCodeInput").value=strng.substring(0,strng.length-1);
+			rc_loadProdut();
+			document.getElementById("terminalOrderForm:productSearchByCodeInput").value="";
+		}
+	     
+	});
+	
+
+});
+</script>	
+</ui:composition>

@@ -1,0 +1,56 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" 
+	xmlns:b="http://bootsfaces.net/ui"
+	>
+	
+	<p:panelGrid id="orderScreenSettingGrid"  
+		border="0" 
+		styleClass="borderlessGrid"
+		width="60%"
+		columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft"
+	>
+		<p:row>
+			<p:column>		
+				<h:outputText value="INPUT SEARCH BY"
+				styleClass="logintxt"></h:outputText>
+			</p:column>
+			
+			<p:column>
+				<h:outputText value=":" />
+			</p:column>
+			
+			<p:column>
+				<p:selectOneMenu id="searchBy" 
+				value="#{systemSettingBean.systemConfig.orderScreenProductSearchBy}" 
+				style="width:160px; text-align:left;" >
+					<f:selectItem itemValue="name" itemLabel="NAME" />
+					<f:selectItem itemValue="code" itemLabel="CODE" />
+				</p:selectOneMenu>
+			</p:column>
+			
+		</p:row>
+		
+		<p:row>
+			<p:column>
+				<h:outputText value="" />
+			</p:column>
+			
+			<p:column>
+				<h:outputText value="" />
+			</p:column>
+			
+			<p:column>
+				<p:commandButton 
+					value="UPDATE" 
+					action="#{systemSettingBean.updateSystemConfiguration}">
+				</p:commandButton>
+
+			</p:column>
+		</p:row>
+	</p:panelGrid>	
+
+</ui:composition>

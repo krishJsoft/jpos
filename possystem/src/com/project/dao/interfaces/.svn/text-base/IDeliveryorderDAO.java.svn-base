@@ -1,0 +1,42 @@
+package com.alpha.dao.interfaces;
+
+import java.util.Date;
+import java.util.List;
+
+import com.alpha.hq.model.Deliveryorder;
+import com.alpha.hq.model.Deliveryorderbreakdown;
+import com.alpha.hq.model.Purchaseorder;
+
+
+public interface IDeliveryorderDAO {
+
+	
+	public List<Deliveryorder> findByDeliveryorderListAll() throws Exception;
+
+	public int getDeliveryorderCount(String deliveryOrderNo,Integer supplierId, Date dateFrom,Date dateTo, String status) throws Exception;
+
+	public List<Deliveryorder> getDeliveryorderList(String deliveryOrderNo,Integer supplierId, Date dateFrom,Date dateTo, String status, int start, int howMany)
+			throws Exception;		
+	
+	public Deliveryorder getDeliveryorderDetails(Integer deliveryOrderId) throws Exception;
+
+	public Deliveryorder getDeliveryorderMasterDetails(Integer deliveryOrderId)	throws Exception;
+			
+	public boolean createNewDeliveryorder(Deliveryorder deliveryOrder) throws Exception;
+
+	public boolean updateDeliveryorder(Deliveryorder deliveryOrder) throws Exception;
+	
+	public boolean deleteDeliveryorder(Deliveryorder deliveryOrder) throws Exception;
+	
+	public List<Deliveryorderbreakdown> getDeliveryorderbreakdownList(Integer supplier,Integer deliveryOrderId)	throws Exception;	
+
+	public List<Deliveryorderbreakdown> getDeliveryorderbreakdownSupplierList(Integer deliveryOrderId) throws Exception;
+	
+	public List<Deliveryorderbreakdown> getDeliveryorderbreakdownList(Date dateFrom,Date dateTo,int start, int howMany)	throws Exception;
+	
+	public int getDeliveryorderbreakdownCount(Date dateFrom,Date dateTo) throws Exception;
+
+	public boolean deleteDeliveryorderbreakdown(Deliveryorderbreakdown deliveryorderbreakdown) throws Exception;	
+	
+	
+}

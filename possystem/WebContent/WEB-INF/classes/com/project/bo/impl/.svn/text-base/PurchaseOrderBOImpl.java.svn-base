@@ -1,0 +1,672 @@
+package com.alpha.bo.impl;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.IDeliveryorderBO;
+import com.alpha.bo.interfaces.IPurchaseOrderBO;
+
+import com.alpha.dao.interfaces.IBranchDAO;
+import com.alpha.dao.interfaces.ICommonListDAO;
+import com.alpha.dao.interfaces.IPurchaseOrderDAO;
+import com.alpha.dao.interfaces.IPurchaserequestDAO;
+import com.alpha.hq.model.Autonum;
+import com.alpha.hq.model.Branch;
+import com.alpha.hq.model.Deliveryorderbreakdown;
+import com.alpha.hq.model.Product;
+import com.alpha.hq.model.Purchaseorder;
+import com.alpha.hq.model.Purchaseorderbreakdown;
+import com.alpha.hq.model.Purchaserequest;
+
+import com.alpha.hq.model.Supplier;
+import com.alpha.model.datamodel.purchase.PurchaseorderModel;
+import com.alpha.model.datamodel.purchase.PurchaseorderbreakdownsModel;
+import com.alpha.model.datamodel.purchase.PurchaserequestBranchModel;
+
+import com.alpha.model.datamodel.purchase.PurchaserequestbreakdownModel;
+import com.alpha.model.datamodel.stock.DeliveryorderModel;
+import com.alpha.model.datamodel.stock.DeliveryorderbreakdownModel;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 12 Aug 2013
+ */
+
+@Service("purchaseOrderBO")
+public class PurchaseOrderBOImpl implements IPurchaseOrderBO {
+	
+	public static Logger log = LoggerFactory.getLogger(PurchaseOrderBOImpl.class);
+
+	@Resource(name = "purchaseOrderRepository")
+	private IPurchaseOrderDAO purchaseOrderRepository;
+	
+	@Resource(name = "purchaseRequestRepository")
+	private IPurchaserequestDAO purchaseRequestRepository;	
+	
+	@Resource(name = "commonListRepository")
+	private ICommonListDAO commonListRepository;
+	
+	@Resource(name = "branchRepository")
+	private IBranchDAO branchRepository;	
+	
+	@Resource(name = "deliveryOrderBO")
+	private IDeliveryorderBO deliveryOrderBO;
+	
+	@Override
+	public List<PurchaseorderModel> findByPurchaseorderListAll()
+			throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getPurchaseorderCount(String purchaseOrderNo,
+			Integer supplierId, Date dateFrom, Date dateTo, String status)
+			throws Exception {
+		try {
+			return purchaseOrderRepository.getPurchaseorderCount(purchaseOrderNo, supplierId, dateFrom, dateTo, status);
+		} catch (Exception e) {
+			log.info("Error in getPurchaseorderCount of PurchaseOrderBOImpl "+ e.toString());
+			throw e;
+		}
+	}
+
+	@Override
+	public List<PurchaseorderModel> getPurchaseorderList(
+			String purchaseOrderNo, Integer supplierId, Date dateFrom,
+			Date dateTo, String status, int start, int howMany)
+			throws Exception {
+		List<PurchaseorderModel> purchaseorderObjList = new ArrayList<PurchaseorderModel>();
+		List<PurchaseorderbreakdownsModel> purchaseorderbreakdownList = new ArrayList<PurchaseorderbreakdownsModel>();
+		PurchaseorderbreakdownsModel data=null;
+	try {
+	List<Purchaseorder> purchaseorderList = purchaseOrderRepository.getPurchaseorderList(purchaseOrderNo, supplierId, dateFrom, dateTo, status, start, howMany);
+
+	for (Purchaseorder purchaseorder : purchaseorderList) {
+		
+		PurchaseorderModel purchaseorderObj = new PurchaseorderModel();
+		purchaseorderObj.setAgreedDateDelivery(purchaseorder.getAgreedDateDelivery());		
+		purchaseorderObj.setCreatedBy(purchaseorder.getCreatedBy());
+		purchaseorderObj.setCreatedDate(purchaseorder.getCreatedDate());	
+		purchaseorderObj.setBillingAddress(purchaseorder.getBillingAddress());
+		purchaseorderObj.setCompanyName(purchaseorder.getSupplier().getCompanyName());
+		purchaseorderObj.setDeliveryAddress(purchaseorder.getDeliveryAddress());
+		
+		purchaseorderObj.setLastModifiedDate(purchaseorder.getLastModifiedDate());
+		purchaseorderObj.setOrderPayment(purchaseorder.getOrderPayment());
+		purchaseorderObj.setOrderReceived(purchaseorder.getOrderReceived());
+		purchaseorderObj.setOrderReturned(purchaseorder.getOrderReturned());
+		purchaseorderObj.setPaymentTerms(purchaseorder.getPaymentTerms());
+		purchaseorderObj.setPurchaseOrderDate(purchaseorder.getPurchaseOrderDate());
+		purchaseorderObj.setPurchaseOrderId(purchaseorder.getPurchaseOrderId());
+		purchaseorderObj.setPurchaseOrderNo(purchaseorder.getPurchaseOrderNo());
+		purchaseorderObj.setSupplierId(purchaseorder.getSupplier().getSupplierId());
+		purchaseorderObj.setTermsConditions(purchaseorder.getTermsConditions());
+		purchaseorderObj.setTotalAmount(purchaseorder.getTotalAmount());		
+		purchaseorderObj.setRemarks(purchaseorder.getRemarks());
+		purchaseorderObj.setStatus(purchaseorder.getStatus());	
+			
+		purchaseorderObjList.add(purchaseorderObj);
+	}
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getPurchaseorderList of PurchaseOrderBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaseorderObjList;
+	}
+	
+	
+	
+	@Override
+	public List<PurchaseorderModel> getPurchaseorderList(Integer supplierId, String status)
+			throws Exception {
+		List<PurchaseorderModel> purchaseorderObjList = new ArrayList<PurchaseorderModel>();
+		List<PurchaseorderbreakdownsModel> purchaseorderbreakdownList = new ArrayList<PurchaseorderbreakdownsModel>();
+		PurchaseorderbreakdownsModel data=null;
+	try {
+	List<Purchaseorder> purchaseorderList = purchaseOrderRepository.getPurchaseorderList(supplierId,status);
+
+	for (Purchaseorder purchaseorder : purchaseorderList) {
+		
+		PurchaseorderModel purchaseorderObj = new PurchaseorderModel();
+		purchaseorderObj.setAgreedDateDelivery(purchaseorder.getAgreedDateDelivery());		
+		purchaseorderObj.setCreatedBy(purchaseorder.getCreatedBy());
+		purchaseorderObj.setCreatedDate(purchaseorder.getCreatedDate());	
+		purchaseorderObj.setBillingAddress(purchaseorder.getBillingAddress());
+		purchaseorderObj.setCompanyName(purchaseorder.getSupplier().getCompanyName());
+		purchaseorderObj.setDeliveryAddress(purchaseorder.getDeliveryAddress());
+		
+		purchaseorderObj.setLastModifiedDate(purchaseorder.getLastModifiedDate());
+		purchaseorderObj.setOrderPayment(purchaseorder.getOrderPayment());
+		purchaseorderObj.setOrderReceived(purchaseorder.getOrderReceived());
+		purchaseorderObj.setOrderReturned(purchaseorder.getOrderReturned());
+		purchaseorderObj.setPaymentTerms(purchaseorder.getPaymentTerms());
+		purchaseorderObj.setPurchaseOrderDate(purchaseorder.getPurchaseOrderDate());
+		purchaseorderObj.setPurchaseOrderId(purchaseorder.getPurchaseOrderId());
+		purchaseorderObj.setPurchaseOrderNo(purchaseorder.getPurchaseOrderNo());
+		purchaseorderObj.setSupplierId(purchaseorder.getSupplier().getSupplierId());
+		purchaseorderObj.setTermsConditions(purchaseorder.getTermsConditions());
+		purchaseorderObj.setTotalAmount(purchaseorder.getTotalAmount());		
+		purchaseorderObj.setRemarks(purchaseorder.getRemarks());
+		purchaseorderObj.setStatus(purchaseorder.getStatus());	
+			
+		purchaseorderObjList.add(purchaseorderObj);
+	}
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getPurchaseorderList of PurchaseOrderBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaseorderObjList;
+	}
+
+	
+	
+
+	@Override
+	public PurchaseorderModel getPurchaseorderDetails(Integer purchaseOrderId)
+			throws Exception {
+		
+		Purchaseorder purchaseorder=null;
+		PurchaseorderModel purchaseorderObj = new PurchaseorderModel();
+		List<Integer> branchIds= new ArrayList<Integer>();
+		List<PurchaserequestbreakdownModel> productList  =new ArrayList<PurchaserequestbreakdownModel>();
+		PurchaserequestBranchModel branch = new PurchaserequestBranchModel();
+		List<PurchaserequestBranchModel> branchList = new ArrayList<PurchaserequestBranchModel>();
+		List<Purchaseorderbreakdown> branchDistList=null;
+	try {
+		purchaseorder = purchaseOrderRepository.getPurchaseorderDetails(purchaseOrderId);
+	
+		purchaseorderObj.setAgreedDateDelivery(purchaseorder.getAgreedDateDelivery());		
+		purchaseorderObj.setCreatedBy(purchaseorder.getCreatedBy());
+		purchaseorderObj.setCreatedDate(purchaseorder.getCreatedDate());	
+		purchaseorderObj.setBillingAddress(purchaseorder.getBillingAddress());
+		purchaseorderObj.setCompanyName(purchaseorder.getSupplier().getCompanyName());
+		purchaseorderObj.setDeliveryAddress(purchaseorder.getDeliveryAddress());
+		
+		purchaseorderObj.setLastModifiedDate(purchaseorder.getLastModifiedDate());
+		purchaseorderObj.setOrderPayment(purchaseorder.getOrderPayment());
+		purchaseorderObj.setOrderReceived(purchaseorder.getOrderReceived());
+		purchaseorderObj.setOrderReturned(purchaseorder.getOrderReturned());
+		purchaseorderObj.setPaymentTerms(purchaseorder.getPaymentTerms());
+		purchaseorderObj.setPurchaseOrderDate(purchaseorder.getPurchaseOrderDate());
+		purchaseorderObj.setPurchaseOrderId(purchaseorder.getPurchaseOrderId());
+		purchaseorderObj.setPurchaseOrderNo(purchaseorder.getPurchaseOrderNo());
+		purchaseorderObj.setSupplierId(purchaseorder.getSupplier().getSupplierId());
+		purchaseorderObj.setTermsConditions(purchaseorder.getTermsConditions());
+		purchaseorderObj.setTotalAmount(purchaseorder.getTotalAmount());		
+		purchaseorderObj.setRemarks(purchaseorder.getRemarks());
+		purchaseorderObj.setStatus(purchaseorder.getStatus());	
+			
+	
+		
+		branchDistList=purchaseOrderRepository.getPurchaseorderBranchList(purchaseOrderId);
+		
+		for(Purchaseorderbreakdown branchIdTemp:branchDistList)
+		{
+			branchIds.add(branchIdTemp.getBranch().getBranchId());
+		}
+		
+		for(Integer branchIdTemp:branchIds)
+		{
+		branchDistList=purchaseOrderRepository.getPurchaseorderbreakdownList(branchIdTemp, purchaseOrderId);
+		
+		if(branchDistList!=null && branchDistList.size()!=0)
+		{
+		Branch b=branchRepository.getBranchDetails(branchIdTemp);
+		branch = new PurchaserequestBranchModel();
+		productList  =new ArrayList<PurchaserequestbreakdownModel>();
+		
+		branch.setAddress(b.getAddress());
+		branch.setBranchName(b.getBranchName());
+									
+			for(Purchaseorderbreakdown productData:branchDistList)
+			{
+			PurchaserequestbreakdownModel product = new PurchaserequestbreakdownModel();
+			product.setProductId(productData.getProduct().getProductId());	
+			product.setProductName(productData.getProductName());
+			product.setQuantityRequired(productData.getQuantity());
+			product.setReferenceNo(productData.getPurchaseRequestReferenceNo());
+			product.setUomName(productData.getProduct().getUom());
+			product.setProductDesc(productData.getProduct().getProductDesc());
+			product.setUnitPrice(productData.getUnitPrice());
+			product.setSubTotal(productData.getSubTotal());			
+			product.setBalanceQuantity(productData.getBalanceQuantity());
+			product.setReceivedQuantity(productData.getReceivedQuantity());
+			
+			productList.add(product);
+			}		
+		
+		branch.setProductList(productList);
+		branchList.add(branch);
+		
+		}		
+		}		
+		purchaseorderObj.setBranchModel(branchList);
+		
+	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getPurchaserequestList of PurchaseOrderBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaseorderObj;
+	}
+	
+	
+	
+	@Override
+	public PurchaseorderModel getPurchaseorderMasterDetails(Integer purchaseOrderId)
+			throws Exception {		
+		Purchaseorder purchaseorder=null;
+		PurchaseorderModel purchaseorderObj = new PurchaseorderModel();		
+	try {
+		purchaseorder = purchaseOrderRepository.getPurchaseorderDetails(purchaseOrderId);
+	
+		purchaseorderObj.setAgreedDateDelivery(purchaseorder.getAgreedDateDelivery());		
+		purchaseorderObj.setCreatedBy(purchaseorder.getCreatedBy());
+		purchaseorderObj.setCreatedDate(purchaseorder.getCreatedDate());	
+		purchaseorderObj.setBillingAddress(purchaseorder.getBillingAddress());
+		purchaseorderObj.setCompanyName(purchaseorder.getSupplier().getCompanyName());
+		purchaseorderObj.setDeliveryAddress(purchaseorder.getDeliveryAddress());
+		
+		purchaseorderObj.setLastModifiedDate(purchaseorder.getLastModifiedDate());
+		purchaseorderObj.setOrderPayment(purchaseorder.getOrderPayment());
+		purchaseorderObj.setOrderReceived(purchaseorder.getOrderReceived());
+		purchaseorderObj.setOrderReturned(purchaseorder.getOrderReturned());
+		purchaseorderObj.setPaymentTerms(purchaseorder.getPaymentTerms());
+		purchaseorderObj.setPurchaseOrderDate(purchaseorder.getPurchaseOrderDate());
+		purchaseorderObj.setPurchaseOrderId(purchaseorder.getPurchaseOrderId());
+		purchaseorderObj.setPurchaseOrderNo(purchaseorder.getPurchaseOrderNo());
+		purchaseorderObj.setSupplierId(purchaseorder.getSupplier().getSupplierId());
+		purchaseorderObj.setTermsConditions(purchaseorder.getTermsConditions());
+		purchaseorderObj.setTotalAmount(purchaseorder.getTotalAmount());		
+		purchaseorderObj.setRemarks(purchaseorder.getRemarks());
+		purchaseorderObj.setStatus(purchaseorder.getStatus());	
+			
+		
+	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getPurchaseorderMasterDetails of PurchaseOrderBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaseorderObj;
+	}
+	
+	
+	
+	@Transactional
+	@Override
+	public boolean createNewPurchaseorder(PurchaseorderModel purchaseorder)
+			throws Exception {
+		List<Purchaseorderbreakdown> purchaseorderbreakdownList = new ArrayList<Purchaseorderbreakdown>();		
+		boolean saveSuccess = false;
+		Purchaseorder purchaseorderObj = new Purchaseorder();
+		
+	try {
+		Autonum autoNum = commonListRepository.getAutonumDetail();
+		
+		Supplier supplier = new Supplier();		
+		supplier.setSupplierId(purchaseorder.getSupplierId());				
+		purchaseorderObj.setSupplier(supplier);		
+		
+		purchaseorderObj.setAgreedDateDelivery(purchaseorder.getAgreedDateDelivery());		
+		purchaseorderObj.setCreatedBy(purchaseorder.getCreatedBy());
+		purchaseorderObj.setCreatedDate(purchaseorder.getCreatedDate());	
+		purchaseorderObj.setBillingAddress(purchaseorder.getBillingAddress());
+		purchaseorderObj.setDeliveryAddress(purchaseorder.getDeliveryAddress());		
+		purchaseorderObj.setLastModifiedDate(purchaseorder.getLastModifiedDate());
+		purchaseorderObj.setOrderPayment(purchaseorder.getOrderPayment());
+		purchaseorderObj.setOrderReceived(purchaseorder.getOrderReceived());
+		purchaseorderObj.setOrderReturned(purchaseorder.getOrderReturned());
+		purchaseorderObj.setPaymentTerms(purchaseorder.getPaymentTerms());
+		purchaseorderObj.setPurchaseOrderDate(purchaseorder.getPurchaseOrderDate());
+		purchaseorderObj.setPurchaseOrderId(purchaseorder.getPurchaseOrderId());
+		purchaseorderObj.setPurchaseOrderNo(purchaseorder.getPurchaseOrderNo());		
+		purchaseorderObj.setTermsConditions(purchaseorder.getTermsConditions());
+		purchaseorderObj.setTotalAmount(purchaseorder.getTotalAmount());		
+		purchaseorderObj.setRemarks(purchaseorder.getRemarks());
+		purchaseorderObj.setStatus(purchaseorder.getStatus());				
+		purchaseorderObj.setPurchaseOrderNo("PO".concat(String.valueOf(StringUtils.leftPad(autoNum.getPurchaceOrder() + "", 15, "0"))));	
+			
+		purchaseorderbreakdownList = new ArrayList<Purchaseorderbreakdown>();		
+		
+		for(PurchaseorderbreakdownsModel tempdata :purchaseorder.getPurchaseorderbreakdowns() )
+		{
+			Purchaseorderbreakdown data=new Purchaseorderbreakdown();
+						
+			data.setDiscount(tempdata.getDiscount());
+			data.setDiscountAmount(tempdata.getDiscountAmount());
+			
+			Product product = new Product();			
+			product.setProductId(tempdata.getProductId());
+			product.setProductName(tempdata.getProductName());
+			data.setProduct(product);
+			
+			Branch branch = new Branch();
+			branch.setBranchId(tempdata.getBranchId());
+			data.setBranch(branch);
+			
+			data.setProductName(tempdata.getProductName());			
+			data.setPurchaseorder(purchaseorderObj);
+			data.setQuantity(tempdata.getQuantity());			
+			data.setSubTotal(tempdata.getSubTotal());
+			data.setUnitPrice(tempdata.getUnitPrice());	
+			data.setPurchaseRequestReferenceNo(purchaseorder.getPurchaseRequestReferenceNo());
+			
+			purchaseorderbreakdownList.add(data);
+			
+		}				
+		purchaseorderObj.setPurchaseorderbreakdowns(purchaseorderbreakdownList);
+		
+		autoNum.setPurchaceOrder(autoNum.getPurchaceOrder()+1);
+		autoNum=commonListRepository.updateAutonumDetail(autoNum);		
+		saveSuccess=purchaseOrderRepository.createNewPurchaseorder(purchaseorderObj);
+	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in createNewPurchaseorder of PurchaseOrderBOImpl "+ e.toString());
+		throw e;
+	}
+	return saveSuccess;
+	}	
+	
+	@Transactional
+	@Override
+	public boolean updatePurchaseorder(PurchaseorderModel purchaseorder)
+			throws Exception {
+		List<Purchaseorderbreakdown> purchaseorderbreakdownList = new ArrayList<Purchaseorderbreakdown>();		
+		boolean saveSuccess = false;
+		Purchaseorder purchaseorderObj = new Purchaseorder();
+		
+	try {		
+		purchaseorderObj = purchaseOrderRepository.getPurchaseorderDetails(purchaseorder.getPurchaseOrderId());		
+		Supplier supplier = new Supplier();		
+		supplier.setSupplierId(purchaseorder.getSupplierId());				
+		purchaseorderObj.setSupplier(supplier);		
+		
+		purchaseorderObj.setAgreedDateDelivery(purchaseorder.getAgreedDateDelivery());		
+		purchaseorderObj.setCreatedBy(purchaseorder.getCreatedBy());
+		purchaseorderObj.setCreatedDate(purchaseorder.getCreatedDate());	
+		purchaseorderObj.setBillingAddress(purchaseorder.getBillingAddress());
+		purchaseorderObj.setDeliveryAddress(purchaseorder.getDeliveryAddress());		
+		purchaseorderObj.setLastModifiedDate(purchaseorder.getLastModifiedDate());
+		purchaseorderObj.setOrderPayment(purchaseorder.getOrderPayment());
+		purchaseorderObj.setOrderReceived(purchaseorder.getOrderReceived());
+		purchaseorderObj.setOrderReturned(purchaseorder.getOrderReturned());
+		purchaseorderObj.setPaymentTerms(purchaseorder.getPaymentTerms());
+		purchaseorderObj.setPurchaseOrderDate(purchaseorder.getPurchaseOrderDate());		
+		purchaseorderObj.setPurchaseOrderNo(purchaseorder.getPurchaseOrderNo());		
+		purchaseorderObj.setTermsConditions(purchaseorder.getTermsConditions());
+		purchaseorderObj.setTotalAmount(purchaseorder.getTotalAmount());		
+		purchaseorderObj.setRemarks(purchaseorder.getRemarks());
+		purchaseorderObj.setStatus(purchaseorder.getStatus());	
+		
+		List<Purchaseorderbreakdown> purcahsebreakdownList=purchaseOrderRepository.getPurchaseorderbreakdownList(purchaseorder.getBranchId(), purchaseorder.getPurchaseOrderId());
+		
+		Iterator<Purchaseorderbreakdown> purchaseItr = purcahsebreakdownList.iterator();		
+		for(PurchaseorderbreakdownsModel tempdata :purchaseorder.getPurchaseorderbreakdowns())
+		{
+			Purchaseorderbreakdown data=null;		
+			if (purchaseItr.hasNext()) {
+				data = (Purchaseorderbreakdown) purchaseItr.next();
+				}
+			else {
+				data = new Purchaseorderbreakdown();				
+				}					
+			data.setBalanceQuantity(tempdata.getBalanceQuantity());			
+			data.setReceivedQuantity(tempdata.getReceivedQuantity());			
+			purchaseorderbreakdownList.add(data);			
+		}				
+		purchaseorderObj.setPurchaseorderbreakdowns(purchaseorderbreakdownList);		
+		saveSuccess=purchaseOrderRepository.updatePurchaseorder(purchaseorderObj);	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in updatePurchaseorder of PurchaseOrderBOImpl "+ e.toString());
+		throw e;
+	}
+	return saveSuccess;
+	}
+
+	@Override
+	public boolean deletePurchaseorder(PurchaseorderModel purchaseorder)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public List<PurchaseorderbreakdownsModel> getPurchaseorderbreakdownList(
+			List<Integer> requestIds) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean deletePurchaseorderbreakdown(
+			PurchaseorderbreakdownsModel purchaseorderbreakdown)
+			throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Transactional
+	@Override
+	public boolean createBulkPurchaseorder(
+			List<PurchaseorderModel> purchaseorderList,List<Integer> requestIds) throws Exception {
+		List<Purchaseorderbreakdown> purchaseorderbreakdownList = new ArrayList<Purchaseorderbreakdown>();		
+		boolean saveSuccess = false;
+		Purchaseorder purchaseorderObj =null;			
+	try {		
+		for(PurchaseorderModel purchaseorder:purchaseorderList )			
+		{
+		purchaseorderObj = new Purchaseorder();			
+		Autonum autoNum = commonListRepository.getAutonumDetail();		
+		Supplier supplier = new Supplier();		
+		supplier.setSupplierId(purchaseorder.getSupplierId());				
+		purchaseorderObj.setSupplier(supplier);				
+		purchaseorderObj.setCreatedDate(new Date());		
+		purchaseorderObj.setLastModifiedDate(new Date());		
+		purchaseorderObj.setPurchaseOrderDate(new Date());		
+		purchaseorderObj.setTotalAmount(purchaseorder.getTotalAmount());		
+		purchaseorderObj.setStatus("1");				
+		purchaseorderObj.setPurchaseOrderNo("PO".concat(String.valueOf(StringUtils.leftPad(autoNum.getPurchaceOrder() + "", 15, "0"))));	
+			
+		purchaseorderbreakdownList = new ArrayList<Purchaseorderbreakdown>();		
+		
+		for(PurchaseorderbreakdownsModel tempdata :purchaseorder.getPurchaseorderbreakdowns() )
+		{
+			Purchaseorderbreakdown data=new Purchaseorderbreakdown();			
+			
+			Product product = new Product();			
+			product.setProductId(tempdata.getProductId());
+			product.setProductName(tempdata.getProductName());
+			data.setProduct(product);
+			
+			Branch branch = new Branch();
+			branch.setBranchId(tempdata.getBranchId());
+			data.setBranch(branch);
+			
+			data.setProductName(tempdata.getProductName());			
+			data.setPurchaseorder(purchaseorderObj);
+			data.setQuantity(tempdata.getQuantity());			
+			data.setSubTotal(tempdata.getSubTotal());
+			data.setUnitPrice(tempdata.getUnitPrice());	
+			data.setPurchaseRequestReferenceNo(tempdata.getReferenceNo());
+					
+			purchaseorderbreakdownList.add(data);
+			
+		}				
+		purchaseorderObj.setPurchaseorderbreakdowns(purchaseorderbreakdownList);
+		
+		autoNum.setPurchaceOrder(autoNum.getPurchaceOrder()+1);
+		autoNum=commonListRepository.updateAutonumDetail(autoNum);		
+		saveSuccess=purchaseOrderRepository.createNewPurchaseorder(purchaseorderObj);
+		}		
+		if(saveSuccess)
+		{
+		for(Integer requestId: requestIds)			
+		{
+			Purchaserequest purchaserequestObj = purchaseRequestRepository.getPurchaserequestDetails(requestId);
+			purchaserequestObj.setStatus("3");
+			purchaseRequestRepository.updatePurchaserequest(purchaserequestObj);
+		}
+		}
+	}
+	catch(Exception e)
+	{
+		log.info("Error in createNewPurchaseorder of PurchaseOrderBOImpl "+ e.toString());
+		throw e;
+	}
+	return saveSuccess;
+	}
+	
+	
+	@Transactional
+	@Override
+	public boolean approvePurchaseorder(PurchaseorderModel purchaseorder)
+			throws Exception {
+		boolean updateSuccess = false;	
+		Purchaseorder purchaseorderobj=null;		
+		try {						
+			purchaseorderobj = purchaseOrderRepository.getPurchaseorderDetails(purchaseorder.getPurchaseOrderId());
+			purchaseorderobj.setStatus(purchaseorder.getStatus());			
+			updateSuccess=purchaseOrderRepository.updatePurchaseorder(purchaseorderobj);				
+			}
+		catch (Exception e) {
+			log.info("Error in approvePurchaseorder PurchaseOrderBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	}
+
+	@Override
+	public PurchaseorderModel getPurchaseorderDetailforDelivery(
+			Integer purchaseOrderId, List<Integer> branchIds) throws Exception {
+		Purchaseorder purchaseorder=null;
+		PurchaseorderModel purchaseorderObj = new PurchaseorderModel();
+		
+		List<PurchaserequestbreakdownModel> productList  =new ArrayList<PurchaserequestbreakdownModel>();
+		PurchaserequestBranchModel branch = new PurchaserequestBranchModel();
+		List<PurchaserequestBranchModel> branchList = new ArrayList<PurchaserequestBranchModel>();
+		List<Purchaseorderbreakdown> branchDistList=null;
+	try {
+		purchaseorder = purchaseOrderRepository.getPurchaseorderDetails(purchaseOrderId);
+	
+		purchaseorderObj.setAgreedDateDelivery(purchaseorder.getAgreedDateDelivery());		
+		purchaseorderObj.setCreatedBy(purchaseorder.getCreatedBy());
+		purchaseorderObj.setCreatedDate(purchaseorder.getCreatedDate());	
+		purchaseorderObj.setBillingAddress(purchaseorder.getBillingAddress());
+		purchaseorderObj.setCompanyName(purchaseorder.getSupplier().getCompanyName());
+		purchaseorderObj.setDeliveryAddress(purchaseorder.getDeliveryAddress());
+		
+		purchaseorderObj.setLastModifiedDate(purchaseorder.getLastModifiedDate());
+		purchaseorderObj.setOrderPayment(purchaseorder.getOrderPayment());
+		purchaseorderObj.setOrderReceived(purchaseorder.getOrderReceived());
+		purchaseorderObj.setOrderReturned(purchaseorder.getOrderReturned());
+		purchaseorderObj.setPaymentTerms(purchaseorder.getPaymentTerms());
+		purchaseorderObj.setPurchaseOrderDate(purchaseorder.getPurchaseOrderDate());
+		purchaseorderObj.setPurchaseOrderId(purchaseorder.getPurchaseOrderId());
+		purchaseorderObj.setPurchaseOrderNo(purchaseorder.getPurchaseOrderNo());
+		purchaseorderObj.setSupplierId(purchaseorder.getSupplier().getSupplierId());
+		purchaseorderObj.setTermsConditions(purchaseorder.getTermsConditions());
+		purchaseorderObj.setTotalAmount(purchaseorder.getTotalAmount());		
+		purchaseorderObj.setRemarks(purchaseorder.getRemarks());
+		purchaseorderObj.setStatus(purchaseorder.getStatus());	
+		
+		
+		for(Integer branchIdTemp:branchIds)
+		{
+		branchDistList=purchaseOrderRepository.getPurchaseorderbreakdownList(branchIdTemp, purchaseorder.getPurchaseOrderId());
+		
+		if(branchDistList!=null && branchDistList.size()!=0)
+		{
+		Branch b=branchRepository.getBranchDetails(branchIdTemp);
+		branch = new PurchaserequestBranchModel();
+		productList  =new ArrayList<PurchaserequestbreakdownModel>();
+		
+		branch.setAddress(b.getAddress());
+		branch.setBranchName(b.getBranchName());
+		int id = 0;							
+			for(Purchaseorderbreakdown productData:branchDistList)
+			{				
+			PurchaserequestbreakdownModel product = new PurchaserequestbreakdownModel();
+			product.setProductId(productData.getProduct().getProductId());	
+			product.setProductName(productData.getProductName());
+			product.setQuantityRequired(productData.getQuantity());
+			product.setReferenceNo(productData.getPurchaseRequestReferenceNo());
+			product.setUomName(productData.getProduct().getUom());
+			product.setProductDesc(productData.getProduct().getProductDesc());
+			product.setUnitPrice(productData.getUnitPrice());
+			product.setSubTotal(productData.getSubTotal());
+			product.setBalanceQuantity(productData.getBalanceQuantity());
+			product.setReceivedQuantity(productData.getReceivedQuantity());
+			product.setId(id + "");
+			productList.add(product);
+			id++;
+			}		
+		
+		branch.setProductList(productList);
+		branchList.add(branch);
+		
+		}		
+		}		
+		purchaseorderObj.setBranchModel(branchList);	
+	}
+	catch(Exception e)
+	{
+		log.info("Error in getPurchaserequestList of PurchaseOrderBOImpl "+ e.toString());
+		throw e;
+	}
+	return purchaseorderObj;
+	}
+
+	@Override
+	public List<PurchaseorderbreakdownsModel> getPurchaseorderBranchList(
+			Integer purchaseOrderId) throws Exception {
+		List<Purchaseorderbreakdown> branchDistList=null;
+		List<PurchaseorderbreakdownsModel> branchDistListTemp=new ArrayList<PurchaseorderbreakdownsModel>();		
+		try {
+			branchDistList=purchaseOrderRepository.getPurchaseorderBranchList(purchaseOrderId);		
+		for(Purchaseorderbreakdown branchIdTemp:branchDistList)
+		{
+			PurchaseorderbreakdownsModel data= new PurchaseorderbreakdownsModel();
+			data.setBranchId(branchIdTemp.getBranch().getBranchId());
+			data.setBranchName(branchIdTemp.getBranch().getBranchName());
+			branchDistListTemp.add(data);
+		}
+		}
+		catch(Exception e)
+		{
+			log.info("Error in getPurchaseorderBranchList of PurchaseOrderBOImpl "+ e.toString());
+			throw e;
+		}		
+		return  branchDistListTemp;
+	}
+
+	
+	
+	
+	
+	
+
+}

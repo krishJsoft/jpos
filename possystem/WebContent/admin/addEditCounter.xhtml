@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="newCounterForm">
+		<p:outputPanel id="pageContentPanel">
+
+			<p:panel styleClass="mypanel" header="Add/Edit System Terminal"
+				id="counterPanel">
+
+				<table align="center" width="100%" border="0">
+					<tr>
+						<td align="center"><p:message for="counterPanel" /></td>
+					</tr>
+				</table>
+
+
+
+				<h:panelGrid id="newcountergrid" columns="5" border="0"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['counter.label.counterNo']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="counterNo"
+						value="#{poscounterBean.poscounter.counterNo}" maxlength="30"
+						size="20" />
+					<p:message for="counterNo" styleClass="fieldError" />
+
+
+					
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branch.label.Status']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status"
+						value="#{poscounterBean.poscounter.status}"
+						styleClass="inputCombo" style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Active" itemValue="1" />
+						<f:selectItem itemLabel="InActive" itemValue="0" />
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="3" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						
+						<p:commandButton value="Save" rendered="#{poscounterBean.action=='submit'}"
+							action="#{poscounterBean.saveCounter}" ajax="false"
+							update="newcountergrid" />
+
+						<p:commandButton value="Update" rendered="#{poscounterBean.action!='submit'}"
+							action="#{poscounterBean.updateCounter}" ajax="false"
+							update="newcountergrid" />
+
+						<p:commandButton value="Cancel" ajax="false"
+							action="#{poscounterBean.listCounter}"
+							update="newcountergrid" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+			</p:panel>
+		</p:outputPanel>
+
+
+
+
+	</h:form>
+</ui:composition>
+
+

@@ -1,0 +1,41 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<p:confirmDialog global="false"
+	 	widgetVar="confirmOrderListDlg"  
+		width="50vw" closable="false"
+		severity="info"
+		 message="Confirm Ordered Item " 
+		>
+		<div style="height: 40vh; overflow: auto;">
+			<p:dataTable id="orderListConfirmDataTable" 
+			var="pos" rowIndexVar="row"
+			scrollable="true" 
+			value="#{posBean.salesorderbreakdowns}" paginator="false"
+			>
+				<p:column style="width:10%" >
+					<h:outputText value="#{row+1}" />
+				</p:column>
+				<p:column>
+					<h:outputText value="#{pos.productName} - x #{posBean.itemcountQty[pos.sno]}  " />
+					
+				</p:column>
+			</p:dataTable>
+		</div>
+		<p:panel style="text-align:right" >
+			<p:commandButton value="BACK"
+				oncomplete="PF('confirmOrderListDlg').hide()"
+			/>
+        	<p:commandButton value="CONFIRM"
+        		icon="ui-icon-check" 
+        		oncomplete="PF('confirmOrderListDlg').hide()"
+        		ajax="false"
+        		action="#{posBean.saveKitchenOrder}"
+        		/>	
+        </p:panel>
+    </p:confirmDialog>
+	
+</ui:composition>

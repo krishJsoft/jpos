@@ -1,0 +1,290 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head />
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesListPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesListPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Branch Request List">
+				<h:panelGrid id="quotationListGrid" columns="10" border="0"
+					width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{branchtransferBean.dateFrom}" pattern="dd/MM/yyyy" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{branchtransferBean.dateTo}" pattern="dd/MM/yyyy" />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" style="width:160px; float :left;"
+						value="#{branchtransferBean.status}" styleClass="inputCombo">
+						<f:selectItem itemValue="" itemLabel="Select Status"></f:selectItem>
+						<f:selectItems value="#{commonListBean.salesStatusList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{branchtransferBean.searchSales}" update="salesListPanel" />
+						<p:commandButton value="Reset" ajax="true"
+							action="#{branchtransferBean.resetSalesSearch}"
+							update="salesListPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+				<br />
+
+				<p:dataTable id="dataTable" var="sales" rowIndexVar="row"
+					scrollable="false" lazy="true"
+					value="#{branchtransferBean.branchtransferModel}" paginator="true"
+					rows="10" style="width: 100%" selectionMode="single"
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+
+
+
+					<p:column style="height:15px;">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Sales Date" />
+						</f:facet>
+						<h:outputText value="#{sales.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Branch Name" rendered="#{branchtransferBean.transferType=='1'}"/>
+							<h:outputText value="Request Branch Name" rendered="#{branchtransferBean.transferType=='2'}"/>
+						</f:facet>
+						<h:outputText value="#{sales.branch.branchName}" rendered="#{branchtransferBean.transferType=='1'}"
+							styleClass="logintxttable" />
+							
+							<h:outputText value="#{sales.supplybranch.branchName}" rendered="#{branchtransferBean.transferType=='2'}"
+							styleClass="logintxttable" />
+							
+					</p:column>
+
+
+					<p:column>
+						<f:facet name="header">
+							<h:outputText value="Transfer Request No" />
+						</f:facet>
+						<h:outputText value="#{sales.transferNo}" styleClass="logintxttable" />
+					</p:column>
+
+
+
+					<p:column sortBy="#{sales.status}">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+						<h:outputText value="#{app['transfer.status.neworderlable']}"
+							rendered="#{sales.status==app['transfer.status.newordervalue']}"
+							styleClass="logintxttable" />
+							
+						<h:outputText value="#{app['transfer.status.processedlable']}"
+							rendered="#{sales.status==app['transfer.status.processedvalue']}"
+							styleClass="logintxttable" />
+							
+							<h:outputText value="#{app['transfer.status.acceptorderlable']}"
+							rendered="#{sales.status==app['transfer.status.acceptordervalue']}"
+							styleClass="logintxttable" />
+							
+							<h:outputText value="#{app['transfer.status.rejectlable']}"
+							rendered="#{sales.status==app['transfer.status.rejectvalue']}"
+							styleClass="logintxttable" />
+							
+						<h:outputText value="#{app['transfer.status.orderedlable']}"
+							rendered="#{sales.status==app['transfer.status.orderedvalue']}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column style="width: 7%;" id="action">
+						<f:facet name="header">Action</f:facet>
+
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View"
+								rendered="#{loginBean.functionList.contains('View SalesOrder')}"
+								actionListener="#{branchtransferBean.viewSales}"
+								oncomplete="salesDig.show()"
+								update=":addEditSalesForm:requestitem" icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchtransferId}" />
+							</p:menuitem>
+
+							<p:menuitem value="Edit" ajax="false"
+								rendered="#{loginBean.functionList.contains('Edit SalesOrder') and sales.status==app['transfer.status.newordervalue'] and branchtransferBean.transferType=='1'}"
+								actionListener="#{branchtransferBean.editSales}" icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchtransferId}" />
+							</p:menuitem>
+
+							<p:menuitem value="Approve" ajax="true"
+								oncomplete="salesProcessDig.show()"
+								update=":addEditSalesForm:requestapprove"
+								rendered="#{loginBean.functionList.contains('Approve SalesOrder') and sales.status==app['transfer.status.newordervalue'] and branchtransferBean.transferType=='1'}"
+								actionListener="#{branchtransferBean.approveSales}"
+								icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchtransferId}" />
+								<f:attribute name="processaction" value="approve" />
+							</p:menuitem>
+							
+							<p:menuitem value="Accept" ajax="true"
+								oncomplete="salesProcessDig.show()"
+								update=":addEditSalesForm:requestapprove"
+								rendered="#{loginBean.functionList.contains('Approve SalesOrder') and sales.status==app['transfer.status.processedvalue'] and branchtransferBean.transferType=='2'}"
+								actionListener="#{branchtransferBean.approveSales}"
+								icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchtransferId}" />
+								<f:attribute name="processaction" value="accept" />
+							</p:menuitem>
+							
+							<p:menuitem value="Reject" ajax="true"
+								oncomplete="salesProcessDig.show()"
+								update=":addEditSalesForm:requestapprove"
+								rendered="#{loginBean.functionList.contains('Approve SalesOrder') and sales.status==app['transfer.status.processedvalue'] and branchtransferBean.transferType=='2'}"
+								actionListener="#{branchtransferBean.approveSales}"
+								icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchtransferId}" />
+								<f:attribute name="processaction" value="reject" />
+							</p:menuitem>
+							
+							<p:menuitem value="Transfer" ajax="true"
+								oncomplete="itemtransferDig.show()"
+								update=":addEditSalesForm:transferitem"
+								rendered="#{loginBean.functionList.contains('Approve SalesOrder') and sales.status==app['transfer.status.acceptordervalue'] and branchtransferBean.transferType=='2'}"
+								actionListener="#{branchtransferBean.viewSales}"
+								icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchtransferId}" />								
+							</p:menuitem>
+							
+							
+
+							<p:menuitem value="Print" ajax="true"
+								rendered="#{loginBean.functionList.contains('Print SalesOrder')}"
+								actionListener="#{branchtransferBean.printSales}"
+								icon="ui-icon-disk">
+								<f:attribute name="branchsalesId" value="#{sales.branchtransferId}" />
+							</p:menuitem>
+
+						</p:menuButton>
+
+
+					</p:column>
+				</p:dataTable>
+
+				<br />
+				<p:commandButton value="New Branch Transfer Request" ajax="false"
+					rendered="#{loginBean.functionList.contains('Add SalesOrder') and branchtransferBean.transferType=='1'}"
+					action="#{branchtransferBean.newSales}" update="salesListPanel" />
+			</p:panel>
+
+
+
+			<p:dialog id="modalDialogQuotationApprove" showEffect="fade"
+				hideEffect="fade" header="Branch Transfer Request Process Confirmation"
+				resizable="false" widgetVar="salesProcessDig" modal="true"
+				height="130" width="400">
+
+				<br></br>
+
+				<p:panel id="requestapprove">
+
+					<h:panelGrid columns="1" border="0" width="90%"
+						styleClass="bgcolor" cellpadding="3" cellspacing="3"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+						<h:outputText value="Are you sure ? "
+							styleClass="logintxttable" />
+					</h:panelGrid>
+
+					<br></br>
+
+					<h:panelGrid columns="3" cellpadding="3" cellspacing="3"
+						columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+						<p:commandButton value="Approve" ajax="false"
+							rendered="#{loginBean.functionList.contains('Approve SalesOrder') and branchtransferBean.processaction=='approve'}"
+							action="#{branchtransferBean.approveSalesConfirm}">
+						</p:commandButton>
+						
+						<p:commandButton value="Accept" ajax="false"
+							rendered="#{loginBean.functionList.contains('Approve SalesOrder') and branchtransferBean.processaction=='accept'}"
+							action="#{branchtransferBean.approveSalesConfirm}">
+						</p:commandButton>
+						
+						<p:commandButton value="Reject" ajax="false"
+							rendered="#{loginBean.functionList.contains('Approve SalesOrder') and branchtransferBean.processaction=='reject'}"
+							action="#{branchtransferBean.approveSalesConfirm}">
+						</p:commandButton>
+						
+						
+						<p:commandButton value="Close" onclick="salesProcessDig.hide()" />
+
+					</h:panelGrid>
+				</p:panel>
+
+			</p:dialog>
+
+		</p:outputPanel>
+		<ui:include src="/sales/branchTransferView.xhtml" />
+		<ui:include src="/sales/branchproductTransfer.xhtml" />		
+		
+	</h:form>
+	
+	
+		<script type="text/javascript">  
+    function handleTransferItem(xhr, status, args) {  
+        if(!args.validity) {  
+            PF('itemtransferDig').jq.effect("shake", { times:3 }, 100);  
+            PF('transferconfirmDig').hide(); 
+        }   
+        else {  
+            PF('itemtransferDig').hide(); 
+                        
+        }  
+    }  
+</script>
+	
+	
+	
+</ui:composition>
+
+

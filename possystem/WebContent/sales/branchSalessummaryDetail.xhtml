@@ -1,0 +1,211 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="addEditSalesForm">
+		<p:outputPanel id="salesPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesPanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Branch Sales Summary">
+
+
+				<h:panelGrid id="salesGrid" columns="10" border="0" width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{salesSummaryBean.dateFrom}" pattern="dd/MMM/yyyy" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{salesSummaryBean.dateTo}" pattern="dd/MMM/yyyy" />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['purchaseorder.label.branchname']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="branchId" value="#{salesSummaryBean.branchId}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Branch" itemValue="0" />
+						<f:selectItems value="#{commonListBean.selectBranchList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="branchId" styleClass="fieldError" />
+
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{salesSummaryBean.searchBranchSalesSummary}"
+							update="salesPanel" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{salesSummaryBean.resetBranchSalesSummary}"
+							update="salesPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="salesTable" var="sales"
+					value="#{salesSummaryBean.branchSalesSummary}">
+
+					<f:facet name="header">  
+          			   Branch Sales Summary
+        			</f:facet>
+
+					<p:columnGroup type="header">
+
+
+						<p:row>
+
+							<p:column style="width:25%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Sales Description"
+										styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+							<p:column style="width:8%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Quantity Sold" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+							<p:column style="width:10%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Ext Price (RM)" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+
+							<p:column style="width:10%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Ext Cost (RM)" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+							<p:column style="width:10%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Ext Margin Amount (RM)"
+										styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+							<p:column style="width:10%;" styleClass="columnwidth">
+								<f:facet name="header">
+									<h:outputText value="Margin (%)" styleClass="tableheader" />
+								</f:facet>
+							</p:column>
+
+						</p:row>
+					</p:columnGroup>
+
+					<p:subTable var="product" value="#{sales.product}">
+						<f:facet name="header">  
+            		   #{sales.branchName}  , <h:outputText
+								value="#{sales.dateFrom}">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+				--
+				
+				<h:outputText value="#{sales.dateTo}">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+
+						</f:facet>
+
+						<p:column style="width:25%;" styleClass="columnwidth">
+							<h:outputText
+								value="#{product.productCode} - #{product.productName} "
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+							<h:outputText value="#{product.totalQuantity}"
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+							<h:outputText value="#{product.normalPriceTotal}"
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+							<h:outputText value="#{product.purchasePriceTotal}"
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+							<h:outputText value="#{product.marginTotal}"
+								styleClass="logintxttable" />
+						</p:column>
+
+						<p:column style="width:10%;" styleClass="logintxtnumberFormat">
+							<h:outputText value="#{product.margin}"
+								styleClass="logintxttable" />
+						</p:column>
+
+
+						<p:columnGroup type="footer">
+							<p:row>
+								<p:column footerText="Sub Total (RM): " style="text-align:right" />
+								<p:column footerText="45" style="text-align:right" />
+								<p:column footerText="67" style="text-align:right" />
+								<p:column footerText="45" style="text-align:right" />
+								<p:column footerText="67" style="text-align:right" />
+								<p:column footerText="45" style="text-align:right" />
+
+							</p:row>
+
+							<p:row>
+								<p:column footerText="Grand Total (RM): "
+									style="text-align:right" />
+								<p:column footerText="45" style="text-align:right" />
+								<p:column footerText="67" style="text-align:right" />
+								<p:column footerText="45" style="text-align:right" />
+								<p:column footerText="67" style="text-align:right" />
+								<p:column footerText="45" style="text-align:right" />
+
+							</p:row>
+
+
+						</p:columnGroup>
+					</p:subTable>
+				</p:dataTable>
+
+			</p:panel>
+
+
+
+
+		</p:outputPanel>
+		<ui:include src="/templates/loadingDialog.xhtml" />
+
+
+	</h:form>
+</ui:composition>
+
+

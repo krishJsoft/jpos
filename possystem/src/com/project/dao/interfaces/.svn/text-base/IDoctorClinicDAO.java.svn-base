@@ -1,0 +1,21 @@
+package com.alpha.dao.interfaces;
+
+import java.util.List;
+import com.alpha.hq.model.Doctorclinic;
+
+public interface IDoctorClinicDAO {
+
+	
+	public boolean createNewDoctorclinic(Doctorclinic dclinic) throws Exception;
+
+	public boolean updateDoctorclinic(Doctorclinic dclinic) throws Exception;
+
+	public boolean deleteDoctorclinic(Doctorclinic dclinic) throws Exception;
+	
+	public List<Doctorclinic> findByDoctorclinicList(String identificationNumber,String clinicName,String status) throws Exception;
+		
+	public Doctorclinic getDoctorclinicDetails(Integer doctorClinicId) throws Exception;
+	
+    public boolean findDoctorIcExites(String identificationNumber) throws Exception;
+    
+}

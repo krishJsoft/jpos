@@ -1,0 +1,81 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:b="http://www.eclipse.org/birt/taglibs/birt.tld"
+	xmlns:birt="urn:jsptld:/WEB-INF/tlds/birt.tld">
+
+
+	<script language="JavaScript" type="text/javascript"
+		src="${facesContext.externalContext.requestContextPath}/resources/js/report.js">		
+	</script>
+
+
+	<h:form id="listaDespatchForm">
+		<p:outputPanel id="despatchPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="despatchPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Add/Edit Admin Despatch">
+
+				<p:calendar navigator="true" id="deliveryDate" size="25"
+					value="#{purchaseRequestBean.purchaserequest.deliveryDate}"
+					pattern="dd/MM/yyyy" />
+
+
+				<p:commandButton actionListener="#{reportBean.executeSampleInvoice}"
+					value="download" styleClass="logintxtButton" ajax="false">
+				</p:commandButton>
+
+
+				<a href="#" onclick="generateReport('books_report.rptdesign')">
+					Report Details</a>
+
+				<br></br>
+
+				<div>
+
+					<div id="downloadOptions" align="center">
+						<div id="paginationDiv"></div>
+						Download Report as : <a href="#" onclick="downloadReport('pdf')"><h:graphicImage
+								value="resources/images/pdf.png" /> </a> <a href="#"
+							onclick="downloadReport('xls')"> <h:graphicImage
+								value="resources/images/excel.png" /></a>
+					</div>
+
+
+
+					<fieldset style="background-color: white;">
+						<legend>
+							<b style="color: #84A9CF">Report Details:</b>
+						</legend>
+
+						<h:panelGrid width="100%" styleClass="bgcolor" cellpadding="3"
+							cellspacing="3">
+
+							<div id="reportData"
+								style="height: auto; background-color: white; float: center; min-width: 100%; text-align: center;"
+								align="center"></div>
+
+						</h:panelGrid>
+
+					</fieldset>
+
+
+				</div>
+			</p:panel>
+
+
+
+
+		</p:outputPanel>
+
+	</h:form>
+
+</ui:composition>

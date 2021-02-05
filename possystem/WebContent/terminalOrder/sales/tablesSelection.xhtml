@@ -1,0 +1,96 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<body>
+		<p:poll interval="50"
+			listener="#{hoteltableBean.loadTerminalOrderTableList(hoteltableBean.areaId)}"
+			update=":terminalOrderForm:terminalTableSelectionDataGrid" />
+		<p:panelGrid style="width:100%">
+
+
+			<p:row>
+				<p:column>
+					<p:dataGrid id="areaListId" rows="20" var="area" columns="20"
+						layout="grid" value="#{hoteltableBean.hotelTableAreaList}">
+						<f:facet name="header" style="background:blue">
+							<h:outputText value="SECTION " />
+						</f:facet>
+						<p:commandButton
+							style="width:7vw;height:8vh;color:#{area.areaId==hoteltableBean.areaId ? 'white' : 'black'};background:#{area.areaId==hoteltableBean.areaId ? '#E32526' : ''}"
+							value="#{area.areaName}"
+							action="#{hoteltableBean.loadTerminalOrderTableList(area.areaId)}"
+							update="terminalOrderForm:terminalTableSelectionDataGrid,terminalOrderForm:areaListId" />
+
+					</p:dataGrid>
+				</p:column>
+			</p:row>
+
+
+
+			<p:row>
+				<p:column style="background-color: #f4f6f9;">
+
+					<p:outputPanel id="terminalTableSelectionDataGrid" layout="block"
+						style="border:0px solid #666666;
+					margin-bottom:5px;
+					position: relative;">
+
+
+
+
+						<ui:repeat var="table"
+							value="#{hoteltableBean.assignedHotelTableList}">
+
+							<h:panelGroup rendered="#{table.status=='1'}">
+								<p:commandLink actionListener="#{orderBean.orderedTableView}"
+									update=":terminalOrderForm">
+									<h:graphicImage
+										value="/images/table_#{table.tableShape=='round'?'round' : 'square'}_not_empty.png"
+										style="width:90px;height:90px;
+							z-index:4;position:absolute;
+							top:#{table.topPosition}px;left:#{table.leftPosition}px;" />
+									<p:outputLabel value="#{table.tableName}"
+										style="
+							text-align:center;
+							width:90px;cursor:pointer;
+							z-index:4;font-size:25px;position:absolute;
+							top:#{table.topPosition+20}px;left:#{table.leftPosition}px;" />
+									<f:attribute name="productcat" value="#{table}" />
+								</p:commandLink>
+							</h:panelGroup>
+
+							<h:panelGroup rendered="#{table.status=='0'}">
+								<p:commandLink actionListener="#{orderBean.menuorder}"
+									ajax="#{(systemSettingBean.myConfig.systemType.hasCardNo or systemSettingBean.myConfig.paxNo)? 'true' : 'false'}">
+									<h:graphicImage
+										value="/images/table_#{table.tableShape=='round'?'round' : 'square'}_empty.png"
+										style="width:90px;height:90px;
+							z-index:4;position:absolute;
+							top:#{table.topPosition}px;left:#{table.leftPosition}px;" />
+									<p:outputLabel value="#{table.tableName}"
+										style="
+							text-align:center;
+							width:90px;cursor:pointer;
+							z-index:4;font-size:25px;position:absolute;
+							top:#{table.topPosition+20}px;left:#{table.leftPosition}px;" />
+									<f:attribute name="productcat" value="#{table}" />
+								</p:commandLink>
+
+							</h:panelGroup>
+
+						</ui:repeat>
+
+					</p:outputPanel>
+				</p:column>
+			</p:row>
+
+
+
+		</p:panelGrid>
+	</body>
+</ui:composition>
+
+

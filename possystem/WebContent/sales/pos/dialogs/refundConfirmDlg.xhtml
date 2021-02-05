@@ -1,0 +1,69 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="refundConfirmDlg" header="Refund"
+		widgetVar="refundConfirmDlg" modal="true" height="20%" width="20%">
+		<p:panelGrid styleClass="borderlessGrid">
+			<p:row>
+				<p:column>
+					<h:outputText value="Previous Amount" styleClass="logintxt"/>
+				</p:column>
+				<p:column>
+					<h:outputText value=" : " styleClass="logintxt"/>
+				</p:column>
+				
+				<p:column>
+					<h:outputText value="#{posBean.salesorder.totalAmount}" >
+						<f:convertNumber type="currency" currencySymbol="#{app['common.currency']}" locale="en_US" />
+					</h:outputText>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>
+					<h:outputText value="New Amount" styleClass="logintxt"/>
+				</p:column>
+				<p:column>
+					<h:outputText value=" : " styleClass="logintxt"/>
+				</p:column>
+				
+				<p:column>
+					<h:outputText value="#{posBean.totalAmount}" >
+						<f:convertNumber type="currency" currencySymbol="#{app['common.currency']}" locale="en_US" />
+					</h:outputText>
+				</p:column>
+			</p:row>
+			
+			<p:row>
+				<p:column>
+					<h:outputText value="Refund Amount" styleClass="logintxt"/>
+				</p:column>
+				<p:column>
+					<h:outputText value=" : " styleClass="logintxt"/>
+				</p:column>
+				
+				<p:column>
+					<h:outputText value="#{posBean.salesorder.totalAmount-posBean.totalAmount}" >
+						<f:convertNumber type="currency" currencySymbol="#{app['common.currency']}" locale="en_US" />
+					</h:outputText>
+				</p:column>
+			</p:row>
+			
+		</p:panelGrid>
+		<div style="text-align:right;width:100%">
+			<p:commandButton value="Confirm" 
+				action="#{posBean.updateSalesOrder}"
+				update="posPanel,salesButtonsPanel,focus,cardOptionColumn,:addEditPosForm:printrequestitem"
+				oncomplete="PF('refundConfirmDlg').hide()"
+			/>
+			<p:commandButton value="Cancel" 
+				oncomplete="PF('refundConfirmDlg').hide()"
+			/>
+		</div>
+	</p:dialog>
+
+</ui:composition>

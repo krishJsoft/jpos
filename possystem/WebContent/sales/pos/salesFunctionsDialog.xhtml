@@ -1,0 +1,79 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogSalesFunction" header="Sales Options"
+		widgetVar="salesfunction" modal="true" height="320" width="530" >
+
+
+
+		<p:outputPanel id="salesfunctionPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesfunctionPanel" /></td>
+				</tr>
+			</table>
+
+
+
+
+
+			<p:panel
+				style="width:450px; height:230px; align:center;background-image: url('images/contentpagebg.jpg');background-repeat: repeat-x;">
+
+				<br></br>
+				<br></br>
+				<br></br>
+
+
+				<h:panelGrid id="functionlist" columns="2" border="0"
+					styleClass="bgcolor"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+					
+
+
+					
+					<p:commandButton value="New Sales" oncomplete="PF('salesfunction').hide()"
+						update="posPanel"
+						action="#{posBean.resetPos}"
+						style="width:205px; height:50px; "
+						ajax="true" >
+					</p:commandButton>
+					
+					<p:commandButton value="Return Sales"
+						oncomplete="PF('salesreturn').show()"
+						update=":addEditPosForm:salesreturnPanel"
+						action="#{salesreturnBean.resetRetrun}"
+						style="width:205px; height:50px; "
+						ajax="true" >
+					</p:commandButton>
+
+				</h:panelGrid>
+
+
+
+
+			</p:panel>
+
+			<p:commandButton value="Cancel" oncomplete="PF('salesfunction').hide()"
+				update="focus"
+				style="width:100px; height:30px; " />
+
+
+		</p:outputPanel>
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

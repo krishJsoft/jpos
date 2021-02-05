@@ -1,0 +1,145 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+	<p:dialog resizable="false" closable="true" styleClass="customDialog"
+		hideEffect="slide" showEffect="slide" widgetVar="addtaxdg"
+		modal="false" height="250" width="600" minHeight="450"
+		minWidth="1000">
+
+		<f:facet name="header">
+			<p:row>
+				<p:column>
+					<h:outputText value="Add / Edit Tax"></h:outputText>
+				</p:column>
+			</p:row>
+		</f:facet>
+
+
+		<p:panelGrid style="width:98%;" id="taxPanel1">
+
+			<p:row>
+				<p:column style="width:100%;" styleClass="columnwidthb">
+
+					<div class="ui-fluid">
+						<h:panelGrid style="width:85%;" id="addedittaxgrid" cellspacing="4" cellpadding="4"
+							columns="3">
+
+
+							
+							<h:outputText	value=""></h:outputText>
+							<h:outputText	value=""></h:outputText>
+							<p:message for="taxname" styleClass="fieldError" />
+							
+							<h:outputText value="#{msg['common.mantetary.symbol']}"
+								styleClass="mandatory_text" />
+							<h:outputText
+								value="#{msg['tax.label.taxname']}"
+								styleClass="logintxt"></h:outputText>
+							<p:inputText id="taxname"
+								value="#{taxBean.taxObj.taxname}"
+								maxlength="50" size="25" />
+							
+							<h:outputText	value=""></h:outputText>
+							<h:outputText	value=""></h:outputText>
+							<p:message for="taxvalue" styleClass="fieldError" />	
+
+							<h:outputText value="#{msg['common.mantetary.symbol']}"
+								styleClass="mandatory_text" />
+							<h:outputText value="#{msg['tax.label.taxvalue']}"
+								styleClass="logintxt"></h:outputText>
+							<p:inputText id="taxvalue" onkeypress='return validate(event)'
+								value="#{taxBean.taxObj.taxvalue}" styleClass="logintxtnumberFormat"
+								maxlength="5" size="25" />
+													
+							
+							
+							<h:outputText	value=""></h:outputText>
+							<h:outputText	value=""></h:outputText>
+							<p:message for="glcode" styleClass="fieldError" />
+							
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['tax.label.glcode']}"
+								styleClass="logintxt"></h:outputText>
+							<p:inputText id="glcode"
+								value="#{taxBean.taxObj.glcode}"
+								maxlength="50" size="25" />
+							
+
+							<h:outputText	value=""></h:outputText>
+							<h:outputText	value=""></h:outputText>
+							<h:outputText	value=""></h:outputText>
+							<h:outputText	value=""></h:outputText>
+							<h:outputText	value=""></h:outputText>
+							<h:outputText	value=""></h:outputText>
+						
+
+
+
+						</h:panelGrid>
+					</div>
+				</p:column>
+			</p:row>
+
+			<f:facet name="footer">
+				<p:row>
+					<p:column style="width:100%;" colspan="2">
+
+						<table align="center" width="100%">
+							<tr>
+								<td align="center"><p:commandButton value="Save"
+										action="#{taxBean.saveTax}"
+										update="taxPanel,addedittaxgrid"
+										rendered="#{taxBean.action!='update'}"
+										oncomplete="handleSaveTax(xhr, status, args)"
+										/>
+										
+										 <p:commandButton
+										value="Update" update="taxPanel,addedittaxgrid"
+										action="#{taxBean.updateTax}"
+										rendered="#{taxBean.action=='update'}"
+										oncomplete="handleSaveTax(xhr, status, args)"
+										 /> 
+										
+										
+										<p:commandButton
+										rendered="#{taxBean.action!='update'}" value="Reset"
+										action="#{taxBean.resetTax}"
+										update="taxPanel,addedittaxgrid"  /> 
+										
+										
+										<p:commandButton
+										value="Reset"
+										actionListener="#{taxBean.editTax}"
+										update="taxPanel,addedittaxgrid"
+										rendered="#{taxBean.action=='update'}"
+										>
+										<f:attribute name="branchStaffId"
+											value="#{taxBean.taxObj.taxid}" />
+									</p:commandButton>
+									
+									 <p:commandButton value="Cancel" ajax="true"
+										update="taxPanel" oncomplete="PF('addtaxdg').hide()"
+										 /></td>
+							</tr>
+
+
+						</table>
+
+
+					</p:column>
+				</p:row>
+			</f:facet>
+
+
+		</p:panelGrid>
+
+
+
+
+
+	</p:dialog>
+</ui:composition>

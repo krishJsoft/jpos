@@ -1,0 +1,125 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="modalDialogSalesOption" header="Sales Options"
+		widgetVar="salesoption" hideEffect="slide" modal="true" height="370" width="530">
+
+		<p:outputPanel id="salesoptionPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="salesoptionPanel" /></td>
+				</tr>
+			</table>
+			<p:panel
+				style="width:470px; height:280px; align:center;background-image: url('images/contentpagebg.jpg');background-repeat: repeat-x;">
+
+				
+				<h:panelGrid id="keyboardfunction" columns="2" border="0"
+					styleClass="bgcolor"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+					<p:commandButton value="Cash Collection" oncomplete="PF('cashinout').show()" id="cashout"
+						update=":addEditPosForm:salesoptionCashinoutPanel,:addEditPosForm:collection"
+						action="#{posOptionBean.resetPosTransaction}" styleClass="itembutton"
+						style="width:205px; height:50px;background:#E32526 "
+						 ajax="true" >
+					</p:commandButton>
+
+					<p:commandButton value="X - Report" oncomplete="PF('xreport').show()"
+						update=":addEditPosForm:salesoptionxreportPanel" styleClass="itembutton"
+						action="#{posOptionBean.pdf()}"
+						style="width:205px; height:50px;background:#E32526"
+						ajax="true">
+					</p:commandButton>
+					
+					
+					<p:commandButton value="Hold Sales"  update="posPanel"	 oncomplete="PF('salesfunction').hide()"					
+						action="#{posBean.holdPOS}" rendered="#{posBean.salesorderbreakdowns.size()!=0}"
+						style="width:205px; height:50px;background:#E32526" styleClass="itembutton"
+						ajax="true">
+					</p:commandButton>
+
+
+					<p:commandButton value="Sales Hold  List"
+						oncomplete="PF('holdSales').show()"
+						update=":addEditPosForm:holdSalesPanel"
+						action="#{posOptionBean.getPosholdList}"
+						style="width:205px; height:50px;background:#E32526" styleClass="itembutton"
+						 ajax="true" >
+					</p:commandButton>
+					
+
+					<p:commandButton value="Close Day" oncomplete="PF('counetclose').show()"
+						update=":addEditPosForm:salesoptioncounterclosePanel"
+						action="#{posOptionBean.counterCloseData}"
+						style="width:205px; height:50px;background:#E32526" styleClass="itembutton"
+						immediate="true" ajax="true" async="true">
+					</p:commandButton>
+
+				
+					
+					<p:commandButton value="Sales List"
+						oncomplete="PF('salessearch').show()"
+						update=":addEditPosForm:salesPanel"						
+						style="width:205px; height:50px;background:#E32526" styleClass="itembutton"
+						 ajax="true" >
+					</p:commandButton>
+					
+					
+					<p:commandButton value="Daily- Report" oncomplete="PF('dailyreport').show()"
+						update=":addEditPosForm:salesoptiondailyreportPanel" styleClass="itembutton"
+						action="#{posOptionBean.dailyreport}"
+						style="width:205px; height:50px;background:#E32526"
+						ajax="true">
+					</p:commandButton>
+					
+					<p:commandButton value="Daily- Admin Report" oncomplete="PF('dailyadminreport').show()" rendered="#{loginBean.logdetail.designation=='owner'}"
+						update=":addEditPosForm:salesoptiondailyadminreportPanel" styleClass="itembutton"
+						action="#{posOptionBean.dailyadminreport}"
+						style="width:205px; height:50px;background:#E32526"
+						ajax="true">
+					</p:commandButton>
+					
+					
+					<p:commandButton value="Daily- Summary Report" oncomplete="PF('dailysummaryreport').show()"
+					rendered="#{loginBean.logdetail.designation!='owner'}"
+						update=":addEditPosForm:salesoptiondailyreportsummaryPanel" styleClass="itembutton"
+						action="#{posOptionBean.dailyreportsummary()}"
+						style="width:205px; height:50px;background:#E32526"
+						ajax="true">
+					</p:commandButton>
+					
+					<p:commandButton value="Expenses" oncomplete="PF('expensesWidget').show()"
+					
+						styleClass="itembutton"
+						style="width:205px; height:50px;background:#E32526"
+						action="#{expensesBean.loadExpensesTranAll}"
+						update="expensesPanel"
+						ajax="true">
+						<f:actionListener binding="#{expensesBean.reset}" />
+					</p:commandButton>
+					
+					<p:commandButton value="Send To Boss" 
+						styleClass="itembutton"
+						onclick="PF('salesoption').hide()"
+						style="width:205px; height:50px;background:#E32526"
+						action="#{posOptionBean.scheduleReport}"
+						ajax="true">
+					</p:commandButton>
+					
+				</h:panelGrid>
+
+			</p:panel>
+
+			<p:commandButton value="Cancel" oncomplete="PF('salesoption').hide()"
+				update="focus"
+				style="width:100px; height:30px;background:#E32526;color:white" />
+		</p:outputPanel>
+
+	</p:dialog>
+
+</ui:composition>

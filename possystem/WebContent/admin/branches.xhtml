@@ -1,0 +1,408 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:b="http://bootsfaces.net/ui">
+
+
+
+	<h:form id="listBranchForm" prependId="false">
+		<p:outputPanel id="branchPanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="branchPanel" /></td>
+				</tr>
+			</table>
+
+
+
+
+			<p:panelGrid>
+				<f:facet name="header">
+					<p:row>
+						<p:column>Search Organizations</p:column>
+					</p:row>
+				</f:facet>
+
+				<p:row>
+					<p:column>
+
+						<h:panelGrid style="margin-top:20px" columns="4">
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['branch.label.Status']} "
+								styleClass="logintxt"></h:outputText>
+							<p:selectOneMenu id="status1" value="#{branchBean.status}"
+								styleClass="inputCombo">
+								<f:selectItem itemLabel="Active" itemValue="1" />
+								<f:selectItem itemLabel="InActive" itemValue="0" />
+							</p:selectOneMenu>
+							<p:message for="status1" styleClass="fieldError" />
+
+
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['branch.label.branchName']}"
+								styleClass="logintxt"></h:outputText>
+							<p:inputText id="branchName1" value="#{branchBean.branchName}"
+								maxlength="45" size="35" />
+							<p:message for="branchName1" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['branch.label.state']} "
+								styleClass="logintxt"></h:outputText>
+							<p:inputText id="state1" value="#{branchBean.state}"
+								maxlength="15" size="35" />
+							<p:message for="state1" styleClass="fieldError" />
+
+							<h:outputText value="" styleClass="mandatory_text" />
+							<h:outputText value="#{msg['branch.label.city']} "
+								styleClass="logintxt"></h:outputText>
+							<p:inputText id="city1" value="#{branchBean.city}" maxlength="15"
+								size="35" />
+							<p:message for="city1" styleClass="fieldError" />
+
+
+
+
+
+						</h:panelGrid>
+					</p:column>
+				</p:row>
+
+				<f:facet name="footer">
+					<p:row>
+						<p:column>
+							<table align="center" width="100%" border="0">
+								<tr>
+									<td align="center"><p:commandButton value="Search"
+											ajax="true" styleClass="regCommandButton"
+											action="#{branchBean.searchBranch}" update=":listBranchForm:branchPanel" />
+
+										<p:commandButton value="Reset" ajax="true"
+											styleClass="regCommandButton"
+											action="#{branchBean.resetSearchBranch}" update=":listBranchForm:branchPanel" /></td>
+								</tr>
+							</table>
+						</p:column>
+					</p:row>
+				</f:facet>
+
+			</p:panelGrid>
+
+
+
+
+
+
+
+
+			<p:dataTable id="dataTable" var="branch" rowIndexVar="row"
+				paginatorPosition="top" reflow="true" editable="true"
+				value="#{branchBean.branchListObj}" paginator="true" rows="10"
+				style="width: 100%" rowsPerPageTemplate="5,10,15,25,50,100"
+				rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+
+				<f:facet name="header">
+					<p:outputPanel style="float: left">
+
+						<h:outputText value="Organizations" />
+
+
+
+					</p:outputPanel>
+
+					<p:outputPanel style="float: right">
+
+						<p:commandButton icon="ui-icon-plus" ajax="true"
+							rendered="#{loginBean.functionList.contains('Add Branch')}"
+							action="#{branchBean.resetBranch}"
+							oncomplete="PF('addbranchdg').show()" update=":listBranchForm:branchPanel">
+						</p:commandButton>
+
+
+
+
+					</p:outputPanel>
+
+
+
+				</f:facet>
+
+
+
+
+				<p:column id="modelHeader" width="3%" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column sortBy="#{branch.branchName}" width="15%"
+					styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['branch.label.branchName']}" />
+					</f:facet>
+
+					<p:commandLink ajax="true" styleClass="logintxttable"
+						style="font-size:14px;" value="#{branch.branchName}"
+						rendered="#{loginBean.functionList.contains('Edit Branch')}"
+						actionListener="#{branchBean.editBranch}"
+						oncomplete="PF('addbranchdg').show()"
+						update=":listBranchForm:addeditbranchgrid,:listBranchForm:branchPanel">
+						<f:attribute name="branchId" value="#{branch.branchId}" />
+					</p:commandLink>
+
+				</p:column>
+
+				<p:column sortBy="#{branch.branchCode}" width="5%">
+					<f:facet name="header">
+						<h:outputText value="Branch Code" />
+					</f:facet>
+					<h:outputText value="#{branch.branchCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column width="20%" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['branch.label.address']}" />
+					</f:facet>
+					<h:outputText value="#{branch.address}" styleClass="logintxttable" />
+				</p:column>
+
+
+
+				<p:column sortBy="#{branch.state}" width="10%"
+					styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="City , State" />
+					</f:facet>
+					<h:outputText value="#{branch.city}  #{branch.state}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+
+
+				<p:column width="6%" styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['branch.label.phoneNo']}" />
+					</f:facet>
+					<h:outputText value="#{branch.phoneNo}" styleClass="logintxttable" />
+				</p:column>
+
+
+
+
+				<p:column sortBy="#{branch.status}" width="5%"
+					styleClass="columnwidth">
+					<f:facet name="header">
+						<h:outputText value="#{msg['branch.label.Status']}" />
+					</f:facet>
+					<h:outputText value="Active" rendered="#{branch.status=='1'}"
+						styleClass="logintxttable" />
+					<h:outputText value="InActive" rendered="#{branch.status=='0'}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column width="7%" styleClass="columnwidth"
+					rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}">
+					<f:facet name="header">
+						<h:outputText value="#{msg['common.action.name']}" />
+					</f:facet>
+
+					<p:menuButton value="Options">
+
+
+						<p:menuitem ajax="true" styleClass="logintxttable"
+							style="font-size:14px;" value="Edit"
+							rendered="#{loginBean.functionList.contains('Edit Branch')}"
+							actionListener="#{branchBean.editBranch}"
+							oncomplete="PF('addbranchdg').show()"
+							update=":listBranchForm:addeditbranchgrid,:listBranchForm:branchPanel">
+							<f:attribute name="branchId" value="#{branch.branchId}" />
+						</p:menuitem>
+
+						<p:menuitem ajax="true" value="Delete"
+							rendered="#{loginBean.functionList.contains('Delete Branch')}"
+							actionListener="#{branchBean.viewBranch}"
+							update=":listBranchForm:addeditbranchgrid,:listBranchForm:branchPanel"
+							oncomplete="PF('branchdeletedg').show()">
+							<f:attribute name="branchId" value="#{branch.branchId}" />
+						</p:menuitem>
+
+
+
+					</p:menuButton>
+
+
+
+
+				</p:column>
+
+
+				<p:rowExpansion>
+					<div class="ui-fluid">
+						<p:panelGrid columns="4" width="60%" cellspacing="4"
+							columnClasses="ui-grid-col-2,ui-grid-col-2,ui-grid-col-2,ui-grid-col-2"
+							layout="grid" styleClass="ui-panelgrid-blank">
+
+
+							<h:outputText value="#{msg['branch.label.branchName']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.branchName}" />
+
+							<h:outputText value="#{msg['branch.label.branchCode']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.branchCode}" />
+
+							<h:outputText value="#{msg['branch.label.address']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.address}" />
+
+							<h:outputText value="#{msg['branch.label.city']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.city}" />
+
+							<h:outputText value="#{msg['branch.label.state']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.state}" />
+
+							<h:outputText value="#{msg['branch.label.country']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.country}" />
+
+							<h:outputText value="#{msg['branch.label.postCode']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.postCode}" />
+
+							<h:outputText value="#{msg['branch.label.phoneNo']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.phoneNo}" />
+
+							<h:outputText value="#{msg['branch.label.contactPerson']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.contactPerson}" />
+
+							<h:outputText value="#{msg['branch.label.faxNo']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.faxNo}" />
+
+							<h:outputText value="#{msg['branch.label.emailAddress']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.emailAddress}" />
+
+							<h:outputText value="#{msg['branch.label.franchiseeFee']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.franchiseeFee}" />
+
+							<h:outputText value="#{msg['branch.label.licensefee']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="#{branchBean.branch.fixedLicenseFee}" />
+
+
+							<h:outputText value="#{msg['branch.label.Status']}"
+								styleClass="logintxt"></h:outputText>
+							<h:outputText value="Active"
+								rendered="#{branchBean.branch.status=='1'}" />
+							<h:outputText value="InActive"
+								rendered="#{branchBean.branch.status=='2'}" />
+
+						</p:panelGrid>
+					</div>
+				</p:rowExpansion>
+
+
+			</p:dataTable>
+
+
+		</p:outputPanel>
+
+
+		<p:dialog resizable="false" closable="true" styleClass="customDialog"
+			hideEffect="slide" showEffect="slide" widgetVar="branchdeletedg"
+			appendToBody="true" modal="false" height="140" width="400"
+			minHeight="120" minWidth="450">
+
+			<f:facet name="header">
+				<p:row>
+					<p:column>
+						<h:outputText value="Branch Delete Confirmation"
+							styleClass="dialog-header"></h:outputText>
+					</p:column>
+				</p:row>
+			</f:facet>
+			<p:panelGrid style="width:100%;">
+				<p:row>
+					<p:column style="width:100%;" styleClass="columnwidthb">
+
+						<div class="ui-fluid">
+
+							<h:panelGrid id="deletegrid" columns="4" border="0" width="100%"
+								columnClasses="columnLeft width-5px, columnLeft width-100px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+								<h:outputText value="are you sure want to Delete ? "
+									styleClass="logintxttable" />
+							</h:panelGrid>
+						</div>
+					</p:column>
+				</p:row>
+
+				<f:facet name="footer">
+					<p:row>
+						<p:column style="width:100%;" colspan="2">
+
+							<table align="center" width="100%" border="0">
+								<tr>
+									<td align="center"><p:commandButton value="Delete"
+											ajax="false" styleClass="regCommandButton"
+											actionListener="#{branchBean.deleteBranch}"
+											update=":listBranchForm:addeditbranchgrid,:listBranchForm:branchPanel"
+											rendered="#{loginBean.functionList.contains('Delete Branch')}"
+											oncomplete="PF('branchdeletedg').hide()">
+											
+											<f:attribute name="branchId"
+												value="#{branchBean.branch.branchId}" />
+										</p:commandButton> <p:commandButton value="Close" styleClass="regCommandButton"
+											oncomplete="PF('branchdeletedg').hide()" ajax="true"
+											update=":listBranchForm:addeditbranchgrid,:listBranchForm:branchPanel" /></td>
+								</tr>
+
+
+							</table>
+
+
+						</p:column>
+					</p:row>
+				</f:facet>
+
+			</p:panelGrid>
+
+
+
+		</p:dialog>
+
+
+
+
+		<ui:include src="/admin/addbranch.xhtml" />
+
+
+	</h:form>
+
+	<script type="text/javascript">  
+    function handleSaveBranch(xhr, status, args) {  
+        if(!args.validity) {  
+            PF('addbranchdg').jq.effect("shake", { times:5 }, 100);  
+        }   
+        else {  
+            PF('addbranchdg').hide();              
+        }  
+    }  
+    </script>
+
+</ui:composition>
+
+

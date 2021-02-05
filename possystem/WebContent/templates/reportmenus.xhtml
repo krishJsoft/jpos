@@ -1,0 +1,278 @@
+
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<h:head />
+
+
+	<p:panelMenu style="width:200px">
+		<p:submenu label="Admin" icon="ui-icon-contact">
+
+			<p:menuitem value="Branches" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="branchReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Staff" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="staffReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Customer" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="customerReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Supplier" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="supplierReport" />
+			</p:menuitem>
+
+		</p:submenu>
+
+		<p:separator />
+
+		<p:submenu label="Purchase" icon="ui-icon-contact">
+
+			<p:menuitem value="Purchase Request" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="purchaseRequestReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Purchase Order" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="purchaseOrderReport" />
+			</p:menuitem>
+		</p:submenu>
+		<p:separator />
+
+
+		<p:submenu label="Stock" icon="ui-icon-contact">
+
+			<p:menuitem value="HQ Stock" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="hqStockReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Branch Stock" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="branchStockReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Sales History" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="saleshistoryReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Top Sales Product" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="topalesproductReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Order History" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="orderhistoryReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Top Order Product" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="toporderproductReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Branch Order Products Summary" immediate="true"
+				ajax="false" action="#{projectHome.menuReport}">
+				<f:param name="id" value="branchorderproductReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Delivery (GRN)" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="deliveryReport" />
+			</p:menuitem>
+
+			<p:separator />
+
+			<p:menuitem value="Product Expiry List" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="productexpiryReport" />
+			</p:menuitem>
+
+		</p:submenu>
+		<p:separator />
+
+		<p:submenu label="Sales" icon="ui-icon-contact">
+
+			<p:menuitem value="Quotation" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="quotationReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Sales Order" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="salesorderReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Branch Sales Summary" immediate="true"
+				ajax="false"
+				rendered="#{(loginBean.functionList.contains('View Sales Summary') or loginBean.functionList.contains('Print Sales Summary'))}"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="branchsalessummayReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Customer Sales Summary" immediate="true"
+				ajax="false" action="#{projectHome.menuReport}">
+				<f:param name="id" value="customrsalessummaryReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Doctor Prescription" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="doctorprescriptionReport" />
+			</p:menuitem>
+			<p:separator />
+
+			<p:menuitem value="Return" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="salesreturnReport" />
+			</p:menuitem>
+
+
+		</p:submenu>
+		<p:separator />
+
+
+		<p:submenu label="Invoice" icon="ui-icon-contact">
+
+			<p:submenu label="Issued" icon="ui-icon-contact">
+
+				<p:menuitem value="Branch/Customer" immediate="true" ajax="false"
+					action="#{projectHome.menuReport}">
+					<f:param name="id" value="branchcustomerInvoiceReport" />
+				</p:menuitem>
+				<p:separator />
+
+
+
+				<p:menuitem value="Customer Performance" immediate="true"
+					ajax="false" action="#{projectHome.menuReport}">
+					<f:param name="id" value="customerperformanceReport" />
+				</p:menuitem>
+				<p:separator />
+
+				<p:menuitem value="Outstanding Customer Invoice" immediate="true"
+					ajax="false" action="#{projectHome.menuReport}">
+					<f:param name="id" value="outstandingcustomerinvoiceReport" />
+				</p:menuitem>
+				<p:separator />
+
+				<p:menuitem value="Branch Performance" immediate="true" ajax="false"
+					action="#{projectHome.menuReport}">
+					<f:param name="id" value="branchperformanceReport" />
+				</p:menuitem>
+				<p:separator />
+
+				<p:menuitem value="Outstanding Branch Invoice" immediate="true"
+					ajax="false" action="#{projectHome.menuReport}">
+					<f:param name="id" value="outstandingbranchinvoiceReport" />
+				</p:menuitem>
+
+
+			</p:submenu>
+
+
+			<p:submenu label="Received" icon="ui-icon-contact">
+
+				<p:menuitem value="Supplier/Branch" immediate="true" ajax="false"
+					action="#{projectHome.menuReport}">
+					<f:param name="id" value="supplierInvoiceReport" />
+				</p:menuitem>
+				<p:separator />
+
+				<p:menuitem value="Supplier Performance" immediate="true"
+					ajax="false" action="#{projectHome.menuReport}">
+					<f:param name="id" value="supplierperformanceReport" />
+				</p:menuitem>
+				<p:separator />
+
+				<p:menuitem value="Outstanding Supplier Invoice" immediate="true"
+					ajax="false" action="#{projectHome.menuReport}">
+					<f:param name="id" value="outstandingsupplierinvoiceReport" />
+				</p:menuitem>
+
+
+
+				<p:separator />
+
+				<p:menuitem value="Branch Performance" immediate="true" ajax="false"
+					action="#{projectHome.menuReport}">
+					<f:param name="id" value="supplierBranchperformanceReport" />
+				</p:menuitem>
+
+				<p:separator />
+
+				<p:menuitem value="Outstanding Branch Invoice" immediate="true"
+					ajax="false" action="#{projectHome.menuReport}">
+					<f:param name="id" value="outstandingsupplierbranchinvoiceReport" />
+				</p:menuitem>
+
+
+
+
+			</p:submenu>
+
+
+
+		</p:submenu>
+		<p:separator />
+
+		<p:submenu label="Payments" icon="ui-icon-contact">
+
+			<p:submenu label="Receivable" icon="ui-icon-contact">
+				<p:menuitem value="Branch/Customer" immediate="true" ajax="false"
+					action="#{projectHome.menuReport}">
+					<f:param name="id" value="branchcustomerPaymentsReport" />
+				</p:menuitem>
+			</p:submenu>
+
+			<p:separator />
+
+			<p:submenu label="Payable" icon="ui-icon-contact">
+				<p:menuitem value="Supplier/Branch" immediate="true" ajax="false"
+					action="#{projectHome.menuReport}">
+					<f:param name="id" value="supplierPaymentsReport" />
+				</p:menuitem>
+			</p:submenu>
+
+		</p:submenu>
+
+
+		<p:separator />
+
+		<p:submenu label="Account" icon="ui-icon-contact">
+
+			<p:menuitem value="Monthly Tax" immediate="true" ajax="false"
+				action="#{projectHome.menuReport}">
+				<f:param name="id" value="gsttaxreport" />
+			</p:menuitem>
+
+		</p:submenu>
+
+	</p:panelMenu>
+
+</ui:composition>

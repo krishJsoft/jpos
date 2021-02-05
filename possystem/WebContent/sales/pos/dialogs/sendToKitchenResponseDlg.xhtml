@@ -1,0 +1,25 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<p:dialog id="kitchenResponseDlg" header="KITCHEN ORDER"
+	modal="true"
+	widgetVar="kitchenResponseDlg" width="30%"  height="5%"
+	>
+	<p:panelGrid style="width:100%"
+		columns="1"
+		styleClass="borderlessGrid"
+	>
+		<h:outputText value="SUCCESSFULLY SEND TO KITCHEN" />
+		
+		<p:commandButton 
+			value="CLOSE"
+			oncomplete="PF('kitchenResponseDlg').hide()" 
+		/>
+		
+	</p:panelGrid>
+</p:dialog>
+</ui:composition>
+
+

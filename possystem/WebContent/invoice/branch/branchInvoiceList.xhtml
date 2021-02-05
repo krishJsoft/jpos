@@ -1,0 +1,275 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	
+	<h:form id="addEditInvoiceForm">
+		<p:outputPanel id="invoicePanel">
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="invoicePanel" /></td>
+				</tr>
+			</table>
+			<p:panel styleClass="mypanel" header="Search Invoice">
+
+
+				<h:panelGrid id="salesGrid" columns="10" border="0" width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['common.mantetary.symbol']}"
+						styleClass="mandatory_text" />
+					<h:outputText value="#{msg['purchaseorder.label.branchname']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+
+					<p:selectOneMenu id="branchIdh"
+						rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}"
+						value="#{branchInvoiceBean.branchId}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Branch" itemValue="0" />
+						<f:selectItems value="#{commonListBean.selectBranchList}"></f:selectItems>
+					</p:selectOneMenu>
+
+					<p:selectOneMenu id="branchId"
+						rendered="#{loginBean.branch.branchtype==app['project.type.branch.value']}"
+						value="#{branchInvoiceBean.branchId}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Branch" itemValue="0" />
+						<f:selectItems value="#{commonListBean.selectBranch}"></f:selectItems>
+					</p:selectOneMenu>
+
+
+					<p:message for="branchId" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['quotation.label.customerName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:autoComplete id="customerName" maxResults="5" size="25"
+						converter="customerConverter" maxlength="15"
+						value="#{branchInvoiceBean.customer}"
+						completeMethod="#{branchInvoiceBean.getCustomerName}" var="c"
+						itemLabel="#{c.customerName}" itemValue="#{c}">>
+						<p:column>  
+                    	#{c.customerId} - #{c.customerName}   
+                		</p:column>
+					</p:autoComplete>
+					<p:message for="customerName" styleClass="fieldError" />
+
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateFrom" size="25"
+						value="#{branchInvoiceBean.dateFrom}" pattern="dd/MMM/yyyy" />
+					<p:message for="dateFrom" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="dateTo" size="25"
+						value="#{branchInvoiceBean.dateTo}" pattern="dd/MMM/yyyy" />
+					<p:message for="dateTo" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Invoice No" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="invoiceNo" size="25"
+						value="#{branchInvoiceBean.invoiceNo}" />
+					<p:message for="invoiceNo" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Status " styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" style="width:160px; float :left;"
+						value="#{branchInvoiceBean.status}" styleClass="inputCombo">
+						<f:selectItem itemValue="" itemLabel="Select Status"></f:selectItem>
+						<f:selectItems value="#{commonListBean.invoiceStatusList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+							action="#{branchInvoiceBean.searchInvoice}" update="invoicePanel" />
+
+						<p:commandButton value="Reset" ajax="true"
+							action="#{branchInvoiceBean.resetInvoiceSearch}"
+							update="invoicePanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="invoice" rowIndexVar="row"
+					scrollable="false" lazy="true"
+					value="#{branchInvoiceBean.branchinvoiceModel}" paginator="true"
+					rows="10" style="width: 100%" selectionMode="single"
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+					<p:column id="modelHeader" style="width:3%;">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{invoice.branchcustomerName}" style="width:20%;">
+						<f:facet name="header">
+							<h:outputText value="Branch/Customer Name" />
+						</f:facet>
+						<h:outputText value="#{invoice.branchcustomerName}"
+							rendered="#{invoice.invoiceType=='1'}" styleClass="logintxttable" />
+						<h:outputText value="#{invoice.branchcustomerName}"
+							rendered="#{invoice.invoiceType=='2'}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{invoice.createdDate}" style="width:9%;">
+						<f:facet name="header">
+							<h:outputText value="Created Date" />
+						</f:facet>
+						<h:outputText value="#{invoice.createdDate}"
+							styleClass="logintxttable">
+							<f:convertDateTime pattern="dd-MMM-yyyy" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{invoice.invoiceNo}" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Invoice No" />
+						</f:facet>
+						<h:outputText value="#{invoice.invoiceNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{invoice.salesOrderNo}" style="width:10%;">
+						<f:facet name="header">
+							<h:outputText value="Sales Order No" />
+						</f:facet>
+						<h:outputText value="#{invoice.salesOrderNo}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{invoice.dispatchAmount}" style="width:7%;"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Despatch Amount (RM)" />
+						</f:facet>
+						<h:outputText value="#{invoice.dispatchAmount}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column styleClass="logintxtnumberFormat" style="width:7%;">
+						<f:facet name="header">
+							<h:outputText value="Tax Amount(RM)" />
+						</f:facet>
+						<h:outputText value="#{invoice.tax}" styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column sortBy="#{invoice.totalAmount}" style="width:8%;"
+						styleClass="logintxtnumberFormat">
+						<f:facet name="header">
+							<h:outputText value="Total Amount (RM)" />
+						</f:facet>
+						<h:outputText value="#{invoice.totalAmount}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column sortBy="#{invoice.status}" style="width:7%;">
+						<f:facet name="header">
+							<h:outputText value="Status" />
+						</f:facet>
+
+						<h:outputText value="#{app['branchinvoice.status.neworderlable']}"
+							rendered="#{invoice.status==app['branchinvoice.status.newordervalue']}"
+							styleClass="logintxttable" />
+						<h:outputText
+							value="#{app['branchinvoice.status.processedlable']}"
+							rendered="#{invoice.status==app['branchinvoice.status.processedvalue']}"
+							styleClass="logintxttable" />
+						<h:outputText value="#{app['branchinvoice.status.orderedlable']}"
+							rendered="#{invoice.status==app['branchinvoice.status.orderedvalue']}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column style="width: 8%;">
+						<f:facet name="header">Action</f:facet>
+
+
+						<p:menuButton value="Options">
+
+							<p:menuitem value="View" styleClass="logintxttable"
+								update=":addEditInvoiceForm:requestitem"
+								rendered="#{loginBean.functionList.contains('View Branches Invoices')}"
+								actionListener="#{branchInvoiceBean.viewInvoice}"
+								oncomplete="PF('invoiceDig').show()">
+								<f:attribute name="invoice" value="#{invoice}" />
+							</p:menuitem>
+
+							<p:menuitem value="Edit" styleClass="logintxttable" ajax="false"
+								rendered="#{loginBean.functionList.contains('Edit Branches Invoices') and invoice.status==app['branchinvoice.status.newordervalue']}"
+								actionListener="#{branchInvoiceBean.editInvoice}">
+								<f:attribute name="invoice" value="#{invoice}" />
+							</p:menuitem>
+
+							<p:menuitem value="Approve" styleClass="logintxttable"
+								ajax="true" update=":addEditInvoiceForm:invoiceapprove"
+								oncomplete="PF('invoiceProcessDig').show()"
+								actionListener="#{branchInvoiceBean.approveInvoiceConfirm}"
+								rendered="#{loginBean.functionList.contains('Approve Branches Invoices') and invoice.status==app['branchinvoice.status.newordervalue']}">
+								<f:attribute name="invoice" value="#{invoice}" />
+							</p:menuitem>
+
+
+							<p:menuitem value="Print" styleClass="logintxttable"
+								actionListener="#{branchInvoiceBean.printInvoice}">
+								<f:attribute name="invoice" value="#{invoice}" />
+							</p:menuitem>
+						</p:menuButton>
+
+
+					</p:column>
+
+
+				</p:dataTable>
+
+
+
+			</p:panel>
+
+
+
+		</p:outputPanel>
+		<ui:include src="/invoice/branch/branchInvoiceView.xhtml" />
+		<ui:include src="/invoice/branch/branchInvoiceApprove.xhtml" />
+		<ui:include src="/templates/loadingDialog.xhtml" />
+
+
+	</h:form>
+</ui:composition>
+
+

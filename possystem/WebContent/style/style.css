@@ -1,0 +1,118 @@
+/* CSS Document */
+body, html{
+margin:0px;
+padding:0px;
+height:100%;
+}
+
+/*Menu*/
+.selected_item{
+background-color:#e0d7c4;
+padding:3px;
+text-decoration:none;
+font-family:Georgia, "Times New Roman", Times, serif;
+font-size:14px;
+color:#17479e;
+font-weight:bold;
+}
+
+.selected_item a{
+background-color:#e0d7c4;
+padding:3px;
+text-decoration:none;
+font-family:Georgia, "Times New Roman", Times, serif;
+font-size:14px;
+color:#17479e;
+font-weight:bold;
+}
+
+.un_selected_item{
+background-color:#ece6d8;
+padding:3px;
+text-decoration:none;
+font-family:Georgia, "Times New Roman", Times, serif;
+font-size:14px;
+color:#d54904;
+font-weight:bold;
+}
+
+.un_selected_item a{
+background-color:#ece6d8;
+padding:3px;
+text-decoration:none;
+font-family:Georgia, "Times New Roman", Times, serif;
+font-size:14px;
+color:#d54904;
+font-weight:bold;
+}
+.un_selected_item a:hover{
+padding:3px;
+text-decoration:none;
+font-family:Georgia, "Times New Roman", Times, serif;
+font-size:14px;
+color:#17479e;
+font-weight:bold;
+}
+
+/*-----FONTS---------*/
+.greenfont{
+font-family:Arial, Helvetica, sans-serif;
+font-size:14px;
+color:#145d03;
+}
+
+.grayfont{
+font-family:sans-serif,arial;
+text-transform:uppercase;
+font-size:20px;
+color:#CCC;
+}
+
+.grayfont a{
+font-family:Georgia, "Times New Roman", Times, serif;
+text-transform:capitalize;
+font-size:18px;
+color:#CCC;
+}
+
+.main_menufont{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#FFF;
+font-weight:bold;
+}
+
+.main_menufont a{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+color:#FFF;
+font-weight:bold;
+text-decoration:none;
+}
+
+/*-----Tables---------*/
+.logintable td{
+padding-left:10px;
+padding-right:10px;
+}
+.Maintable td{
+padding-left:15px;
+padding-right:15px;
+padding-top:5px;
+padding-bottom:3px;
+}
+.nopadding td{
+padding:0px;
+}
+.parameter_table{
+font-family:Arial, Helvetica, sans-serif;
+font-size:12px;
+border-left:1px solid #e0d7c4;
+border-top:1px solid #e0d7c4;
+padding:0px;
+background-color:#fff;
+}
+.parameter_table td{
+border-right:1px solid #e0d7c4;
+border-bottom:1px solid #e0d7c4;
+}

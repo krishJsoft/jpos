@@ -1,0 +1,24 @@
+package com.alpha.bo.interfaces;
+
+import java.util.List;
+
+import com.alpha.model.datamodel.SupplierModel;
+
+public interface ISupplierBO {
+
+	
+	public boolean createNewSupplier(SupplierModel supplier) throws Exception;
+
+	public boolean updateSupplier(SupplierModel supplier) throws Exception;
+
+	public boolean deleteSupplier(SupplierModel supplier) throws Exception;
+	
+	public List<SupplierModel> findBySupplierList(String companyRegNo,String Status) throws Exception;
+		
+	public SupplierModel getSupplierDetails(Integer supplierId) throws Exception;
+	
+    public boolean findSupplierCompanyRegNoExites(String companyRegNo) throws Exception;
+	
+    
+    
+}

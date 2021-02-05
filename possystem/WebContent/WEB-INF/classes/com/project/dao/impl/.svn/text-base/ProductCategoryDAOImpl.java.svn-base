@@ -1,0 +1,370 @@
+package com.alpha.dao.impl;
+
+import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
+import com.alpha.dao.interfaces.IProductCategoryDAO;
+import com.alpha.hq.model.Kategoriler;
+import com.alpha.hq.model.Productcategory;
+import com.alpha.hq.model.Uomtype;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 17 June 2013
+ * 
+ */
+
+@Repository("productCategoryRepository")
+public class ProductCategoryDAOImpl implements IProductCategoryDAO {
+
+	public static Logger log = LoggerFactory.getLogger(ProductCategoryDAOImpl.class);
+	long l = 0;
+	private EntityManager em = null;
+
+	@PersistenceContext
+	public void setEntityManager(EntityManager em) {
+		this.em = em;
+	}
+
+	public EntityManager getEm() {
+		return em;
+	}
+
+	public void setEm(EntityManager em) {
+		this.em = em;
+	}
+
+	@Override
+	public boolean createNewProductcategory(Productcategory pcategory)
+			throws Exception {
+		try {
+			em.persist(pcategory);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewProductcategory ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updateProductcategory(Productcategory pcategory)
+			throws Exception {
+		try {
+			em.merge(pcategory);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updateProductcategory ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deleteProductcategory(Productcategory pcategory)
+			throws Exception {
+		try {
+			em.remove(pcategory);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteProductcategory ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Productcategory> findByProductcategoryList(Integer categoryId,
+			String Status) throws Exception {
+		List<Productcategory> categories=null;
+		StringBuilder buf = new StringBuilder("SELECT b FROM Productcategory b WHERE 1 = 1 ");
+				
+		try {
+			
+		if (categoryId !=null && categoryId !=0) {
+			buf.append(" And b.categoryId = :categoryId ");
+		}	
+		
+		if (Status !=null && (!Status.equalsIgnoreCase(""))) {
+			buf.append(" And b.status = :status ");
+		}		
+		
+		buf.append(" order by b.categoryId");
+		Query query = em.createQuery(buf.toString());		
+		
+		if (categoryId !=null && categoryId !=0) {
+			query.setParameter("categoryId", categoryId);
+		}		
+		
+		if (Status !=null && (!Status.equalsIgnoreCase(""))) {
+			query.setParameter("status", Status);
+		}		 
+		categories=query.getResultList();
+		
+		} catch (Exception e) {
+			log.info("Error in findByProductcategoryList ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+		return categories;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Productcategory> findByProductcategoryChildList(
+			Integer parentCategoryId, String Status) throws Exception {
+		List<Productcategory> categories=null;
+		StringBuilder buf = new StringBuilder("SELECT b FROM Productcategory b inner join fetch b.productcategory p WHERE 1 = 1 ");
+				
+		try {
+			
+		if (parentCategoryId !=null && parentCategoryId !=0) {
+			buf.append(" And p.categoryId = :categoryId ");
+		}	
+		
+		if (Status !=null && (!Status.equalsIgnoreCase(""))) {
+			buf.append(" And b.status = :status ");
+		}		
+		
+		buf.append(" order by b.name");
+		Query query = em.createQuery(buf.toString());		
+		
+		if (parentCategoryId !=null && parentCategoryId !=0) {
+			query.setParameter("categoryId", parentCategoryId);
+		}		
+		
+		if (Status !=null && (!Status.equalsIgnoreCase(""))) {
+			query.setParameter("status", Status);
+		}		 
+		categories=query.getResultList();
+		
+		} catch (Exception e) {
+			log.info("Error in findByProductcategoryChildList ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+		return categories;
+	}
+
+	@Override
+	public Productcategory getProductcategoryDetails(Integer categoryId)
+			throws Exception {
+		Productcategory retData = null;
+		String sqlQuery = "select t from Productcategory t  WHERE t.categoryId = :categoryId ";
+		try {
+			retData = (Productcategory) em.createQuery(sqlQuery).setParameter("categoryId", categoryId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getProductcategoryDetails ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+	
+	@Override
+	public boolean findCategoryExites(Integer categoryId, Integer parentCategoryId,String categoryName)
+			throws Exception {
+		boolean exits = true;
+		try {
+			String hslQuery = "from Productcategory p where p.categoryId = :categoryId and p.parentCategoryId = :parentCategoryId and p.name= :categoryName";
+			Query query = em.createQuery(hslQuery).setParameter("categoryId", categoryId).setParameter("parentCategoryId", parentCategoryId).setParameter("categoryName", categoryName);
+			@SuppressWarnings("unchecked")
+			List<Productcategory> categoryNameExits = query.getResultList();
+			if (categoryNameExits.isEmpty()) {
+				exits = false;
+			}
+		} catch (Exception e) {
+			log.info("Error in getProductcategoryDetails ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+		return exits;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Kategoriler> findAll()
+			{
+		List<Kategoriler> categories=null;
+		StringBuilder buf = new StringBuilder("SELECT k FROM Kategoriler k");
+				
+		try {		
+		Query query = em.createQuery(buf.toString());		
+		categories=query.getResultList();
+		
+		} catch (Exception e) {
+			log.info("Error in findAll ProductCategoryDAOImpl " + e);
+			//throw e;
+		}
+		return categories;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Kategoriler findByKategoriId(Integer kategoriId)
+			{
+		Kategoriler retData = null;
+		String sqlQuery = "select t from Kategoriler t  WHERE t.kategoriId = :kategoriId ";
+		try {
+			retData = (Kategoriler) em.createQuery(sqlQuery).setParameter("kategoriId", kategoriId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in findByKategoriId ProductCategoryDAOImpl " + e);
+			//throw e;
+		}			
+		return retData;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Kategoriler> findByKategoriAdi(Integer kategoriAdi)
+			{
+		List<Kategoriler> categories=null;
+		StringBuilder buf = new StringBuilder("SELECT k FROM Kategoriler k WHERE 1 = 1 ");
+				
+		try {
+			
+		if (kategoriAdi !=null && kategoriAdi !=0) {
+			buf.append(" And k.kategoriAdi = :kategoriAdi ");
+		}				
+		
+		Query query = em.createQuery(buf.toString());		
+		
+		if (kategoriAdi !=null && kategoriAdi !=0) {
+			query.setParameter("kategoriAdi", kategoriAdi);
+		}		
+		categories=query.getResultList();
+		
+		} catch (Exception e) {
+			log.info("Error in findByProductcategoryList ProductCategoryDAOImpl " + e);
+			//throw e;
+		}
+		return categories;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Kategoriler> findByKatUstId(Integer katUstId)  {
+		List<Kategoriler> categories=null;
+		StringBuilder buf = new StringBuilder("SELECT k FROM Kategoriler k WHERE 1 = 1 ");
+				
+		try {
+			
+		if (katUstId !=null && katUstId !=0) {
+			buf.append(" And k.katUstId = :katUstId ");
+		}				
+		
+		Query query = em.createQuery(buf.toString());		
+		
+		if (katUstId !=null && katUstId !=0) {
+			query.setParameter("kategoriAdi", katUstId);
+		}		
+		categories=query.getResultList();
+		
+		} catch (Exception e) {
+			log.info("Error in findByProductcategoryList ProductCategoryDAOImpl " + e);
+			//throw e;
+		}
+		return categories;
+	}
+
+	@Override
+	public boolean createNewUom(Uomtype uom) throws Exception {
+		try {
+			em.persist(uom);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in createNewUom ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean updateUom(Uomtype uom) throws Exception {
+		try {
+			em.merge(uom);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in updateUom ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@Override
+	public boolean deleteUom(Uomtype uom) throws Exception {
+		try {
+			em.remove(uom);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("Error in deleteUom ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Uomtype> findByUomtypeList(String UOMName) throws Exception {
+		List<Uomtype> uomtyps=null;
+		StringBuilder buf = new StringBuilder("SELECT k FROM Uomtype k WHERE 1 = 1 ");
+				
+		try {
+			
+			if (UOMName !=null && (!UOMName.equalsIgnoreCase(""))) {
+			buf.append(" And k.UOMName = :UOMName ");
+		}				
+		
+		Query query = em.createQuery(buf.toString());		
+		
+		if (UOMName !=null && (!UOMName.equalsIgnoreCase(""))) {
+			query.setParameter("UOMName", UOMName);
+		}		
+		uomtyps=query.getResultList();
+		
+		} catch (Exception e) {
+			log.info("Error in findByUomtypeList ProductCategoryDAOImpl " + e);
+			//throw e;
+		}
+		return uomtyps;
+	}
+
+	@Override
+	public boolean findUomtypeExites(String UOMName) throws Exception {
+		boolean exits = true;
+		try {
+			String hslQuery = "from Uomtype p where p.UOMName = :UOMName";
+			Query query = em.createQuery(hslQuery).setParameter("UOMName", UOMName);
+			@SuppressWarnings("unchecked")
+			List<Uomtype> uomtypeExits = query.getResultList();
+			if (uomtypeExits.isEmpty()) {
+				exits = false;
+			}
+		} catch (Exception e) {
+			log.info("Error in findUomtypeExites ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+		return exits;
+	}
+
+	@Override
+	public Uomtype getUomtypeDetails(Integer UOMId) throws Exception {
+		Uomtype retData = null;
+		String sqlQuery = "select t from Uomtype t  WHERE t.UOMId = :UOMId ";
+		try {
+			retData = (Uomtype) em.createQuery(sqlQuery).setParameter("UOMId", UOMId).getSingleResult();
+
+		} catch (Exception e) {
+			log.info("Error in getUomtypeDetails ProductCategoryDAOImpl " + e);
+			throw e;
+		}
+		return retData;
+	}
+
+}

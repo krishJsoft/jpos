@@ -1,0 +1,223 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dialog id="modalDialogQuotation" header="Sales Details"
+		resizable="false" widgetVar="salesDig" modal="true" height="90%"
+		width="90%">
+		<br></br>
+
+		<p:panel id="requestitem">
+
+
+			<p:panelGrid style="width:99%" styleClass="alignTop">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="width:40%;">Branch Details</p:column>
+						<p:column style="width:60%;">Sales Details</p:column>
+					</p:row>
+				</f:facet>
+
+
+				<p:row>
+					<p:column style="width:40%;" styleClass="alignTop">
+
+
+						<h:panelGrid columns="1" border="0" width="90%"
+							styleClass="borderlessGrid" cellpadding="1" cellspacing="1"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+							<h:outputText value="#{branchsaleBean.branchsale.branchName}"
+								styleClass="logintxttable" />
+							<h:outputText value="#{branchsaleBean.branchsale.branch.address}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="#{branchsaleBean.branchsale.branch.phoneNo}"
+								styleClass="logintxttable" />
+
+							<h:outputText
+								value="#{branchsaleBean.branchsale.branch.emailAddress}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+
+					</p:column>
+
+					<p:column style="width:60%;" styleClass="alignTop">
+
+
+						<h:panelGrid id="requestgrid" columns="6" border="0" width="100%"
+							styleClass="borderlessGrid" cellpadding="3" cellspacing="3"
+							columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+
+							<h:outputText value="Amount(RM)" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{branchsaleBean.branchsale.totalAmount}"
+								styleClass="logintxttable">
+								<f:convertNumber pattern="#0.00" />
+							</h:outputText>
+
+
+							<h:outputText value=" Date" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{branchsaleBean.branchsale.createdDate}"
+								styleClass="logintxttable">
+								<f:convertDateTime pattern="dd-MMM-yyyy " />
+							</h:outputText>
+
+
+
+							<h:outputText value="Delivery Terms" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{branchsaleBean.branchsale.deliveryTerms}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Payment Terms" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{branchsaleBean.branchsale.paymentTerms}"
+								styleClass="logintxttable" />
+
+							<h:outputText value="Status" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText
+								value="#{app['quotationstat.status.neworderlable']}"
+								rendered="#{branchsaleBean.branchsale.status==app['quotationstat.status.newordervalue']}"
+								styleClass="logintxttable" />
+							<h:outputText
+								value="#{app['quotationstat.status.processedlable']}"
+								rendered="#{branchsaleBean.branchsale.status==app['quotationstat.status.processedvalue']}"
+								styleClass="logintxttable" />
+							<h:outputText value="#{app['quotationstat.status.orderedlable']}"
+								rendered="#{branchsaleBean.branchsale.status==app['quotationstat.status.orderedvalue']}"
+								styleClass="logintxttable" />
+
+
+							<h:outputText value="Remarks" styleClass="logintxt"></h:outputText>
+							<h:outputText value=":" />
+							<h:outputText value="#{branchsaleBean.branchsale.remarks}"
+								styleClass="logintxttable" />
+
+						</h:panelGrid>
+					</p:column>
+				</p:row>
+			</p:panelGrid>
+
+			<p:dataTable id="dataTable1" var="sales" rowIndexVar="row" rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}"
+				paginatorPosition="top" scrollable="true" scrollHeight="220"
+				value="#{branchsaleBean.branchsalesbreakdowns}" paginator="false"
+				rows="10" style="width: 100%" rowsPerPageTemplate="5,10,15,20,25">
+
+				<p:column styleClass="columnwidth" width="6%">
+					<f:facet name="header">
+						<h:outputText value="Product Code" />
+					</f:facet>
+					<h:outputText value="#{sales.productCode}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column styleClass="columnwidth" width="25%">
+					<f:facet name="header">
+						<h:outputText value="Product Name" />
+					</f:facet>
+					<h:outputText value="#{sales.productName}"
+						styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidth" width="5%">
+					<f:facet name="header">
+						<h:outputText value="UOM" />
+					</f:facet>
+					<h:outputText value="#{sales.uomName}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column styleClass="columnwidth" width="7%">
+					<f:facet name="header">
+						<h:outputText value="Expiry Date" />
+					</f:facet>
+					<h:outputText value="#{sales.expiryDate}"
+						styleClass="logintxttable">
+						<f:convertDateTime pattern="dd-MMM-yyyy " />
+					</h:outputText>
+				</p:column>
+
+				<p:column styleClass="columnwidthn" width="7%">
+					<f:facet name="header">
+						<h:outputText value="Unit Price (RM)" />
+					</f:facet>
+					<h:outputText value="#{sales.unitPrice}" styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+				<p:column styleClass="columnwidthn" width="7%">
+					<f:facet name="header">
+						<h:outputText value="Discount (RM)" />
+					</f:facet>
+					<h:outputText value="#{sales.discountAmount}"
+						styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column styleClass="columnwidthn" width="7%">
+					<f:facet name="header">
+						<h:outputText value="Quantity" />
+					</f:facet>
+					<h:outputText value="#{sales.quantityRequired}"
+						styleClass="logintxttable" />
+				</p:column>
+
+
+				<p:column style="width:5%;" styleClass="columnwidthn">
+					<f:facet name="header">
+						<h:outputText value="Tax (%)" />
+					</f:facet>
+					<h:outputText value="#{sales.taxCode}" styleClass="logintxttable" />
+				</p:column>
+
+				<p:column style="width:7%;" styleClass="columnwidthn">
+					<f:facet name="header">
+						<h:outputText value="Tax" />
+					</f:facet>
+					<h:outputText value="#{sales.taxAmount}" styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+
+				<p:column styleClass="columnwidthn" width="8%">
+					<f:facet name="header">
+						<h:outputText value="Sub Total(RM)" />
+					</f:facet>
+					<h:outputText value="#{sales.subTotal}" styleClass="logintxttable">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+				</p:column>
+
+			</p:dataTable>
+
+		</p:panel>
+
+
+
+		<br></br>
+		<h:panelGrid columns="3" style="float:left"
+			columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+			<p:commandButton value="Close" oncomplete="PF('salesDig').hide()" />
+
+
+
+		</h:panelGrid>
+
+
+	</p:dialog>
+
+</ui:composition>

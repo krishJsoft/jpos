@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+<style>
+
+.active{
+	background: green ;
+}
+.inActive{
+	background: red ; 
+}
+/*.ui-treetable .ui-treetable-data tr.ui-state-highlight,
+.ui-treetable .ui-treetable-data tr.ui-state-hover {
+    background: red;
+}
+*/
+.ui-tree .ui-treenode-parent .ui-treenode-label {
+background-color:#CCCCCC;
+}
+
+.ui-tree .ui-treenode-children .ui-treenode-label {
+background-color:#E1DFD7;
+}
+.tree-level0,.tree-level1{
+background:#C6C6C6;
+color:black;
+
+}
+.tree-level2{
+background:#5846FC;
+}
+.tree-level3{
+background:#3ADCBC;
+}
+.tree-level4{
+background:#FFFFCC;
+color:black;
+}
+.tree-level5{
+background:#E5CFF3;
+}
+</style>
+	<h:form id="listProductCategoryForm">
+		<p:outputPanel id="productCategoryPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="productCategoryPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel  header="View Product Categories">
+
+
+				<p:treeTable id="treetable" value="#{commonListBean.rootNode}" 
+					propagateSelectionDown="" scrollable="false" scrollHeight="460"
+					dynamic="true" selectionMode="single" 
+					selection="#{productCategoryBean.selectedNode}" var="category"
+					resizableColumns="true" >
+					<p:ajax event="select" 
+						listener="#{productCategoryBean.onNodeSelect}" />
+
+					<p:column headerText="Category Name" style="width:40%"
+						styleClass="columnwidth  tree-level#{category.level} ">
+						<h:outputText value="#{category.name}" styleClass="logintxttable" />
+					</p:column>
+
+					<p:column headerText="Description" style="width:35%"
+						styleClass="columnwidth tree-level#{category.level} ">
+						<h:outputText value="#{category.description}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column headerText="Status" style="text-align:center" 
+						styleClass="columnwidth #{category.level lt 3 ? 'null' : category.status=='1' ? 'active' : 'inActive'} " >
+						<h:outputText value="Active" rendered="#{category.status=='1' and category.level gt 2}"
+							styleClass="logintxttable"  />
+						<h:outputText value="InActive" rendered="#{category.status!='1' and category.level gt 2}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column headerText="Action" style="width:15%;text-align:center"
+						styleClass="columnwidth tree-level#{category.level} " 
+						rendered="#{loginBean.branch.branchtype==app['project.type.hq.value']}">
+
+
+						<p:menuButton value="Options"  rendered="#{category.code!=1}" >
+						
+							<p:menuitem value="Add" styleClass="logintxttable"
+								rendered="#{loginBean.functionList.contains('Add Category')}"
+								actionListener="#{productCategoryBean.addCategory}">
+								<f:attribute name="categoryId" value="#{category.categoryId}" />
+								<f:attribute name="name" value="#{category.name}" />
+							</p:menuitem>
+
+							<p:menuitem value="Edit" styleClass="logintxttable"
+								rendered="#{loginBean.functionList.contains('Edit Category') and category.code gt 2}"
+								actionListener="#{productCategoryBean.editCategory}">
+								<f:attribute name="categoryId" value="#{category.categoryId}" />
+								<f:attribute name="name" value="#{category.name}" />
+							</p:menuitem>
+
+							<p:menuitem value="Delete" styleClass="logintxttable" ajax="false"
+								rendered="#{loginBean.functionList.contains('Delete Category') and category.code gt 2 }"
+								actionListener="#{productCategoryBean.deleteCategory2}">
+								<p:confirm message="Are you sure want to delete category #{category.name} ?" icon="ui-icon-alert" />
+								<f:attribute name="categoryId" value="#{category.categoryId}" />
+							</p:menuitem>
+
+						</p:menuButton>
+
+					
+
+					</p:column>
+
+
+				</p:treeTable>
+
+			</p:panel>
+		</p:outputPanel>
+
+
+		<p:dialog id="modelcategoryitemdelete" showEffect="fade"
+			hideEffect="fade" header="Category Delete Confirmation"
+			resizable="false" widgetVar="categoryItemdeleteDig" modal="true"
+			height="100" width="360">
+
+			<br></br>
+
+			<p:panel id="requestitemdelete">
+
+				<h:panelGrid columns="1" border="0" width="100%"
+					styleClass="bgcolor" cellpadding="1" cellspacing="1"
+					columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+					<h:outputText value="Are you sure want to Delete Category ? "
+						styleClass="logintxttable" />
+				</h:panelGrid>
+
+				<br></br>
+
+				<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+					columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+					<p:commandButton value="Delete" ajax="false"
+						action="#{productCategoryBean.deleteCategory}">
+					</p:commandButton>
+					<p:commandButton value="Cancel"
+						onclick="PF('categoryItemdeleteDig').hide()" />
+
+				</h:panelGrid>
+			</p:panel>
+
+		</p:dialog>
+
+	<p:confirmDialog global="true" >
+		<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		</p:confirmDialog>
+
+
+
+	</h:form>
+</ui:composition>
+
+

@@ -1,0 +1,260 @@
+package com.alpha.bo.impl;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.alpha.bo.interfaces.IBranchBO;
+import com.alpha.dao.interfaces.IBranchDAO;
+import com.alpha.hq.model.Branch;
+import com.alpha.model.datamodel.BranchModel;
+
+/*
+ * @author Gopal Ar
+ * @version 1.0
+ * @since 17 June 2013
+ * 
+ */
+
+@Service("branchBO")
+public class BranchBOImpl implements IBranchBO {
+	
+	public static Logger log = LoggerFactory.getLogger(BranchBOImpl.class);
+
+	@Resource(name = "branchRepository")
+	private IBranchDAO branchRepository;
+	
+	@Transactional
+	@Override
+	public boolean createNewBranch(BranchModel branch) throws Exception {
+		boolean saveSuccess = false;
+		Branch branchObj = new Branch();
+		try {
+			
+			branchObj.setAddress(branch.getAddress());
+			branchObj.setBranchCode(branch.getBranchCode());			
+			branchObj.setBranchName(branch.getBranchName());			
+			branchObj.setCity(branch.getCity());
+			branchObj.setCountry(branch.getCountry());
+			branchObj.setCreatedBy(branch.getCreatedBy());
+			branchObj.setCreatedDate(branch.getCreatedDate());
+			branchObj.setEmailAddress(branch.getEmailAddress());
+			branchObj.setFaxNo(branch.getFaxNo());
+			branchObj.setFixedLicenseFee(branch.getFixedLicenseFee());
+			branchObj.setFranchiseeFee(branch.getFranchiseeFee());
+			branchObj.setIsHQ(branch.getIsHQ());
+			branchObj.setLastModifiedDate(branch.getLastModifiedDate());
+			branchObj.setPhoneNo(branch.getPhoneNo());
+			branchObj.setPostCode(branch.getPostCode());
+			branchObj.setState(branch.getState());
+			branchObj.setStatus(branch.getStatus());
+			
+			saveSuccess = branchRepository.createNewBranch(branchObj);			
+		}
+
+		catch (Exception e) {
+			log.info("Error in createNewBranch BranchBOImpl " + e);
+			throw e;
+		}
+		return saveSuccess;
+	
+	}
+
+	@Transactional
+	@Override
+	public boolean updateBranch(BranchModel branch) throws Exception {
+		boolean updateSuccess = false;
+		
+		try {
+			Branch branchObj = branchRepository.getBranchDetails(branch.getBranchId());
+			
+			branchObj.setAddress(branch.getAddress());
+			branchObj.setBranchCode(branch.getBranchCode());			
+			branchObj.setBranchName(branch.getBranchName());			
+			branchObj.setCity(branch.getCity());
+			branchObj.setCountry(branch.getCountry());
+			branchObj.setCreatedBy(branch.getCreatedBy());
+			branchObj.setCreatedDate(branch.getCreatedDate());
+			branchObj.setEmailAddress(branch.getEmailAddress());
+			branchObj.setFaxNo(branch.getFaxNo());
+			branchObj.setFixedLicenseFee(branch.getFixedLicenseFee());
+			branchObj.setFranchiseeFee(branch.getFranchiseeFee());
+			branchObj.setIsHQ(branch.getIsHQ());
+			branchObj.setLastModifiedDate(branch.getLastModifiedDate());
+			branchObj.setPhoneNo(branch.getPhoneNo());
+			branchObj.setPostCode(branch.getPostCode());
+			branchObj.setState(branch.getState());
+			branchObj.setStatus(branch.getStatus());
+			
+			updateSuccess = branchRepository.createNewBranch(branchObj);			
+		}
+
+		catch (Exception e) {
+			log.info("Error in updateBranch BranchBOImpl " + e);
+			throw e;
+		}
+		return updateSuccess;
+	
+	}
+
+	@Transactional
+	@Override
+	public boolean deleteBranch(BranchModel branch) throws Exception {
+		boolean deleteSuccess = false;
+		
+		try {
+			Branch branchObj = branchRepository.getBranchDetails(branch.getBranchId());			
+			deleteSuccess = branchRepository.deleteBranch(branchObj);			
+			}
+		catch (Exception e) {
+			log.info("Error in deleteBranch BranchBOImpl " + e);
+			throw e;
+		}
+		return deleteSuccess;
+	
+	}
+
+	@Override
+	public List<BranchModel> findByBranchList(Integer branchId,
+			String cityName, String stateName, String Status) throws Exception {
+		  
+		   List<BranchModel> branchObjList = new ArrayList<BranchModel>();	
+		   List<Branch> branchList = new ArrayList<Branch>();
+		try {			
+			branchList = branchRepository.findByBranchList(branchId, cityName, stateName, Status);
+			
+			for (Branch branch : branchList) {				
+			BranchModel branchObj = new BranchModel();	
+			branchObj.setAddress(branch.getAddress());
+			branchObj.setBranchCode(branch.getBranchCode());			
+			branchObj.setBranchName(branch.getBranchName());			
+			branchObj.setCity(branch.getCity());
+			branchObj.setCountry(branch.getCountry());
+			branchObj.setCreatedBy(branch.getCreatedBy());
+			branchObj.setCreatedDate(branch.getCreatedDate());
+			branchObj.setEmailAddress(branch.getEmailAddress());
+			branchObj.setFaxNo(branch.getFaxNo());
+			branchObj.setFixedLicenseFee(branch.getFixedLicenseFee());
+			branchObj.setFranchiseeFee(branch.getFranchiseeFee());
+			branchObj.setIsHQ(branch.getIsHQ());
+			branchObj.setLastModifiedDate(branch.getLastModifiedDate());
+			branchObj.setPhoneNo(branch.getPhoneNo());
+			branchObj.setPostCode(branch.getPostCode());
+			branchObj.setState(branch.getState());
+			branchObj.setStatus(branch.getStatus());
+			branchObj.setBranchId(branch.getBranchId());
+			branchObjList.add(branchObj);
+			}
+		}
+		catch (Exception e) {
+			log.info("Error in findByBranchList BranchBOImpl " + e);
+			throw e;
+		}
+		return branchObjList;
+	}
+
+	@Override
+	public BranchModel getBranchDetailsByName(String branchName) throws Exception {		
+			BranchModel branchObj = new BranchModel();	
+			
+		try {			
+			Branch branch = branchRepository.getBranchDetailsByName(branchName);
+			
+			branchObj.setAddress(branch.getAddress());
+			branchObj.setBranchCode(branch.getBranchCode());			
+			branchObj.setBranchName(branch.getBranchName());			
+			branchObj.setCity(branch.getCity());
+			branchObj.setCountry(branch.getCountry());
+			branchObj.setCreatedBy(branch.getCreatedBy());
+			branchObj.setCreatedDate(branch.getCreatedDate());
+			branchObj.setEmailAddress(branch.getEmailAddress());
+			branchObj.setFaxNo(branch.getFaxNo());
+			branchObj.setFixedLicenseFee(branch.getFixedLicenseFee());
+			branchObj.setFranchiseeFee(branch.getFranchiseeFee());
+			branchObj.setIsHQ(branch.getIsHQ());
+			branchObj.setLastModifiedDate(branch.getLastModifiedDate());
+			branchObj.setPhoneNo(branch.getPhoneNo());
+			branchObj.setPostCode(branch.getPostCode());
+			branchObj.setState(branch.getState());
+			branchObj.setStatus(branch.getStatus());
+			branchObj.setBranchId(branch.getBranchId());
+			
+		}
+		catch (Exception e) {
+			log.info("Error in getBranchDetails BranchBOImpl " + e);
+			throw e;
+		}
+		return branchObj;
+	}
+
+	@Override
+	public BranchModel getBranchDetails(Integer branchId) throws Exception {
+		BranchModel branchObj = new BranchModel();	
+		
+		try {			
+			Branch branch = branchRepository.getBranchDetails(branchId);
+			
+			branchObj.setAddress(branch.getAddress());
+			
+			branchObj.setBranchCode(branch.getBranchCode());			
+			branchObj.setBranchName(branch.getBranchName());
+			
+			branchObj.setBranchOldCode(branch.getBranchCode());			
+			branchObj.setBranchOldName(branch.getBranchName());			
+			
+			branchObj.setCity(branch.getCity());
+			branchObj.setCountry(branch.getCountry());
+			branchObj.setCreatedBy(branch.getCreatedBy());
+			branchObj.setCreatedDate(branch.getCreatedDate());
+			branchObj.setEmailAddress(branch.getEmailAddress());
+			branchObj.setFaxNo(branch.getFaxNo());
+			branchObj.setFixedLicenseFee(branch.getFixedLicenseFee());
+			branchObj.setFranchiseeFee(branch.getFranchiseeFee());
+			branchObj.setIsHQ(branch.getIsHQ());
+			branchObj.setLastModifiedDate(branch.getLastModifiedDate());
+			branchObj.setPhoneNo(branch.getPhoneNo());
+			branchObj.setPostCode(branch.getPostCode());
+			branchObj.setState(branch.getState());
+			branchObj.setStatus(branch.getStatus());	
+			branchObj.setBranchId(branch.getBranchId());
+		}
+		catch (Exception e) {
+			log.info("Error in getBranchDetails BranchBOImpl " + e);
+			throw e;
+		}
+		return branchObj;
+	}
+
+	@Override
+	public boolean findBranchNameExites(String branchName) throws Exception {
+		boolean exists = false;		
+		try {
+			exists = branchRepository.findBranchNameExites(branchName);
+		}
+		catch (Exception e) {
+			log.info("Error in findBranchNameExites BranchBOImpl " + e);
+			throw e;
+		}
+		return exists;
+	}
+
+	@Override
+	public boolean findBranchCodeExites(String branchCode) throws Exception {
+		boolean exists = false;		
+		try {
+			exists = branchRepository.findBranchCodeExites(branchCode);
+		}
+		catch (Exception e) {
+			log.info("Error in findBranchCodeExites BranchBOImpl " + e);
+			throw e;
+		}
+		return exists;
+	}
+
+}

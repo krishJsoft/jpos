@@ -1,0 +1,123 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="discountreportDlg" header="Sales Discount Report"
+		widgetVar="discountreportDlg" modal="true" height="380px" width="80%">
+
+
+
+		<p:outputPanel id="discountreportPanel">
+			
+			<p:panel header="Search Sales Discount Report">
+
+
+				<h:panelGrid id="discountreportGrid" columns="10" border="0" width="70%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date From" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="discountreportDateFrom" size="25"
+						value="#{discountBean.dateFrom}" pattern="dd/MMM/yyyy" />
+					<p:message for="discountreportDateTo" styleClass="fieldError" />
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="Date To" styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:calendar navigator="true" id="discountreportDateTo" size="25"
+						value="#{discountBean.dateTo}" pattern="dd/MMM/yyyy" />
+					<p:message for="discountreportDateTo" styleClass="fieldError" />
+				</h:panelGrid>
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="true"
+						update="discountreportDatatable"
+							action="#{discountBean.searchDiscountReport}"
+							/>
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				<br />
+				
+				<p:dataTable id="discountreportDatatable" var="salesDisc" rowIndexVar="row"
+					scrollable="true" scrollHeight="220"
+					value="#{discountBean.salesDiscountList}" 
+					paginator="false"
+					rows="100" style="width: 100%" 
+					rowsPerPageTemplate="5,10,15,25,50,100"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}" >
+					<p:column id="modelHeader" width="5%">
+						<f:facet name="header">
+							<h:outputText value="#" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+					<p:column  width="10%">
+						<f:facet name="header">
+							<h:outputText value="TIME" />
+						</f:facet>
+						<h:outputText value="#{salesDisc.createdDate}" styleClass="logintxttable" />
+					</p:column>
+					<p:column  width="10%">
+						<f:facet name="header">
+							<h:outputText value="INVOICE NO" />
+						</f:facet>
+						<h:outputText value="#{salesDisc.salesOrderNo}" styleClass="logintxttable" />
+					</p:column>
+					<p:column  width="15%">
+						<f:facet name="header">
+							<h:outputText value="BEFORE DISCOUNT" />							
+						</f:facet>
+						<h:outputText value="#{salesDisc.totalBeforeDiscount}" styleClass="logintxttable" />
+						
+					</p:column>
+					<p:column  width="15%">
+						<f:facet name="header">
+							<h:outputText value="DISCOUNT" />							
+						</f:facet>
+						<h:outputText value="#{salesDisc.discountRate}%" styleClass="logintxttable" />
+						
+					</p:column>
+					<p:column width="15%">
+						<f:facet name="header">
+							<h:outputText value="AFTER DISCOUNT" />
+						</f:facet>
+						<h:outputText value="#{salesDisc.totalAmount}" styleClass="logintxttable" />
+					</p:column>
+				</p:dataTable>
+
+			</p:panel>
+
+			<p:commandButton value="Close" oncomplete="PF('discountreportDlg').hide()"
+				
+				style=" width:100px; height:30px; " />
+				
+				<p:commandButton value="PRINT" 
+					update="addEditPosForm:discountreportDatatable,addEditPosForm:salesdiscountprintrequestitem"
+					oncomplete="PF('salesdiscountrptprintdlg').show();">
+				</p:commandButton>
+		
+				
+			</p:outputPanel>
+		
+
+
+	</p:dialog>
+
+
+
+
+
+</ui:composition>

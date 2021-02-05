@@ -1,0 +1,241 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<h:form id="listBranchStaffForm">
+		<p:outputPanel id="branchStaffPanel">
+
+			<table align="center" width="100%" border="0">
+				<tr>
+					<td align="center"><p:message for="branchStaffPanel" /></td>
+				</tr>
+			</table>
+
+			<p:panel styleClass="mypanel" header="Search Staff">
+				<h:panelGrid id="searchbranchstaffgrid" columns="10" border="0"
+					width="50%"
+					columnClasses="columnLeft width-5px, columnLeft width-120px, columnLeft width-10px, columnLeft width-280px, columnLeft width-280px ,columnLeft">
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText
+						value="#{msg['branchstaff.label.identificationNumber']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:inputText id="identificationNumber"
+						value="#{branchStaffBean.identificationNo}" maxlength="25"
+						size="25" />
+					<p:message for="identificationNumber" styleClass="fieldError" />
+
+
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branchstaff.label.roleName']}"
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="roleName" value="#{branchStaffBean.roleId}"
+						style="width:160px; text-align:left;">
+						<f:selectItem itemLabel="Select Role Name" itemValue="0" />
+						<f:selectItems value="#{commonListBean.selectRoleList}"></f:selectItems>
+					</p:selectOneMenu>
+					<p:message for="roleName" styleClass="fieldError" />
+
+
+					
+					<h:outputText value="" styleClass="mandatory_text" />
+					<h:outputText value="#{msg['branchstaff.label.status']} "
+						styleClass="logintxt"></h:outputText>
+					<h:outputText value=":" />
+					<p:selectOneMenu id="status" value="#{branchStaffBean.status}"
+						style="width:160px; float :left;" styleClass="selectOneMenu">
+						<f:selectItem itemLabel="Select Status" itemValue="" />
+						<f:selectItem itemLabel="Active" itemValue="1" />
+						<f:selectItem itemLabel="InActive" itemValue="0" />
+					</p:selectOneMenu>
+					<p:message for="status" styleClass="fieldError" />
+
+
+
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:outputText value="" />
+					<h:panelGrid id="newstaffgrid" columns="2" border="0"
+						columnClasses="columnLeft width-120px, columnLeft width-180px,columnLeft">
+						<p:commandButton value="Search" ajax="false"
+							action="#{branchStaffBean.searchBranchStaff}"
+							update="branchStaffPanel" />
+
+
+						<p:commandButton value="Reset" ajax="false"
+							action="#{branchStaffBean.resetSearchBranchStaff}"
+							update="branchStaffPanel" />
+					</h:panelGrid>
+					<h:outputText value="" />
+
+				</h:panelGrid>
+
+
+
+				<br />
+
+
+				<p:dataTable id="dataTable" var="branch" rowIndexVar="row"
+					editable="true" value="#{branchStaffBean.branchStaffListObj}"
+					filteredValue="#{branchStaffBean.filteredBranchstaff}"
+					paginator="true" rows="10" style="width: 100%"
+					rowsPerPageTemplate="5,10,15"
+					rowStyleClass="#{row mod 2 == 0 ? 'old1' : 'old'}">
+
+					<p:column id="modelHeader" width="3%" styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="SNo" />
+						</f:facet>
+						<h:outputText value="#{row + 1}" styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column sortBy="#{branch.firstName}" width="10%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['branchstaff.label.firstName']}" />
+						</f:facet>
+						<h:outputText value="#{branch.firstName}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+					<p:column sortBy="#{branch.staffCode}" width="10%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Staff Id" />
+						</f:facet>
+						<h:outputText value="#{branch.staffCode}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{branch.identificationNumber}" width="6%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText
+								value="#{msg['branchstaff.label.identificationNumber']}" />
+						</f:facet>
+						<h:outputText value="#{branch.identificationNumber}"
+							styleClass="logintxttable" />
+					</p:column>
+					
+
+					<p:column sortBy="#{branch.roleName}" width="5%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['branchstaff.label.roleName']}" />
+						</f:facet>
+						<h:outputText value="#{branch.roleName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column sortBy="#{branch.departmentName}" width="6%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['branchstaff.label.departmentName']}" />
+						</f:facet>
+						<h:outputText value="#{branch.departmentName}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+					<p:column sortBy="#{branch.designation}" width="7%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['branchstaff.label.designation']}" />
+						</f:facet>
+						<h:outputText value="#{branch.designation}"
+							styleClass="logintxttable" />
+					</p:column>
+
+					<p:column  width="8%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="Contact No" />
+						</f:facet>
+						<h:outputText value="#{branch.phoneNo}"
+							styleClass="logintxttable" />
+					</p:column>				
+
+
+					<p:column sortBy="#{branch.emailAddress}" width="14%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['branchstaff.label.emailAddress']}" />
+						</f:facet>
+						<h:outputText value="#{branch.emailAddress}"
+							styleClass="logintxttable" />
+					</p:column>
+
+
+
+					<p:column sortBy="#{branch.status}" width="5%"
+						styleClass="columnwidth">
+						<f:facet name="header">
+							<h:outputText value="#{msg['branchstaff.label.status']}" />
+						</f:facet>
+						<h:outputText value="Active" rendered="#{branch.status=='1'}" />
+						<h:outputText value="InActive" rendered="#{branch.status=='0'}" />
+					</p:column>
+
+					<p:column width="10%" styleClass="columnwidth" style="text-align:center">
+						<f:facet name="header">
+							<h:outputText value="Action" />
+						</f:facet>
+						
+						<p:menuButton value="Options"  >
+						
+							<p:menuitem value="Edit"
+								styleClass="logintxttable"
+								rendered="#{loginBean.functionList.contains('Edit Staff')}"
+								actionListener="#{branchStaffBean.editBranchStaff}">
+								<f:attribute name="branchStaffId" value="#{branch.staffId}" />
+							</p:menuitem>
+
+							<p:menuitem value="Delete" styleClass="logintxttable" ajax="false"
+								rendered="#{loginBean.functionList.contains('Delete Staff')}"
+								actionListener="#{branchStaffBean.deleteBranchStaff}">
+								<p:confirm message="Are you sure want to delete staff #{branch.firstName} ?" icon="ui-icon-alert" />
+								<f:attribute name="branchStaffId" value="#{branch.staffId}" />
+							</p:menuitem>
+
+						</p:menuButton>
+					
+
+					</p:column>
+
+				</p:dataTable>
+
+<br/>
+				<table align="center" width="100%">
+					<tr>
+						<td align="left"><p:commandButton value="Add New Staff"
+								ajax="false" action="#{branchStaffBean.newStaff}"
+								update="searchbranchstaffgrid,dataTable" /></td>
+					</tr>
+
+
+				</table>
+
+
+
+			</p:panel>
+
+
+
+
+		</p:outputPanel>
+
+
+<p:confirmDialog global="true" >
+		<p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+		<p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+		</p:confirmDialog>
+
+	</h:form>
+</ui:composition>
+
+

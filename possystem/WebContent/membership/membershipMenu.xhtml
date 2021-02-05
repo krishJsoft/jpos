@@ -1,0 +1,42 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+	<style>
+
+	</style>
+	<p:outputPanel id="membershipPanel" >
+		<p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
+		<p:panel styleClass="mypanel" header="Membership ">
+			 <p:tabView>
+           		<p:ajax event="tabChange" listener="#{membershipTabMenuBean.onTabChange}" update="membershipConfigurationForm,addEditMembershipForm,mambershipPaymentForm" />
+			 
+			 	<p:tab title="#{msg['membershipPayment.label.tabTitle']}" rendered="#{loginBean.functionList.contains('Membership Payment View')}">
+					 <h:panelGrid cellpadding="10" style="width:100%">
+                		<ui:include src="/membership/membershipPayment.xhtml" />
+            		</h:panelGrid>        	
+        		</p:tab>
+			 
+        		<p:tab title="#{msg['membership.label.tabTitle']}" rendered="#{loginBean.functionList.contains('Membership Register View')}">
+				 	<h:panelGrid  cellpadding="10" style="width:100%">
+                			<ui:include src="/membership/addEditMembership.xhtml"/>
+                	    
+            		</h:panelGrid>
+        		</p:tab>
+        		
+        		<p:tab title="#{msg['membershipConfiguration.label.tabTitle']}" rendered="#{loginBean.functionList.contains('Membership Configuration View')}">
+        			<h:panelGrid  cellpadding="10" style="width:100%">
+                			<ui:include src="/membership/membershipConfiguration.xhtml"/>
+            		</h:panelGrid>
+        		</p:tab>
+        		
+        	
+    		</p:tabView>
+			
+		</p:panel>
+	</p:outputPanel>
+
+</ui:composition>
+
+

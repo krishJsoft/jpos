@@ -1,0 +1,249 @@
+
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+
+
+	<p:dialog id="modalDialogCashInOuy" header="Cash Collection"
+		widgetVar="cashinout" modal="true" height="480" width="60%">
+
+
+
+		<p:outputPanel id="salesoptionCashinoutPanel">
+			<p:message for="salesoptionCashinoutPanel" />
+
+
+
+
+			<h:panelGrid columns="10" border="0" styleClass="bgcolor"
+				id="collection"
+				columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="Payment Type" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu id="paymentType"
+					value="#{posOptionBean.poscashtransaction.paymentType}"
+					style="width:160px; text-align:left;">
+					<f:selectItem itemLabel="Select Type" itemValue="0" />
+					<f:selectItem itemLabel="Cash" itemValue="Cash" />
+					<f:selectItem itemLabel="Card" itemValue="Card" />
+					<f:selectItem itemLabel="Cheque" itemValue="Cheque" />
+				</p:selectOneMenu>
+				<p:message for="paymentType" styleClass="fieldError" />
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="Collected By" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:selectOneMenu id="collectedBy"
+					value="#{posOptionBean.poscashtransaction.collectedBy}"
+					style="width:160px; text-align:left;">
+					<f:selectItem itemLabel="Select User" itemValue="0" />
+					<f:selectItems value="#{commonListBean.doctorList}"></f:selectItems>
+				</p:selectOneMenu>
+				<p:message for="collectedBy" styleClass="fieldError" />
+
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="Amount" styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputText id="cashamount"
+					value="#{posOptionBean.poscashtransaction.amount}" maxlength="15"
+					onkeypress='return validate(event)' size="20"
+					style="color:#035E62;font-size:15px;text-align:right;">
+					<p:ajax update="cashamount" process="@this" event="change" />
+				</p:inputText>
+				<p:message for="cashamount" styleClass="fieldError" />
+
+				<h:outputText value="" styleClass="mandatory_text" />
+				<h:outputText value="#{msg['quotation.label.remarks']}"
+					styleClass="logintxt"></h:outputText>
+				<h:outputText value=":" />
+				<p:inputTextarea rows="4" cols="25" id="remarks" autoResize="false"
+					value="#{posOptionBean.poscashtransaction.remarks}">
+					<p:ajax update="cashamount" process="@this" event="change" />
+				</p:inputTextarea>
+				<p:message for="remarks" styleClass="fieldError" />
+
+				<h:outputText value="" />
+				<h:outputText value="" />
+				<h:outputText value="" />
+
+				<p:commandButton value="Add" ajax="true"
+					update=":addEditPosForm:collection,:addEditPosForm:dataTablepayment"
+					action="#{posOptionBean.addPaymentItem}" />
+				<h:outputText value="" />
+
+			</h:panelGrid>
+			<br />
+
+
+			<p:dataTable id="dataTablepayment" var="payment" rowIndexVar="row"
+				scrollable="true" scrollHeight="150"
+				value="#{posOptionBean.poscashtransactionItems}" paginator="false"
+				rows="20" style="width: 70%" rowsPerPageTemplate="5,10,15"
+				rowStyleClass="#{row mod 2 == 0 ? null : 'old'}">
+
+				<p:column id="modelHeader" width="3%">
+					<f:facet name="header">
+						<h:outputText value="SNo" />
+					</f:facet>
+					<h:outputText value="#{row + 1}" />
+				</p:column>
+
+				<p:column width="20%">
+					<f:facet name="header">
+						<h:outputText value="Payment Type" />
+					</f:facet>
+					<h:outputText value="#{payment.paymentType}" />
+				</p:column>
+
+
+				<p:column styleClass="logintxtnumberFormat" width="10%">
+					<f:facet name="header">
+						<h:outputText value="Amount (RM)" />
+					</f:facet>
+					<h:outputText value="#{payment.amount}">
+						<f:convertNumber pattern="#0.00" />
+					</h:outputText>
+
+					<f:facet name="footer">
+						<h:outputText value="#{posOptionBean.totalamount}">
+							<f:convertNumber pattern="#0.00" />
+						</h:outputText>
+					</f:facet>
+
+
+				</p:column>
+
+				<p:column style="width: 10%;">
+					<f:facet name="header">Action</f:facet>
+
+					<p:commandLink value="Remove" styleClass="ui-icon ui-icon-trash"
+						title="Remove" update=":addEditPosForm:paymentitemdelete"
+						actionListener="#{posOptionBean.removePaymentItem}"
+						oncomplete="PF('paymentItemdeleteDig').show()">
+						<f:attribute name="paymentId" value="#{row}" />
+					</p:commandLink>
+
+
+				</p:column>
+
+
+			</p:dataTable>
+			<br></br>
+
+			<h:panelGrid columns="3" border="0">
+
+				<p:commandButton value="Close" oncomplete="PF('cashinout').hide();"
+					immediate="true" ajax="true" async="true">
+				</p:commandButton>
+
+
+				<p:commandButton value="Cash Out" 
+					oncomplete="PF('paymentcashcollectionDig').show();"					
+					update=":addEditPosForm:posPanel,:addEditPosForm:collection"
+					ajax="true">
+				</p:commandButton>
+
+
+
+			</h:panelGrid>
+
+
+
+
+			<p:dialog showEffect="fade" hideEffect="fade"
+				header="Counter Cash Collection Confirmation" resizable="false"
+				widgetVar="paymentcashcollectionDig" modal="false" height="110"
+				width="340">
+
+				<br></br>
+
+				<p:panel id="paymentcashcollection">
+
+					<h:panelGrid columns="1" border="0" width="100%"
+						styleClass="bgcolor" cellpadding="1" cellspacing="1"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+						<h:outputText value="Are you sure ? " styleClass="logintxttable" />
+
+						<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+							columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+
+							<p:commandButton value="Yes" ajax="true"
+								oncomplete="handleCashInRequest(xhr, status, args)"
+								action="#{posOptionBean.cashDebit}"
+								update=":addEditPosForm:posPanel,:addEditPosForm:collection">
+							</p:commandButton>
+							<p:commandButton value="No"
+								onclick="PF('paymentcashcollectionDig').hide()" />
+
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</p:panel>
+
+			</p:dialog>
+
+
+
+
+
+
+			<p:dialog showEffect="fade" hideEffect="fade"
+				header="Payment Delete Confirmation" resizable="false"
+				widgetVar="paymentItemdeleteDig" modal="false" height="110"
+				width="340">
+
+				<br></br>
+
+				<p:panel id="paymentitemdelete">
+
+					<h:panelGrid columns="1" border="0" width="100%"
+						styleClass="bgcolor" cellpadding="1" cellspacing="1"
+						columnClasses="columnCenter width-10px,columnCenter width-10px,columnCenter width-10px">
+						<h:outputText value="Are you sure want to Delete Item ? "
+							styleClass="logintxttable" />
+
+						<h:panelGrid columns="3" cellpadding="1" cellspacing="1"
+							columnClasses="columnLeft width-5px,columnLeft width-50px,columnLeft width-5px,columnLeft width-240px,columnLeft width-280px">
+
+
+
+							<p:commandButton value="Yes" ajax="true"
+								oncomplete="PF('paymentItemdeleteDig').hide();"
+								update=":addEditPosForm:posPanel,:addEditPosForm:collection,:addEditPosForm:dataTablepayment"
+								action="#{posOptionBean.removePaymentItemConfirm}">
+							</p:commandButton>
+							<p:commandButton value="No" onclick="PF('paymentItemdeleteDig').hide()" />
+
+						</h:panelGrid>
+					</h:panelGrid>
+
+				</p:panel>
+
+			</p:dialog>
+
+
+
+
+
+
+		</p:outputPanel>
+
+	</p:dialog>
+
+
+
+
+
+
+
+
+</ui:composition>

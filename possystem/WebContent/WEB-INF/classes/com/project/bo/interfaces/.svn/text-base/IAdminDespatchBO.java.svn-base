@@ -1,0 +1,22 @@
+package com.alpha.bo.interfaces;
+
+import java.util.List;
+
+import com.alpha.model.datamodel.AdmindespatchModel;
+
+
+public interface IAdminDespatchBO {
+
+	public boolean createNewAdminDespatch(AdmindespatchModel adespatch) throws Exception;
+
+	public boolean updateAdminDespatch(AdmindespatchModel adespatch) throws Exception;
+
+	public boolean deleteAdminDespatch(AdmindespatchModel adespatch) throws Exception;
+	
+	public List<AdmindespatchModel> findByAdmindespatchList() throws Exception;
+		
+	public AdmindespatchModel getAdminDespatchDetails(Integer despatchId) throws Exception;
+	
+    public boolean findAdminDespatchExites(String despatchType,String uom) throws Exception;
+    
+}
