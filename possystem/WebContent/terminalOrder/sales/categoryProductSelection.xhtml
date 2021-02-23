@@ -14,7 +14,7 @@
 
 .category-selection td {
 	vertical-align: top;
-	background: #f4f6f9;
+	 background: white; 
 }
 
 .category-selection tr>td:nth-child(1) {
@@ -34,7 +34,7 @@
 }
 
 .subItemButton {
-	width: 10vw;
+	width: 18vw;
 	height: 10vh;
 }
 
@@ -54,8 +54,8 @@
 		<table class="category-selection">
 			<tr>
 
-				<td style="height: 98%; background: #1B006A;" rowspan="2">
-					<div style="height: 100%; overflow: auto;">
+				<td style="height: 98%;  background-image: url('${facesContext.externalContext.requestContextPath}/images/coffee.jpg');" rowspan="2">
+					<div style="height: 100%; overflow: none;">
 						<p:dataGrid id="mainCategorySelectionDataGrid" var="category"
 							rowIndexVar="row" rows="100" columns="1" layout="grid"
 							paginator="true" paginatorPosition="top"
@@ -73,7 +73,7 @@
 
 				</td>
 				<td
-					style="height: 5%; width: 85%; text-align: center; background: #1B006A">
+					style="height: 5%; width: 85%; text-align: center;  background-image: url('${facesContext.externalContext.requestContextPath}/images/food.jpg');">
 					<ui:include
 						src="/terminalOrder/sales/keyboard/productSearchByCodeKybd.xhtml" />
 				</td>
@@ -82,16 +82,16 @@
 
 			<tr>
 				<td style="height: 90%">
-					<div style="height: 100%; overflow: auto;">
+					<div style="height:100%; overflow: auto;">
 						<p:dataGrid id="subCategorySelectionDataGrid" var="category"
-							rowIndexVar="row" scrollable="true" rows="10" columns="6"
+							rowIndexVar="row" scrollable="true" rows="10" columns="5"
 							emptyMessage="Please Select a product"
 							value="#{productCategoryBean.childCategoryList}" layout="grid"
 							paginator="#{orderBean.subContentView=='categoryList'? 'true' : 'false'}"
 							paginatorPosition="bottom"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
 							<p:commandButton value="#{category.name}"
-								style="background:#138F99;color:white;"
+								style="width:12vw;height:10vh;background:#138F99;color:white;"
 								actionListener="#{posBean.selectCategoryMenu}"
 								update="terminalOrderForm:subCategorySelectionDataGrid,terminalOrderForm:productSelectionDataGrid">
 								<f:attribute name="productcat" value="#{category}" />
@@ -99,15 +99,17 @@
 						</p:dataGrid>
 
 						<p:dataGrid id="productSelectionDataGrid" var="pos"
+						
 							rowIndexVar="row" rows="16" columns="4" emptyMessage=""
 							value="#{productBean.productAll}" layout="grid"
+							
 							paginator="#{orderBean.subContentView=='productList'? 'true' : 'false'}"
 							paginatorPosition="top"
 							paginatorTemplate="{FirstPageLink} {PreviousPageLink} {NextPageLink} {LastPageLink}">
 							<p:commandButton
 								value="#{pos.productName}"
 								actionListener="#{orderBean.selectProduct(pos)}"
-								style="background:orange;color:white;"
+								style="width:15vw;height:10vh; background: #2afa57; color:black;"
 								rendered="#{orderBean.subContentView=='productList'}"
 								update="terminalOrderForm:orderListDataTable">
 							</p:commandButton>
